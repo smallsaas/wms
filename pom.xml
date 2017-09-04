@@ -20,6 +20,7 @@
 
     <properties>
         <sb-base.version>1.0.0</sb-base.version>
+        <sb-crud.version>1.0.0-SNAPSHOT</sb-crud.version>
     </properties>
 
     <dependencies>
@@ -27,6 +28,11 @@
             <groupId>com.jfeat</groupId>
             <artifactId>sb-base</artifactId>
             <version>${sb-base.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jfeat</groupId>
+            <artifactId>sb-crud</artifactId>
+            <version>${sb-crud.version}</version>
         </dependency>
 
         <!--spring boot依赖-->
@@ -215,6 +221,21 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>com.jfeat</groupId>
+                <artifactId>sb-code-generator</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <!-- change to your module name -->
+                    <moduleName>module1</moduleName>
+                    <dbUrl>jdbc:mysql://127.0.0.1:3306/sbseed</dbUrl>
+                    <username>root</username>
+                    <password>root</password>
+                    <outputDir>src/main/java</outputDir>
+                    <parentPackage>com.jfeat.am.module</parentPackage>
+                </configuration>
+            </plugin>
+
 
         </plugins>
         <resources>
