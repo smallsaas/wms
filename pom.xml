@@ -20,7 +20,7 @@
 
     <properties>
         <sb-base.version>1.0.0</sb-base.version>
-        <sb-crud.version>1.0.0-SNAPSHOT</sb-crud.version>
+        <sb-crud.version>1.0.1-SNAPSHOT</sb-crud.version>
     </properties>
 
     <dependencies>
@@ -224,7 +224,7 @@
             <plugin>
                 <groupId>com.jfeat</groupId>
                 <artifactId>sb-code-generator</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
                 <configuration>
                     <!-- change to your module name -->
                     <moduleName>infrastructure</moduleName>
