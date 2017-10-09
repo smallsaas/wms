@@ -227,11 +227,11 @@
                 <version>1.0.0</version>
                 <configuration>
                     <!-- change to your module name -->
-                    <moduleName>module1</moduleName>
-                    <dbUrl>jdbc:mysql://127.0.0.1:3306/sbseed</dbUrl>
+                    <moduleName>infrastructure</moduleName>
+                    <dbUrl>jdbc:mysql://127.0.0.1:3306/sbinfrastructure</dbUrl>
                     <username>root</username>
                     <password>root</password>
-                    <outputDir>src/main/java</outputDir>
+                    <outputDir>src\main\java</outputDir>
                     <parentPackage>com.jfeat.am.module</parentPackage>
                 </configuration>
             </plugin>
