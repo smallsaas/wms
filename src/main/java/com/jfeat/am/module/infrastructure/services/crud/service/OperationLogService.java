@@ -17,7 +17,6 @@ import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Operat
 
 
 
-@Deprecated
 public interface OperationLogService extends CRUDServiceOnly {
 
 }

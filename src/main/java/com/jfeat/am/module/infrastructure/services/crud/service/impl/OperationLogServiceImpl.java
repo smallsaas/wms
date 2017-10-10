@@ -21,7 +21,6 @@ import java.util.Map;
  * @author admin
  * @since 2017-10-10
  */
-@Deprecated
 @Service
 public class OperationLogServiceImpl  extends CRUDServiceOnlyImpl implements OperationLogService {
 

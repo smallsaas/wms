@@ -26,7 +26,6 @@ import java.util.HashMap;
  * @author admin
  * @since 2017-10-10
  */
-@Deprecated
 @RestController
 @RequestMapping("/api/log")
 public class OperationLogEndpoint extends BaseController {
