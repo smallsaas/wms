@@ -28,7 +28,7 @@ public class OperationLogFilter implements CRUDFilter<OperationLog> {
     @Override
     public String[] ignore(boolean retrieveOrUpdate) {
         //if retrieveOrUpdate is true,means for retrieve ,do this
-        if (b){
+        if (retrieveOrUpdate){
             return ignoreFields;
             //then retrieveOrUpdate  if false,means for update ,do this
         }else {
