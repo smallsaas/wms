@@ -16,7 +16,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author admin
- * @since 2017-10-09
+ * @since 2017-10-10
  */
 @TableName("login_log")
 public class LoginLog extends Model<LoginLog> {

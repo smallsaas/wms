@@ -1,5 +1,6 @@
 package com.jfeat.am.module.infrastructure.services.crud.service;
         
+import com.jfeat.am.common.crud.CRUDServiceOnly;
 import com.jfeat.am.module.infrastructure.services.crud.persistence.model.LoginLog;
 
 
@@ -11,12 +12,12 @@ import com.jfeat.am.module.infrastructure.services.crud.persistence.model.LoginL
  * </p>
  *
  * @author admin
- * @since 2017-10-09
+ * @since 2017-10-10
  */
 
 
 
 @Deprecated
-public interface LoginLogService  {
+public interface LoginLogService extends CRUDServiceOnly {
 
 }

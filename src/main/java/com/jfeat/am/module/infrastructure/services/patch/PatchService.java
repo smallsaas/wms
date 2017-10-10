@@ -1,4 +1,4 @@
-package com.jfeat.am.module.vip.services.patch;
+package com.jfeat.am.module.infrastructure.services.patch;
 
 /**
  * Created by Silent-Y on 2017/9/14.

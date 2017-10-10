@@ -1,9 +1,9 @@
-package com.jfeat.am.module.vip.services.patch.impl;
+package com.jfeat.am.module.infrastructure.services.patch.impl;
 
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.jfeat.am.module.vip.services.patch.PatchService;
+import com.jfeat.am.module.infrastructure.services.patch.PatchService;
 import javax.annotation.Resource;
 
 /**

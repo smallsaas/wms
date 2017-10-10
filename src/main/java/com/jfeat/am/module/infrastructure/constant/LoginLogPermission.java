@@ -1,4 +1,4 @@
-package com.jfeat.am.module..constant;
+package com.jfeat.am.module.infrastructure.constant;
 
 
 public class LoginLogPermission {
