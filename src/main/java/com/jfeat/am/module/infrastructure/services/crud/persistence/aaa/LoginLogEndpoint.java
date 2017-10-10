@@ -1,24 +1,17 @@
 package
 
-        com.jfeat.am.module.infrastructure.api.crud;
+        com.jfeat.am.module.infrastructure.services.crud.persistence.aaa;
 
 import com.jfeat.am.common.annotation.Permission;
 import com.jfeat.am.module.infrastructure.constant.LoginLogPermission;
 import org.springframework.web.bind.annotation.*;
 
-import com.jfeat.am.common.constant.tips.ErrorTip;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
-
-import com.jfeat.am.module.infrastructure.services.crud.service.LoginLogService;
-import com.jfeat.am.module.infrastructure.services.crud.persistence.model.LoginLog;
 
 import com.jfeat.am.common.controller.BaseController;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
-import java.util.List;
-import java.util.HashMap;
 
 /**
  * <p>

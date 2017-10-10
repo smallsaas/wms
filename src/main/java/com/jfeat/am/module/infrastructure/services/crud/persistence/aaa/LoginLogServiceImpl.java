@@ -1,11 +1,7 @@
-package com.jfeat.am.module.infrastructure.services.crud.service.impl;
+package com.jfeat.am.module.infrastructure.services.crud.persistence.aaa;
         
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.jfeat.am.common.crud.CRUDFilter;
-import com.jfeat.am.module.infrastructure.services.crud.persistence.model.LoginLog;
-import com.jfeat.am.module.infrastructure.services.crud.persistence.dao.LoginLogMapper;
-import com.jfeat.am.module.infrastructure.services.crud.service.LoginLogService;
-import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

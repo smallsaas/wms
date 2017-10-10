@@ -1,9 +1,6 @@
-package com.jfeat.am.module.infrastructure.services.crud.service;
+package com.jfeat.am.module.infrastructure.services.crud.persistence.aaa;
         
 import com.jfeat.am.common.crud.CRUDServiceOnly;
-import com.jfeat.am.module.infrastructure.services.crud.persistence.model.LoginLog;
-
-
 
 
 /**
