@@ -1,7 +1,9 @@
 package com.jfeat.am.module.infrastructure.services.patch;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.module.infrastructure.services.crud.persistence.model.OperationLog;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -9,7 +11,6 @@ import java.util.List;
  */
 public interface PatchService {
 
-    public List<OperationLog> findOperationLogs();
-
+    public List<OperationLog> findOperationLogs(Page<OperationLog> page,String logType,String logName,String userId,String className,String method,Date startTime,Date endTime,String succeed);
 }
 

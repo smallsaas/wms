@@ -1,15 +1,19 @@
 package com.jfeat.am.module.infrastructure.api.patch;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
+import com.jfeat.am.core.support.DateTimeKit;
 import com.jfeat.am.module.infrastructure.services.crud.persistence.model.OperationLog;
 import com.jfeat.am.module.infrastructure.services.patch.PatchService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,8 +27,22 @@ public class PatchEndpoint extends BaseController {
     private PatchService patchService;
 
     @GetMapping
-    public Tip findOperationLogs(){
-        List<OperationLog> operationLogs = patchService.findOperationLogs();
+    public Tip findOperationLogs(Page<OperationLog> page,
+                                 @RequestParam(required = false)String logType,
+                                 @RequestParam(required = false)String logName,
+                                 @RequestParam(required = false)String userId,
+                                 @RequestParam(required = false)String className,
+                                 @RequestParam(required = false)String method,
+                                 @RequestParam(required = false)Date startTime,
+                                 @RequestParam(required = false)Date endTime,
+                                 @RequestParam(required = false)String succeed){
+        if (startTime == null){
+            startTime = DateTimeKit.yesterday();
+        }
+        if (endTime == null){
+            endTime = new Date();
+        }
+        List<OperationLog> operationLogs = patchService.findOperationLogs(page,logType,logName,userId,className,method,startTime,endTime,succeed);
         return SuccessTip.create(operationLogs);
     }
 
