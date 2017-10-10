@@ -2,6 +2,7 @@ package com.jfeat.am.module.infrastructure.services.crud.service.impl;
         
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.jfeat.am.common.crud.CRUDFilter;
+import com.jfeat.am.core.support.BeanKit;
 import com.jfeat.am.module.infrastructure.services.crud.persistence.model.OperationLog;
 import com.jfeat.am.module.infrastructure.services.crud.persistence.dao.OperationLogMapper;
 import com.jfeat.am.module.infrastructure.services.crud.service.OperationLogService;
@@ -22,7 +23,7 @@ import java.util.Map;
  */
 @Deprecated
 @Service
-public class OperationLogServiceImpl  implements OperationLogService {
+public class OperationLogServiceImpl  extends CRUDServiceOnlyImpl implements OperationLogService {
 
 
     @Resource
@@ -32,50 +33,6 @@ public class OperationLogServiceImpl  implements OperationLogService {
         return operationLogMapper;
     }
 
-    @Override
-    public Integer createMaster(Object o) {
-        return null;
-    }
-
-    @Override
-    public Integer createMaster(Object o, CRUDFilter crudFilter) {
-        return null;
-    }
-
-    @Override
-    public Integer updateMaster(Object o) {
-        return null;
-    }
-
-    @Override
-    public Integer updateMaster(Object o, CRUDFilter crudFilter) {
-        return null;
-    }
-
-    @Override
-    public Object retrieveMaster(long l) {
-        return null;
-    }
-
-    @Override
-    public Integer deleteMaster(long l) {
-        return null;
-    }
-
-    @Override
-    public List queryMasterList(Map map) {
-        return null;
-    }
-
-    @Override
-    public List selectMasterList(String s, Object o) {
-        return null;
-    }
-
-    @Override
-    public Integer bulkDeleteMasterList(List list) {
-        return null;
-    }
 }
 
 
