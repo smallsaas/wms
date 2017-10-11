@@ -38,7 +38,6 @@ public class StaffEndpoint extends BaseController {
         return SuccessTip.create(staffService.retrieveMaster(id));
     }
 
-
     @PutMapping("/{id}")
     public Tip updateStaff(@PathVariable Long id, @RequestBody Staff entity) {
         return SuccessTip.create(staffService.updateMaster(entity));
@@ -53,5 +52,10 @@ public class StaffEndpoint extends BaseController {
     @Permission({StaffPermission.Staff_VIEW})
     public Tip show(@RequestHeader("authorization") String token) {
         return null;
+    }
+
+    @GetMapping
+    public Tip getStaffsOfDepartment(@RequestParam(required = true) Long departmentId){
+        return SuccessTip.create(staffService.getStaffsOfDepartment(departmentId));
     }
 }
