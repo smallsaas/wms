@@ -1,7 +1,7 @@
 package com.jfeat.am.module.infrastructure.api.crud;
 
 import com.jfeat.am.common.annotation.Permission;
-import com.jfeat.am.module.infrastructure.api.constant.DepartPermission;
+import com.jfeat.am.module.infrastructure.api.permission.DepartmentPermission;
 import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Depart;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,45 +24,51 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/api/hr/dept")
-public class DepartEndpoint extends BaseController {
+public class DepartmentEndpoint extends BaseController {
 
     @Resource
     private DepartService departService;
 
     @PostMapping
-    public Tip createDeptment(@RequestBody Depart entity) {
+    public Tip createDepartment(@RequestBody Depart entity) {
         return SuccessTip.create(departService.createGroup(entity));
     }
 
     @GetMapping("/{id}")
-    public Tip getDeptment(@PathVariable Long id) {
+    public Tip getDepartment(@PathVariable Long id) {
         return SuccessTip.create(departService.retrieveGroup(id));
     }
 
 
     @PutMapping("/{id}")
-    public Tip updateDeptment(@PathVariable Long id, @RequestBody Depart entity) {
+    public Tip updateDepartment(@PathVariable Long id, @RequestBody Depart entity) {
         return SuccessTip.create(departService.updateGroup(entity));
     }
 
     @DeleteMapping("/{id}")
-    public Tip deleteDeptment(@PathVariable Long id) {
+    public Tip deleteDepartment(@PathVariable Long id) {
         return SuccessTip.create(departService.deleteGroup(id));
     }
 
-    @GetMapping("/children")
-    @Permission({DepartPermission.Deptment_VIEW})
-    public Tip show(@RequestHeader("authorization") String token,@RequestParam(required = true) Long id) {
+    @GetMapping("/{id}/children")
+    @Permission({DepartmentPermission.Department_VIEW})
+    public Tip getGroupChildren(@RequestHeader("authorization") String token, @PathVariable Long id) {
         return SuccessTip.create(departService.getGroupChildren(id));
     }
 
-    @GetMapping("/parent")
-    public Tip getParentGroup(@RequestParam(required = true)Long groupId){
+    @GetMapping("/{id}/parent")
+    public Tip getParentGroup(@PathVariable Long groupId){
         return SuccessTip.create(departService.getParentGroup(groupId));
     }
 
     @GetMapping("/root")
     public Tip getRootGroups(){
         return SuccessTip.create(departService.getRootGroups());
+    }
+
+
+    @GetMapping("/groups")
+    public Tip getGroupsData(){
+        return SuccessTip.create(departService.toJSONObject());
     }
 }

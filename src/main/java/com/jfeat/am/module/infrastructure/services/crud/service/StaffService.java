@@ -1,10 +1,9 @@
 package com.jfeat.am.module.infrastructure.services.crud.service;
-        
-import com.jfeat.am.common.crud.CRUDServiceModel;
+
 import com.jfeat.am.common.crud.CRUDServiceOnly;
 import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Staff;
 
-
+import java.util.List;
 
 
 /**
@@ -16,8 +15,6 @@ import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Staff;
  * @since 2017-10-10
  */
 
-
-
 public interface StaffService extends CRUDServiceOnly {
-
+    List<Staff> getStaffsOfDepartment(Long departmentId);
 }
