@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @author admin
  * @since 2017-10-11
  */
-public interface DeptmentMapper extends BaseMapper<Deptment> {
+public interface DepartmentMapper extends BaseMapper<Deptment> {
 
 }

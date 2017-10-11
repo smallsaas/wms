@@ -17,6 +17,6 @@ import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Deptme
 
 
 
-public interface DeptmentService extends CRUDServiceGroup {
+public interface DepartmentService extends CRUDServiceGroup {
 
 }

@@ -4,19 +4,15 @@ import com.jfeat.am.common.annotation.Permission;
 import com.jfeat.am.module.infrastructure.api.constant.DeptmentPermission;
 import org.springframework.web.bind.annotation.*;
 
-import com.jfeat.am.common.constant.tips.ErrorTip;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
 
-import com.jfeat.am.module.infrastructure.services.crud.service.DeptmentService;
+import com.jfeat.am.module.infrastructure.services.crud.service.DepartmentService;
 import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Deptment;
 
 import com.jfeat.am.common.controller.BaseController;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
-import java.util.List;
-import java.util.HashMap;
 
 /**
  * <p>
@@ -27,32 +23,31 @@ import java.util.HashMap;
  * @since 2017-10-11
  */
 @RestController
-@RequestMapping("/api/infrastructure/infrastructure/deptment")
-public class DeptmentEndpoint extends BaseController {
-
+@RequestMapping("/api/hr/dept")
+public class DepartmentEndpoint extends BaseController {
 
     @Resource
-    private DeptmentService deptmentService;
+    private DepartmentService departmentService;
 
     @PostMapping
     public Tip createDeptment(@RequestBody Deptment entity) {
-        return SuccessTip.create(deptmentService.createGroup(entity));
+        return SuccessTip.create(departmentService.createGroup(entity));
     }
 
     @GetMapping("/{id}")
     public Tip getDeptment(@PathVariable Long id) {
-        return SuccessTip.create(deptmentService.retrieveGroup(id));
+        return SuccessTip.create(departmentService.retrieveGroup(id));
     }
 
 
     @PutMapping("/{id}")
     public Tip updateDeptment(@PathVariable Long id, @RequestBody Deptment entity) {
-        return SuccessTip.create(deptmentService.updateGroup(entity));
+        return SuccessTip.create(departmentService.updateGroup(entity));
     }
 
     @DeleteMapping("/{id}")
     public Tip deleteDeptment(@PathVariable Long id) {
-        return SuccessTip.create(deptmentService.deleteGroup(id));
+        return SuccessTip.create(departmentService.deleteGroup(id));
     }
 
     /*
@@ -69,6 +64,7 @@ public class DeptmentEndpoint extends BaseController {
                 return SuccessTip.create(page);
             }
             */
+
     @GetMapping
     @Permission({DeptmentPermission.Deptment_VIEW})
     public Tip show(@RequestHeader("authorization") String token,@RequestParam(required = true) Long id) {

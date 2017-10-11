@@ -1,18 +1,20 @@
 package com.jfeat.am.module.infrastructure.api.crud;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.annotation.Permission;
-import com.jfeat.am.module.infrastructure.api.constant.OperationLogPermission;
-import org.springframework.web.bind.annotation.*;
-
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
-
-import com.jfeat.am.module.infrastructure.services.crud.service.OperationLogService;
-import com.jfeat.am.module.infrastructure.services.crud.persistence.model.OperationLog;
-
 import com.jfeat.am.common.controller.BaseController;
-    
+import com.jfeat.am.core.support.DateTimeKit;
+import com.jfeat.am.module.infrastructure.api.constant.OperationLogPermission;
+import com.jfeat.am.module.infrastructure.services.crud.persistence.model.OperationLog;
+import com.jfeat.am.module.infrastructure.services.crud.service.OperationLogService;
+import com.jfeat.am.module.infrastructure.services.domain.service.QueryOperationLogService;
+import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -26,9 +28,11 @@ import javax.annotation.Resource;
 @RequestMapping("/api/log")
 public class OperationLogEndpoint extends BaseController {
 
-
     @Resource
     private OperationLogService operationLogService;
+
+    @Resource
+    private QueryOperationLogService queryOperationLogService;
 
     @PostMapping
     public Tip createOperationLog(@RequestBody OperationLog entity) {
@@ -40,7 +44,6 @@ public class OperationLogEndpoint extends BaseController {
         return SuccessTip.create(operationLogService.retrieveMaster(id));
     }
 
-
     @PutMapping("/{id}")
     public Tip updateOperationLog(@PathVariable Long id, @RequestBody OperationLog entity) {
         return SuccessTip.create(operationLogService.updateMaster(entity));
@@ -51,22 +54,26 @@ public class OperationLogEndpoint extends BaseController {
         return SuccessTip.create(operationLogService.deleteMaster(id));
     }
 
-    /*
-        @GetMapping
-        //此方法可能需要自行添加需要的参数,按需要使用
-        public Tip queryOperationLogs(Page page,
-                    @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                    @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize) {
+    @GetMapping
+    public Tip findOperationLogs(Page<OperationLog> page,
+                                 @RequestParam(required = false)String logType,
+                                 @RequestParam(required = false)String logName,
+                                 @RequestParam(required = false)String userId,
+                                 @RequestParam(required = false)String className,
+                                 @RequestParam(required = false)String method,
+                                 @RequestParam(required = false)Date startTime,
+                                 @RequestParam(required = false)Date endTime,
+                                 @RequestParam(required = false)String succeed){
+        if (startTime == null){
+            startTime = DateTimeKit.yesterday();
+        }
+        if (endTime == null){
+            endTime = new Date();
+        }
+        List<OperationLog> operationLogs = queryOperationLogService.findOperationLogs(page,logType,logName,userId,className,method,startTime,endTime,succeed);
+        return SuccessTip.create(operationLogs);
+    }
 
-                 page.setCurrent(pageNum);
-                page.setSize(pageSize);
-                List<OperationLog> records = operationLogService.findOperationLogs(page);
-
-                page.setRecords(records);
-
-                return SuccessTip.create(page);
-            }
-            */
     @GetMapping
     @Permission({OperationLogPermission.OperationLog_VIEW})
     public Tip show(@RequestHeader("authorization") String token) {

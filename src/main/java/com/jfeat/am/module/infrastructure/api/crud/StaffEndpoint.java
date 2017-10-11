@@ -1,7 +1,7 @@
 package com.jfeat.am.module.infrastructure.api.crud;
 
 import com.jfeat.am.common.annotation.Permission;
-import com.jfeat.am.module.infrastructure.api.constant.StaffPermission;
+import com.jfeat.am.module.infrastructure.api.permission.StaffPermission;
 import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Staff;
 import com.jfeat.am.module.infrastructure.services.crud.service.StaffService;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +22,8 @@ import javax.annotation.Resource;
  * @since 2017-10-10
  */
 @RestController
-@RequestMapping("/api/infrastructure/infrastructure/staff")
+@RequestMapping("/api/hr/staff")
 public class StaffEndpoint extends BaseController {
-
 
     @Resource
     private StaffService staffService;
@@ -66,6 +65,7 @@ public class StaffEndpoint extends BaseController {
                 return SuccessTip.create(page);
             }
             */
+
     @GetMapping
     @Permission({StaffPermission.Staff_VIEW})
     public Tip show(@RequestHeader("authorization") String token) {
