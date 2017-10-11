@@ -50,9 +50,19 @@ public class DepartEndpoint extends BaseController {
         return SuccessTip.create(departService.deleteGroup(id));
     }
 
-    @GetMapping
+    @GetMapping("/children")
     @Permission({DepartPermission.Deptment_VIEW})
     public Tip show(@RequestHeader("authorization") String token,@RequestParam(required = true) Long id) {
         return SuccessTip.create(departService.getGroupChildren(id));
+    }
+
+    @GetMapping("/parent")
+    public Tip getParentGroup(@RequestParam(required = true)Long groupId){
+        return SuccessTip.create(departService.getParentGroup(groupId));
+    }
+
+    @GetMapping("/root")
+    public Tip getRootGroups(){
+        return SuccessTip.create(departService.getRootGroups());
     }
 }
