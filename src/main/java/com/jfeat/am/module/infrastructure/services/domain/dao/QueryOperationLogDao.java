@@ -14,5 +14,4 @@ public interface QueryOperationLogDao  extends BaseMapper<OperationLog> {
 
     List<OperationLog> selectList(Page<OperationLog> page,@Param("ew") Wrapper<OperationLog> var1);
 
-
 }

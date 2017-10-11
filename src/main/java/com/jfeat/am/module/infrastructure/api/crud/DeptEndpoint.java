@@ -1,23 +1,18 @@
 package com.jfeat.am.module.infrastructure.api.crud;
 
 import com.jfeat.am.common.annotation.Permission;
-import com.jfeat.am.module.infrastructure.constant.DeptPermission;
+import com.jfeat.am.module.infrastructure.api.permission.DeptPermission;
 import com.jfeat.am.module.infrastructure.services.crud.service.DeptService;
 import org.springframework.web.bind.annotation.*;
 
-import com.jfeat.am.common.constant.tips.ErrorTip;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
 
-import com.jfeat.am.module.infrastructure.services.crud.service.DeptService;
 import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Dept;
 
 import com.jfeat.am.common.controller.BaseController;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
-import java.util.List;
-import java.util.HashMap;
 
 /**
  * <p>
@@ -28,9 +23,8 @@ import java.util.HashMap;
  * @since 2017-10-10
  */
 @RestController
-@RequestMapping("/api/infrastructure/infrastructure/dept")
+@RequestMapping("/api/hr/dept")
 public class DeptEndpoint extends BaseController {
-
 
     @Resource
     private DeptService deptService;
@@ -72,6 +66,7 @@ public class DeptEndpoint extends BaseController {
                 return SuccessTip.create(page);
             }
             */
+
     @GetMapping
     @Permission({DeptPermission.Dept_VIEW})
     public Tip show(@RequestHeader("authorization") String token) {

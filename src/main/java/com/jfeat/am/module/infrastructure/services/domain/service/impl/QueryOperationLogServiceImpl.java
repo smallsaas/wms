@@ -1,13 +1,13 @@
-package com.jfeat.am.module.infrastructure.services.patch.impl;
+package com.jfeat.am.module.infrastructure.services.domain.service.impl;
 
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.module.infrastructure.services.crud.persistence.model.OperationLog;
 import com.jfeat.am.module.infrastructure.services.domain.dao.QueryOperationLogDao;
+import com.jfeat.am.module.infrastructure.services.domain.service.QueryOperationLogService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import com.jfeat.am.module.infrastructure.services.patch.PatchService;
+
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
  * Created by Silent-Y on 2017/9/14.
  */
 @Service
-public class PatchServiceImpl implements PatchService {
+public class QueryOperationLogServiceImpl implements QueryOperationLogService {
 
     @Resource
     private QueryOperationLogDao queryOperationLogDao;
