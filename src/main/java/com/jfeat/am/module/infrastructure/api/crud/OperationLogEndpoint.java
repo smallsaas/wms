@@ -56,6 +56,8 @@ public class OperationLogEndpoint extends BaseController {
 
     @GetMapping
     public Tip findOperationLogs(Page<OperationLog> page,
+                                 @RequestParam(required = false,defaultValue = "1")Integer pageNum,
+                                 @RequestParam(required = false,defaultValue = "10")Integer pageSize,
                                  @RequestParam(required = false)String logType,
                                  @RequestParam(required = false)String logName,
                                  @RequestParam(required = false)String userId,
@@ -68,10 +70,13 @@ public class OperationLogEndpoint extends BaseController {
             startTime = DateTimeKit.yesterday();
         }
         if (endTime == null){
-            endTime = new Date();
+            endTime = DateTimeKit.date();
         }
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
         List<OperationLog> operationLogs = queryOperationLogService.findOperationLogs(page,logType,logName,userId,className,method,startTime,endTime,succeed);
-        return SuccessTip.create(operationLogs);
+        page.setRecords(operationLogs);
+        return SuccessTip.create(page);
     }
 
 }
