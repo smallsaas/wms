@@ -74,9 +74,9 @@ public class OperationLogEndpoint extends BaseController {
         return SuccessTip.create(operationLogs);
     }
 
-    @GetMapping
+    /*@GetMapping
     @Permission({OperationLogPermission.OperationLog_VIEW})
     public Tip show(@RequestHeader("authorization") String token) {
         return null;
-    }
+    }*/
 }

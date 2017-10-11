@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
-import java.io.Serializable;
 
 /**
  * <p>
@@ -16,7 +15,7 @@ import java.io.Serializable;
  * @author admin
  * @since 2017-10-11
  */
-public class Deptment extends Model<Deptment> {
+public class Depart extends Model<Depart> {
 
     private static final long serialVersionUID = 1L;
 
@@ -50,7 +49,7 @@ public class Deptment extends Model<Deptment> {
 		return id;
 	}
 
-	public Deptment setId(Long id) {
+	public Depart setId(Long id) {
 		this.id = id;
 		return this;
 	}
@@ -59,7 +58,7 @@ public class Deptment extends Model<Deptment> {
 		return sort;
 	}
 
-	public Deptment setSort(Long sort) {
+	public Depart setSort(Long sort) {
 		this.sort = sort;
 		return this;
 	}
@@ -68,7 +67,7 @@ public class Deptment extends Model<Deptment> {
 		return pid;
 	}
 
-	public Deptment setPid(Long pid) {
+	public Depart setPid(Long pid) {
 		this.pid = pid;
 		return this;
 	}
@@ -77,7 +76,7 @@ public class Deptment extends Model<Deptment> {
 		return name;
 	}
 
-	public Deptment setName(String name) {
+	public Depart setName(String name) {
 		this.name = name;
 		return this;
 	}
@@ -86,7 +85,7 @@ public class Deptment extends Model<Deptment> {
 		return fullName;
 	}
 
-	public Deptment setFullName(String fullName) {
+	public Depart setFullName(String fullName) {
 		this.fullName = fullName;
 		return this;
 	}
@@ -95,7 +94,7 @@ public class Deptment extends Model<Deptment> {
 		return desc;
 	}
 
-	public Deptment setDesc(String desc) {
+	public Depart setDesc(String desc) {
 		this.desc = desc;
 		return this;
 	}
@@ -104,7 +103,7 @@ public class Deptment extends Model<Deptment> {
 		return version;
 	}
 
-	public Deptment setVersion(Integer version) {
+	public Depart setVersion(Integer version) {
 		this.version = version;
 		return this;
 	}
@@ -130,7 +129,7 @@ public class Deptment extends Model<Deptment> {
 
 	@Override
 	public String toString() {
-		return "Deptment{" +
+		return "Depart{" +
 			"id=" + id +
 			", sort=" + sort +
 			", pid=" + pid +
