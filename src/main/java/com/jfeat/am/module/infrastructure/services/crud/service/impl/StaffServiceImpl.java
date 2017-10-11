@@ -19,7 +19,7 @@ import javax.annotation.Resource;
  * @since 2017-10-10
  */
 @Service
-public class StaffServiceImpl extends CRUDServiceModelImpl implements StaffService {
+public class StaffServiceImpl extends CRUDServiceOnlyImpl implements StaffService {
 
 
     @Resource
@@ -29,20 +29,7 @@ public class StaffServiceImpl extends CRUDServiceModelImpl implements StaffServi
         return staffMapper;
     }
 
-    @Override
-    public void appendSlaveData(Object o) {
 
-    }
-
-    @Override
-    public void handleSlaveData(Object o, boolean b) {
-
-    }
-
-    @Override
-    public Integer handleChildData(Object o, String s) {
-        return null;
-    }
 }
 
 

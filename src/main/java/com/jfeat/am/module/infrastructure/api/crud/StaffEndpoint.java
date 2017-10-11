@@ -41,23 +41,23 @@ public class StaffEndpoint extends BaseController {
 
     @PostMapping
     public Tip createStaff(@RequestBody Staff entity) {
-        return SuccessTip.create(null);
+        return SuccessTip.create(staffService.createMaster(entity));
     }
 
     @GetMapping("/{id}")
     public Tip getStaff(@PathVariable Long id) {
-        return SuccessTip.create(null);
+        return SuccessTip.create(staffService.retrieveMaster(id));
     }
 
 
     @PutMapping("/{id}")
     public Tip updateStaff(@PathVariable Long id, @RequestBody Staff entity) {
-        return SuccessTip.create(null);
+        return SuccessTip.create(staffService.updateMaster(entity));
     }
 
     @DeleteMapping("/{id}")
     public Tip deleteStaff(@PathVariable Long id) {
-        return SuccessTip.create(null);
+        return SuccessTip.create(staffService.deleteMaster(id));
     }
 
     /*

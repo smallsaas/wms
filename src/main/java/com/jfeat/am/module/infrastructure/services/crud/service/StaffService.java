@@ -18,6 +18,6 @@ import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Staff;
 
 
 
-public interface StaffService extends CRUDServiceModel {
+public interface StaffService extends CRUDServiceOnly {
 
 }
