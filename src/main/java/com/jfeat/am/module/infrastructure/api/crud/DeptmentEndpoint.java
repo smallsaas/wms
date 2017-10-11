@@ -71,7 +71,7 @@ public class DeptmentEndpoint extends BaseController {
             */
     @GetMapping
     @Permission({DeptmentPermission.Deptment_VIEW})
-    public Tip show(@RequestHeader("authorization") String token) {
-        return null;
+    public Tip show(@RequestHeader("authorization") String token,@RequestParam(required = true) Long id) {
+        return SuccessTip.create(deptmentService.getGroupChildren(id));
     }
 }
