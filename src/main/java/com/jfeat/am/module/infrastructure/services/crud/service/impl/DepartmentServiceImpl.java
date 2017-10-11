@@ -2,8 +2,8 @@ package com.jfeat.am.module.infrastructure.services.crud.service.impl;
         
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.jfeat.am.common.crud.impl.CRUDServiceGroupImpl;
-import com.jfeat.am.module.infrastructure.services.crud.persistence.dao.DeptMapper;
-import com.jfeat.am.module.infrastructure.services.crud.service.DeptService;
+import com.jfeat.am.module.infrastructure.services.crud.persistence.dao.DepartmentMapper;
+import com.jfeat.am.module.infrastructure.services.crud.service.DepartmentService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,17 +14,17 @@ import javax.annotation.Resource;
  * </p>
  *
  * @author admin
- * @since 2017-10-10
+ * @since 2017-10-11
  */
 @Service
-public class DeptServiceImpl extends CRUDServiceGroupImpl implements DeptService {
+public class DepartmentServiceImpl extends CRUDServiceGroupImpl implements DepartmentService {
 
     @Resource
-    private DeptMapper deptMapper;
+    private DepartmentMapper departmentMapper;
 
     @Override
     protected BaseMapper getGroupMapper() {
-        return deptMapper;
+        return departmentMapper;
     }
 }
 

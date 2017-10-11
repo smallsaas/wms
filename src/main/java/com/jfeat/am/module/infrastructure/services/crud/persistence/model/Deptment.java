@@ -14,9 +14,9 @@ import java.io.Serializable;
  * </p>
  *
  * @author admin
- * @since 2017-10-10
+ * @since 2017-10-11
  */
-public class Dept extends Model<Dept> {
+public class Deptment extends Model<Deptment> {
 
     private static final long serialVersionUID = 1L;
 
@@ -50,7 +50,7 @@ public class Dept extends Model<Dept> {
 		return id;
 	}
 
-	public Dept setId(Long id) {
+	public Deptment setId(Long id) {
 		this.id = id;
 		return this;
 	}
@@ -59,7 +59,7 @@ public class Dept extends Model<Dept> {
 		return sort;
 	}
 
-	public Dept setSort(Long sort) {
+	public Deptment setSort(Long sort) {
 		this.sort = sort;
 		return this;
 	}
@@ -68,7 +68,7 @@ public class Dept extends Model<Dept> {
 		return pid;
 	}
 
-	public Dept setPid(Long pid) {
+	public Deptment setPid(Long pid) {
 		this.pid = pid;
 		return this;
 	}
@@ -77,7 +77,7 @@ public class Dept extends Model<Dept> {
 		return name;
 	}
 
-	public Dept setName(String name) {
+	public Deptment setName(String name) {
 		this.name = name;
 		return this;
 	}
@@ -86,7 +86,7 @@ public class Dept extends Model<Dept> {
 		return fullName;
 	}
 
-	public Dept setFullName(String fullName) {
+	public Deptment setFullName(String fullName) {
 		this.fullName = fullName;
 		return this;
 	}
@@ -95,7 +95,7 @@ public class Dept extends Model<Dept> {
 		return desc;
 	}
 
-	public Dept setDesc(String desc) {
+	public Deptment setDesc(String desc) {
 		this.desc = desc;
 		return this;
 	}
@@ -104,7 +104,7 @@ public class Dept extends Model<Dept> {
 		return version;
 	}
 
-	public Dept setVersion(Integer version) {
+	public Deptment setVersion(Integer version) {
 		this.version = version;
 		return this;
 	}
@@ -130,7 +130,7 @@ public class Dept extends Model<Dept> {
 
 	@Override
 	public String toString() {
-		return "Dept{" +
+		return "Deptment{" +
 			"id=" + id +
 			", sort=" + sort +
 			", pid=" + pid +

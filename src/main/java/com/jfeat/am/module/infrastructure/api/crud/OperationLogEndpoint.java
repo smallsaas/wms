@@ -2,19 +2,16 @@ package com.jfeat.am.module.infrastructure.api.crud;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.annotation.Permission;
+import com.jfeat.am.common.constant.tips.SuccessTip;
+import com.jfeat.am.common.constant.tips.Tip;
+import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.core.support.DateTimeKit;
-import com.jfeat.am.module.infrastructure.api.permission.OperationLogPermission;
+import com.jfeat.am.module.infrastructure.api.constant.OperationLogPermission;
+import com.jfeat.am.module.infrastructure.services.crud.persistence.model.OperationLog;
+import com.jfeat.am.module.infrastructure.services.crud.service.OperationLogService;
 import com.jfeat.am.module.infrastructure.services.domain.service.QueryOperationLogService;
 import org.springframework.web.bind.annotation.*;
 
-import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Tip;
-
-import com.jfeat.am.module.infrastructure.services.crud.service.OperationLogService;
-import com.jfeat.am.module.infrastructure.services.crud.persistence.model.OperationLog;
-
-import com.jfeat.am.common.controller.BaseController;
-    
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
