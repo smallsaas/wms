@@ -50,21 +50,6 @@ public class DepartEndpoint extends BaseController {
         return SuccessTip.create(departService.deleteGroup(id));
     }
 
-    /*
-        @GetMapping
-        //此方法可能需要自行添加需要的参数,按需要使用
-        public Tip queryDeptments(Page page,
-                    @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                    @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize) {
-                List<Depart> records = deptmentService.findDeptments(page);
-                page.setCurrent(pageNum);
-                page.setSize(pageSize);
-                page.setRecords(records);
-
-                return SuccessTip.create(page);
-            }
-            */
-
     @GetMapping
     @Permission({DepartPermission.Deptment_VIEW})
     public Tip show(@RequestHeader("authorization") String token,@RequestParam(required = true) Long id) {
