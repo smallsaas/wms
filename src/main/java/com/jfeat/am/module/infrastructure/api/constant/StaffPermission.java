@@ -1,4 +1,4 @@
-package com.jfeat.am.module.infrastructure.constant;
+package com.jfeat.am.module.infrastructure.api.constant;
 
 
 public class StaffPermission {

@@ -1,6 +1,6 @@
 package com.jfeat.am.module.infrastructure.services.crud.persistence.dao;
 
-import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Dept;
+import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Deptment;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * </p>
  *
  * @author admin
- * @since 2017-10-10
+ * @since 2017-10-11
  */
-public interface DeptMapper extends BaseMapper<Dept> {
+public interface DeptmentMapper extends BaseMapper<Deptment> {
 
 }

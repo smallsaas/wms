@@ -5,7 +5,7 @@ import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Staff;
 
 
 /**
- * Created by SB-CODE-GENERATOR on 2017/9/14.
+ * Created by SB-Code-Generator on 2017/9/14.
  */
 public class StaffFilter implements CRUDFilter<Staff> {
 
@@ -15,7 +15,7 @@ public class StaffFilter implements CRUDFilter<Staff> {
     @Override
     public void filter(Staff entity, boolean insertOrUpdate) {
 
-        //if b insertOrUpdate true,means for insert, do this
+        //if insertOrUpdate is true,means for insert, do this
         if (insertOrUpdate){
 
             //then insertOrUpdate is false,means for update,do this
@@ -30,7 +30,7 @@ public class StaffFilter implements CRUDFilter<Staff> {
         //if retrieveOrUpdate is true,means for retrieve ,do this
         if (retrieveOrUpdate){
             return ignoreFields;
-            //then retrieveOrUpdate  if false,means for update ,do this
+            //then retrieveOrUpdate  if false ,means for update,do this
         }else {
             return updateIgnoreFields;
         }

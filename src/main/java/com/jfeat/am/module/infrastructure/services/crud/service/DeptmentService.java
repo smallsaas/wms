@@ -1,7 +1,7 @@
 package com.jfeat.am.module.infrastructure.services.crud.service;
         
 import com.jfeat.am.common.crud.CRUDServiceGroup;
-import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Dept;
+import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Deptment;
 
 
 
@@ -12,11 +12,11 @@ import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Dept;
  * </p>
  *
  * @author admin
- * @since 2017-10-10
+ * @since 2017-10-11
  */
 
 
 
-public interface DeptService extends CRUDServiceGroup {
+public interface DeptmentService extends CRUDServiceGroup {
 
 }

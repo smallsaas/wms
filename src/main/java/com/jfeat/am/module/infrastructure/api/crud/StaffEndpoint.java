@@ -1,27 +1,17 @@
-package
-
-        com.jfeat.am.module.infrastructure.api.crud;
+package com.jfeat.am.module.infrastructure.api.crud;
 
 import com.jfeat.am.common.annotation.Permission;
-import com.jfeat.am.module.infrastructure.constant.StaffPermission;
-import com.jfeat.am.module.infrastructure.services.crud.filter.StaffFilter;
+import com.jfeat.am.module.infrastructure.api.constant.StaffPermission;
 import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Staff;
 import com.jfeat.am.module.infrastructure.services.crud.service.StaffService;
 import org.springframework.web.bind.annotation.*;
 
-import com.jfeat.am.common.constant.tips.ErrorTip;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
-
-import com.jfeat.am.module.infrastructure.services.crud.service.StaffService;
-import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Staff;
 
 import com.jfeat.am.common.controller.BaseController;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
-import java.util.List;
-import java.util.HashMap;
 
 /**
  * <p>
