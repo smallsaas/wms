@@ -48,11 +48,11 @@ public class StaffEndpoint extends BaseController {
         return SuccessTip.create(staffService.deleteMaster(id));
     }
 
-    @GetMapping
+/*    @GetMapping
     @Permission({StaffPermission.Staff_VIEW})
     public Tip show(@RequestHeader("authorization") String token) {
         return null;
-    }
+    }*/
 
     @GetMapping
     public Tip getStaffsOfDepartment(@RequestParam(required = true) Long departmentId){

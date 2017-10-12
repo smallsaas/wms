@@ -24,7 +24,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/api/hr/dept")
-public class DepartmentEndpoint extends BaseController {
+public class DepartEndpoint extends BaseController {
 
     @Resource
     private DepartService departService;
