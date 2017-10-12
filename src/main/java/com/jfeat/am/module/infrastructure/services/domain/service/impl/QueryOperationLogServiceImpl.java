@@ -3,6 +3,7 @@ package com.jfeat.am.module.infrastructure.services.domain.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.jfeat.am.core.support.StrKit;
 import com.jfeat.am.module.infrastructure.services.crud.persistence.model.OperationLog;
 import com.jfeat.am.module.infrastructure.services.domain.dao.QueryOperationLogDao;
 import com.jfeat.am.module.infrastructure.services.domain.service.QueryOperationLogService;
@@ -22,28 +23,28 @@ public class QueryOperationLogServiceImpl implements QueryOperationLogService {
     private QueryOperationLogDao queryOperationLogDao;
 
     @Override
-    public List<OperationLog> findOperationLogs(Page<OperationLog> page, String logType, String logName, String userId, String className, String method, Date startTime, Date endTime, String succeed) {
+    public List<OperationLog> findOperationLogs(Page<OperationLog> page, String logType, String logName, String userId, String className, String method, String startTime, String endTime, String succeed) {
         EntityWrapper entityWrapper = new EntityWrapper<OperationLog>();
-        if (logType != null){
-            entityWrapper.eq("log_type",logType);
+        if (!StrKit.isBlank(logType)){
+            entityWrapper.eq(OperationLog.LOG_TYPE,logType);
         }
-        if (logName != null){
-            entityWrapper.eq("log_name",logName);
+        if (!StrKit.isBlank(logName)){
+            entityWrapper.eq(OperationLog.LOG_NAME,logName);
         }
-        if (userId != null){
-            entityWrapper.eq("user_id",userId);
+        if (!StrKit.isBlank(userId)){
+            entityWrapper.eq(OperationLog.USER_ID,userId);
         }
-        if (className != null){
-            entityWrapper.eq("class_name",className);
+        if (!StrKit.isBlank(className)){
+            entityWrapper.eq(OperationLog.CLASS_NAME,className);
         }
-        if (method != null){
-            entityWrapper.eq("method",method);
+        if (!StrKit.isBlank(method)){
+            entityWrapper.eq(OperationLog.METHOD,method);
         }
         if (startTime != null && endTime != null){
-            entityWrapper.between("create_time", startTime, endTime);
+            entityWrapper.between(OperationLog.CREATE_TIME, startTime, endTime);
         }
-        if (succeed != null){
-            entityWrapper.eq("succeed",succeed);
+        if (!StrKit.isBlank(succeed)){
+            entityWrapper.eq(OperationLog.SUCCEED,succeed);
         }
         return queryOperationLogDao.selectList(page,entityWrapper);
     }

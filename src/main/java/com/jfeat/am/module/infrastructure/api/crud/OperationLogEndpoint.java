@@ -5,6 +5,7 @@ import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.core.support.DateTimeKit;
+import com.jfeat.am.core.support.StrKit;
 import com.jfeat.am.module.infrastructure.services.crud.persistence.model.OperationLog;
 import com.jfeat.am.module.infrastructure.services.crud.service.OperationLogService;
 import com.jfeat.am.module.infrastructure.services.domain.service.QueryOperationLogService;
@@ -61,14 +62,14 @@ public class OperationLogEndpoint extends BaseController {
                                  @RequestParam(required = false)String userId,
                                  @RequestParam(required = false)String className,
                                  @RequestParam(required = false)String method,
-                                 @RequestParam(required = false)Date startTime,
-                                 @RequestParam(required = false)Date endTime,
+                                 @RequestParam(required = false)String startTime,
+                                 @RequestParam(required = false)String endTime,
                                  @RequestParam(required = false)String succeed){
         if (startTime == null){
-            startTime = DateTimeKit.yesterday();
+            startTime = DateTimeKit.yesterday().toString();
         }
         if (endTime == null){
-            endTime = DateTimeKit.date();
+            endTime = DateTimeKit.date().toString();
         }
         page.setCurrent(pageNum);
         page.setSize(pageSize);

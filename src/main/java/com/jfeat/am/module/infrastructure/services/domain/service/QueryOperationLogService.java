@@ -11,6 +11,6 @@ import java.util.List;
  */
 public interface QueryOperationLogService {
 
-    List<OperationLog> findOperationLogs(Page<OperationLog> page,String logType,String logName,String userId,String className,String method,Date startTime,Date endTime,String succeed);
+    List<OperationLog> findOperationLogs(Page<OperationLog> page,String logType,String logName,String userId,String className,String method,String startTime,String endTime,String succeed);
 }
 
