@@ -72,4 +72,5 @@ public class DepartmentEndpoint extends BaseController {
     public Tip getGroupsData(){
         return SuccessTip.create(departmentService.toJSONObject());
     }
+
 }
