@@ -24,7 +24,7 @@ public class PatchEndpoint extends BaseController {
     PatchService patchService;
 
     @GetMapping("/department/{id}/staff")
-    public Tip findDepartmentWithStaff(Page<Map<String,String>> page, @PathVariable Long id){
-        return SuccessTip.create(patchService.findDepartmentWithStaff(page,id));
+    public Tip findDepartmentWithStaff( @PathVariable Long id){
+        return SuccessTip.create(patchService.findDepartmentWithStaff(id));
     }
 }

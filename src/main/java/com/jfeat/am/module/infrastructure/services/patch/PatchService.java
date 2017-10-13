@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public interface PatchService {
 
-    public List<Map<String,String>> findDepartmentWithStaff(Page<Map<String,String>> page,Long id);
+    public Map findDepartmentWithStaff(Long id);
 
 
 }
