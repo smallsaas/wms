@@ -14,6 +14,6 @@ import com.jfeat.am.common.crud.CRUDServiceGroup;
 
 
 
-public interface DepartService extends CRUDServiceGroup {
+public interface DepartmentService extends CRUDServiceGroup {
 
 }

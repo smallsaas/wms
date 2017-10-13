@@ -1,14 +1,15 @@
 package com.jfeat.am.module.infrastructure.api.crud;
 
 import com.jfeat.am.common.annotation.Permission;
+
 import com.jfeat.am.module.infrastructure.api.permission.DepartmentPermission;
-import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Depart;
+import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Department;
 import org.springframework.web.bind.annotation.*;
 
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
 
-import com.jfeat.am.module.infrastructure.services.crud.service.DepartService;
+import com.jfeat.am.module.infrastructure.services.crud.service.DepartmentService;
 
 import com.jfeat.am.common.controller.BaseController;
 
@@ -22,53 +23,53 @@ import javax.annotation.Resource;
  * @author admin
  * @since 2017-10-11
  */
-@RestController
+@RestController("Infrastucture-DepartmentEndpoint")
 @RequestMapping("/api/hr/dept")
-public class DepartEndpoint extends BaseController {
+public class DepartmentEndpoint extends BaseController {
 
     @Resource
-    private DepartService departService;
+    private DepartmentService departmentService;
 
     @PostMapping
-    public Tip createDepartment(@RequestBody Depart entity) {
-        return SuccessTip.create(departService.createGroup(entity));
+    public Tip createDepartment(@RequestBody Department entity) {
+        return SuccessTip.create(departmentService.createGroup(entity));
     }
 
     @GetMapping("/{id}")
     public Tip getDepartment(@PathVariable Long id) {
-        return SuccessTip.create(departService.retrieveGroup(id));
+        return SuccessTip.create(departmentService.retrieveGroup(id));
     }
 
 
     @PutMapping("/{id}")
-    public Tip updateDepartment(@PathVariable Long id, @RequestBody Depart entity) {
-        return SuccessTip.create(departService.updateGroup(entity));
+    public Tip updateDepartment(@PathVariable Long id, @RequestBody Department entity) {
+        return SuccessTip.create(departmentService.updateGroup(entity));
     }
 
     @DeleteMapping("/{id}")
     public Tip deleteDepartment(@PathVariable Long id) {
-        return SuccessTip.create(departService.deleteGroup(id));
+        return SuccessTip.create(departmentService.deleteGroup(id));
     }
 
     @GetMapping("/{id}/children")
     @Permission({DepartmentPermission.Department_VIEW})
     public Tip getGroupChildren(@RequestHeader("authorization") String token, @PathVariable Long id) {
-        return SuccessTip.create(departService.getGroupChildren(id));
+        return SuccessTip.create(departmentService.getGroupChildren(id));
     }
 
     @GetMapping("/{id}/parent")
     public Tip getParentGroup(@PathVariable Long groupId){
-        return SuccessTip.create(departService.getParentGroup(groupId));
+        return SuccessTip.create(departmentService.getParentGroup(groupId));
     }
 
     @GetMapping("/root")
     public Tip getRootGroups(){
-        return SuccessTip.create(departService.getRootGroups());
+        return SuccessTip.create(departmentService.getRootGroups());
     }
 
 
     @GetMapping("/groups")
     public Tip getGroupsData(){
-        return SuccessTip.create(departService.toJSONObject());
+        return SuccessTip.create(departmentService.toJSONObject());
     }
 }

@@ -10,4 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/infrastructure")
 public class PatchEndpoint extends BaseController {
+
+
 }

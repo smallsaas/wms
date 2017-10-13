@@ -15,7 +15,7 @@ import com.baomidou.mybatisplus.activerecord.Model;
  * @author admin
  * @since 2017-10-11
  */
-public class Depart extends Model<Depart> {
+public class Department extends Model<Department> {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,7 +49,7 @@ public class Depart extends Model<Depart> {
 		return id;
 	}
 
-	public Depart setId(Long id) {
+	public Department setId(Long id) {
 		this.id = id;
 		return this;
 	}
@@ -58,7 +58,7 @@ public class Depart extends Model<Depart> {
 		return sort;
 	}
 
-	public Depart setSort(Long sort) {
+	public Department setSort(Long sort) {
 		this.sort = sort;
 		return this;
 	}
@@ -67,7 +67,7 @@ public class Depart extends Model<Depart> {
 		return pid;
 	}
 
-	public Depart setPid(Long pid) {
+	public Department setPid(Long pid) {
 		this.pid = pid;
 		return this;
 	}
@@ -76,7 +76,7 @@ public class Depart extends Model<Depart> {
 		return name;
 	}
 
-	public Depart setName(String name) {
+	public Department setName(String name) {
 		this.name = name;
 		return this;
 	}
@@ -85,7 +85,7 @@ public class Depart extends Model<Depart> {
 		return fullName;
 	}
 
-	public Depart setFullName(String fullName) {
+	public Department setFullName(String fullName) {
 		this.fullName = fullName;
 		return this;
 	}
@@ -94,7 +94,7 @@ public class Depart extends Model<Depart> {
 		return desc;
 	}
 
-	public Depart setDesc(String desc) {
+	public Department setDesc(String desc) {
 		this.desc = desc;
 		return this;
 	}
@@ -103,7 +103,7 @@ public class Depart extends Model<Depart> {
 		return version;
 	}
 
-	public Depart setVersion(Integer version) {
+	public Department setVersion(Integer version) {
 		this.version = version;
 		return this;
 	}
@@ -129,7 +129,7 @@ public class Depart extends Model<Depart> {
 
 	@Override
 	public String toString() {
-		return "Depart{" +
+		return "Department{" +
 			"id=" + id +
 			", sort=" + sort +
 			", pid=" + pid +

@@ -1,19 +1,19 @@
 package com.jfeat.am.module.infrastructure.services.crud.filter;
 
 import com.jfeat.am.common.crud.CRUDFilter;
-import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Depart;
+import com.jfeat.am.module.infrastructure.services.crud.persistence.model.Department;
 
 
 /**
  * Created by SB-Code-Generator on 2017/9/14.
  */
-public class DepartFilter implements CRUDFilter<Depart> {
+public class DepartmentFilter implements CRUDFilter<Department> {
 
     private String[] ignoreFields = new String[]{};
     private String[] updateIgnoreFields = new String[]{};
 
     @Override
-    public void filter(Depart entity, boolean insertOrUpdate) {
+    public void filter(Department entity, boolean insertOrUpdate) {
 
         //if insertOrUpdate is true,means for insert, do this
         if (insertOrUpdate){

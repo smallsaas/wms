@@ -1,21 +1,21 @@
 INSERT INTO `perm_group` (`id`, `name`, `identifier`) VALUES
-('917931119030259717', 'Deptment模块', 'Deptment.management');
+('918713495914246148', 'Department模块', 'Department.management');
 
 INSERT INTO `perm` (`id`, `groupid`, `name`, `identifier`) VALUES
-('917931119030259714', '917931119030259717', '查看Deptment', 'Deptment.view'),
-('917931119030259715', '917931119030259717', '更新Deptment', 'Deptment.update'),
-('917931119030259716', '917931119030259717', '删除Deptment', 'Deptment.delete');
+('918713495914246145', '918713495914246148', '查看Department', 'Department.view'),
+('918713495914246146', '918713495914246148', '更新Department', 'Department.update'),
+('918713495914246147', '918713495914246148', '删除Department', 'Department.delete');
 INSERT INTO `perm_group` (`id`, `name`, `identifier`) VALUES
-('917931119030259721', 'OperationLog模块', 'OperationLog.management');
+('918713495914246152', 'OperationLog模块', 'OperationLog.management');
 
 INSERT INTO `perm` (`id`, `groupid`, `name`, `identifier`) VALUES
-('917931119030259718', '917931119030259721', '查看OperationLog', 'OperationLog.view'),
-('917931119030259719', '917931119030259721', '更新OperationLog', 'OperationLog.update'),
-('917931119030259720', '917931119030259721', '删除OperationLog', 'OperationLog.delete');
+('918713495914246149', '918713495914246152', '查看OperationLog', 'OperationLog.view'),
+('918713495914246150', '918713495914246152', '更新OperationLog', 'OperationLog.update'),
+('918713495914246151', '918713495914246152', '删除OperationLog', 'OperationLog.delete');
 INSERT INTO `perm_group` (`id`, `name`, `identifier`) VALUES
-('917931119030259725', 'Staff模块', 'Staff.management');
+('918713495914246156', 'Staff模块', 'Staff.management');
 
 INSERT INTO `perm` (`id`, `groupid`, `name`, `identifier`) VALUES
-('917931119030259722', '917931119030259725', '查看Staff', 'Staff.view'),
-('917931119030259723', '917931119030259725', '更新Staff', 'Staff.update'),
-('917931119030259724', '917931119030259725', '删除Staff', 'Staff.delete');
+('918713495914246153', '918713495914246156', '查看Staff', 'Staff.view'),
+('918713495914246154', '918713495914246156', '更新Staff', 'Staff.update'),
+('918713495914246155', '918713495914246156', '删除Staff', 'Staff.delete');
