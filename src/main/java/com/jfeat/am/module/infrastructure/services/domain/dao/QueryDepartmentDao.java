@@ -14,6 +14,4 @@ public interface QueryDepartmentDao  extends BaseMapper<Department> {
             @Param("status") String status);
 
     List<Map<String,String>> findDepartmentWithStaff(Page<Map<String,String>> page,@Param("id")Long id);
-
-
 }
