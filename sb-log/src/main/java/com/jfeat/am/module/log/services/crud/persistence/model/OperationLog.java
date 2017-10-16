@@ -17,7 +17,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
  * @author admin
  * @since 2017-10-10
  */
-@TableName("operation_log")
+@TableName("t_operation_log")
 public class OperationLog extends Model<OperationLog> {
 
     private static final long serialVersionUID = 1L;
