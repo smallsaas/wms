@@ -10,5 +10,4 @@ classes/*
 *.db
 logs/
 .DS_Store
-sb-log/target/*
-sb-organization/target/*
+*/target/**
