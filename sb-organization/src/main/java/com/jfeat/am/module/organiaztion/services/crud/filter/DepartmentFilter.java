@@ -1,7 +1,7 @@
 package com.jfeat.am.module.organiaztion.services.crud.filter;
 
 import com.jfeat.am.common.crud.CRUDFilter;
-import com.jfeat.am.module.organiaztion.services.crud.persistence.model.Department;
+import com.jfeat.am.module.organiaztion.services.persistence.model.Department;
 
 
 /**

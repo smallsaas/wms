@@ -1,7 +1,7 @@
 package com.jfeat.am.module.organiaztion.api.crud;
 
 import com.baomidou.mybatisplus.plugins.Page;
-import com.jfeat.am.module.organiaztion.services.crud.persistence.model.Staff;
+import com.jfeat.am.module.organiaztion.services.persistence.model.Staff;
 import com.jfeat.am.module.organiaztion.services.crud.service.StaffService;
 import com.jfeat.am.module.organiaztion.services.domain.dao.QueryStaffDao;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ import java.util.List;
  * @since 2017-10-10
  */
 @RestController
-@RequestMapping("/api/hr/staff")
+@RequestMapping("/api/org/staffs")
 public class StaffEndpoint extends BaseController {
 
     @Resource
@@ -31,7 +31,6 @@ public class StaffEndpoint extends BaseController {
 
     @Resource
     private QueryStaffDao queryStaffDao;
-
 
     /**
      * Only for debug

@@ -1,4 +1,4 @@
-package com.jfeat.am.module.organiaztion.services.crud.persistence.model;
+package com.jfeat.am.module.organiaztion.services.persistence.model;
 
 import java.io.Serializable;
 

@@ -3,19 +3,20 @@
 <mapper namespace="com.jfeat.am.module.organiaztion.services.domain.dao.QueryStaffDao">
 
     <sql id="Base_Column_List">
-        t_staff.*
+        t_staff.*, t_position.*, t_department.*
     </sql>
 
     <select id="findStaffs" resultType="Staff">
-        SELECT t_staff.*
-        FROM t_staff
-        WHERE 1=1
-        <if test="departmentId != null and departmentId != ''">
-            AND t_staff.department_id LIKE CONCAT('%',#{departmentId},'%')
+        SELECT t_staff.*, t_position.*, t_department.*
+        FROM t_staff, t_position, t_department
+        WHERE t_staff.position_id=t_position.id AND t_staff.department_id=t_department.id
+        <if test="department != null and department != ''">
+            AND t_department.name LIKE CONCAT('%',#{department},'%')
+            AND t_department.code LIKE CONCAT('%',#{department},'%')
         </if>
 
         <if test="position != null and position != ''">
-            AND t_staff.position LIKE CONCAT('%',#{position},'%')
+            AND t_position.name LIKE CONCAT('%',#{position},'%')
         </if>
 
         <if test="workAge != null and workAge != ''">

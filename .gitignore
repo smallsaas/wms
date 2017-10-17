@@ -10,3 +10,4 @@ classes/*
 *.db
 logs/
 .DS_Store
+*/target/**

@@ -1,28 +1,28 @@
 INSERT INTO `perm_group` (`id`, `name`, `identifier`) VALUES
-('919737530935427077', 'TDepartment模块', 'TDepartment.management');
+('919739618725806084', 'Department模块', 'Department.management');
 
 INSERT INTO `perm` (`id`, `groupid`, `name`, `identifier`) VALUES
-('919737530935427074', '919737530935427077', '查看TDepartment', 'TDepartment.view'),
-('919737530935427075', '919737530935427077', '更新TDepartment', 'TDepartment.update'),
-('919737530935427076', '919737530935427077', '删除TDepartment', 'TDepartment.delete');
+('919739618725806081', '919739618725806084', '查看Department', 'Department.view'),
+('919739618725806082', '919739618725806084', '更新Department', 'Department.update'),
+('919739618725806083', '919739618725806084', '删除Department', 'Department.delete');
 INSERT INTO `perm_group` (`id`, `name`, `identifier`) VALUES
-('919737530935427081', 'TOrganization模块', 'TOrganization.management');
+('919739618725806088', 'Organization模块', 'Organization.management');
 
 INSERT INTO `perm` (`id`, `groupid`, `name`, `identifier`) VALUES
-('919737530935427078', '919737530935427081', '查看TOrganization', 'TOrganization.view'),
-('919737530935427079', '919737530935427081', '更新TOrganization', 'TOrganization.update'),
-('919737530935427080', '919737530935427081', '删除TOrganization', 'TOrganization.delete');
+('919739618725806085', '919739618725806088', '查看Organization', 'Organization.view'),
+('919739618725806086', '919739618725806088', '更新Organization', 'Organization.update'),
+('919739618725806087', '919739618725806088', '删除Organization', 'Organization.delete');
 INSERT INTO `perm_group` (`id`, `name`, `identifier`) VALUES
-('919737530935427085', 'TPosition模块', 'TPosition.management');
+('919739618725806092', 'Position模块', 'Position.management');
 
 INSERT INTO `perm` (`id`, `groupid`, `name`, `identifier`) VALUES
-('919737530935427082', '919737530935427085', '查看TPosition', 'TPosition.view'),
-('919737530935427083', '919737530935427085', '更新TPosition', 'TPosition.update'),
-('919737530935427084', '919737530935427085', '删除TPosition', 'TPosition.delete');
+('919739618725806089', '919739618725806092', '查看Position', 'Position.view'),
+('919739618725806090', '919739618725806092', '更新Position', 'Position.update'),
+('919739618725806091', '919739618725806092', '删除Position', 'Position.delete');
 INSERT INTO `perm_group` (`id`, `name`, `identifier`) VALUES
-('919737530952204290', 'TStaff模块', 'TStaff.management');
+('919739618725806096', 'Staff模块', 'Staff.management');
 
 INSERT INTO `perm` (`id`, `groupid`, `name`, `identifier`) VALUES
-('919737530935427086', '919737530952204290', '查看TStaff', 'TStaff.view'),
-('919737530935427087', '919737530952204290', '更新TStaff', 'TStaff.update'),
-('919737530935427088', '919737530952204290', '删除TStaff', 'TStaff.delete');
+('919739618725806093', '919739618725806096', '查看Staff', 'Staff.view'),
+('919739618725806094', '919739618725806096', '更新Staff', 'Staff.update'),
+('919739618725806095', '919739618725806096', '删除Staff', 'Staff.delete');

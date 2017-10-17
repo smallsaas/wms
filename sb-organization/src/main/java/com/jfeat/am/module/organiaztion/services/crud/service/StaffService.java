@@ -1,7 +1,7 @@
 package com.jfeat.am.module.organiaztion.services.crud.service;
 
 import com.jfeat.am.common.crud.CRUDServiceOnly;
-import com.jfeat.am.module.organiaztion.services.crud.persistence.model.Staff;
+import com.jfeat.am.module.organiaztion.services.persistence.model.Staff;
 
 import java.util.List;
 

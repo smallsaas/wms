@@ -3,7 +3,7 @@ package com.jfeat.am.module.organiaztion.api.crud;
 import com.jfeat.am.common.annotation.Permission;
 
 import com.jfeat.am.module.organiaztion.api.permission.DepartmentPermission;
-import com.jfeat.am.module.organiaztion.services.crud.persistence.model.Department;
+import com.jfeat.am.module.organiaztion.services.persistence.model.Department;
 import com.jfeat.am.module.organiaztion.services.crud.service.DepartmentService;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +23,7 @@ import javax.annotation.Resource;
  * @since 2017-10-11
  */
 @RestController("Infrastucture-DepartmentEndpoint")
-@RequestMapping("/api/hr/department")
+@RequestMapping("/api/org/departments")
 public class DepartmentEndpoint extends BaseController {
 
     @Resource
@@ -77,6 +77,5 @@ public class DepartmentEndpoint extends BaseController {
     public Tip getGroupsData(){
         return SuccessTip.create(departmentService.toJSONObject());
     }
-
 
 }

@@ -30,7 +30,6 @@
             AND t_operation_log.method LIKE CONCAT('%',#{method},'%')
         </if>
 
-
         <if test="createTime != null and createTime != ''">
             AND (t_operation_log.create_time LIKE CONCAT('%',#{createTime},'%')
         </if>

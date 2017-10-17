@@ -1,6 +1,6 @@
-package com.jfeat.am.module.organiaztion.services.crud.persistence.dao;
+package com.jfeat.am.module.organiaztion.services.persistence.dao;
 
-import com.jfeat.am.module.organiaztion.services.crud.persistence.model.Department;
+import com.jfeat.am.module.organiaztion.services.persistence.model.Department;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**

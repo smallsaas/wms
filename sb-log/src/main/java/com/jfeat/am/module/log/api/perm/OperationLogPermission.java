@@ -1,4 +1,4 @@
-package com.jfeat.am.module.log.api;
+package com.jfeat.am.module.log.api.perm;
 
 
 public class OperationLogPermission {
