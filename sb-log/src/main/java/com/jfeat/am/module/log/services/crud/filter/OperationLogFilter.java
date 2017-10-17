@@ -1,7 +1,7 @@
 package com.jfeat.am.module.log.services.crud.filter;
 
 import com.jfeat.am.common.crud.CRUDFilter;
-import com.jfeat.am.module.log.services.crud.persistence.model.OperationLog;
+import com.jfeat.am.module.log.services.persistence.model.OperationLog;
 
 
 /**

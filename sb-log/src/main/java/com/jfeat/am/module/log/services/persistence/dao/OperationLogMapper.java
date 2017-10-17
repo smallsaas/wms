@@ -1,6 +1,6 @@
-package com.jfeat.am.module.log.services.crud.persistence.dao;
+package com.jfeat.am.module.log.services.persistence.dao;
 
-import com.jfeat.am.module.log.services.crud.persistence.model.OperationLog;
+import com.jfeat.am.module.log.services.persistence.model.OperationLog;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**

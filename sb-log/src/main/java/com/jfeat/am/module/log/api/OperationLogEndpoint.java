@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
-import com.jfeat.am.module.log.services.crud.persistence.model.OperationLog;
+import com.jfeat.am.module.log.services.persistence.model.OperationLog;
 import com.jfeat.am.module.log.services.crud.service.OperationLogService;
 import com.jfeat.am.module.log.services.domain.dao.QueryOperationLogDao;
 import org.springframework.web.bind.annotation.*;

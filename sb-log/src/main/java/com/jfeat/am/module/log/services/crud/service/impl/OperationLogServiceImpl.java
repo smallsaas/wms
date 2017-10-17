@@ -2,8 +2,8 @@ package com.jfeat.am.module.log.services.crud.service.impl;
         
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
-import com.jfeat.am.module.log.services.crud.persistence.dao.OperationLogMapper;
-import com.jfeat.am.module.log.services.crud.persistence.model.OperationLog;
+import com.jfeat.am.module.log.services.persistence.dao.OperationLogMapper;
+import com.jfeat.am.module.log.services.persistence.model.OperationLog;
 import com.jfeat.am.module.log.services.crud.service.OperationLogService;
 import org.springframework.stereotype.Service;
 
