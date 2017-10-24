@@ -11,6 +11,7 @@ CREATE TABLE `t_department` (
 `location` text DEFAULT NULL COMMENT '位置',
 `note` text DEFAULT NULL COMMENT '备注',
 `sort` int(11) DEFAULT NULL COMMENT '排序号',
+`create_time` datetime DEFAULT NULL COMMENT '创建时间',
 `version` int(11) DEFAULT NULL COMMENT '版本（乐观锁保留字段）',
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

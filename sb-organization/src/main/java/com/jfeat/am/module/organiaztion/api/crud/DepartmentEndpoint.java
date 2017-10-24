@@ -22,8 +22,8 @@ import javax.annotation.Resource;
  * @author admin
  * @since 2017-10-11
  */
-@RestController("Infrastucture-DepartmentEndpoint")
-@RequestMapping("/api/org/departments")
+@RestController("ORG-DepartmentEndpoint")
+@RequestMapping("/api/org/dept")
 public class DepartmentEndpoint extends BaseController {
 
     @Resource
