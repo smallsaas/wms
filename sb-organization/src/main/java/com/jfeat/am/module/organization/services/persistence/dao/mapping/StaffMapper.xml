@@ -6,15 +6,19 @@
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.organization.services.persistence.model.Staff">
 		<id column="id" property="id" />
 		<result column="dept_id" property="deptId" />
-		<result column="profile_id" property="profileId" />
 		<result column="work_age" property="workAge" />
-		<result column="position" property="position" />
+		<result column="hire_date" property="hireDate" />
+		<result column="leave_date" property="leaveDate" />
+		<result column="status" property="status" />
+		<result column="profile_id" property="profileId" />
+		<result column="position_id" property="positionId" />
+		<result column="create_time" property="createTime" />
 		<result column="note" property="note" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, dept_id AS deptId, profile_id AS profileId, work_age AS workAge, position, note
+        id, dept_id AS deptId, work_age AS workAge, hire_date AS hireDate, leave_date AS leaveDate, status, profile_id AS profileId, position_id AS positionId, create_time AS createTime, note
     </sql>
 
 </mapper>

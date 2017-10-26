@@ -1,50 +1,65 @@
 package com.jfeat.am.module.organization.services.persistence.model;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.enums.IdType;
-
 import java.io.Serializable;
+
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
 
 /**
  * <p>
  * 
  * </p>
  *
- * @author admin
- * @since 2017-10-10
+ * @author Code Generator
+ * @since 2017-10-27
  */
+@TableName("t_staff")
 public class Staff extends Model<Staff> {
 
     private static final long serialVersionUID = 1L;
 
-	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
+    /**
+     * ????
+     */
 	@TableField("dept_id")
 	private Long deptId;
-	@TableField("profile_id")
-	private Long profileId;
     /**
-     * 工龄
+     * ??
      */
 	@TableField("work_age")
 	private Integer workAge;
     /**
-     * 所属职位
+     * ????
+     */
+	@TableField("hire_date")
+	private Date hireDate;
+    /**
+     * ????
+     */
+	@TableField("leave_date")
+	private Date leaveDate;
+    /**
+     * ????
+     */
+	private String status;
+	@TableField("profile_id")
+	private Long profileId;
+    /**
+     * ????
      */
 	@TableField("position_id")
 	private Long positionId;
-
-	/**
-	 * 创建时间
-	 */
+    /**
+     * ????
+     */
 	@TableField("create_time")
 	private Date createTime;
-
     /**
-     * 备注
+     * ??
      */
 	private String note;
 
@@ -67,6 +82,42 @@ public class Staff extends Model<Staff> {
 		return this;
 	}
 
+	public Integer getWorkAge() {
+		return workAge;
+	}
+
+	public Staff setWorkAge(Integer workAge) {
+		this.workAge = workAge;
+		return this;
+	}
+
+	public Date getHireDate() {
+		return hireDate;
+	}
+
+	public Staff setHireDate(Date hireDate) {
+		this.hireDate = hireDate;
+		return this;
+	}
+
+	public Date getLeaveDate() {
+		return leaveDate;
+	}
+
+	public Staff setLeaveDate(Date leaveDate) {
+		this.leaveDate = leaveDate;
+		return this;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public Staff setStatus(String status) {
+		this.status = status;
+		return this;
+	}
+
 	public Long getProfileId() {
 		return profileId;
 	}
@@ -84,16 +135,6 @@ public class Staff extends Model<Staff> {
 		this.positionId = positionId;
 		return this;
 	}
-
-	public Integer getWorkAge() {
-		return workAge;
-	}
-
-	public Staff setWorkAge(Integer workAge) {
-		this.workAge = workAge;
-		return this;
-	}
-
 
 	public Date getCreateTime() {
 		return createTime;
@@ -117,11 +158,19 @@ public class Staff extends Model<Staff> {
 
 	public static final String DEPT_ID = "dept_id";
 
-	public static final String PROFILE_ID = "profile_id";
-
 	public static final String WORK_AGE = "work_age";
 
-	public static final String POSITION = "position";
+	public static final String HIRE_DATE = "hire_date";
+
+	public static final String LEAVE_DATE = "leave_date";
+
+	public static final String STATUS = "status";
+
+	public static final String PROFILE_ID = "profile_id";
+
+	public static final String POSITION_ID = "position_id";
+
+	public static final String CREATE_TIME = "create_time";
 
 	public static final String NOTE = "note";
 
@@ -135,11 +184,14 @@ public class Staff extends Model<Staff> {
 		return "Staff{" +
 			"id=" + id +
 			", deptId=" + deptId +
-			", profileId=" + profileId +
 			", workAge=" + workAge +
+			", hireDate=" + hireDate +
+			", leaveDate=" + leaveDate +
+			", status=" + status +
+			", profileId=" + profileId +
 			", positionId=" + positionId +
+			", createTime=" + createTime +
 			", note=" + note +
 			"}";
 	}
-
 }

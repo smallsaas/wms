@@ -234,7 +234,6 @@
                     <!-- change to your module name -->
                     <moduleName>profile</moduleName>
                     <tables>
-                        <table>jb_account</table>
                         <table>t_contact</table>
                         <table>t_profile</table>
                         <table>t_resume</table>
@@ -247,7 +246,6 @@
                     <parentPackage>com.jfeat.am.module</parentPackage>
                 </configuration>
             </plugin>
-
 
         </plugins>
         <resources>
