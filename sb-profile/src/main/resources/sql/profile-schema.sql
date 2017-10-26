@@ -76,7 +76,7 @@ CREATE TABLE `t_contact` (
   `field1` varchar(26) DEFAULT NULL COMMENT '保留字段',
   `field2` varchar(26) DEFAULT NULL COMMENT '保留字段',
   `field3` varchar(26) DEFAULT NULL COMMENT '保留字段',
-  `field4` varchar(26) DEFAULT NULL COMMENT '保留字段'
+  `field4` varchar(26) DEFAULT NULL COMMENT '保留字段',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

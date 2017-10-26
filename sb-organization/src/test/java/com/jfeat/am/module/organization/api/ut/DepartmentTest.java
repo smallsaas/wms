@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by jackyhuang on 2017/10/16.
  */
-public class DemoTest extends BaseJunit {
+public class DepartmentTest extends BaseJunit {
 
     @Before
     public void initData() {
@@ -29,7 +29,7 @@ public class DemoTest extends BaseJunit {
     @Test
     public void testCase()  throws Exception {
         String json = "";
-        RequestBuilder request = post("/api/applicants").content(json);
+        RequestBuilder request = get("/api/org/dept").content(json);
         MvcResult result = mockMvc.perform(request).andExpect(status().isOk()).andReturn();
 
         logger.debug(result.getResponse().getContentAsString());
