@@ -9,5 +9,5 @@ import java.util.List;
  * Created by vincent on 2017/10/19.
  */
 public interface QueryDepartmentService {
-    List<Department> findDepartmentPage(Page<Department> page, Department department);
+    List<Department> findDepartmentPage(Department department);
 }

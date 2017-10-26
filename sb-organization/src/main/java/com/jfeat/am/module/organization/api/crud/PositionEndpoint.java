@@ -3,7 +3,6 @@ import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.module.organization.services.crud.service.PositionService;
-import com.jfeat.am.module.organization.services.domain.service.QueryPositionService;
 import com.jfeat.am.module.organization.services.persistence.model.Position;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,9 +22,6 @@ public class PositionEndpoint extends BaseController {
 
     @Resource
     PositionService positionService;
-
-    @Resource
-    QueryPositionService queryPositionService;
 
     /// For debug purpose
     @GetMapping("/empty")

@@ -4,13 +4,16 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.jfeat.am.common.crud.CRUD;
 import com.jfeat.am.common.crud.CRUDFilter;
 import com.jfeat.am.common.crud.CRUDObject;
-import com.jfeat.am.common.crud.impl.CRUDServiceModelImpl;
+import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
 import com.jfeat.am.module.organization.services.crud.service.PositionChildService;
+import com.jfeat.am.module.organization.services.crud.service.ProfileChildService;
 import com.jfeat.am.module.organization.services.crud.service.StaffService;
 import com.jfeat.am.module.organization.services.domain.model.StaffModel;
 import com.jfeat.am.module.organization.services.persistence.dao.StaffMapper;
 import com.jfeat.am.module.organization.services.persistence.model.Position;
 import com.jfeat.am.module.organization.services.persistence.model.Staff;
+import com.jfeat.am.module.profile.services.crud.service.ProfileService;
+import com.jfeat.am.module.profile.services.persistence.model.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,18 +29,22 @@ import java.util.List;
  * @since 2017-10-13
  */
 @Service
-public class StaffServiceImpl extends CRUDServiceModelImpl<Staff, StaffModel>
+public class StaffServiceImpl extends CRUDServiceOnlyImpl<Staff>
         implements StaffService {
 
     @Resource
     private StaffMapper staffMapper;
 
-    @Resource
-    private PositionChildService positionChildService;
-
     protected BaseMapper<Staff> getMasterMapper() {
         return staffMapper;
     }
+
+    @Resource
+    private PositionChildService positionChildService;
+
+    @Resource
+    private ProfileChildService profileChildService;
+
 
     @Override
     public List<Staff> getStaffsOfDepartment(Long departmentId) {
@@ -45,7 +52,7 @@ public class StaffServiceImpl extends CRUDServiceModelImpl<Staff, StaffModel>
     }
 
     @Override
-    public Integer createMasterModel(StaffModel staffModel, CRUDFilter<Staff> crudFilter) {
+    public Integer createModel(StaffModel staffModel, CRUDFilter<Staff> crudFilter) {
         Integer affected = 0;
 
         /// create child
@@ -54,17 +61,23 @@ public class StaffServiceImpl extends CRUDServiceModelImpl<Staff, StaffModel>
             affected += positionChildService.updateChild(staffModel.getId(), staffPos);
         }
 
+        Profile profile = staffModel.getProfile();
+        if(profile!=null){
+            affected += profileChildService.updateChild(staffModel.getId(), profile);
+        }
+
         /// create slave
 
         /// create master
-        affected +=  super.createMaster(staffModel, crudFilter);
+        Staff staff = CRUD.castObject(staffModel);
+        affected +=  super.createMaster(staff, crudFilter);
 
         return affected;
     }
 
     @Override
     @Transactional
-    public Integer updateMasterModel(StaffModel staffModel, CRUDFilter<Staff> crudFilter) {
+    public Integer updateModel(StaffModel staffModel, CRUDFilter<Staff> crudFilter) {
         Integer affected = 0;
 
         /// update child
@@ -74,6 +87,10 @@ public class StaffServiceImpl extends CRUDServiceModelImpl<Staff, StaffModel>
         }
 
         /// update slave
+        Profile profile = staffModel.getProfile();
+        if(staffPos!=null){
+            affected += profileChildService.updateChild(staffModel.getId(), profile);
+        }
 
 
         /// update master
@@ -83,7 +100,7 @@ public class StaffServiceImpl extends CRUDServiceModelImpl<Staff, StaffModel>
     }
 
     @Override
-    public CRUDObject<StaffModel> retrieveMasterModel(long masterId, CRUDFilter<Staff> crudFilter) {
+    public CRUDObject<StaffModel> retrieveModel(long masterId, CRUDFilter<Staff> crudFilter) {
         Staff staff = super.retrieveMaster(masterId);
         StaffModel staffModel = CRUD.castObject(staff, StaffModel.class);
 
@@ -91,19 +108,26 @@ public class StaffServiceImpl extends CRUDServiceModelImpl<Staff, StaffModel>
         Position position = positionChildService.getChild(masterId);
         staffModel.setPosition(position);
 
+        Profile profile = profileChildService.getChild(masterId);
+        staffModel.setProfile(profile);
+
         /// append slaves
 
 
         return new CRUDObject<StaffModel>().from(staffModel).ignore(crudFilter.ignore(true));
     }
 
+
     @Override
     @Transactional
-    public Integer deleteMasterModel(long masterId) {
+    public Integer deleteModel(long masterId) {
         Integer affected = 0;
 
         /// delete child
         affected += positionChildService.deleteChild(masterId);
+
+        affected += profileChildService.deleteChild(masterId);
+
 
         /// delete master
         affected += getMasterMapper().deleteById(masterId);

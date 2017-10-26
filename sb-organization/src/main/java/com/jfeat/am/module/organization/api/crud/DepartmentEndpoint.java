@@ -107,8 +107,7 @@ public class DepartmentEndpoint extends BaseController {
         department.setNote(note);
         department.setCreateTime(createTime);
 
-        List<Department> records = queryDepartmentService.findDepartmentPage(
-                page, department);
+        List<Department> records = queryDepartmentService.findDepartmentPage(department);
         page.setRecords(records);
 
         return SuccessTip.create(page);

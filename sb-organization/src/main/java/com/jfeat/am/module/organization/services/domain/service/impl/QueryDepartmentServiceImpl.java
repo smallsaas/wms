@@ -24,7 +24,7 @@ public class QueryDepartmentServiceImpl implements QueryDepartmentService {
     QueryDepartmentDao queryDepartmentDao;
 
     @Override
-    public List<Department> findDepartmentPage(Page<Department> page, Department department) {
-        return queryDepartmentDao.findDepartmentPage(page, department);
+    public List<Department> findDepartmentPage(Department department) {
+        return queryDepartmentDao.findDepartmentPage(department);
     }
 }

@@ -17,7 +17,8 @@
   <properties> 
     <sb-base.version>1.0.0</sb-base.version>  
     <sb-crud.version>1.0.4-SNAPSHOT</sb-crud.version>  
-    <sb-account.version>1.0.0</sb-account.version> 
+    <sb-account.version>1.0.0</sb-account.version>
+    <sb-profile.version>1.0.0</sb-profile.version>
   </properties>  
   <dependencies> 
     <dependency> 
@@ -34,7 +35,13 @@
       <groupId>com.jfeat</groupId>  
       <artifactId>sb-account</artifactId>  
       <version>${sb-account.version}</version> 
-    </dependency>  
+    </dependency>
+    <dependency>
+      <groupId>com.jfeat</groupId>
+      <artifactId>sb-profile</artifactId>
+      <version>${sb-profile.version}</version>
+    </dependency>
+
     <!--spring boot依赖-->  
     <dependency> 
       <groupId>org.springframework.boot</groupId>  

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.profile.services.persistence.dao.mapping.ResumeMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.jfeat.am.module.profile.services.persistence.model.Resume">
+		<id column="id" property="id" />
+		<result column="work_area" property="workArea" />
+		<result column="jb_time" property="jbTime" />
+		<result column="self_evaluate" property="selfEvaluate" />
+		<result column="work_time" property="workTime" />
+		<result column="work_company" property="workCompany" />
+		<result column="work_post" property="workPost" />
+		<result column="school" property="school" />
+		<result column="major" property="major" />
+		<result column="education" property="education" />
+		<result column="school_time" property="schoolTime" />
+		<result column="school_exp" property="schoolExp" />
+		<result column="field1" property="field1" />
+		<result column="field2" property="field2" />
+		<result column="field3" property="field3" />
+		<result column="field4" property="field4" />
+	</resultMap>
+
+</mapper>

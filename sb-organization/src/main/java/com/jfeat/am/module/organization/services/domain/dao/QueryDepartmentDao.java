@@ -10,5 +10,5 @@ import java.util.List;
  * Created by Code Generator on 2017-10-26
  */
 public interface QueryDepartmentDao extends BaseMapper<Department> {
-    List<Department> findDepartmentPage(Page<Department> page, Department department);
+    List<Department> findDepartmentPage(Department department);
 }

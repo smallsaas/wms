@@ -26,6 +26,7 @@ public class PositionChildServiceImpl extends CRUDServiceChildImpl<Staff, Positi
 
     @Resource
     private StaffMapper staffMapper;
+    
 
     private static final String childReferenceName = "position_id";
 
