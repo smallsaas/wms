@@ -2,8 +2,8 @@ SET FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS `t_department`;
 CREATE TABLE `t_department` (
-`id` bigint NOT NULL AUTO_INCREMENT,
-`code` varchar(26) DEFAULT NULL COMMENT '部门编号'
+`id` bigint NOT NULL,
+`code` varchar(26) DEFAULT NULL COMMENT '部门编号',
 `is_org` int(11) DEFAULT NULL COMMENT '是否机构',
 `pid` bigint DEFAULT NULL ,
 `name` varchar(26) NOT NULL COMMENT '简称',
@@ -18,7 +18,7 @@ PRIMARY KEY (`id`)
 
 DROP TABLE IF EXISTS `t_position`;
 CREATE TABLE `t_position` (
-`id` bigint NOT NULL AUTO_INCREMENT,
+`id` bigint NOT NULL,
 `name` varchar(26) NOT NULL  COMMENT '备注',
 `note` text DEFAULT NULL COMMENT '备注',
 PRIMARY KEY (`id`)
@@ -26,7 +26,7 @@ PRIMARY KEY (`id`)
 
 DROP TABLE IF EXISTS `t_staff`;
 CREATE TABLE `t_staff` (
-`id` bigint NOT NULL AUTO_INCREMENT,
+`id` bigint NOT NULL,
 `dept_id` bigint NOT NULL COMMENT '所属部门',
 `work_age` int(11) DEFAULT NULL COMMENT '工龄',
 `profile_id` bigint DEFAULT NULL ,
