@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.organization.services.domain.dao.QueryStaffDao">
+
+    <sql id="Base_Column_List">
+        t_staff.*, t_position.*, t_department.*
+    </sql>
+
+    <select id="findStaffs" resultType="Staff">
+        SELECT t_staff.*, t_position.*, t_department.*
+        FROM t_staff, t_position, t_department
+        WHERE t_staff.position_id=t_position.id AND t_staff.department_id=t_department.id
+        <if test="department != null and department != ''">
+            AND t_department.name LIKE CONCAT('%',#{department},'%')
+            AND t_department.code LIKE CONCAT('%',#{department},'%')
+        </if>
+
+        <if test="position != null and position != ''">
+            AND t_position.name LIKE CONCAT('%',#{position},'%')
+        </if>
+
+        <if test="workAge != null and workAge != ''">
+            AND t_staff.work_age LIKE CONCAT('%',#{workAge},'%')
+        </if>
+
+    </select>
+
+</mapper>
