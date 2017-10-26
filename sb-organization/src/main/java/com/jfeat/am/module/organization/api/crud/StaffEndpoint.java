@@ -67,12 +67,16 @@ public class StaffEndpoint extends BaseController {
                                  @RequestParam(required = false,defaultValue = "1")Integer pageNum,
                                  @RequestParam(required = false,defaultValue = "10")Integer pageSize,
                                  @RequestParam(required = false)Integer departmentId,
-                                 @RequestParam(required = false)String position,
+                                 @RequestParam(required = false)Long positionId,
                                  @RequestParam(required = false)int workAge){
         page.setCurrent(pageNum);
         page.setSize(pageSize);
-        List<Staff> staffs = queryStaffDao.findStaffs(page,departmentId,position,workAge);
+
+        Staff staff = new Staff();
+
+        List<Staff> staffs = queryStaffDao.findStaffs(page, staff);
         page.setRecords(staffs);
+
         return SuccessTip.create(page);
     }
 }

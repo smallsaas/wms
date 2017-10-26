@@ -1,28 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.organization.services.domain.dao.QueryDepartmentDao">
+    <sql id="Base_Column_List">
+            t_department.*
+        </sql>
+        <select id="findDepartments" resultType="Department">
+            SELECT t_department.*
+            FROM t_department
+            WHERE 1=1
+            <if test="name != null and name != ''">
+                AND t_department.name LIKE CONCAT('%',#{name},'%')
+            </if>
 
-   <sql id="Base_Column_List">
-      t_department.id AS departmentId,
-      t_department.sort,
-      t_department.pid,
-      t_department.name,
-      t_department.full_name AS fullName,
-      t_department.desc,
-      t_department.version,
-      t_staff.id AS staffId,
-      t_staff.profile_id AS profileId,
-      t_staff.work_age AS workAge,
-      t_staff.position,
-      t_staff.note
-    </sql>
+            <if test="status != null and status != ''">
+                AND t_department.status LIKE CONCAT('%',#{status},'%')
+            </if>
+        </select>
+        <select id="findDepartmentPage" resultType="Department" parameterType="Department">
+            SELECT t_department.*
+            FROM t_department
+            WHERE 1=1
+            <if test="id != null and id>0 ">
+                    AND t_department.id LIKE CONCAT('%',#{id},'%')
+                </if>
+            <if test="code != null and code!= ''">
+                    AND t_department.code LIKE CONCAT('%',#{code},'%')
+                </if>
+            <if test="is_org != null and is_org>0 ">
+                    AND t_department.is_org LIKE CONCAT('%',#{isOrg},'%')
+                </if>
+            <if test="pid != null and pid>0 ">
+                    AND t_department.pid LIKE CONCAT('%',#{pid},'%')
+                </if>
+            <if test="name != null and name!= ''">
+                    AND t_department.name LIKE CONCAT('%',#{name},'%')
+                </if>
+            <if test="full_name != null and full_name!= ''">
+                    AND t_department.full_name LIKE CONCAT('%',#{fullName},'%')
+                </if>
+            <if test="location != null and location!= ''">
+                    AND t_department.location LIKE CONCAT('%',#{location},'%')
+                </if>
+            <if test="note != null and note!= ''">
+                    AND t_department.note LIKE CONCAT('%',#{note},'%')
+                </if>
+            <if test="sort != null and sort>0 ">
+                    AND t_department.sort LIKE CONCAT('%',#{sort},'%')
+                </if>
+            <if test="create_time != null and create_time>0 ">
+                    AND t_department.create_time LIKE CONCAT('%',#{createTime},'%')
+                </if>
+            <if test="version != null and version>0 ">
+                    AND t_department.version LIKE CONCAT('%',#{version},'%')
+                </if>
+                    </select>
 
-<!--    <select id="findDepartmentWithStaff" resultType="map">
-        SELECT
-        <include refid="DepartmentAndStaff"></include>
-        FROM department
-        LEFT JOIN staff
-        ON staff.dept_id = department.id
-        WHERE department.id = #{id}
-    </select>-->
+
 </mapper>

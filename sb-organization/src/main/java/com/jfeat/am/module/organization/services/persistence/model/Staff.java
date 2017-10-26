@@ -1,11 +1,11 @@
 package com.jfeat.am.module.organization.services.persistence.model;
 
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.enums.IdType;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -31,9 +31,10 @@ public class Staff extends Model<Staff> {
 	@TableField("work_age")
 	private Integer workAge;
     /**
-     * 职位
+     * 所属职位
      */
-	private String position;
+	@TableField("position_id")
+	private Long positionId;
     /**
      * 备注
      */
@@ -67,21 +68,21 @@ public class Staff extends Model<Staff> {
 		return this;
 	}
 
+	public Long getPositionId() {
+		return positionId;
+	}
+
+	public Staff setPositionId(Long positionId) {
+		this.positionId = positionId;
+		return this;
+	}
+
 	public Integer getWorkAge() {
 		return workAge;
 	}
 
 	public Staff setWorkAge(Integer workAge) {
 		this.workAge = workAge;
-		return this;
-	}
-
-	public String getPosition() {
-		return position;
-	}
-
-	public Staff setPosition(String position) {
-		this.position = position;
 		return this;
 	}
 
@@ -118,8 +119,9 @@ public class Staff extends Model<Staff> {
 			", deptId=" + deptId +
 			", profileId=" + profileId +
 			", workAge=" + workAge +
-			", position=" + position +
+			", positionId=" + positionId +
 			", note=" + note +
 			"}";
 	}
+
 }

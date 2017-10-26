@@ -1,12 +1,20 @@
 package com.jfeat.am.module.organization.services.domain.dao;
 
+import com.jfeat.am.module.organization.services.persistence.model.Department;
+
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.jfeat.am.module.organization.services.persistence.model.Staff;
+import org.apache.ibatis.annotations.Param;
+import java.util.List;
 
 /**
- * 返回所有部门， 无需过滤查询，可删除
+ * Created by Code Generator on 2017-10-26
  */
+public interface QueryDepartmentDao extends BaseMapper<Department> {
 
-@Deprecated
-public interface QueryDepartmentDao extends BaseMapper<Staff> {
+    List<Department> findDepartments(Page<Department> page,
+            @Param("name") String name,
+            @Param("status") String status);
+
+    List<Department> findDepartmentPage(Page<Department> page,Department department);
 }

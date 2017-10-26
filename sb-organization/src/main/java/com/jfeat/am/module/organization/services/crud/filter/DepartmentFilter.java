@@ -5,7 +5,7 @@ import com.jfeat.am.module.organization.services.persistence.model.Department;
 
 
 /**
- * Created by SB-Code-Generator on 2017/9/14.
+ * Created by Code Generator on 2017-10-26
  */
 public class DepartmentFilter implements CRUDFilter<Department> {
 
