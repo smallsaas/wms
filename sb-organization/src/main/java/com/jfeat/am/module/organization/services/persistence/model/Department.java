@@ -2,45 +2,63 @@ package com.jfeat.am.module.organization.services.persistence.model;
 
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
  * 
  * </p>
  *
- * @author admin
- * @since 2017-10-11
+ * @author Code Generator
+ * @since 2017-10-26
  */
+@TableName("t_department")
 public class Department extends Model<Department> {
 
     private static final long serialVersionUID = 1L;
 
-	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
     /**
-     * 排序
+     * ????
      */
-	private Long sort;
+	private String code;
+    /**
+     * ????
+     */
+	@TableField("is_org")
+	private Integer isOrg;
 	private Long pid;
     /**
-     * 简称
+     * ??
      */
 	private String name;
     /**
-     * 全称
+     * ??
      */
 	@TableField("full_name")
 	private String fullName;
     /**
-     * 提示
+     * ??
      */
-	private String desc;
+	private String location;
     /**
-     * 版本（乐观锁保留字段）
+     * ??
+     */
+	private String note;
+    /**
+     * ???
+     */
+	private Integer sort;
+    /**
+     * ????
+     */
+	@TableField("create_time")
+	private Date createTime;
+    /**
+     * ???????????
      */
 	private Integer version;
 
@@ -54,12 +72,21 @@ public class Department extends Model<Department> {
 		return this;
 	}
 
-	public Long getSort() {
-		return sort;
+	public String getCode() {
+		return code;
 	}
 
-	public Department setSort(Long sort) {
-		this.sort = sort;
+	public Department setCode(String code) {
+		this.code = code;
+		return this;
+	}
+
+	public Integer getIsOrg() {
+		return isOrg;
+	}
+
+	public Department setIsOrg(Integer isOrg) {
+		this.isOrg = isOrg;
 		return this;
 	}
 
@@ -90,12 +117,39 @@ public class Department extends Model<Department> {
 		return this;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getLocation() {
+		return location;
 	}
 
-	public Department setDesc(String desc) {
-		this.desc = desc;
+	public Department setLocation(String location) {
+		this.location = location;
+		return this;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public Department setNote(String note) {
+		this.note = note;
+		return this;
+	}
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public Department setSort(Integer sort) {
+		this.sort = sort;
+		return this;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public Department setCreateTime(Date createTime) {
+		this.createTime = createTime;
 		return this;
 	}
 
@@ -110,7 +164,9 @@ public class Department extends Model<Department> {
 
 	public static final String ID = "id";
 
-	public static final String SORT = "sort";
+	public static final String CODE = "code";
+
+	public static final String IS_ORG = "is_org";
 
 	public static final String PID = "pid";
 
@@ -118,7 +174,13 @@ public class Department extends Model<Department> {
 
 	public static final String FULL_NAME = "full_name";
 
-	public static final String DESC = "desc";
+	public static final String LOCATION = "location";
+
+	public static final String NOTE = "note";
+
+	public static final String SORT = "sort";
+
+	public static final String CREATE_TIME = "create_time";
 
 	public static final String VERSION = "version";
 
@@ -131,11 +193,15 @@ public class Department extends Model<Department> {
 	public String toString() {
 		return "Department{" +
 			"id=" + id +
-			", sort=" + sort +
+			", code=" + code +
+			", isOrg=" + isOrg +
 			", pid=" + pid +
 			", name=" + name +
 			", fullName=" + fullName +
-			", desc=" + desc +
+			", location=" + location +
+			", note=" + note +
+			", sort=" + sort +
+			", createTime=" + createTime +
 			", version=" + version +
 			"}";
 	}

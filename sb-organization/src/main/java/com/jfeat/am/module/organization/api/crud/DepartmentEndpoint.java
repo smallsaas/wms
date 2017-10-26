@@ -88,11 +88,13 @@ public class DepartmentEndpoint extends BaseController {
     public Tip queryDepartmentByOptions(Page page,
                                         @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                         @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
-                                        @RequestParam(name = "typeName", required = false) String typeName,
-                                        @RequestParam(name = "deadline", required = false) DateTime deadline,
-                                        @RequestParam(name = "publishTime", required = false) DateTime publishTime,
-                                        @RequestParam(name = "status", required = false) String status,
-                                        @RequestParam(name = "stick", required = false) String stick){
+                                        @RequestParam(name = "code", required = false) String code,
+                                        @RequestParam(name = "isOrg", required = false) int isOrg,
+                                        @RequestParam(name = "name", required = false) String name,
+                                        @RequestParam(name = "fullName", required = false) String fullName,
+                                        @RequestParam(name = "location", required = false) String location,
+                                        @RequestParam(name = "note", required = false) String note,
+                                        @RequestParam(name = "createTime", required = false) DateTime createTime){
         page.setCurrent(pageNum);
         page.setSize(pageSize);
 

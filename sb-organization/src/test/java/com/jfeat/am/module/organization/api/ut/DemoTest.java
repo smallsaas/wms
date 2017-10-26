@@ -21,8 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class DemoTest extends BaseJunit {
 
-
-
     @Before
     public void initData() {
 
@@ -36,6 +34,4 @@ public class DemoTest extends BaseJunit {
 
         logger.debug(result.getResponse().getContentAsString());
     }
-
-
 }

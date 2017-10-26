@@ -31,6 +31,7 @@ CREATE TABLE `t_staff` (
 `work_age` int(11) DEFAULT NULL COMMENT '工龄',
 `profile_id` bigint DEFAULT NULL ,
 `position_id` bigint DEFAULT NULL COMMENT '所属职位',
+`create_time` datetime DEFAULT NULL COMMENT '创建时间',
 `note` text DEFAULT NULL COMMENT '备注',
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

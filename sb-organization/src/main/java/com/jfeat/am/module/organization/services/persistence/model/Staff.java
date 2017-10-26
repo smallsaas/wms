@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -35,6 +36,13 @@ public class Staff extends Model<Staff> {
      */
 	@TableField("position_id")
 	private Long positionId;
+
+	/**
+	 * 创建时间
+	 */
+	@TableField("create_time")
+	private Date createTime;
+
     /**
      * 备注
      */
@@ -83,6 +91,16 @@ public class Staff extends Model<Staff> {
 
 	public Staff setWorkAge(Integer workAge) {
 		this.workAge = workAge;
+		return this;
+	}
+
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public Staff setCreateTime(Date createTime) {
+		this.createTime = createTime;
 		return this;
 	}
 
