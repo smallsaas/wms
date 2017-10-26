@@ -95,7 +95,7 @@ public class StaffEndpoint extends BaseController {
                                  @RequestParam(required = false)String deptCode,
                                  @RequestParam(required = false)String deptName,
                                  @RequestParam(required = false)String position,
-                                 @RequestParam(required = false)int workAge){
+                                 @RequestParam(required = false)Integer workAge){
         page.setCurrent(pageNum);
         page.setSize(pageSize);
 

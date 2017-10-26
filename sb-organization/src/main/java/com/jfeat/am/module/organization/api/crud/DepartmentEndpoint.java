@@ -89,7 +89,7 @@ public class DepartmentEndpoint extends BaseController {
                                         @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                         @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
                                         @RequestParam(name = "code", required = false) String code,
-                                        @RequestParam(name = "isOrg", required = false) int isOrg,
+                                        @RequestParam(name = "isOrg", required = false) Integer isOrg,
                                         @RequestParam(name = "name", required = false) String name,
                                         @RequestParam(name = "fullName", required = false) String fullName,
                                         @RequestParam(name = "location", required = false) String location,

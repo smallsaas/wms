@@ -17,7 +17,7 @@ public class StaffItem extends Staff{
 
     private String sex;
 
-    private int age;
+    private Integer age;
 
     private String deptCode;
 
@@ -56,11 +56,11 @@ public class StaffItem extends Staff{
         this.sex = sex;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
