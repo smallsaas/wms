@@ -24,24 +24,7 @@ public class QueryDepartmentServiceImpl implements QueryDepartmentService {
     QueryDepartmentDao queryDepartmentDao;
 
     @Override
-    public List<Department> findDepartments(int pageNum, int pageSize, String name, String status) {
-
-        Page page = new Page();
-        page.setCurrent(pageNum);
-        page.setSize(pageSize);
-        page.setRecords(queryDepartmentDao.findDepartments(page, name, status));
-
-        return queryDepartmentDao.findDepartments(page, name, status);
-    }
-
-    @Override
-    public List<Department> findDepartmentPage(int pageNum, int pageSize, Department department) {
-
-        Page page = new Page();
-        page.setCurrent(pageNum);
-        page.setSize(pageSize);
-        page.setRecords(queryDepartmentDao.findDepartmentPage(page, department));
-
+    public List<Department> findDepartmentPage(Page<Department> page, Department department) {
         return queryDepartmentDao.findDepartmentPage(page, department);
     }
 }

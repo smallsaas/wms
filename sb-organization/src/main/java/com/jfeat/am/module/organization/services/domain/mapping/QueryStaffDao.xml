@@ -2,43 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.organization.services.domain.dao.QueryStaffDao">
     <sql id="Base_Column_List">
-            t_staff.*
-        </sql>
-        <select id="findStaffs" resultType="Staff">
-            SELECT t_staff.*
-            FROM t_staff
-            WHERE 1=1
-            <if test="name != null and name != ''">
-                AND t_staff.name LIKE CONCAT('%',#{name},'%')
-            </if>
-
-            <if test="status != null and status != ''">
-                AND t_staff.status LIKE CONCAT('%',#{status},'%')
-            </if>
-        </select>
-        <select id="findStaffPage" resultType="Staff" parameterType="Staff">
-            SELECT t_staff.*
-            FROM t_staff
-            WHERE 1=1
-            <if test="id != null and id>0 ">
-                    AND t_staff.id LIKE CONCAT('%',#{id},'%')
-                </if>
-            <if test="dept_id != null and dept_id>0 ">
-                    AND t_staff.dept_id LIKE CONCAT('%',#{deptId},'%')
-                </if>
-            <if test="work_age != null and work_age>0 ">
-                    AND t_staff.work_age LIKE CONCAT('%',#{workAge},'%')
-                </if>
-            <if test="profile_id != null and profile_id>0 ">
-                    AND t_staff.profile_id LIKE CONCAT('%',#{profileId},'%')
-                </if>
-            <if test="position_id != null and position_id>0 ">
-                    AND t_staff.position_id LIKE CONCAT('%',#{positionId},'%')
-                </if>
-            <if test="note != null and note!= ''">
-                    AND t_staff.note LIKE CONCAT('%',#{note},'%')
-                </if>
-                    </select>
-
-
+        t_staff.*
+    </sql>
+    <select id="findStaffPage" resultType="Staff" parameterType="Staff">
+        SELECT t_staff.*
+        FROM t_staff
+        WHERE 1=1
+        <if test="id != null and id>0 ">
+            AND t_staff.id LIKE CONCAT('%',#{id},'%')
+        </if>
+        <if test="dept_id != null and dept_id>0 ">
+            AND t_staff.dept_id LIKE CONCAT('%',#{deptId},'%')
+        </if>
+        <if test="work_age != null and work_age>0 ">
+            AND t_staff.work_age LIKE CONCAT('%',#{workAge},'%')
+        </if>
+        <if test="profile_id != null and profile_id>0 ">
+            AND t_staff.profile_id LIKE CONCAT('%',#{profileId},'%')
+        </if>
+        <if test="position_id != null and position_id>0 ">
+            AND t_staff.position_id LIKE CONCAT('%',#{positionId},'%')
+        </if>
+        <if test="note != null and note!= ''">
+            AND t_staff.note LIKE CONCAT('%',#{note},'%')
+        </if>
+    </select>
 </mapper>

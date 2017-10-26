@@ -1,8 +1,11 @@
 package com.jfeat.am.module.organization.api.crud;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.annotation.Permission;
 
+import com.jfeat.am.core.support.DateTime;
 import com.jfeat.am.module.organization.api.permission.DepartmentPermission;
+import com.jfeat.am.module.organization.services.domain.service.QueryDepartmentService;
 import com.jfeat.am.module.organization.services.persistence.model.Department;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentService;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +16,7 @@ import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -29,6 +33,8 @@ public class DepartmentEndpoint extends BaseController {
     @Resource
     private DepartmentService departmentService;
 
+    @Resource
+    private QueryDepartmentService queryDepartmentService;
 
     @GetMapping("/empty")
     public Tip getEmptyDepartment(){
@@ -78,4 +84,31 @@ public class DepartmentEndpoint extends BaseController {
         return SuccessTip.create(departmentService.toJSONObject());
     }
 
+    @GetMapping
+    public Tip queryDepartmentByOptions(Page page,
+                                        @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                                        @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+                                        @RequestParam(name = "typeName", required = false) String typeName,
+                                        @RequestParam(name = "deadline", required = false) DateTime deadline,
+                                        @RequestParam(name = "publishTime", required = false) DateTime publishTime,
+                                        @RequestParam(name = "status", required = false) String status,
+                                        @RequestParam(name = "stick", required = false) String stick){
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+
+        Department department = new Department();
+        department.setCode(code);
+        department.setIsOrg(isOrg);
+        department.setName(name);
+        department.setFullName(fullName);
+        department.setLocation(location);
+        department.setNote(note);
+        department.setCreateTime(createTime);
+
+        List<Department> records = queryDepartmentService.findDepartmentPage(
+                page, department);
+        page.setRecords(records);
+
+        return SuccessTip.create(page);
+    }
 }

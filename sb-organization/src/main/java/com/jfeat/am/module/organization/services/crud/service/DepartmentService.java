@@ -12,8 +12,6 @@ import com.jfeat.am.common.crud.CRUDServiceGroup;
  * @since 2017-10-11
  */
 
-
-
 public interface DepartmentService extends CRUDServiceGroup {
 
 }
