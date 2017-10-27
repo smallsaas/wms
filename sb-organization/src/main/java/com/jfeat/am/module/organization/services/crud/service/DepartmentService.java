@@ -1,6 +1,7 @@
 package com.jfeat.am.module.organization.services.crud.service;
         
 import com.jfeat.am.common.crud.CRUDServiceGroup;
+import com.jfeat.am.module.organization.services.persistence.model.Department;
 
 
 /**
@@ -12,6 +13,6 @@ import com.jfeat.am.common.crud.CRUDServiceGroup;
  * @since 2017-10-11
  */
 
-public interface DepartmentService extends CRUDServiceGroup {
+public interface DepartmentService extends CRUDServiceGroup<Department> {
 
 }

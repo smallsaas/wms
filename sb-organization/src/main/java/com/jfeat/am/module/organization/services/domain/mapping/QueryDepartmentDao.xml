@@ -35,9 +35,6 @@
         <if test="sort != null and sort>0 ">
             AND t_department.sort LIKE CONCAT('%',#{sort},'%')
         </if>
-        <if test="createTime != null and createTime>0 ">
-            AND t_department.create_time LIKE CONCAT('%',#{createTime},'%')
-        </if>
         <if test="version != null and version>0 ">
             AND t_department.version LIKE CONCAT('%',#{version},'%')
         </if>

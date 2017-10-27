@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.jfeat.am.common.crud.impl.CRUDServiceGroupImpl;
 import com.jfeat.am.module.organization.services.persistence.dao.DepartmentMapper;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentService;
+import com.jfeat.am.module.organization.services.persistence.model.Department;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,7 +18,7 @@ import javax.annotation.Resource;
  * @since 2017-10-11
  */
 @Service
-public class DepartmentServiceImpl extends CRUDServiceGroupImpl implements DepartmentService {
+public class DepartmentServiceImpl extends CRUDServiceGroupImpl<Department> implements DepartmentService {
 
     @Resource
     private DepartmentMapper departmentMapper;

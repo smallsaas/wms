@@ -2,18 +2,17 @@ package com.jfeat.am.module.organization.api.crud;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.annotation.Permission;
-
-import com.jfeat.am.core.support.DateTime;
-import com.jfeat.am.module.organization.api.permission.DepartmentPermission;
-import com.jfeat.am.module.organization.services.domain.service.QueryDepartmentService;
-import com.jfeat.am.module.organization.services.persistence.model.Department;
-import com.jfeat.am.module.organization.services.crud.service.DepartmentService;
-import org.springframework.web.bind.annotation.*;
-
+import com.jfeat.am.common.constant.tips.ErrorTip;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
-
 import com.jfeat.am.common.controller.BaseController;
+import com.jfeat.am.common.crud.error.CRUDException;
+import com.jfeat.am.core.support.DateTime;
+import com.jfeat.am.module.organization.api.permission.DepartmentPermission;
+import com.jfeat.am.module.organization.services.crud.service.DepartmentService;
+import com.jfeat.am.module.organization.services.domain.service.QueryDepartmentService;
+import com.jfeat.am.module.organization.services.persistence.model.Department;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -48,9 +47,8 @@ public class DepartmentEndpoint extends BaseController {
 
     @GetMapping("/{id}")
     public Tip getDepartment(@PathVariable Long id) {
-        return SuccessTip.create(departmentService.retrieveGroup(id));
+        return SuccessTip.create(departmentService.toJSONObject(id));
     }
-
 
     @PutMapping("/{id}")
     public Tip updateDepartment(@PathVariable Long id, @RequestBody Department entity) {
@@ -59,7 +57,11 @@ public class DepartmentEndpoint extends BaseController {
 
     @DeleteMapping("/{id}")
     public Tip deleteDepartment(@PathVariable Long id) {
-        return SuccessTip.create(departmentService.deleteGroup(id));
+        try{
+            return SuccessTip.create(departmentService.deleteGroup(id));
+        }catch (CRUDException e){
+            return ErrorTip.create(e.getCode(), e.getMessage());
+        }
     }
 
     @GetMapping("/{id}/children")
@@ -105,7 +107,6 @@ public class DepartmentEndpoint extends BaseController {
         department.setFullName(fullName);
         department.setLocation(location);
         department.setNote(note);
-        department.setCreateTime(createTime);
 
         List<Department> records = queryDepartmentService.findDepartmentPage(department);
         page.setRecords(records);
