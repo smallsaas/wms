@@ -4,17 +4,19 @@ package com.jfeat.am.module.organization.api.ut;
  * Created by vincenthuang on 18/10/2017.
  */
 
+import com.alibaba.fastjson.JSONObject;
 import com.jfeat.am.common.crud.CRUD;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentService;
 import com.jfeat.am.module.organization.services.persistence.model.Department;
 import com.jfeat.base.BaseJunit;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -25,11 +27,12 @@ public class DepartmentTest extends BaseJunit {
     @Autowired
     DepartmentService departmentService;
 
+    Department root;
     Department dev;
 
     @Before
     public void initData() {
-        Department root = new Department();
+        root = new Department();
         root.setCode("0");
         root.setName("广州分公司");
         root.setIsOrg(1);
@@ -41,15 +44,23 @@ public class DepartmentTest extends BaseJunit {
         dev.setPid(root.getId());
         departmentService.createGroup(dev);
 
+        Boolean eq = root.getId() == dev.getPid();
+        JSONObject rootObj = CRUD.toJSONObject(root);
+        JSONObject devObj = CRUD.toJSONObject(dev);
+        Long rootId = rootObj.getLong("id");
+        Long devPid = devObj.getLong("pid");
+        Assert.assertEquals(rootId, devPid);
+
+
         Department t11 = new Department();
         t11.setCode("A002");
         t11.setName("测试");
-        //t11.setPid(dev.getId());
+        t11.setPid(dev.getId());
         departmentService.createGroup(t11);
         Department t12 = new Department();
-        t12.setCode("A002");
+        t12.setCode("A003");
         t12.setName("研发");
-        //t12.setPid(dev.getId());
+        t12.setPid(dev.getId());
         departmentService.createGroup(t12);
 
         Department t2 = new Department();
@@ -67,11 +78,10 @@ public class DepartmentTest extends BaseJunit {
 
     @Test
     public void testCase()  throws Exception {
-
         dev.setName(dev.getName() + "xxx");
         String json = CRUD.toJSONObject(dev).toJSONString();
 
-        RequestBuilder request = delete("/api/org/dept/" + dev.getId()).content(json);
+        RequestBuilder request = get("/api/org/dept/groups").content(json);
         MvcResult result = mockMvc.perform(request).andExpect(status().isOk()).andReturn();
 
         logger.debug(result.getResponse().getContentAsString());

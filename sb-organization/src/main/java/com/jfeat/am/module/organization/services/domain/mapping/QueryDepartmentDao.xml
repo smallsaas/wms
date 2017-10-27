@@ -4,9 +4,9 @@
     <sql id="Base_Column_List">
         t_department.*
     </sql>
-    <select id="findDepartmentPage" resultType="Department" parameterType="Department">
-        SELECT t_department.*
-        FROM t_department
+    <select id="findDepartmentPage" resultType="DepartmentItem" parameterType="DepartmentItem">
+        SELECT a.*, b.name as pn
+        FROM t_department a LEFT JOIN t_department b ON a.pid is not null AND a.pid=b.id
         WHERE 1=1
         <if test="id != null and id>0 ">
             AND t_department.id LIKE CONCAT('%',#{id},'%')

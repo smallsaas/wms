@@ -16,7 +16,7 @@ import javax.annotation.Resource;
  * @author Code Generator
  * @since 2017-10-26
  */
-@RestController
+@RestController("ORG-PositionEndpoint")
 @RequestMapping("/api/org/position")
 public class PositionEndpoint extends BaseController {
 
@@ -30,7 +30,7 @@ public class PositionEndpoint extends BaseController {
     }
 
     @GetMapping
-    public Tip getAllPositions(@PathVariable Long id) {
+    public Tip getAllPositions() {
         return SuccessTip.create(positionService.retrieveMasterList());
     }
 

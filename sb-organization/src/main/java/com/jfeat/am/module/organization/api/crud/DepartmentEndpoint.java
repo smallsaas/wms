@@ -10,6 +10,7 @@ import com.jfeat.am.common.crud.error.CRUDException;
 import com.jfeat.am.core.support.DateTime;
 import com.jfeat.am.module.organization.api.permission.DepartmentPermission;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentService;
+import com.jfeat.am.module.organization.services.domain.model.DepartmentItem;
 import com.jfeat.am.module.organization.services.domain.service.QueryDepartmentService;
 import com.jfeat.am.module.organization.services.persistence.model.Department;
 import org.springframework.web.bind.annotation.*;
@@ -108,7 +109,7 @@ public class DepartmentEndpoint extends BaseController {
         department.setLocation(location);
         department.setNote(note);
 
-        List<Department> records = queryDepartmentService.findDepartmentPage(department);
+        List<DepartmentItem> records = queryDepartmentService.findDepartmentPage(department);
         page.setRecords(records);
 
         return SuccessTip.create(page);

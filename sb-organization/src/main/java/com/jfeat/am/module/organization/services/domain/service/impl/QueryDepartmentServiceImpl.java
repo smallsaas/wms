@@ -1,7 +1,7 @@
 package com.jfeat.am.module.organization.services.domain.service.impl;
 
-import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.module.organization.services.domain.dao.QueryDepartmentDao;
+import com.jfeat.am.module.organization.services.domain.model.DepartmentItem;
 import com.jfeat.am.module.organization.services.domain.service.QueryDepartmentService;
 import com.jfeat.am.module.organization.services.persistence.model.Department;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class QueryDepartmentServiceImpl implements QueryDepartmentService {
     QueryDepartmentDao queryDepartmentDao;
 
     @Override
-    public List<Department> findDepartmentPage(Department department) {
+    public List<DepartmentItem> findDepartmentPage(Department department) {
         return queryDepartmentDao.findDepartmentPage(department);
     }
 }

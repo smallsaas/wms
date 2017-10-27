@@ -64,7 +64,6 @@ public class StaffEndpoint extends BaseController {
         return SuccessTip.create(staffService.retrieveModel(id, staffFilter));
     }
 
-
     @PutMapping("/{id}")
     public Tip updateStaff(@PathVariable Long id, @RequestBody StaffModel entity) {
         return SuccessTip.create(staffService.updateModel(entity, staffFilter));
