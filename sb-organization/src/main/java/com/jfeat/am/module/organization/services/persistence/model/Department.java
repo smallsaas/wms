@@ -1,11 +1,11 @@
 package com.jfeat.am.module.organization.services.persistence.model;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
-
 import java.io.Serializable;
-import java.util.Date;
+
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -13,7 +13,7 @@ import java.util.Date;
  * </p>
  *
  * @author Code Generator
- * @since 2017-10-26
+ * @since 2017-10-27
  */
 @TableName("t_department")
 public class Department extends Model<Department> {
@@ -52,11 +52,6 @@ public class Department extends Model<Department> {
      * ???
      */
 	private Integer sort;
-    /**
-     * ????
-     */
-	@TableField("create_time")
-	private Date createTime;
     /**
      * ???????????
      */
@@ -144,15 +139,6 @@ public class Department extends Model<Department> {
 		return this;
 	}
 
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public Department setCreateTime(Date createTime) {
-		this.createTime = createTime;
-		return this;
-	}
-
 	public Integer getVersion() {
 		return version;
 	}
@@ -180,8 +166,6 @@ public class Department extends Model<Department> {
 
 	public static final String SORT = "sort";
 
-	public static final String CREATE_TIME = "create_time";
-
 	public static final String VERSION = "version";
 
 	@Override
@@ -201,7 +185,6 @@ public class Department extends Model<Department> {
 			", location=" + location +
 			", note=" + note +
 			", sort=" + sort +
-			", createTime=" + createTime +
 			", version=" + version +
 			"}";
 	}

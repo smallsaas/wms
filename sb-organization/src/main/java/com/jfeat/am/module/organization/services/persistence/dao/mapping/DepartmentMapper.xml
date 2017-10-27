@@ -13,13 +13,12 @@
 		<result column="location" property="location" />
 		<result column="note" property="note" />
 		<result column="sort" property="sort" />
-		<result column="create_time" property="createTime" />
 		<result column="version" property="version" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, code, is_org AS isOrg, pid, name, full_name AS fullName, location, note, sort, create_time AS createTime, version
+        id, code, is_org AS isOrg, pid, name, full_name AS fullName, location, note, sort, version
     </sql>
 
 </mapper>
