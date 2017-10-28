@@ -55,22 +55,26 @@ public class StaffServiceImpl extends CRUDServiceOnlyImpl<Staff>
     public Integer createModel(StaffModel staffModel, CRUDFilter<Staff> crudFilter) {
         Integer affected = 0;
 
+        /// create master
+        Staff staff = CRUD.castObject(staffModel);
+        affected +=  super.createMaster(staff, crudFilter);
+
         /// create child
-        Position staffPos = staffModel.getPosition();
+        /*Position staffPos = staffModel.getPosition();
         if(staffPos!=null){
             affected += positionChildService.updateChild(staffModel.getId(), staffPos);
-        }
+        }*/
 
         Profile profile = staffModel.getProfile();
         if(profile!=null){
-            affected += profileChildService.updateChild(staffModel.getId(), profile);
+            affected += profileChildService.updateChild(staffModel.getProfileId(), profile);
         }
 
         /// create slave
 
-        /// create master
+        /*/// create master
         Staff staff = CRUD.castObject(staffModel);
-        affected +=  super.createMaster(staff, crudFilter);
+        affected +=  super.createMaster(staff, crudFilter);*/
 
         return affected;
     }

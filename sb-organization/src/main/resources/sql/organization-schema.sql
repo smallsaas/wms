@@ -3,7 +3,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `t_department`;
 CREATE TABLE `t_department` (
 `id` bigint NOT NULL,
-`code` varchar(26) DEFAULT NULL COMMENT '部门编号',
+`code` varchar(26) UNIQUE NOT NULL COMMENT '部门编号',
 `is_org` int(11) DEFAULT NULL COMMENT '是否机构',
 `pid` bigint DEFAULT NULL ,
 `name` varchar(26) NOT NULL COMMENT '简称',
