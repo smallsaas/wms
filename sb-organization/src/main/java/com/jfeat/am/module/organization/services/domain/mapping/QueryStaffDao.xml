@@ -13,6 +13,9 @@
         <if test="id != null and id>0 ">
             AND a.id LIKE CONCAT('%',#{id},'%')
         </if>
+        <if test="deptId != null and deptId!= ''">
+            AND b.id =#{deptId}
+        </if>
         <if test="deptCode != null and deptCode!= ''">
             AND b.code LIKE CONCAT('%',#{deptCode},'%')
         </if>
