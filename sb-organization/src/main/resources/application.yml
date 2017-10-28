@@ -69,7 +69,7 @@ mybatis-plus:
 spring:
   profiles: test
   datasource:
-      url: jdbc:h2:mem:sbmessage;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+      url: jdbc:h2:mem:sbmessage;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false&characterEncoding=utf8
       driver-class-name: org.h2.Driver
       username: sa
       password:
