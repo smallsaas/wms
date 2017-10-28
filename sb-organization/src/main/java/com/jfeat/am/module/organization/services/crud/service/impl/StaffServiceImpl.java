@@ -67,7 +67,7 @@ public class StaffServiceImpl extends CRUDServiceOnlyImpl<Staff>
 
         Profile profile = staffModel.getProfile();
         if(profile!=null){
-            affected += profileChildService.updateChild(staff.getProfileId(), profile);
+            affected += profileChildService.updateChild(staff.getId(), profile);
         }
 
         /// create slave
