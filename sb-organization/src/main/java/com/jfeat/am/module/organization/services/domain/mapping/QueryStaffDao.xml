@@ -6,7 +6,7 @@
     </sql>
     <sql id="staffDepartmentProfilePosition">
         a.id,a.create_time AS createTime,a.dept_id AS deptId,a.profile_id AS profileId,a.position_id AS positionId,a.note,a.leave_date AS leaveDate,a.hire_date AS hireDate,a.work_age AS workAge,a.status,
-        b.name AS deptName,b.code as deptName,
+        b.name AS deptName,b.code as deptCode,
         c.name,c.birthday AS age,c.mobile,c.sex,
         d.name AS position
     </sql>
