@@ -92,6 +92,7 @@ spring:
   profiles: dev
   datasource:
       url: jdbc:mysql://120.76.244.80:3308/infrastructure?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+#      url: jdbc:mysql://127.0.0.1:3306/sbinfrastructure?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
       username: root
       password: root
       filters: log4j,wall,mergeStat

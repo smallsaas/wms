@@ -1,6 +1,7 @@
 package com.jfeat.am.module.organization.api.crud;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.module.organization.services.crud.filter.StaffFilter;
 import com.jfeat.am.module.organization.services.domain.model.StaffItem;
 import com.jfeat.am.module.organization.services.domain.model.StaffModel;
@@ -61,7 +62,8 @@ public class StaffEndpoint extends BaseController {
 
     @GetMapping("/{id}")
     public Tip getStaff(@PathVariable Long id) {
-        return SuccessTip.create(staffService.retrieveModel(id, staffFilter));
+        CRUDObject<StaffModel> staffModelCRUDObject = staffService.retrieveModel(id, staffFilter);
+        return SuccessTip.create(staffModelCRUDObject.toJSONObject());
     }
 
     @PutMapping("/{id}")

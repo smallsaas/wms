@@ -47,4 +47,9 @@ public class StaffTest extends BaseJunit{
 //
 //        logger.debug(result.getResponse().getContentAsString());
     }
+
+    @Test
+    public void testRetrieveModel(){
+        System.out.print(staffService.retrieveMaster(925189382896394241L));
+    }
 }
