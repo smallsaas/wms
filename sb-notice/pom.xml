@@ -16,7 +16,8 @@
   </parent>  
   <properties> 
     <sb-base.version>1.0.0</sb-base.version>  
-    <sb-crud.version>1.0.4-SNAPSHOT</sb-crud.version> 
+    <sb-crud.version>1.0.4-SNAPSHOT</sb-crud.version>
+    <skipStandalone>true</skipStandalone>
   </properties>  
   <dependencies> 
     <dependency> 
@@ -29,7 +30,7 @@
       <artifactId>sb-crud</artifactId>  
       <version>${sb-crud.version}</version> 
     </dependency>  
-    <!--spring bootÒÀÀµ-->  
+    <!--spring bootï¿½ï¿½ï¿½ï¿½-->  
     <dependency> 
       <groupId>org.springframework.boot</groupId>  
       <artifactId>spring-boot-starter-aop</artifactId> 
@@ -81,7 +82,7 @@
       <version>${h2.version}</version>  
       <scope>test</scope> 
     </dependency>  
-    <!--shiroÒÀÀµ-->  
+    <!--shiroï¿½ï¿½ï¿½ï¿½-->  
     <dependency> 
       <groupId>org.apache.shiro</groupId>  
       <artifactId>shiro-core</artifactId>  
@@ -127,7 +128,7 @@
       <artifactId>fst</artifactId>  
       <version>${fst.version}</version> 
     </dependency>  
-    <!--ÆäËûÒÀÀµ-->  
+    <!--ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-->  
     <dependency> 
       <groupId>com.alibaba</groupId>  
       <artifactId>fastjson</artifactId>  
@@ -206,7 +207,10 @@
       </plugin>  
       <plugin> 
         <groupId>org.springframework.boot</groupId>  
-        <artifactId>spring-boot-maven-plugin</artifactId>  
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <skip>${skipStandalone}</skip>
+        </configuration>
         <executions> 
           <execution> 
             <goals> 
