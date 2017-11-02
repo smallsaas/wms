@@ -69,11 +69,12 @@ mybatis-plus:
 spring:
   profiles: test
   datasource:
-      url: jdbc:h2:mem:sbmessage;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false&characterEncoding=utf8
+      url: jdbc:h2:mem:sblog;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
       driver-class-name: org.h2.Driver
       username: sa
       password:
       filters: log4j,wall,mergeStat
+      initialize: true
       schema: classpath*:sql/*-schema.sql
       data: classpath*:sql/*-data.sql
 
@@ -91,10 +92,9 @@ am:
 spring:
   profiles: dev
   datasource:
-      url: jdbc:mysql://112.74.26.228:3306/amequipment?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
-#      url: jdbc:mysql://127.0.0.1:3306/sbinfrastructure?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
-      username: jfeat
-      password: jfeat
+      url: jdbc:mysql://127.0.0.1:3306/sbnotice?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+      username: root
+      password: root
       filters: log4j,wall,mergeStat
       initialize: false
       schema: classpath*:sql/*-schema.sql
@@ -114,7 +114,7 @@ am:
 spring:
   profiles: produce
   datasource:
-      url: jdbc:mysql://127.0.0.1:3306/sbinfrastructure?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+      url: jdbc:mysql://127.0.0.1:3306/sbnotice?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
       username: root
       password: root
       filters: log4j,wall,mergeStat
