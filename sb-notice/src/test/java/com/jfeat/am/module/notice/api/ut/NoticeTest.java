@@ -46,7 +46,7 @@ public class NoticeTest extends BaseJunit {
                 "    \"title\":\"公告\",\n" +
                 "    \"content\":\"大减价,所有商品一律五折\",\n" +
                 "}";
-        RequestBuilder request = post("/api/notice/notice").content(json);
+        RequestBuilder request = post("/api/notice/notices").content(json);
         MvcResult result = mockMvc.perform(request).andExpect(status().isOk()).andReturn();
 
         logger.debug(result.getResponse().getContentAsString());
@@ -69,7 +69,7 @@ public class NoticeTest extends BaseJunit {
                 "    \"createTime\":\"\",\n" +
                 "    \"updateTime\":\"2017-11-02 12:01:47\"\n" +
                 "}";
-        RequestBuilder request = put("/api/notice/notice/1245231533451").content(json);
+        RequestBuilder request = put("/api/notice/notices/1245231533451").content(json);
         MvcResult result = mockMvc.perform(request).andExpect(status().isOk()).andReturn();
 
         logger.debug(result.getResponse().getContentAsString());
@@ -77,7 +77,7 @@ public class NoticeTest extends BaseJunit {
 
     @Test
     public void testDelete() throws Exception {
-        RequestBuilder request = delete("/api/notice/notice/1245231533451");
+        RequestBuilder request = delete("/api/notice/notices/1245231533451");
         MvcResult result = mockMvc.perform(request).andExpect(status().isOk()).andReturn();
 
         logger.debug(result.getResponse().getContentAsString());
