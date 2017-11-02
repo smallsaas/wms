@@ -20,7 +20,6 @@ public class NoticeFilter implements CRUDFilter<Notice> {
 
             //then insertOrUpdate is false,means for update,do this
         }else {
-
         }
 
     }

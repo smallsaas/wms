@@ -4,7 +4,6 @@ package com.jfeat.am.module.notice.api.ut;
  * Created by vincenthuang on 18/10/2017.
  */
 
-import com.alibaba.fastjson.JSON;
 import com.jfeat.am.module.notice.services.crud.service.NoticeService;
 import com.jfeat.am.module.notice.services.persistence.model.Notice;
 import com.jfeat.base.BaseJunit;
@@ -22,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by jackyhuang on 2017/10/16.
  */
-public class DemoTest extends BaseJunit {
+public class NoticeTest extends BaseJunit {
 
     @Autowired
     private NoticeService noticeService;
@@ -39,7 +38,7 @@ public class DemoTest extends BaseJunit {
         noticeService.createMaster(notice);
     }
 
-    @Test
+    //@Test
     public void testPost()  throws Exception {
         String json = "{\n" +
                 "    \"type\":\"1\",\n" +
@@ -54,13 +53,13 @@ public class DemoTest extends BaseJunit {
     }
     @Test
     public void testGet() throws Exception {
-        RequestBuilder request = get("/api/notice/notice/1245231533451");
+        RequestBuilder request = get("/api/notice/notices?type=notice");
         MvcResult result = mockMvc.perform(request).andExpect(status().isOk()).andReturn();
 
         logger.debug(result.getResponse().getContentAsString());
     }
 
-    @Test
+    //@Test
     public void testPut() throws Exception {
         String json = "{\n" +
                 "    \"type\":\"1\",\n" +

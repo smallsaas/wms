@@ -19,29 +19,11 @@ import java.util.List;
  */
 @Service
 public class QueryNoticeServiceImpl implements QueryNoticeService {
-
     @Resource
     QueryNoticeDao queryNoticeDao;
 
     @Override
-    public List<Notice> findNotices(int pageNum, int pageSize, String name, String status) {
-
-        Page page = new Page();
-        page.setCurrent(pageNum);
-        page.setSize(pageSize);
-        page.setRecords(queryNoticeDao.findNotices(page, name, status));
-
-        return queryNoticeDao.findNotices(page, name, status);
-    }
-
-    @Override
-    public List<Notice> findNoticePage(int pageNum, int pageSize, Notice notice) {
-
-        Page page = new Page();
-        page.setCurrent(pageNum);
-        page.setSize(pageSize);
-        page.setRecords(queryNoticeDao.findNoticePage(page, notice));
-
-        return queryNoticeDao.findNoticePage(page, notice);
+    public List<Notice> findNotices(Page<Notice> page, Notice notice) {
+        return queryNoticeDao.findNotices(page, notice);
     }
 }
