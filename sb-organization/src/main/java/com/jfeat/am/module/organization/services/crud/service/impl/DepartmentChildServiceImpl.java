@@ -9,6 +9,7 @@ import com.jfeat.am.module.organization.services.persistence.dao.DepartmentMappe
 import com.jfeat.am.module.organization.services.persistence.dao.StaffMapper;
 import com.jfeat.am.module.organization.services.persistence.model.Department;
 import com.jfeat.am.module.organization.services.persistence.model.Staff;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Created by Silent-Y on 2017/11/3.
  */
+@Service
 public class DepartmentChildServiceImpl extends CRUDServiceChildImpl<Staff, Department> implements DepartmentChildService{
 
     @Resource
