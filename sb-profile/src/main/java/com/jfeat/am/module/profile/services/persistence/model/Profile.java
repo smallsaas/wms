@@ -97,7 +97,11 @@ public class Profile extends Model<Profile> {
      */
 	@TableField("bankcard_snapshot")
 	private String bankcardSnapshot;
-    /**
+	/**
+	 * 标签
+	 */
+	private String tag;
+	/**
      * 预留字段
      */
 	private String field1;
@@ -109,7 +113,6 @@ public class Profile extends Model<Profile> {
      * 预留字段
      */
 	private String field3;
-
 
 	public Long getId() {
 		return id;
@@ -255,6 +258,14 @@ public class Profile extends Model<Profile> {
 		this.bankcardSnapshot = bankcardSnapshot;
 	}
 
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
 	public String getField1() {
 		return field1;
 	}
@@ -281,33 +292,6 @@ public class Profile extends Model<Profile> {
 
 	@Override
 	protected Serializable pkVal() {
-		return this.id;
-	}
-
-	@Override
-	public String toString() {
-		return "Profile{" +
-			"id=" + id +
-			", name=" + name +
-			", nick=" + nick +
-			", sex=" + sex +
-			", phone=" + phone +
-			", mobile=" + mobile +
-			", birthday=" + birthday +
-			", address=" + address +
-			", avator=" + avator +
-			", wechat=" + wechat +
-			", qq=" + qq +
-			", email=" + email +
-			", signature=" + signature +
-			", idcardNo=" + idcardNo +
-			", idcardFront=" + idcardFront +
-			", idcardBack=" + idcardBack +
-			", bankcardNo=" + bankcardNo +
-			", bankcardSnapshot=" + bankcardSnapshot +
-			", field1=" + field1 +
-			", field2=" + field2 +
-			", field3=" + field3 +
-			"}";
+		return null;
 	}
 }
