@@ -55,7 +55,7 @@ public class Profile extends Model<Profile> {
     /**
      * 头像
      */
-	private String avator;
+	private String avatar;
     /**
      * 微信
      */
@@ -113,6 +113,10 @@ public class Profile extends Model<Profile> {
      * 预留字段
      */
 	private String field3;
+
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
 
 	public Long getId() {
 		return id;
@@ -178,12 +182,12 @@ public class Profile extends Model<Profile> {
 		this.address = address;
 	}
 
-	public String getAvator() {
-		return avator;
+	public String getAvatar() {
+		return avatar;
 	}
 
-	public void setAvator(String avator) {
-		this.avator = avator;
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 
 	public String getWechat() {

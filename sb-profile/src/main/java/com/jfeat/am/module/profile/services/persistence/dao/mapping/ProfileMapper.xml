@@ -12,7 +12,7 @@
 		<result column="mobile" property="mobile" />
 		<result column="birthday" property="birthday" />
 		<result column="address" property="address" />
-		<result column="avator" property="avator" />
+		<result column="avatar" property="avatar" />
 		<result column="wechat" property="wechat" />
 		<result column="qq" property="qq" />
 		<result column="email" property="email" />
