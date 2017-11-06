@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.statement.services.domain.dao.QueryStatementDao">
+    <sql id="Base_Column_List">
+            t_statement.*
+        </sql>
+        <select id="findStatementPage" resultType="Statement" parameterType="Statement">
+            SELECT t_statement.*
+            FROM t_statement
+            WHERE 1=1
+                             <if test="id != null and id>0 ">
+                 AND t_statement.id LIKE CONCAT('%',#{id},'%')
+            </if>
+                             <if test="mothod != null and mothod!= ''">
+                 AND t_statement.mothod LIKE CONCAT('%',#{mothod},'%')
+            </if>
+                             <if test="sql != null and sql!= ''">
+                 AND t_statement.sql LIKE CONCAT('%',#{sql},'%')
+            </if>
+                             <if test="identifier != null and identifier!= ''">
+                 AND t_statement.identifier LIKE CONCAT('%',#{identifier},'%')
+            </if>
+                             <if test="description != null and description!= ''">
+                 AND t_statement.description LIKE CONCAT('%',#{description},'%')
+            </if>
+                    </select>
+</mapper>
