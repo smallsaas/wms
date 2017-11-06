@@ -13,6 +13,8 @@ CREATE TABLE `t_profile` (
   `mobile` varchar(26) DEFAULT NULL COMMENT '手机',
   `birthday` datetime DEFAULT NULL COMMENT '生日',
   `address` varchar(26) DEFAULT NULL COMMENT '地址',
+  `height` varchar DEFAULT NULL comment '身高',
+  `age` INT  DEFAULT  NULL  comment '年龄',
   `avator` varchar(26) DEFAULT NULL COMMENT '头像',
   `wechat` varchar(26) DEFAULT NULL COMMENT '微信',
   `qq` varchar(26) DEFAULT NULL COMMENT 'QQ',

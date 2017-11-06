@@ -52,9 +52,17 @@ public class Profile extends Model<Profile> {
      * 地址
      */
 	private String address;
-    /**
-     * 头像
-     */
+	/*
+	* 	身高
+	* */
+	private String height;
+	/*
+	* 	年龄
+	* */
+	private Integer age;
+	/**
+	 * 头像
+	 */
 	private String avatar;
     /**
      * 微信
@@ -180,6 +188,22 @@ public class Profile extends Model<Profile> {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getHeight() {
+		return height;
+	}
+
+	public void setHeight(String height) {
+		this.height = height;
+	}
+
+	public Integer getAge() {
+		return age;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
 	}
 
 	public String getAvatar() {
