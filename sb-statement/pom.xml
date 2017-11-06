@@ -18,6 +18,7 @@
     <sb-base.version>1.0.0</sb-base.version>  
     <sb-crud.version>1.0.4-SNAPSHOT</sb-crud.version>
     <skipStandalone>true</skipStandalone>
+    <am-equipment.version>1.0.0</am-equipment.version>
   </properties>
   <dependencies> 
     <dependency> 
@@ -30,6 +31,12 @@
       <artifactId>sb-crud</artifactId>  
       <version>${sb-crud.version}</version> 
     </dependency>
+    <dependency>
+      <groupId>com.jfeat</groupId>
+      <artifactId>am-equipment</artifactId>
+      <version>${am-equipment.version}</version>
+    </dependency>
+
     <!--spring boot����-->  
     <dependency> 
       <groupId>org.springframework.boot</groupId>  
