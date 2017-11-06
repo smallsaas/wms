@@ -5,11 +5,13 @@ import com.jfeat.am.common.crud.CRUD;
 import com.jfeat.am.common.crud.CRUDFilter;
 import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
+import com.jfeat.am.module.organization.services.crud.service.DepartmentChildService;
 import com.jfeat.am.module.organization.services.crud.service.PositionChildService;
 import com.jfeat.am.module.organization.services.crud.service.ProfileChildService;
 import com.jfeat.am.module.organization.services.crud.service.StaffService;
 import com.jfeat.am.module.organization.services.domain.model.StaffModel;
 import com.jfeat.am.module.organization.services.persistence.dao.StaffMapper;
+import com.jfeat.am.module.organization.services.persistence.model.Department;
 import com.jfeat.am.module.organization.services.persistence.model.Position;
 import com.jfeat.am.module.organization.services.persistence.model.Staff;
 import com.jfeat.am.module.profile.services.crud.service.ProfileService;
@@ -44,6 +46,9 @@ public class StaffServiceImpl extends CRUDServiceOnlyImpl<Staff>
 
     @Resource
     private ProfileChildService profileChildService;
+
+    @Resource
+    private DepartmentChildService departmentChildService;
 
 
     @Override
@@ -117,6 +122,9 @@ public class StaffServiceImpl extends CRUDServiceOnlyImpl<Staff>
 
         Profile profile = profileChildService.getChild(masterId);
         staffModel.setProfile(profile);
+
+        Department department = departmentChildService.getChild(masterId);
+        staffModel.setDepartment(department);
 
         /// append slaves
 
