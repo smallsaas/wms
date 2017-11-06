@@ -12,8 +12,8 @@
     <module>sb-organization</module>
     <module>sb-profile</module>
     <module>sb-notice</module>
+    <module>sb-statement</module>
   </modules>
-
 
   <distributionManagement>
     <repository>
