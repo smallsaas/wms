@@ -15,7 +15,7 @@ CREATE TABLE `t_profile` (
   `address` varchar(26) DEFAULT NULL COMMENT '地址',
   `height` varchar DEFAULT NULL comment '身高',
   `age` INT  DEFAULT  NULL  comment '年龄',
-  `avatar` varchar(26) DEFAULT NULL COMMENT '头像',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
   `wechat` varchar(26) DEFAULT NULL COMMENT '微信',
   `qq` varchar(26) DEFAULT NULL COMMENT 'QQ',
   `email` varchar(26) DEFAULT NULL COMMENT '邮箱',
