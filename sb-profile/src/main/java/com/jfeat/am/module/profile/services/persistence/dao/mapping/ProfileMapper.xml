@@ -12,8 +12,10 @@
 		<result column="mobile" property="mobile" />
 		<result column="birthday" property="birthday" />
 		<result column="address" property="address" />
-		<result column="avator" property="avator" />
-		<result column="wechat" property="wechat" />
+		<result column="height" property="height" />
+		<result column="age" property="age" />
+		<result column="avatar" property="avatar" />
+		<result column="wechewcat" property="wechat" />
 		<result column="qq" property="qq" />
 		<result column="email" property="email" />
 		<result column="signature" property="signature" />
@@ -22,6 +24,7 @@
 		<result column="idcard_back" property="idcardBack" />
 		<result column="bankcard_no" property="bankcardNo" />
 		<result column="bankcard_snapshot" property="bankcardSnapshot" />
+		<result column="tag" property="tag" />
 		<result column="field1" property="field1" />
 		<result column="field2" property="field2" />
 		<result column="field3" property="field3" />

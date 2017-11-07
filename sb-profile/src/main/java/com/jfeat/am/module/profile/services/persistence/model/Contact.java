@@ -27,6 +27,10 @@ public class Contact extends Model<Contact> {
      * 联系人
      */
 	private String contact;
+	/**
+	 * 商家ID
+	 */
+	private Long customerId;
     /**
      * 手机
      */
@@ -45,6 +49,9 @@ public class Contact extends Model<Contact> {
      */
 	private String email;
 
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
 
 	public Long getId() {
 		return id;
@@ -60,6 +67,14 @@ public class Contact extends Model<Contact> {
 
 	public void setContact(String contact) {
 		this.contact = contact;
+	}
+
+	public Long getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Long customerId) {
+		this.customerId = customerId;
 	}
 
 	public String getMobile() {
@@ -104,19 +119,6 @@ public class Contact extends Model<Contact> {
 
 	@Override
 	protected Serializable pkVal() {
-		return this.id;
-	}
-
-	@Override
-	public String toString() {
-		return "Contact{" +
-			"id=" + id +
-			", contact=" + contact +
-			", mobile=" + mobile +
-			", phone=" + phone +
-			", qq=" + qq +
-			", wechat=" + wechat +
-			", email=" + email +
-			"}";
+		return null;
 	}
 }
