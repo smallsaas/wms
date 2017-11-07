@@ -10,9 +10,12 @@ import java.util.Map;
 /**
  * Created by Administrator on 2017/8/9.
  */
-public interface EquipmentDao extends BaseMapper<Equipment> {
+public interface TableColumnRatesDao extends BaseMapper<Equipment> {
 
     Map<String,Object> queryEquipmentCountByStatus(@Param("tableName") String tableName,@Param("columnName") String columnName,@Param("columnContents")List<String> columnContents);
+
+    List<Map<String,Object>> queryTableColumnRates(@Param("tableName") String tableName,@Param("columnName") String columnName);
+
 }
 
 
