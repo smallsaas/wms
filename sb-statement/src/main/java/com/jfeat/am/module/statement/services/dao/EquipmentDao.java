@@ -1,0 +1,18 @@
+package com.jfeat.am.module.statement.services.dao;
+
+import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.jfeat.am.module.statement.services.model.Equipment;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by Administrator on 2017/8/9.
+ */
+public interface EquipmentDao extends BaseMapper<Equipment> {
+
+    Map<String,Object> queryEquipmentCountByStatus(@Param("tableName") String tableName,@Param("columnName") String columnName,@Param("columnContents")List<String> columnContents);
+}
+
+
