@@ -20,18 +20,18 @@ public class TableColumnRatesServiceImpl implements TableColumnRatesService {
     @Resource
     private TableColumnRatesDao tableColumnRatesDao;
 
-    @Override
-    public Map<String,Object> queryEquipmentCountByStatus(String tableName,String columnName,List<String> columnContents,String type) {
-        Map<String,Object> result = Maps.newHashMap();
-        Map<String,Object> map = tableColumnRatesDao.queryEquipmentCountByStatus(tableName, columnName, columnContents);
-        result.put("data",map);
-        result.put("timestamp", DateTimeKit.formatDateTime(new Date()));
-        result.put("type",type);
-        return result;
-    }
+    /*@Override
+    public List<String> queryValueOfColumn(String table, String column) {
+        return tableColumnRatesDao.queryValueOfColumn(table,column);
+    }*/
 
     @Override
-    public List<Map<String, Object>> queryTableColumnRates(String tableName, String columnName) {
-        return tableColumnRatesDao.queryTableColumnRates(tableName,columnName);
+    public Map<String, Object> getColumnRates(String table, String column) {
+        Map<String,Object> map = Maps.newHashMap();
+        List<String> strings = tableColumnRatesDao.queryValueOfColumn(table, column);
+        List<Map<String,Object>> maps = tableColumnRatesDao.getColumnRates(table, column, strings);
+        map.put("time",DateTimeKit.formatDateTime(new Date()));
+        map.put("data",maps);
+        return map;
     }
 }

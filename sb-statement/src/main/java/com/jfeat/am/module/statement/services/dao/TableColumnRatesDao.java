@@ -12,9 +12,9 @@ import java.util.Map;
  */
 public interface TableColumnRatesDao extends BaseMapper<Equipment> {
 
-    Map<String,Object> queryEquipmentCountByStatus(@Param("tableName") String tableName,@Param("columnName") String columnName,@Param("columnContents")List<String> columnContents);
+    List<String> queryValueOfColumn(@Param("table") String table,@Param("column") String column);
 
-    List<Map<String,Object>> queryTableColumnRates(@Param("tableName") String tableName,@Param("columnName") String columnName);
+    List<Map<String,Object>> getColumnRates(@Param("table") String table,@Param("column") String column,@Param("columnValues") List<String> columnValues);
 
 }
 

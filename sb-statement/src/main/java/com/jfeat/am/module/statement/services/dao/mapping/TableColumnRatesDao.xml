@@ -4,16 +4,17 @@
 
     <!--模糊查询设备信息-->
 
-    <select id="queryEquipmentCountByStatus" resultType="map">
-        select count(${columnName}) as total,
-        <foreach collection="columnContents" index="index" item="columnContent" open="" separator="," close="">
-            sum( case when ${columnName}= #{columnContent} then 1 else 0 end) as ${columnContent}
-        </foreach>
-        from ${tableName};
+
+    <select id="queryValueOfColumn" resultType="String">
+        select distinct ${columnName} from ${tableName};
     </select>
 
-    <select id="queryTableColumnRates" resultType="map">
-        select  COUNT(id) AS value,${columnName} AS name from ${tableName} GROUP BY `${columnName}`
+    <select id="getColumnRates" resultType="map">
+        select count(${column}) as total,
+        <foreach collection="columnValues" index="index" item="columnValue" open="" separator="," close="">
+            sum( case when ${column}= #{columnValue} then 1 else 0 end) as ${columnValue}
+        </foreach>
+        from ${table};
     </select>
 
 </mapper>
