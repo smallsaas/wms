@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.statement.services.dao.TableColumnRatesDao">
+
+
+    <select id="queryValueOfColumn" resultType="String">
+        select distinct ${column} from ${table}
+         where ${column} is not null;
+    </select>
+
+    <select id="getColumnRates" resultType="map">
+        select count(${column}) as total,
+        <foreach collection="columnValues" index="index" item="columnValue" open="" separator="," close="">
+            sum( case when ${column}= #{columnValue} then 1 else 0 end) as ${columnValue}
+        </foreach>
+        from ${table};
+    </select>
+
+</mapper>
