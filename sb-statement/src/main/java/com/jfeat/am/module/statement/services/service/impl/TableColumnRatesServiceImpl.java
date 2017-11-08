@@ -20,18 +20,26 @@ public class TableColumnRatesServiceImpl implements TableColumnRatesService {
     @Resource
     private TableColumnRatesDao tableColumnRatesDao;
 
-    /*@Override
-    public List<String> queryValueOfColumn(String table, String column) {
-        return tableColumnRatesDao.queryValueOfColumn(table,column);
-    }*/
+    /*饼状图数据结构
+    "titile":"饼状图数据结构",
+    "timestamp":"数据生成时间",
+    "type":"数据图描述类型",
+    "data":[
+    {value:335, name:'直接访问'},
+    {value:310, name:'邮件营销'},
+    {value:274, name:'联盟广告'},
+    {value:235, name:'视频广告'},
+    {value:400, name:'搜索引擎'}
+    ]*/
 
     @Override
-    public Map<String, Object> getColumnRates(String table, String column) {
+    public Map<String, Object> getColumnRates(String table, String column,String field) {
         Map<String,Object> map = Maps.newHashMap();
         List<String> strings = tableColumnRatesDao.queryValueOfColumn(table, column);
-        List<Map<String,Object>> maps = tableColumnRatesDao.getColumnRates(table, column, strings);
-        map.put("time",DateTimeKit.formatDateTime(new Date()));
+        List<Map<String,Integer>> maps = tableColumnRatesDao.getColumnRates(table, column, strings);
+        map.put("timestamp",DateTimeKit.formatDateTime(new Date()));
         map.put("data",maps);
+        map.put("field",field);
         return map;
     }
 }

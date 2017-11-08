@@ -42,25 +42,11 @@ public class DemoTest extends BaseJunit {
     }*/
 
     @Test
-    public void testService()  throws Exception {
-        String tableName = "equipment";
-        String colmnName = "status";
-        List<String> colmnContents = Lists.newArrayList();
-        colmnContents.add(EquipmentStatus.DISABLE);
-        colmnContents.add(EquipmentStatus.INNOVATION);
-        colmnContents.add(EquipmentStatus.SCRAP);
-        colmnContents.add(EquipmentStatus.SEAL);
-        String type = "pie";
-        Map<String,Object> map = tableColumnRatesService.queryEquipmentCountByStatus(tableName, colmnName, colmnContents, type);
-        System.out.print("================"+map.toString()+"======================");
-    }
-
-    @Test
     public void testService1()  throws Exception {
         String tableName = "equipment";
         String colmnName = "status";
-        List<Map<String,Object>> map = tableColumnRatesService.queryTableColumnRates(tableName, colmnName);
-        System.out.print("================"+ map.toString()+"======================");
+        Map<String,Object> map = tableColumnRatesService.getColumnRates(tableName, colmnName,"");
+        System.out.println("================"+ map.toString()+"======================");
     }
 
 }

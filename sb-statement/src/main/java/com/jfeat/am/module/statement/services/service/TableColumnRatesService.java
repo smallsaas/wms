@@ -8,7 +8,5 @@ import java.util.Map;
  */
 public interface TableColumnRatesService {
 
-    /*List<String> queryValueOfColumn(String table,String column);*/
-
-    Map<String,Object> getColumnRates(String table,String column);
+    Map<String,Object> getColumnRates(String table,String column,String fieldName);
 }
