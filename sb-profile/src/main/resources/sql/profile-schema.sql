@@ -63,6 +63,32 @@ CREATE TABLE `t_resume` (
 -- Records of t_resume
 -- ----------------------------
 
+DROP TABLE IF EXISTS `t_edu_background`;
+CREATE TABLE `t_edu_background` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `resume_id` bigint(20) DEFAULT NULL COMMENT '简历ID',
+  `entrance_time` date DEFAULT NULL COMMENT '入学时间',
+  `graduation_time` date DEFAULT NULL COMMENT '毕业时间',
+  `college_name` varchar(26) DEFAULT NULL COMMENT '院校名称',
+  `education` varchar(26) DEFAULT NULL COMMENT '学历',
+  `major` varchar(26) DEFAULT NULL COMMENT '工作岗位',
+  `description` text DEFAULT NULL COMMENT '在校情况',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `t_work_experience`;
+CREATE TABLE `t_work_experience` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+   `resume_id` bigint(20) DEFAULT NULL COMMENT '简历ID',
+  `work_area` varchar(26) DEFAULT NULL COMMENT '工作地点',
+  `entry_time` date DEFAULT NULL COMMENT '入职时间',
+  `dimission_time` date DEFAULT NULL COMMENT '离职时间',
+  `work_company` varchar(26) DEFAULT NULL COMMENT '工作公司',
+  `work_post` varchar(26) DEFAULT NULL COMMENT '工作岗位',
+  `description` text DEFAULT NULL COMMENT '工作描述',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- ----------------------------
 -- Table structure for t_resume
 -- ----------------------------
