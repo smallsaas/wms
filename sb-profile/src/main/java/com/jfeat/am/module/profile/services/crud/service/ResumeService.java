@@ -18,5 +18,6 @@ import com.jfeat.am.module.profile.services.persistence.model.Resume;
  */
 
 public interface ResumeService  extends CRUDServiceOverModel<Resume,ResumeModel> {
+    ResumeModel retrieveResume(long id);
 
 }
