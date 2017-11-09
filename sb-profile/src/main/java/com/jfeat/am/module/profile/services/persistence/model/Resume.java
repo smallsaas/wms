@@ -24,58 +24,59 @@ public class Resume extends Model<Resume> {
 
 	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
-    /**
-     * 工作地点
-     */
-	@TableField("work_area")
-	private String workArea;
-    /**
-     * 兼职时间
-     */
-	@TableField("jb_time")
-	private Date jbTime;
+	/**
+	 * 姓名
+	 */
+	private String name;
     /**
      * 个人评价
      */
 	@TableField("self_evaluate")
 	private String selfEvaluate;
-    /**
-     * 工作时间
-     */
-	@TableField("work_time")
-	private String workTime;
-    /**
-     * 工作公司
-     */
-	@TableField("work_company")
-	private String workCompany;
-    /**
-     * 工作岗位
-     */
-	@TableField("work_post")
-	private String workPost;
-    /**
-     * 学校
-     */
-	private String school;
-    /**
-     * 专业
-     */
-	private String major;
-    /**
-     * 学历
-     */
-	private String education;
-    /**
-     * 在校时间
-     */
-	@TableField("school_time")
-	private Date schoolTime;
-    /**
-     * 在校经历
-     */
-	@TableField("school_exp")
-	private String schoolExp;
+	/**
+	 * 性别
+	 */
+	private String sex;
+	/**
+	 * 电话
+	 */
+	private String phone;
+	/**
+	 * 手机
+	 */
+	private String mobile;
+	/**
+	 * 生日
+	 */
+	private Date birthday;
+	/**
+	 * 地址
+	 */
+	private String address;
+	/*
+	* 	身高
+	* */
+	private String height;
+	/*
+	* 	年龄
+	* */
+	private Integer age;
+	/**
+	 * 头像
+	 */
+	private String avatar;
+	/**
+	 * 微信
+	 */
+	private String wechat;
+	/**
+	 * QQ
+	 */
+	private String qq;
+	/**
+	 * 邮箱
+	 */
+	private String email;
     /**
      * 保留字段
      */
@@ -93,6 +94,9 @@ public class Resume extends Model<Resume> {
      */
 	private String field4;
 
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
 
 	public Long getId() {
 		return id;
@@ -102,20 +106,12 @@ public class Resume extends Model<Resume> {
 		this.id = id;
 	}
 
-	public String getWorkArea() {
-		return workArea;
+	public String getName() {
+		return name;
 	}
 
-	public void setWorkArea(String workArea) {
-		this.workArea = workArea;
-	}
-
-	public Date getJbTime() {
-		return jbTime;
-	}
-
-	public void setJbTime(Date jbTime) {
-		this.jbTime = jbTime;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getSelfEvaluate() {
@@ -126,68 +122,92 @@ public class Resume extends Model<Resume> {
 		this.selfEvaluate = selfEvaluate;
 	}
 
-	public String getWorkTime() {
-		return workTime;
+	public String getSex() {
+		return sex;
 	}
 
-	public void setWorkTime(String workTime) {
-		this.workTime = workTime;
+	public void setSex(String sex) {
+		this.sex = sex;
 	}
 
-	public String getWorkCompany() {
-		return workCompany;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setWorkCompany(String workCompany) {
-		this.workCompany = workCompany;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
-	public String getWorkPost() {
-		return workPost;
+	public String getMobile() {
+		return mobile;
 	}
 
-	public void setWorkPost(String workPost) {
-		this.workPost = workPost;
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
-	public String getSchool() {
-		return school;
+	public Date getBirthday() {
+		return birthday;
 	}
 
-	public void setSchool(String school) {
-		this.school = school;
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
 	}
 
-	public String getMajor() {
-		return major;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setMajor(String major) {
-		this.major = major;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
-	public String getEducation() {
-		return education;
+	public String getHeight() {
+		return height;
 	}
 
-	public void setEducation(String education) {
-		this.education = education;
+	public void setHeight(String height) {
+		this.height = height;
 	}
 
-	public Date getSchoolTime() {
-		return schoolTime;
+	public Integer getAge() {
+		return age;
 	}
 
-	public void setSchoolTime(Date schoolTime) {
-		this.schoolTime = schoolTime;
+	public void setAge(Integer age) {
+		this.age = age;
 	}
 
-	public String getSchoolExp() {
-		return schoolExp;
+	public String getAvatar() {
+		return avatar;
 	}
 
-	public void setSchoolExp(String schoolExp) {
-		this.schoolExp = schoolExp;
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public String getWechat() {
+		return wechat;
+	}
+
+	public void setWechat(String wechat) {
+		this.wechat = wechat;
+	}
+
+	public String getQq() {
+		return qq;
+	}
+
+	public void setQq(String qq) {
+		this.qq = qq;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getField1() {
@@ -224,28 +244,6 @@ public class Resume extends Model<Resume> {
 
 	@Override
 	protected Serializable pkVal() {
-		return this.id;
-	}
-
-	@Override
-	public String toString() {
-		return "Resume{" +
-			"id=" + id +
-			", workArea=" + workArea +
-			", jbTime=" + jbTime +
-			", selfEvaluate=" + selfEvaluate +
-			", workTime=" + workTime +
-			", workCompany=" + workCompany +
-			", workPost=" + workPost +
-			", school=" + school +
-			", major=" + major +
-			", education=" + education +
-			", schoolTime=" + schoolTime +
-			", schoolExp=" + schoolExp +
-			", field1=" + field1 +
-			", field2=" + field2 +
-			", field3=" + field3 +
-			", field4=" + field4 +
-			"}";
+		return null;
 	}
 }

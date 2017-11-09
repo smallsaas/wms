@@ -73,7 +73,7 @@ CREATE TABLE `t_edu_background` (
   `graduation_time` date DEFAULT NULL COMMENT '毕业时间',
   `college_name` varchar(26) DEFAULT NULL COMMENT '院校名称',
   `education` varchar(26) DEFAULT NULL COMMENT '学历',
-  `major` varchar(26) DEFAULT NULL COMMENT '工作岗位',
+  `major` varchar(26) DEFAULT NULL COMMENT '专业',
   `description` text DEFAULT NULL COMMENT '在校情况',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
