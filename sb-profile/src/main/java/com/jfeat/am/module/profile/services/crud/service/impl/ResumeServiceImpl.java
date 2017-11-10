@@ -57,20 +57,6 @@ public class ResumeServiceImpl  extends CRUDServiceOverModelImpl<Resume,ResumeMo
         return ResumeModel.class;
     }
 
-    /*
-    *   优化/resume与workExperience eduBackground 一对多的关系
-    * */
-    public ResumeModel retrieveResume(long id){
-        Resume resume = resumeMapper.selectById(id);
-        List<EduBackground> eduBackgrounds = eduBackgroundMapper.selectList(new EntityWrapper<EduBackground>().eq("resume_id",id));
-        List<WorkExperience> workExperiences = workExperienceMapper.selectList(new EntityWrapper<WorkExperience>().eq("resume_id",id));
-        JSONObject resumeObj = JSON.parseObject(JSON.toJSONString(resume));
-        resumeObj.put("eduBackgrounds",eduBackgrounds);
-        resumeObj.put("workExperiences",workExperiences);
-        ResumeModel model = JSON.parseObject(JSON.toJSONString(resumeObj),ResumeModel.class);
-        return model;
-    }
-
     static final String eduBackgroundFieldName = "resume_id";
     static final String eduBackgroundKeyName = "eduBackgrounds";
 
