@@ -5,17 +5,19 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.profile.services.persistence.model.Resume">
 		<id column="id" property="id" />
-		<result column="work_area" property="workArea" />
-		<result column="jb_time" property="jbTime" />
+		<result column="name" property="name" />
 		<result column="self_evaluate" property="selfEvaluate" />
-		<result column="work_time" property="workTime" />
-		<result column="work_company" property="workCompany" />
-		<result column="work_post" property="workPost" />
-		<result column="school" property="school" />
-		<result column="major" property="major" />
-		<result column="education" property="education" />
-		<result column="school_time" property="schoolTime" />
-		<result column="school_exp" property="schoolExp" />
+		<result column="sex" property="sex" />
+		<result column="phone" property="phone" />
+		<result column="mobile" property="mobile" />
+		<result column="birthday" property="birthday" />
+		<result column="address" property="address" />
+		<result column="height" property="height" />
+		<result column="age" property="age" />
+		<result column="avatar" property="avatar" />
+		<result column="wechat" property="wechat" />
+		<result column="qq" property="qq" />
+		<result column="email" property="email" />
 		<result column="field1" property="field1" />
 		<result column="field2" property="field2" />
 		<result column="field3" property="field3" />
