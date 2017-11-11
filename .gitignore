@@ -11,3 +11,4 @@ classes/*
 logs/
 .DS_Store
 */target/**
+*/LOG_*
