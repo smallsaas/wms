@@ -8,6 +8,11 @@
 		<result column="stock_id" property="stockId" />
 		<result column="member_id" property="memberId" />
 		<result column="note" property="note" />
+		<result column="star1" property="star1" />
+		<result column="star2" property="star2" />
+		<result column="star3" property="star3" />
+		<result column="star4" property="star4" />
+		<result column="photo" property="photo" />
 		<result column="create_time" property="createTime" />
 	</resultMap>
 

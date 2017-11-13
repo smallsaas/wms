@@ -79,7 +79,12 @@ CREATE TABLE `so_stock_evaluation` (
 `id`  bigint(20)  NOT NULL  COMMENT 'ID',
 `stock_id`  bigint(20)  NOT NULL COMMENT '外键',
 `member_id`  bigint(20)  NOT NULL COMMENT '外键',
+`star1` INT NOT NULL comment '星级评价1',
+`star2` INT NOT NULL comment '星级评价2',
+`star3` INT NOT NULL comment '星级评价3',
+`star4` INT NOT NULL comment '星级评价4',
 `note`  text  NOT NULL COMMENT '评价信息',
+`photo` VARCHAR(255) DEFAULT NULL '图片',
 `create_time` datetime NOT NULL COMMENT '创建时间',
 PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='';

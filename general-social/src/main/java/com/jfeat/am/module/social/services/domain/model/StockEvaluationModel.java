@@ -6,13 +6,13 @@ import java.util.List;
  * Created by Code Generator on 2017-11-11
  */
 public class StockEvaluationModel extends StockEvaluation{
-    List<StockEvaluationAddition> StockEvaluationAdditions;
+    List<StockEvaluationAddition> StockEvaluationAddition;
 
-    public List<StockEvaluationAddition> getStockEvaluationAdditions() {
-        return StockEvaluationAdditions;
+    public List<com.jfeat.am.module.social.services.persistence.model.StockEvaluationAddition> getStockEvaluationAddition() {
+        return StockEvaluationAddition;
     }
 
-    public void setStockEvaluationAdditions(List<StockEvaluationAddition> stockEvaluationAdditions) {
-        StockEvaluationAdditions = stockEvaluationAdditions;
+    public void setStockEvaluationAddition(List<com.jfeat.am.module.social.services.persistence.model.StockEvaluationAddition> stockEvaluationAddition) {
+        StockEvaluationAddition = stockEvaluationAddition;
     }
 }

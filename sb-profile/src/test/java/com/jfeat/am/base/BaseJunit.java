@@ -1,10 +1,8 @@
-package com.jfeat.base;
+package com.jfeat.am.base;
 
 import com.jfeat.AmApplication;
 import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -28,7 +26,6 @@ import org.springframework.web.context.WebApplicationContext;
 @WebAppConfiguration
 @Transactional //测试之后数据可回滚
 public class BaseJunit {
-    protected static final Logger logger = LoggerFactory.getLogger(BaseJunit.class);
 
     @Autowired
     WebApplicationContext webApplicationContext;
