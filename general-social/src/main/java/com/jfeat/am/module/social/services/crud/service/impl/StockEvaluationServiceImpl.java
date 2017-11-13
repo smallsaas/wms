@@ -46,6 +46,16 @@ public class StockEvaluationServiceImpl extends CRUDServiceOnlyImpl<StockEvaluat
         StockEvaluationModel model = JSON.parseObject(JSON.toJSONString(evaluateObj),StockEvaluationModel.class);
         return model;
     }
+    public Integer deleteStockEvaluationIncludeAddition(long id){
+        StockEvaluation evaluation = stockEvaluationMapper.selectById(id);
+        StockEvaluationAddition addition = stockEvaluationAdditionMapper.selectList(
+                new EntityWrapper<StockEvaluationAddition>().eq("evaluate_id",evaluation.getId())).get(0);
+        if(addition != null){
+            stockEvaluationAdditionMapper.deleteById(addition.getId());
+        }
+        return stockEvaluationMapper.deleteById(id);
+    }
+
 }
 
 

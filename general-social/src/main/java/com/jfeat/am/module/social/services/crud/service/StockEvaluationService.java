@@ -18,5 +18,6 @@ import com.jfeat.am.module.social.services.persistence.model.StockEvaluation;
 public interface StockEvaluationService extends CRUDServiceOnly<StockEvaluation> {
 
     StockEvaluationModel returnStockEvaluationIncludeAddition(long id);
+    Integer deleteStockEvaluationIncludeAddition(long id);
 
 }
