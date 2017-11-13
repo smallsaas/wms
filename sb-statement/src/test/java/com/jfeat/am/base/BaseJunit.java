@@ -1,4 +1,4 @@
-package com.jfeat.base;
+package com.jfeat.am.base;
 
 import com.jfeat.AmApplication;
 import org.junit.Before;

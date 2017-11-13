@@ -8,7 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jfeat.am.common.crud.CRUD;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentService;
 import com.jfeat.am.module.organization.services.persistence.model.Department;
-import com.jfeat.base.BaseJunit;
+import com.jfeat.am.base.BaseJunit;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

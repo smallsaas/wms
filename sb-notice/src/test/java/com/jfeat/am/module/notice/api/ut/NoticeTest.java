@@ -6,7 +6,7 @@ package com.jfeat.am.module.notice.api.ut;
 
 import com.jfeat.am.module.notice.services.crud.service.NoticeService;
 import com.jfeat.am.module.notice.services.persistence.model.Notice;
-import com.jfeat.base.BaseJunit;
+import com.jfeat.am.base.BaseJunit;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

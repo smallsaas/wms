@@ -7,7 +7,7 @@ package com.jfeat.am.module.organization.api.ut;
 import com.alibaba.fastjson.JSON;
 import com.jfeat.am.module.organization.services.crud.service.PositionService;
 import com.jfeat.am.module.organization.services.persistence.model.Position;
-import com.jfeat.base.BaseJunit;
+import com.jfeat.am.base.BaseJunit;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
