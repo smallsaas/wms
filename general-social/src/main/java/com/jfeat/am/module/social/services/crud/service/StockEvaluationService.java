@@ -2,6 +2,7 @@ package com.jfeat.am.module.social.services.crud.service;
             
 import com.jfeat.am.common.crud.CRUDServiceOnly;
 import com.jfeat.am.common.crud.CRUDServiceOverModel;
+import com.jfeat.am.module.social.services.domain.model.StockEvaluationModel;
 import com.jfeat.am.module.social.services.persistence.model.StockEvaluation;
 
 
@@ -15,5 +16,7 @@ import com.jfeat.am.module.social.services.persistence.model.StockEvaluation;
  */
 
 public interface StockEvaluationService extends CRUDServiceOnly<StockEvaluation> {
+
+    StockEvaluationModel returnStockEvaluationIncludeAddition(long id);
 
 }
