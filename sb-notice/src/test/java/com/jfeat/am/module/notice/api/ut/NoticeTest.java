@@ -51,6 +51,7 @@ public class NoticeTest extends BaseJunit {
 
         logger.debug(result.getResponse().getContentAsString());
     }
+
     @Test
     public void testGet() throws Exception {
         RequestBuilder request = get("/api/notice/notices?type=notice");
@@ -75,7 +76,7 @@ public class NoticeTest extends BaseJunit {
         logger.debug(result.getResponse().getContentAsString());
     }
 
-    @Test
+    //@Test
     public void testDelete() throws Exception {
         RequestBuilder request = delete("/api/notice/notices/1245231533451");
         MvcResult result = mockMvc.perform(request).andExpect(status().isOk()).andReturn();
