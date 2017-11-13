@@ -4,7 +4,7 @@ package com.jfeat.am.module.social.api.ut;
  * Created by vincenthuang on 18/10/2017.
  */
 
-import com.jfeat.base.BaseJunit;
+import com.jfeat.am.base.BaseJunit;
 import org.junit.Before;
 import org.junit.Test;
 
