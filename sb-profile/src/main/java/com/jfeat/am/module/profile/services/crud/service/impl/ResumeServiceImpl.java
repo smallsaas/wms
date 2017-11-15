@@ -47,12 +47,12 @@ public class ResumeServiceImpl  extends CRUDServiceOverModelImpl<Resume,ResumeMo
         return resumeMapper;
     }
 
-    @Override
+
     protected Class<Resume> masterClassName() {
         return Resume.class;
     }
 
-    @Override
+
     protected Class<ResumeModel> modelClassName() {
         return ResumeModel.class;
     }
