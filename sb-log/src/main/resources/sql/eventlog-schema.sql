@@ -2,7 +2,7 @@ SET FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS `t_operation_log`;
 CREATE TABLE `t_operation_log` (
-`id` bigint NOT NULL AUTO_INCREMENT,
+`id` bigint(20) NOT NULL,
 `log_type` varchar(50) DEFAULT NULL COMMENT '日志类型',
 `log_name` varchar(200) DEFAULT NULL COMMENT '日志名称',
 `user_id` bigint(20) DEFAULT NULL ,
