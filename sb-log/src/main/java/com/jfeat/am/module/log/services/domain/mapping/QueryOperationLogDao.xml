@@ -19,7 +19,10 @@
         </if>
 
         <if test="userId != null and userId != ''">
-            AND t_operation_log.user_id LIKE CONCAT('%',#{userId},'%')
+            AND t_operation_log.user_id = #{userId}
+        </if>
+        <if test="userName != null and userName != ''">
+            AND t_operation_log.user_name LIKE CONCAT('%',#{userName},'%')
         </if>
 
         <if test="className != null and className != ''">

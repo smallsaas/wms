@@ -15,7 +15,8 @@ public interface QueryOperationLogDao  extends BaseMapper<OperationLog> {
     List<OperationLog> findOperationLogs(Page<OperationLog> page,
                                          @Param("logType") String logType,
                                          @Param("logName") String logName,
-                                         @Param("userId") String userId,
+                                         @Param("userId") Long userId,
+                                         @Param("userName") String userName,
                                          @Param("className")String className,
                                          @Param("method") String method,
                                          @Param("createTime") String createTime);
