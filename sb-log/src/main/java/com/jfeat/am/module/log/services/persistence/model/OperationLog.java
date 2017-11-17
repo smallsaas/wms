@@ -22,7 +22,6 @@ public class OperationLog extends Model<OperationLog> {
 
     private static final long serialVersionUID = 1L;
 
-	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
     /**
      * 日志类型
@@ -34,8 +33,13 @@ public class OperationLog extends Model<OperationLog> {
      */
 	@TableField("log_name")
 	private String logName;
+
 	@TableField("user_id")
-	private String userId;
+	private Long userId;
+
+	@TableField("user_name")
+	private String userName;
+
     /**
      * 类名称
      */
@@ -87,11 +91,20 @@ public class OperationLog extends Model<OperationLog> {
 		return this;
 	}
 
-	public String getUserId() {
+	public String getUserName() {
+		return userName;
+	}
+
+	public OperationLog setUserName(String userName) {
+		this.userName = userName;
+		return this;
+	}
+
+	public Long getUserId() {
 		return userId;
 	}
 
-	public OperationLog setUserId(String userId) {
+	public OperationLog setUserId(Long userId) {
 		this.userId = userId;
 		return this;
 	}
@@ -171,6 +184,7 @@ public class OperationLog extends Model<OperationLog> {
 			", logType=" + logType +
 			", logName=" + logName +
 			", userId=" + userId +
+			", userName=" + userName +
 			", className=" + className +
 			", method=" + method +
 			", createTime=" + createTime +

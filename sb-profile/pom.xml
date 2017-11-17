@@ -194,6 +194,11 @@
             <artifactId>sb-crud</artifactId>
             <version>1.0.4-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.jfeat</groupId>
+            <artifactId>sb-crud</artifactId>
+            <version>1.0.3-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 
@@ -210,6 +215,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

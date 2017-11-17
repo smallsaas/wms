@@ -22,6 +22,7 @@
         <sb-base.version>1.0.0</sb-base.version>
         <sb-crud.version>1.0.4-SNAPSHOT</sb-crud.version>
         <sb-account.version>1.0.0</sb-account.version>
+        <skipStandalone>true</skipStandalone>
     </properties>
 
     <dependencies>
@@ -212,6 +213,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>${skipStandalone}</skip>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

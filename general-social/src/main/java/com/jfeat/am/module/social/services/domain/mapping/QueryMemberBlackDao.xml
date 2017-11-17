@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.social.services.domain.dao.QueryMemberBlackDao">
+    <sql id="Base_Column_List">
+            so_member_black.*
+        </sql>
+    <select id="findMemberBlackPage" resultType="MemberBlack" parameterType="MemberBlack">
+        SELECT so_member_black.*
+        FROM so_member_black
+        WHERE 1=1
+        <if test="id != null and id>0 ">
+            AND so_member_black.id LIKE CONCAT('%',#{id},'%')
+        </if>
+        <if test="memberId != null and memberId>0 ">
+            AND so_member_black.member_id LIKE CONCAT('%',#{memberId},'%')
+        </if>
+        <if test="member_blackId != null and member_blackId>0 ">
+            AND so_member_black.member_black_id LIKE CONCAT('%',#{memberBlackId},'%')
+        </if>
+        <if test="createTime != null and createTime>0 ">
+            AND so_member_black.create_time LIKE CONCAT('%',#{createTime},'%')
+        </if>
+        <if test="cause != null and cause!= ''">
+            AND so_member_black.cause LIKE CONCAT('%',#{cause},'%')
+        </if>
+    </select>
+</mapper>

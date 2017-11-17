@@ -56,13 +56,14 @@ public class OperationLogEndpoint extends BaseController {
                                  @RequestParam(required = false,defaultValue = "10")Integer pageSize,
                                  @RequestParam(required = false)String logType,
                                  @RequestParam(required = false)String logName,
-                                 @RequestParam(required = false)String userId,
+                                 @RequestParam(required = false)Long userId,
+                                 @RequestParam(required = false)String userName,
                                  @RequestParam(required = false)String className,
                                  @RequestParam(required = false)String method,
                                  @RequestParam(required = false)String createTime){
         page.setCurrent(pageNum);
         page.setSize(pageSize);
-        List<OperationLog> operationLogs = queryOperationLogDao.findOperationLogs(page,logType,logName,userId,className,method,createTime);
+        List<OperationLog> operationLogs = queryOperationLogDao.findOperationLogs(page,logType,logName,userId, userName, className,method,createTime);
         page.setRecords(operationLogs);
 
         return SuccessTip.create(page);

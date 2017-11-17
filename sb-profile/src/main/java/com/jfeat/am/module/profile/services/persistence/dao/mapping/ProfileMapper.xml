@@ -15,7 +15,7 @@
 		<result column="height" property="height" />
 		<result column="age" property="age" />
 		<result column="avatar" property="avatar" />
-		<result column="wechewcat" property="wechat" />
+		<result column="wechat" property="wechat" />
 		<result column="qq" property="qq" />
 		<result column="email" property="email" />
 		<result column="signature" property="signature" />

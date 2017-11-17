@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.jfeat.am.module.organization.services.crud.service.StaffService;
 import com.jfeat.am.module.organization.services.domain.model.StaffModel;
 import com.jfeat.am.module.profile.services.persistence.model.Profile;
-import com.jfeat.base.BaseJunit;
+import com.jfeat.am.base.BaseJunit;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

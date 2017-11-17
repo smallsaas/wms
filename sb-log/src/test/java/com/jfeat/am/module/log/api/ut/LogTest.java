@@ -2,7 +2,7 @@ package com.jfeat.am.module.log.api.ut;
 
 import com.jfeat.am.module.log.services.persistence.model.OperationLog;
 import com.jfeat.am.module.log.services.crud.service.OperationLogService;
-import com.jfeat.base.BaseJunit;
+import com.jfeat.am.base.BaseJunit;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
