@@ -246,7 +246,16 @@
                     <parentPackage>com.jfeat.am.module</parentPackage>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>com.jfeat</groupId>
+                <artifactId>sb-sql-runner</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <username>root</username>
+                    <password>rootAZaz123</password>
+                    <databaseUrl>jdbc:mysql://112.74.26.228/star?characterEncoding=utf8</databaseUrl>
+                </configuration>
+            </plugin>
         </plugins>
         <resources>
             <resource>
