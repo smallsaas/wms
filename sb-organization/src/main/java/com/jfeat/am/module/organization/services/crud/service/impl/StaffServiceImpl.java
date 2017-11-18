@@ -57,6 +57,14 @@ public class StaffServiceImpl extends CRUDServiceOnlyImpl<Staff>
     }
 
     @Override
+    public Staff getStaffByUserId(Long userId) {
+        Staff entity = new Staff();
+        entity.setUserId(userId);
+        return staffMapper.selectOne(entity);
+    }
+
+    @Override
+    @Transactional
     public Integer createModel(StaffModel staffModel, CRUDFilter<Staff> crudFilter) {
         Integer affected = 0;
 
@@ -100,7 +108,7 @@ public class StaffServiceImpl extends CRUDServiceOnlyImpl<Staff>
 
         /// update slave
         Profile profile = staffModel.getProfile();
-        if(staffPos!=null){
+        if(profile!=null){
             affected += profileChildService.updateChild(staffModel.getId(), profile);
         }
 
@@ -139,7 +147,6 @@ public class StaffServiceImpl extends CRUDServiceOnlyImpl<Staff>
         Integer affected = 0;
 
         /// delete child
-        affected += positionChildService.deleteChild(masterId);
 
         affected += profileChildService.deleteChild(masterId);
 

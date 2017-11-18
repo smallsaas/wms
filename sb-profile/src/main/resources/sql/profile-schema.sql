@@ -25,6 +25,7 @@ CREATE TABLE `t_profile` (
   `idcard_back` varchar(255) DEFAULT NULL COMMENT '身份证背面',
   `bankcard_no` bigint(20) DEFAULT NULL COMMENT '银行卡帐户',
   `bankcard_snapshot` varchar(26) DEFAULT NULL COMMENT '银行卡图片',
+  `tag` varchar(250) DEFAULT NULL,
   `field1` varchar(26) DEFAULT NULL COMMENT '预留字段',
   `field2` varchar(26) DEFAULT NULL COMMENT '预留字段',
   `field3` varchar(26) DEFAULT NULL COMMENT '预留字段',

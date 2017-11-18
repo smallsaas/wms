@@ -27,6 +27,10 @@ public class Staff extends Model<Staff> {
      */
 	@TableField("dept_id")
 	private Long deptId;
+
+	@TableField("user_id")
+	private Long userId;
+
     /**
      * ??
      */
@@ -80,6 +84,14 @@ public class Staff extends Model<Staff> {
 	public Staff setDeptId(Long deptId) {
 		this.deptId = deptId;
 		return this;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public Integer getWorkAge() {
@@ -156,6 +168,8 @@ public class Staff extends Model<Staff> {
 
 	public static final String ID = "id";
 
+	public static final String USER_ID = "user_id";
+
 	public static final String DEPT_ID = "dept_id";
 
 	public static final String WORK_AGE = "work_age";
@@ -183,6 +197,7 @@ public class Staff extends Model<Staff> {
 	public String toString() {
 		return "Staff{" +
 			"id=" + id +
+			", userId=" + userId +
 			", deptId=" + deptId +
 			", workAge=" + workAge +
 			", hireDate=" + hireDate +

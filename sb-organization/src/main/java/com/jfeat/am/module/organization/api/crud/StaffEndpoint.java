@@ -2,6 +2,7 @@ package com.jfeat.am.module.organization.api.crud;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.crud.CRUDObject;
+import com.jfeat.am.module.organization.constant.BizExceptionEnum;
 import com.jfeat.am.module.organization.services.crud.filter.StaffFilter;
 import com.jfeat.am.module.organization.services.domain.model.StaffItem;
 import com.jfeat.am.module.organization.services.domain.model.StaffModel;
@@ -57,6 +58,10 @@ public class StaffEndpoint extends BaseController {
 
     @PostMapping
     public Tip createStaff(@RequestBody StaffModel entity) {
+        if (entity.getUserId() != null && staffService.getStaffByUserId(entity.getUserId()) != null) {
+            throw BizExceptionEnum.USER_ALREADY_BOUND.createException();
+        }
+
         return SuccessTip.create(staffService.createModel(entity, staffFilter));
     }
 
