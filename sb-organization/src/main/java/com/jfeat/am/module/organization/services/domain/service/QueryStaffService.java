@@ -12,6 +12,6 @@ import java.util.List;
  */
 public interface QueryStaffService {
 
-    List<StaffItem> findStaffs(StaffItem staffItem);
+    List<StaffItem> findStaffs(Page<StaffItem> page, StaffItem staffItem);
 }
 

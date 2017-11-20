@@ -33,6 +33,7 @@ CREATE TABLE `t_staff` (
 `status` varchar(26) DEFAULT NULL COMMENT '在职状态',
 `profile_id` bigint DEFAULT NULL ,
 `position_id` bigint DEFAULT NULL COMMENT '所属职位',
+`user_id` bigint DEFAULT NULL COMMENT '用户ID, 如果没有关联则为NULL',
 `create_time` datetime DEFAULT NULL COMMENT '创建时间',
 `note` text DEFAULT NULL COMMENT '备注',
 PRIMARY KEY (`id`)

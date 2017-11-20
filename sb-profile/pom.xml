@@ -189,16 +189,6 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${swagger.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.jfeat</groupId>
-            <artifactId>sb-crud</artifactId>
-            <version>1.0.4-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.jfeat</groupId>
-            <artifactId>sb-crud</artifactId>
-            <version>1.0.3-SNAPSHOT</version>
-        </dependency>
 
     </dependencies>
 
