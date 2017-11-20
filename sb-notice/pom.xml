@@ -14,11 +14,11 @@
     <version>1.0.0</version>  
     <relativePath/> 
   </parent>  
-  <properties> 
-    <sb-base.version>1.0.0</sb-base.version>  
+  <properties>
+    <sb-base.version>1.0.0</sb-base.version>
     <sb-crud.version>1.0.4-SNAPSHOT</sb-crud.version>
     <skipStandalone>true</skipStandalone>
-  </properties>  
+  </properties>
   <dependencies> 
     <dependency> 
       <groupId>com.jfeat</groupId>  
@@ -233,16 +233,17 @@
         <configuration> 
           <!-- change to your module name -->  
           <moduleName>notice</moduleName>  
-          <tables> 
-            <table>t_notice</table> 
-          </tables>  
-          <dbUrl>jdbc:mysql://127.0.0.1:3306/sbnotice</dbUrl>  
-          <username>root</username>  
-          <password>root</password>  
-          <outputDir>E:\mydocuments\idea\sb-infrastructure\sb-notice\src\main\java</outputDir>  
-          <parentPackage>com.jfeat.am.module</parentPackage> 
+          <dbUrl>jdbc:mysql://112.74.26.228/amequipment?characterEncoding=utf8</dbUrl>
+          <username>root</username>
+          <password>rootAZaz123</password>
+          <outputDir>src\main\java</outputDir>
+          <parentPackage>com.jfeat.am.module</parentPackage>
+          <tables>
+            <table>t_notice</table>
+          </tables>
+          <initialize>true</initialize>
         </configuration> 
-      </plugin> 
+      </plugin>
     </plugins>  
     <resources> 
       <resource> 

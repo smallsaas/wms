@@ -10,5 +10,5 @@ import java.util.List;
  * Created by Code Generator on 2017-11-02
  */
 public interface QueryNoticeDao extends BaseMapper<Notice> {
-    List<Notice> findNotices(Page<Notice> page, Notice notice);
+    List<Notice> findNotices(Page<Notice> page, Notice notice, Integer expired);
 }

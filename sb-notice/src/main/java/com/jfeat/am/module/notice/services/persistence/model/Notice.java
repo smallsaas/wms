@@ -1,12 +1,11 @@
 package com.jfeat.am.module.notice.services.persistence.model;
 
-import java.io.Serializable;
-
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -14,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author Code Generator
- * @since 2017-11-02
+ * @since 2017-11-20
  */
 @TableName("t_notice")
 public class Notice extends Model<Notice> {
@@ -26,21 +25,25 @@ public class Notice extends Model<Notice> {
      */
 	private Long id;
     /**
-     * 类型
+     * 作者
      */
-	private String type;
+	private String author;
     /**
-     * 是否启用 0-否 1-是
-     */
-	private Integer enable;
-    /**
-     * 名称
+     * 标题
      */
 	private String title;
     /**
      * 内容
      */
 	private String content;
+    /**
+     * 类型
+     */
+	private String type;
+    /**
+     * 是否启用 0-否 1-是
+     */
+	private Integer enabled;
     /**
      * 创建时间
      */
@@ -51,6 +54,11 @@ public class Notice extends Model<Notice> {
      */
 	@TableField("update_time")
 	private Date updateTime;
+    /**
+     * 到期时间
+     */
+	@TableField("end_time")
+	private Date endTime;
 
 
 	public Long getId() {
@@ -62,21 +70,12 @@ public class Notice extends Model<Notice> {
 		return this;
 	}
 
-	public String getType() {
-		return type;
+	public String getAuthor() {
+		return author;
 	}
 
-	public Notice setType(String type) {
-		this.type = type;
-		return this;
-	}
-
-	public Integer getEnable() {
-		return enable;
-	}
-
-	public Notice setEnable(Integer enable) {
-		this.enable = enable;
+	public Notice setAuthor(String author) {
+		this.author = author;
 		return this;
 	}
 
@@ -98,6 +97,24 @@ public class Notice extends Model<Notice> {
 		return this;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public Notice setType(String type) {
+		this.type = type;
+		return this;
+	}
+
+	public Integer getEnabled() {
+		return enabled;
+	}
+
+	public Notice setEnabled(Integer enabled) {
+		this.enabled = enabled;
+		return this;
+	}
+
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -116,19 +133,32 @@ public class Notice extends Model<Notice> {
 		return this;
 	}
 
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public Notice setEndTime(Date endTime) {
+		this.endTime = endTime;
+		return this;
+	}
+
 	public static final String ID = "id";
 
-	public static final String TYPE = "type";
-
-	public static final String ENABLE = "enable";
+	public static final String AUTHOR = "author";
 
 	public static final String TITLE = "title";
 
 	public static final String CONTENT = "content";
 
+	public static final String TYPE = "type";
+
+	public static final String ENABLED = "enabled";
+
 	public static final String CREATE_TIME = "create_time";
 
 	public static final String UPDATE_TIME = "update_time";
+
+	public static final String END_TIME = "end_time";
 
 	@Override
 	protected Serializable pkVal() {
@@ -139,12 +169,14 @@ public class Notice extends Model<Notice> {
 	public String toString() {
 		return "Notice{" +
 			"id=" + id +
-			", type=" + type +
-			", enable=" + enable +
+			", author=" + author +
 			", title=" + title +
 			", content=" + content +
+			", type=" + type +
+			", enabled=" + enabled +
 			", createTime=" + createTime +
 			", updateTime=" + updateTime +
+			", endTime=" + endTime +
 			"}";
 	}
 }

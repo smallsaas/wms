@@ -23,7 +23,7 @@ public class QueryNoticeServiceImpl implements QueryNoticeService {
     QueryNoticeDao queryNoticeDao;
 
     @Override
-    public List<Notice> findNotices(Page<Notice> page, Notice notice) {
-        return queryNoticeDao.findNotices(page, notice);
+    public List<Notice> findNotices(Page<Notice> page, Notice notice, Integer expired) {
+        return queryNoticeDao.findNotices(page, notice, expired);
     }
 }

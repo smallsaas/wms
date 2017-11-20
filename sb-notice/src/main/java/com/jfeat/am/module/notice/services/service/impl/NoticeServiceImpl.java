@@ -1,8 +1,8 @@
-package com.jfeat.am.module.notice.services.crud.service.impl;
+package com.jfeat.am.module.notice.services.service.impl;
             
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
-import com.jfeat.am.module.notice.services.crud.service.NoticeService;
+import com.jfeat.am.module.notice.services.service.NoticeService;
 import com.jfeat.am.module.notice.services.persistence.dao.NoticeMapper;
 import com.jfeat.am.module.notice.services.persistence.model.Notice;
 import org.springframework.stereotype.Service;

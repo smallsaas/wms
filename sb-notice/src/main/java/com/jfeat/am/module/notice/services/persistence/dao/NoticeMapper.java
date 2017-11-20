@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * </p>
  *
  * @author Code Generator
- * @since 2017-11-02
+ * @since 2017-11-20
  */
 public interface NoticeMapper extends BaseMapper<Notice> {
 

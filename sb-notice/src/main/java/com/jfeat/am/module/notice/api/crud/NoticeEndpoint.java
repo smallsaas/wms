@@ -4,12 +4,15 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
-import com.jfeat.am.module.notice.services.crud.service.NoticeService;
+import com.jfeat.am.module.notice.services.service.NoticeService;
 import com.jfeat.am.module.notice.services.domain.service.QueryNoticeService;
 import com.jfeat.am.module.notice.services.persistence.model.Notice;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -30,15 +33,38 @@ public class NoticeEndpoint extends BaseController {
     @Resource
     QueryNoticeService queryNoticeService;
 
-    /// For debug purpose
-    @GetMapping("/empty")
-    public Tip getEmptyNotice() {
-        return SuccessTip.create(new Notice());
+
+    /**
+     * PATCH
+     *
+     * */
+    @PostMapping("/{id}/enable")
+    public Tip enableNotice(@PathVariable Long id) {
+        Notice notice = new Notice();
+        notice.setId(id);
+        notice.setEnabled(1);
+
+        return SuccessTip.create(noticeService.updateMaster(notice));
+    }
+    @PostMapping("/{id}/disable")
+    public Tip disableNotice(@PathVariable Long id) {
+        Notice notice = new Notice();
+        notice.setId(id);
+        notice.setEnabled(0);
+
+        return SuccessTip.create(noticeService.updateMaster(notice));
     }
 
+    /**
+     * CRUD
+     * @param entity
+     * @return
+     */
     @PostMapping
     public Tip createNotice(@RequestBody Notice entity) {
         entity.setCreateTime(new Date());
+        entity.setEnabled(1);
+
         return SuccessTip.create(noticeService.createMaster(entity));
     }
 
@@ -47,10 +73,11 @@ public class NoticeEndpoint extends BaseController {
         return SuccessTip.create(noticeService.retrieveMaster(id));
     }
 
-
     @PutMapping("/{id}")
     public Tip updateNotice(@PathVariable Long id, @RequestBody Notice entity) {
         entity.setId(id);
+        entity.setUpdateTime(new Date());
+
         return SuccessTip.create(noticeService.updateMaster(entity));
     }
 
@@ -60,30 +87,38 @@ public class NoticeEndpoint extends BaseController {
     }
 
     @GetMapping
-    //此方法可能需要自行添加需要的参数,按需要使用
     public Tip queryNotices(
             Page<Notice> page,
             @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
             @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
             @RequestParam(name = "type", required = false) String type,
-            @RequestParam(name = "enable", required = false) Integer enable,
+            @RequestParam(name = "enabled", required = false) Integer enable,
+            @RequestParam(name = "expired", required = false) Integer expired,
             @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "content", required = false) String content,
             @RequestParam(name = "createTime", required = false) String createTime,
-            @RequestParam(name = "updateTime", required = false) String updateTime) {
+            @RequestParam(name = "updateTime", required = false) String updateTime,
+            @RequestParam(name = "endTime", required = false) String endTime
+            ) {
         page.setCurrent(pageNum);
         page.setSize(pageSize);
 
+        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         Notice notice = new Notice();
-        notice.setEnable(enable);
         notice.setType(type);
         notice.setTitle(title);
         notice.setContent(content);
-        //notice.setCreateTime(new DateTimeParser(DateTimeFormat.ISO).parse(createTime));
-        //notice.setUpdateTime();
+        try {
+            notice.setCreateTime(format1.parse(createTime));
+            notice.setUpdateTime(format1.parse(updateTime));
+            notice.setEndTime(format1.parse(endTime));
+        }catch (ParseException e){
+        }
+        notice.setEnabled(enable);
 
-        page.setRecords(queryNoticeService.findNotices(page, notice));
+        page.setRecords(queryNoticeService.findNotices(page, notice, expired));
 
-        return SuccessTip.create();
+        return SuccessTip.create(page);
     }
 }

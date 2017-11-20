@@ -21,11 +21,11 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `t_notice`;
 CREATE TABLE `t_notice` (
   `id` bigint(20) NOT NULL COMMENT '编号',
-  `type` varchar(255) NOT NULL COMMENT '类型',
-  `enabled` int(11) NOT NULL COMMENT '是否启用 0-否 1-是',
   `author` varchar(50) DEFAULT NULL COMMENT '作者',
   `title` varchar(255) NOT NULL COMMENT '标题',
   `content` text NOT NULL COMMENT '内容',
+  `type` varchar(255) DEFAULT NULL COMMENT '类型',
+  `enabled` smallint(5) NOT NULL COMMENT '是否启用 0-否 1-是',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `end_time` datetime DEFAULT NULL COMMENT '到期时间',

@@ -1,6 +1,6 @@
 package com.jfeat.am.base;
 
-import com.jfeat.AmApplication;
+import com.jfeat.am.module.notice.AmApplication;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = AmApplication.class)
 @WebAppConfiguration
-@Transactional //测试之后数据可回滚
+@Transactional
 public class BaseJunit {
     protected static final Logger logger = LoggerFactory.getLogger(BaseJunit.class);
 

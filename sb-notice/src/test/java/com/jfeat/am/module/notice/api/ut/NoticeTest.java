@@ -4,15 +4,17 @@ package com.jfeat.am.module.notice.api.ut;
  * Created by vincenthuang on 18/10/2017.
  */
 
-import com.jfeat.am.module.notice.services.crud.service.NoticeService;
-import com.jfeat.am.module.notice.services.persistence.model.Notice;
 import com.jfeat.am.base.BaseJunit;
+import com.jfeat.am.module.notice.services.service.NoticeService;
+import com.jfeat.am.module.notice.services.persistence.model.Notice;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -30,12 +32,22 @@ public class NoticeTest extends BaseJunit {
     public void initData() {
         Notice notice = new Notice();
         notice.setId(1245231533451L);
-        notice.setEnable(1);
+        notice.setEnabled(1);
         notice.setType("notice");
         notice.setTitle("公告");
         notice.setContent("全场五折");
         notice.setCreateTime(new Date());
         noticeService.createMaster(notice);
+    }
+
+    @Test
+    public void testDateParse()  throws Exception{
+        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date today = format1.parse("2018-01-20");
+        Date todayTime = format1.parse("2018-01-20 23:00:00");
+
+
+        "".toString();
     }
 
     //@Test
@@ -52,7 +64,7 @@ public class NoticeTest extends BaseJunit {
         logger.debug(result.getResponse().getContentAsString());
     }
 
-    @Test
+    //@Test
     public void testGet() throws Exception {
         RequestBuilder request = get("/api/notice/notices?type=notice");
         MvcResult result = mockMvc.perform(request).andExpect(status().isOk()).andReturn();

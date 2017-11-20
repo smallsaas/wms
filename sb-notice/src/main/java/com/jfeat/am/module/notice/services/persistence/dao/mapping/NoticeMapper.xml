@@ -5,17 +5,19 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.notice.services.persistence.model.Notice">
 		<id column="id" property="id" />
-		<result column="type" property="type" />
-		<result column="enable" property="enable" />
+		<result column="author" property="author" />
 		<result column="title" property="title" />
 		<result column="content" property="content" />
+		<result column="type" property="type" />
+		<result column="enabled" property="enabled" />
 		<result column="create_time" property="createTime" />
 		<result column="update_time" property="updateTime" />
+		<result column="end_time" property="endTime" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, type, enable, title, content, create_time AS createTime, update_time AS updateTime
+        id, author, title, content, type, enabled, create_time AS createTime, update_time AS updateTime, end_time AS endTime
     </sql>
 
 </mapper>
