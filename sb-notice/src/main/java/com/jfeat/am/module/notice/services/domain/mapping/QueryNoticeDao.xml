@@ -30,7 +30,7 @@
             AND t_notice.end_time LIKE CONCAT('%',#{endTime},'%')
         </if>
         <if test="expired != null">
-            AND t_notice.end_time LIKE CONCAT('%',#{endTime},'%')
+            AND CURRENT_TIMESTAMP > t_notice.end_time
         </if>
     </select>
 

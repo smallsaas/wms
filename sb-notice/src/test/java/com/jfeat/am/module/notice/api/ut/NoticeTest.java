@@ -42,10 +42,9 @@ public class NoticeTest extends BaseJunit {
 
     @Test
     public void testDateParse()  throws Exception{
-        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
         Date today = format1.parse("2018-01-20");
-        Date todayTime = format1.parse("2018-01-20 23:00:00");
-
+        //Date todayTime = format1.parse("2018-01-20 23:00:00");
 
         "".toString();
     }

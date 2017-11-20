@@ -1,4 +1,4 @@
-package com.jfeat.am.module.notice;
+package com.jfeat;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;

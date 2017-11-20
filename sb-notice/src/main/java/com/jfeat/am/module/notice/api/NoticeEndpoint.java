@@ -1,4 +1,4 @@
-package com.jfeat.am.module.notice.api.crud;
+package com.jfeat.am.module.notice.api;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.constant.tips.SuccessTip;
@@ -103,7 +103,7 @@ public class NoticeEndpoint extends BaseController {
         page.setCurrent(pageNum);
         page.setSize(pageSize);
 
-        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 
         Notice notice = new Notice();
         notice.setType(type);

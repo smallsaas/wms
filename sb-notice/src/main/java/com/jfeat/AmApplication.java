@@ -1,4 +1,4 @@
-package com.jfeat.am.module.notice;
+package com.jfeat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
