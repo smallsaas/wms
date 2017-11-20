@@ -1,5 +1,6 @@
 package com.jfeat.am.module.organization.services.domain.service.impl;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.module.organization.services.domain.dao.QueryStaffDao;
 import com.jfeat.am.module.organization.services.domain.model.StaffItem;
 import com.jfeat.am.module.organization.services.domain.service.QueryStaffService;
@@ -23,7 +24,7 @@ public class QueryStaffServiceImpl implements QueryStaffService {
     QueryStaffDao queryStaffDao;
 
     @Override
-    public List<StaffItem> findStaffs(StaffItem staffItem) {
-        return queryStaffDao.findStaffs(staffItem);
+    public List<StaffItem> findStaffs(Page<StaffItem> page, StaffItem staffItem) {
+        return queryStaffDao.findStaffs(page, staffItem);
     }
 }

@@ -11,5 +11,5 @@ import java.util.List;
  * Created by Code Generator on 2017-10-26
  */
 public interface QueryStaffDao extends BaseMapper<Staff> {
-    List<StaffItem> findStaffs(StaffItem staff);
+    List<StaffItem> findStaffs(Page<StaffItem> page, StaffItem staff);
 }

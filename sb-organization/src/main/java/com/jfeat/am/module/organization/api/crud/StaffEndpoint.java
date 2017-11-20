@@ -115,7 +115,7 @@ public class StaffEndpoint extends BaseController {
         staff.setDeptName(deptName);
         staff.setPosition(position);
 
-        List<StaffItem> staffs = queryStaffService.findStaffs(staff);
+        List<StaffItem> staffs = queryStaffService.findStaffs(page, staff);
         page.setRecords(staffs);
 
         return SuccessTip.create(page);
