@@ -37,5 +37,7 @@
                 AND t_notice.end_time >= CURRENT_TIMESTAMP
             </if>
         </if>
+
+        ORDER BY t_notice.id DESC
     </select>
 </mapper>
