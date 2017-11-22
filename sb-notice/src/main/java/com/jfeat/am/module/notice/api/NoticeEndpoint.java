@@ -6,15 +6,12 @@ import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.core.support.DateTimeKit;
 import com.jfeat.am.core.support.StrKit;
-import com.jfeat.am.module.notice.services.service.NoticeService;
 import com.jfeat.am.module.notice.services.domain.service.QueryNoticeService;
 import com.jfeat.am.module.notice.services.persistence.model.Notice;
+import com.jfeat.am.module.notice.services.service.NoticeService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -94,7 +91,7 @@ public class NoticeEndpoint extends BaseController {
             @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
             @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
             @RequestParam(name = "type", required = false) String type,
-            @RequestParam(name = "enabled", required = false) Integer enable,
+            @RequestParam(name = "enabled", required = false) Integer enabled,
             @RequestParam(name = "expired", required = false) Integer expired,
             @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "content", required = false) String content,
@@ -112,7 +109,11 @@ public class NoticeEndpoint extends BaseController {
         notice.setCreateTime(parseDate(createTime));
         notice.setUpdateTime(parseDate(updateTime));
         notice.setEndTime(parseDate(endTime));
-        notice.setEnabled(enable);
+
+        /// ensure enable is 0,1
+        notice.setEnabled(Math.min(Math.max(0,enabled), 1));
+
+        expired = Math.min(Math.max(0, expired), 1);
 
         page.setRecords(queryNoticeService.findNotices(page, notice, expired));
 

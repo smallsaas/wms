@@ -12,7 +12,7 @@
             AND t_notice.type LIKE CONCAT('%',#{type},'%')
         </if>
         <if test="notice.enabled != null">
-            AND t_notice.enable LIKE CONCAT('%',#{enable},'%')
+            AND t_notice.enable = #{enable})
         </if>
         <if test="notice.title != null and notice.title!= ''">
             AND t_notice.title LIKE CONCAT('%',#{title},'%')
@@ -30,8 +30,12 @@
             AND t_notice.end_time LIKE CONCAT('%',#{endTime},'%')
         </if>
         <if test="expired != null">
-            AND CURRENT_TIMESTAMP > t_notice.end_time
+            <if test="expired = 1">
+                AND CURRENT_TIMESTAMP > t_notice.end_time
+            </if>
+            <if test="expired = 0">
+                AND t_notice.end_time >= CURRENT_TIMESTAMP
+            </if>
         </if>
     </select>
-
 </mapper>
