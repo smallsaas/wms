@@ -9,25 +9,25 @@
         FROM t_notice
         WHERE 1=1
         <if test="notice.type != null and notice.type!= ''">
-            AND t_notice.type LIKE CONCAT('%',#{type},'%')
+            AND t_notice.type LIKE CONCAT('%',#{notice.type},'%')
         </if>
         <if test="notice.enabled != null">
-            AND t_notice.enable = #{enable})
+            AND t_notice.enabled = #{notice.enabled})
         </if>
         <if test="notice.title != null and notice.title!= ''">
-            AND t_notice.title LIKE CONCAT('%',#{title},'%')
+            AND t_notice.title LIKE CONCAT('%',#{notice.title},'%')
         </if>
         <if test="notice.content != null and notice.content!= ''">
-            AND t_notice.content LIKE CONCAT('%',#{content},'%')
+            AND t_notice.content LIKE CONCAT('%',#{notice.content},'%')
         </if>
         <if test="notice.createTime != null">
-            AND t_notice.create_time LIKE CONCAT('%',#{createTime},'%')
+            AND t_notice.create_time LIKE CONCAT('%',#{notice.createTime},'%')
         </if>
         <if test="notice.updateTime != null">
-            AND t_notice.update_time LIKE CONCAT('%',#{updateTime},'%')
+            AND t_notice.update_time LIKE CONCAT('%',#{notice.updateTime},'%')
         </if>
         <if test="notice.endTime != null">
-            AND t_notice.end_time LIKE CONCAT('%',#{endTime},'%')
+            AND t_notice.end_time LIKE CONCAT('%',#{notice.endTime},'%')
         </if>
         <if test="expired != null">
             <if test="expired = 1">
