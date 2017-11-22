@@ -8,25 +8,25 @@
         SELECT t_notice.*
         FROM t_notice
         WHERE 1=1
-        <if test="type != null and type!= ''">
+        <if test="notice.type != null and notice.type!= ''">
             AND t_notice.type LIKE CONCAT('%',#{type},'%')
         </if>
-        <if test="enabled != null">
+        <if test="notice.enabled != null">
             AND t_notice.enable LIKE CONCAT('%',#{enable},'%')
         </if>
-        <if test="title != null and title!= ''">
+        <if test="notice.title != null and notice.title!= ''">
             AND t_notice.title LIKE CONCAT('%',#{title},'%')
         </if>
-        <if test="content != null and content!= ''">
+        <if test="notice.content != null and notice.content!= ''">
             AND t_notice.content LIKE CONCAT('%',#{content},'%')
         </if>
-        <if test="createTime != null">
+        <if test="notice.createTime != null">
             AND t_notice.create_time LIKE CONCAT('%',#{createTime},'%')
         </if>
-        <if test="updateTime != null">
+        <if test="notice.updateTime != null">
             AND t_notice.update_time LIKE CONCAT('%',#{updateTime},'%')
         </if>
-        <if test="endTime != null">
+        <if test="notice.endTime != null">
             AND t_notice.end_time LIKE CONCAT('%',#{endTime},'%')
         </if>
         <if test="expired != null">
