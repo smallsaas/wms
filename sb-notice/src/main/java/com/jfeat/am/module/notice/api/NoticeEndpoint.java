@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
+import com.jfeat.am.core.support.DateTimeKit;
+import com.jfeat.am.core.support.StrKit;
 import com.jfeat.am.module.notice.services.service.NoticeService;
 import com.jfeat.am.module.notice.services.domain.service.QueryNoticeService;
 import com.jfeat.am.module.notice.services.persistence.model.Notice;
@@ -103,22 +105,24 @@ public class NoticeEndpoint extends BaseController {
         page.setCurrent(pageNum);
         page.setSize(pageSize);
 
-        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-
         Notice notice = new Notice();
         notice.setType(type);
         notice.setTitle(title);
         notice.setContent(content);
-        try {
-            notice.setCreateTime(format1.parse(createTime));
-            notice.setUpdateTime(format1.parse(updateTime));
-            notice.setEndTime(format1.parse(endTime));
-        }catch (ParseException e){
-        }
+        notice.setCreateTime(parseDate(createTime));
+        notice.setUpdateTime(parseDate(updateTime));
+        notice.setEndTime(parseDate(endTime));
         notice.setEnabled(enable);
 
         page.setRecords(queryNoticeService.findNotices(page, notice, expired));
 
         return SuccessTip.create(page);
+    }
+
+    private Date parseDate(String dateStr) {
+        if (StrKit.isBlank(dateStr)) {
+            return null;
+        }
+        return DateTimeKit.parseDate(dateStr);
     }
 }
