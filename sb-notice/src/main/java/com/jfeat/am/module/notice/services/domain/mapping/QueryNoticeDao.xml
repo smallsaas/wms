@@ -12,7 +12,7 @@
             AND t_notice.type LIKE CONCAT('%',#{notice.type},'%')
         </if>
         <if test="notice.enabled != null">
-            AND t_notice.enabled = #{notice.enabled})
+            AND t_notice.enabled = #{notice.enabled}
         </if>
         <if test="notice.title != null and notice.title!= ''">
             AND t_notice.title LIKE CONCAT('%',#{notice.title},'%')
