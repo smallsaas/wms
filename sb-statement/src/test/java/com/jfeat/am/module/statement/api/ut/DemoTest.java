@@ -41,7 +41,8 @@ public class DemoTest extends BaseJunit {
     public void testService1()  throws Exception {
         String tableName = "equipment";
         String colmnName = "status";
-        Map<String,Object> map = tableColumnRatesService.getColumnRates(tableName, colmnName,"");
+        String timeName = "produce_time";
+        Map<String,Object> map = tableColumnRatesService.getColumnRates(tableName, colmnName,"",timeName,"2017-08-28","2017-012-28");
         System.out.println("================"+ map.toString()+"======================");
     }
 
