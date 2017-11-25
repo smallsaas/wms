@@ -8,30 +8,36 @@
         SELECT t_notice.*
         FROM t_notice
         WHERE 1=1
-        <if test="type != null and type!= ''">
-            AND t_notice.type LIKE CONCAT('%',#{type},'%')
+        <if test="notice.type != null and notice.type!= ''">
+            AND t_notice.type LIKE CONCAT('%',#{notice.type},'%')
         </if>
-        <if test="enabled != null">
-            AND t_notice.enable LIKE CONCAT('%',#{enable},'%')
+        <if test="notice.enabled != null">
+            AND t_notice.enabled = #{notice.enabled}
         </if>
-        <if test="title != null and title!= ''">
-            AND t_notice.title LIKE CONCAT('%',#{title},'%')
+        <if test="notice.title != null and notice.title!= ''">
+            AND t_notice.title LIKE CONCAT('%',#{notice.title},'%')
         </if>
-        <if test="content != null and content!= ''">
-            AND t_notice.content LIKE CONCAT('%',#{content},'%')
+        <if test="notice.content != null and notice.content!= ''">
+            AND t_notice.content LIKE CONCAT('%',#{notice.content},'%')
         </if>
-        <if test="createTime != null">
-            AND t_notice.create_time LIKE CONCAT('%',#{createTime},'%')
+        <if test="notice.createTime != null">
+            AND t_notice.create_time LIKE CONCAT('%',#{notice.createTime},'%')
         </if>
-        <if test="updateTime != null">
-            AND t_notice.update_time LIKE CONCAT('%',#{updateTime},'%')
+        <if test="notice.updateTime != null">
+            AND t_notice.update_time LIKE CONCAT('%',#{notice.updateTime},'%')
         </if>
-        <if test="endTime != null">
-            AND t_notice.end_time LIKE CONCAT('%',#{endTime},'%')
+        <if test="notice.endTime != null">
+            AND t_notice.end_time LIKE CONCAT('%',#{notice.endTime},'%')
         </if>
         <if test="expired != null">
-            AND CURRENT_TIMESTAMP > t_notice.end_time
+            <if test="expired = 1">
+                AND CURRENT_TIMESTAMP > t_notice.end_time
+            </if>
+            <if test="expired = 0">
+                AND t_notice.end_time >= CURRENT_TIMESTAMP
+            </if>
         </if>
-    </select>
 
+        ORDER BY t_notice.id DESC
+    </select>
 </mapper>

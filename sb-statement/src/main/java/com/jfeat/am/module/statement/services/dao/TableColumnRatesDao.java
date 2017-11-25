@@ -14,7 +14,7 @@ public interface TableColumnRatesDao extends BaseMapper<Equipment> {
 
     List<String> queryValueOfColumn(@Param("table") String table,@Param("column") String column);
 
-    List<Map<String,Integer>> getColumnRates(@Param("table") String table,@Param("column") String column,@Param("columnValues") List<String> columnValues);
+    List<Map<String,Integer>> getColumnRates(@Param("table") String table,@Param("column") String column,@Param("columnValues") List<String> columnValues,@Param("timeName") String timeName,@Param("startTime") String startTime,@Param("endTime") String endTime);
 
 }
 
