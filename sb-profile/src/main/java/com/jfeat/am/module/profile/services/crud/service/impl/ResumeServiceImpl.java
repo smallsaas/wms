@@ -79,7 +79,7 @@ public class ResumeServiceImpl  extends CRUDServiceOverModelImpl<Resume,ResumeMo
             FIELD _field = new FIELD();
 
             _field.setItemKeyName(field);
-            _field.setItemFieldName(eduBackgroundKeyName);
+            _field.setItemFieldName(eduBackgroundFieldName);
             _field.setItemClassName(EduBackground.class);
             _field.setItemMapper(eduBackgroundMapper);
 
