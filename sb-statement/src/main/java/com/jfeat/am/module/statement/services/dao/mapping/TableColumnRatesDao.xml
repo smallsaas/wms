@@ -20,4 +20,16 @@
         </if>
     </select>
 
+    <select id="getColumnStatusNum" resultType="map">
+        select count(${column}) as total,
+        <if test="columnValue != null and columnValue != ''">
+            sum( case when ${column}= #{columnValue} then 1 else 0 end) as ${columnValue}
+        </if>
+        from ${table}
+        where 1=1
+        <if test="timeName != null and timeName != ''and startTime != null and startTime != '' and endTime != null and endTime != ''">
+            and (${table}.${timeName} BETWEEN #{startTime} AND #{endTime})
+        </if>
+    </select>
+
 </mapper>
