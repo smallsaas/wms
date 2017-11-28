@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/feedback")
-public class PatchEndpoint extends BaseController {
+public class FeedbackPatchEndpoint extends BaseController {
 
 
 }
