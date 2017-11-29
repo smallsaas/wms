@@ -28,6 +28,10 @@ public class TFeedback extends Model<TFeedback> {
 	@TableField("created_date")
 	private Date createdDate;
 	private Integer unread;
+	@TableField("deal_user_id")
+	private Long dealUserId;
+	@TableField("deal_opinion")
+	private String dealOpinion;
 
 
 	public Long getId() {
@@ -75,6 +79,30 @@ public class TFeedback extends Model<TFeedback> {
 		return this;
 	}
 
+	public Long getDealUserId() {
+		return dealUserId;
+	}
+
+	public void setDealUserId(Long dealUserId) {
+		this.dealUserId = dealUserId;
+	}
+
+	public String getDealOpinion() {
+		return dealOpinion;
+	}
+
+	public void setDealOpinion(String dealOpinion) {
+		this.dealOpinion = dealOpinion;
+	}
+
+	public static String getCONTENT() {
+		return CONTENT;
+	}
+
+	public static String getUNREAD() {
+		return UNREAD;
+	}
+
 	public static final String ID = "id";
 
 	public static final String USER_ID = "user_id";
@@ -84,6 +112,11 @@ public class TFeedback extends Model<TFeedback> {
 	public static final String CREATED_DATE = "created_date";
 
 	public static final String UNREAD = "unread";
+
+	public static final String DEAL_USER_ID = "deal_user_id";
+
+	public static final String DEAL_OPINION = "deal_opinion";
+
 
 	@Override
 	protected Serializable pkVal() {
@@ -98,6 +131,8 @@ public class TFeedback extends Model<TFeedback> {
 			", content=" + content +
 			", createdDate=" + createdDate +
 			", unread=" + unread +
-			"}";
+				", dealUserId=" + dealUserId +
+				", dealOpinion=" + dealOpinion +
+				"}";
 	}
 }
