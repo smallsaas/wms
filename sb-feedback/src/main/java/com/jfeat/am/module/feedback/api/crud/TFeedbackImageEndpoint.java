@@ -26,9 +26,8 @@ import java.util.HashMap;
  * @author admin
  * @since 2017-11-28
  */
-@Deprecated
 @RestController
-@RequestMapping("/api/feedback/feedback/t-feedback-image")
+@RequestMapping("/api/feedback/image")
 public class TFeedbackImageEndpoint extends BaseController {
 
 

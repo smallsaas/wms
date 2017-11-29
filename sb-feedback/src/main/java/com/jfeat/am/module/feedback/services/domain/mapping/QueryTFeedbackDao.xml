@@ -1,8 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.feedback.services.domain.dao.QueryTFeedbackDao">
+    
+    <select id="findTFeedbacks" resultType="map">
+        SELECT
+        <include refid="findTFeedbacks"/>
+        FROM t_feedback
+        LEFT JOIN t_feedback_image
+        ON t_feedback_image.feedback_id = t_feedback.id
+        WHERE 1=1
+        id,userId,unread,content,startTime,endTime
+        <if test="id != null and id > 0">
+            AND t_feedback.id = #{id}
+        </if>
+        <if test="userId != null and userId > 0">
+            AND t_feedback.user_id LIKE CONCAT ('%',#{userId},'%')
+        </if>
+        <if test="unread != null and unread > -1">
+            AND t_feedback.id = #{unread}
+        </if>
+        <if test="content != null and content != ''">
+            AND t_feedback.id = LIKE CONCAT ('%',#{content},'%')
+        </if>
+        <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+            AND t_feedback.created_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+    </select>
 
-
-
+    <sql id="findTFeedbacks">
+        t_feedback.id,t_feedback.user_id AS userId,t_feedback.deal_user_id AS dealUserId,t_feedback.deal_opinion AS dealOpinion,t_feedback.content,t_feedback.created_date AS createdDate,t_feedback.unread,
+        t_feedback_image.id AS imageId,t_feedback_image.url
+    </sql>
 
 </mapper>

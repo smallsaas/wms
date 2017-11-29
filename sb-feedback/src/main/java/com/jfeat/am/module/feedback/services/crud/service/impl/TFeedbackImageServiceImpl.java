@@ -20,7 +20,6 @@ import javax.annotation.Resource;
  * @author admin
  * @since 2017-11-28
  */
-@Deprecated
 @Service
 public class TFeedbackImageServiceImpl  extends CRUDServiceOnlyImpl<TFeedbackImage> implements TFeedbackImageService {
 

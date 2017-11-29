@@ -18,7 +18,6 @@ import com.jfeat.am.module.feedback.services.persistence.model.TFeedbackImage;
 
 
 
-@Deprecated
 public interface TFeedbackImageService extends CRUDServiceOnly<TFeedbackImage> {
 
 }
