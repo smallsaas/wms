@@ -1,7 +1,7 @@
 package com.jfeat.am.module.statement.services.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.jfeat.am.module.statement.services.model.Equipment;
+import com.jfeat.am.module.equipment.services.persistence.model.Equipment;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
