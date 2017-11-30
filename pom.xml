@@ -14,6 +14,7 @@
     <module>sb-notice</module>
     <module>sb-statement</module>
     <module>general-social</module>
+    <module>sb-feedback</module>
   </modules>
 
   <distributionManagement>
