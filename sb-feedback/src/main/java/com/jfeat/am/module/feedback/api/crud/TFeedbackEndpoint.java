@@ -2,6 +2,7 @@ package com.jfeat.am.module.feedback.api.crud;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.annotation.Permission;
+import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.feedback.api.permission.TFeedbackPermission;
 import com.jfeat.am.module.feedback.services.crud.filter.TFeedbackFilter;
 import com.jfeat.am.module.feedback.services.domain.model.TFeedbackModel;
@@ -32,36 +33,40 @@ import java.util.Map;
  * @since 2017-11-28
  */
 @RestController
-@RequestMapping("/api/feedback")
+@RequestMapping("/api")
 public class TFeedbackEndpoint extends BaseController {
 
 
     @Resource
     private TFeedbackService tFeedbackService;
 
-    @PostMapping
+    @PostMapping("/feedback")
     public Tip createTFeedback(@RequestBody TFeedbackModel entity) {
+            Long userId = JWTKit.getUserId(getHttpServletRequest());
+            entity.setUserId(userId);
             return SuccessTip.create(tFeedbackService.createMaster(entity,new TFeedbackFilter(),null,null));
             }
 
-    @GetMapping("/{id}")
+    @GetMapping("/feedback/{id}")
     public Tip getTFeedback(@PathVariable Long id) {
         return SuccessTip.create(tFeedbackService.retrieveMaster(id,new TFeedbackFilter(),null,null).toJSONObject());
     }
 
 
 
-    @PutMapping("/{id}")
+    @PutMapping("/adm/feedback/{id}")
     public Tip updateTFeedback(@PathVariable Long id, @RequestBody TFeedbackModel entity) {
+        Long userId = JWTKit.getUserId(getHttpServletRequest());
+        entity.setDealUserId(userId);
         return SuccessTip.create(tFeedbackService.updateMaster(entity,new TFeedbackFilter(),null,null));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/feedback/{id}")
     public Tip deleteTFeedback(@PathVariable Long id) {
         return SuccessTip.create(tFeedbackService.deleteMaster(id));
     }
 
-    @GetMapping
+    @GetMapping("/feedback")
     //此方法可能需要自行添加需要的参数,按需要使用
     public Tip queryTFeedbacks(Page page,
                 @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
