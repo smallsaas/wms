@@ -10,13 +10,13 @@ import java.util.List;
  */
 public class TFeedbackModel extends TFeedback {
 
-    List<TFeedbackImage> tFeedbackImages;
+    List<TFeedbackImage> images;
 
-    public List<TFeedbackImage> gettFeedbackImages() {
-        return tFeedbackImages;
+    public List<TFeedbackImage> getImages() {
+        return images;
     }
 
-    public void settFeedbackImages(List<TFeedbackImage> tFeedbackImages) {
-        this.tFeedbackImages = tFeedbackImages;
+    public void setImages(List<TFeedbackImage> images) {
+        this.images = images;
     }
 }

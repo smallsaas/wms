@@ -38,7 +38,7 @@ public class TFeedbackServiceImpl extends CRUDServiceOverModelImpl<TFeedback,TFe
     @Resource
     private QueryTFeedbackDao queryTFeedbackDao;
 
-    private static final String ItemKeyName = "tFeedbackImages";
+    private static final String ItemKeyName = "images";
     private static final String ItemFieldName = TFeedbackImage.FEEDBACK_ID;
 
 
