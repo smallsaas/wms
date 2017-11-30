@@ -22,7 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
  * @author Admin
  * @Date 2017/5/21 16:10
  */
-@ActiveProfiles(profiles = "dev")
+@ActiveProfiles(profiles = "test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = AmApplication.class)
 @WebAppConfiguration
