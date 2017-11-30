@@ -37,7 +37,7 @@ public class DemoTest extends BaseJunit {
         logger.debug(result.getResponse().getContentAsString());
     }*/
 
-    @Test
+    /*@Test
     public void testService1()  throws Exception {
         String tableName = "equipment";
         String colmnName = "status";
@@ -45,5 +45,5 @@ public class DemoTest extends BaseJunit {
         Map<String,Object> map = tableColumnRatesService.getColumnRates(tableName, colmnName,"",timeName,"2017-08-28","2017-012-28");
         System.out.println("================"+ map.toString()+"======================");
     }
-
+*/
 }
