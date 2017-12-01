@@ -5,6 +5,7 @@ import com.jfeat.am.common.crud.CRUD;
 import com.jfeat.am.common.crud.CRUDFilter;
 import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
+import com.jfeat.am.module.organization.constant.BizExceptionEnum;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentChildService;
 import com.jfeat.am.module.organization.services.crud.service.PositionChildService;
 import com.jfeat.am.module.organization.services.crud.service.ProfileChildService;
@@ -122,6 +123,9 @@ public class StaffServiceImpl extends CRUDServiceOnlyImpl<Staff>
     @Override
     public CRUDObject<StaffModel> retrieveModel(long masterId, CRUDFilter<Staff> crudFilter) {
         Staff staff = super.retrieveMaster(masterId);
+        if (staff == null) {
+            throw BizExceptionEnum.STAFF_NOT_FOUND.createException();
+        }
         StaffModel staffModel = CRUD.castObject(staff, StaffModel.class);
 
         /// append position child
