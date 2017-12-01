@@ -2,6 +2,7 @@ package com.jfeat.am.module.organization.api.crud;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.crud.CRUDObject;
+import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.organization.constant.BizExceptionEnum;
 import com.jfeat.am.module.organization.services.crud.filter.StaffFilter;
 import com.jfeat.am.module.organization.services.domain.model.StaffItem;
@@ -66,8 +67,16 @@ public class StaffEndpoint extends BaseController {
     }
 
     @GetMapping("/{id}")
-    public Tip getStaff(@PathVariable Long id) {
-        CRUDObject<StaffModel> staffModelCRUDObject = staffService.retrieveModel(id, staffFilter);
+    public Tip getStaff(@PathVariable Long id, @RequestParam(required = false, defaultValue = "false") Boolean byUserId) {
+        Long staffId = id;
+        if (byUserId) {
+            Staff staff = staffService.getStaffByUserId(id);
+            if (staff == null) {
+                throw new BusinessException(com.jfeat.am.common.exception.BizExceptionEnum.USER_NOT_EXISTED);
+            }
+            staffId = staff.getId();
+        }
+        CRUDObject<StaffModel> staffModelCRUDObject = staffService.retrieveModel(staffId, staffFilter);
         return SuccessTip.create(staffModelCRUDObject.toJSONObject());
     }
 
