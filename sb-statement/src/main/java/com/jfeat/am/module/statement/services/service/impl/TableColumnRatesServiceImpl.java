@@ -34,7 +34,7 @@ public class TableColumnRatesServiceImpl implements TableColumnRatesService {
     public Map<String, Object> getColumnRates(String table, String column,String field,String timeName,String startTime,String endTime) {
         Map<String,Object> map = Maps.newHashMap();
         List<String> strings = tableColumnRatesDao.queryValueOfColumn(table, column);
-        List<Map<String,Integer>> maps = tableColumnRatesDao.getColumnRates(table, column, strings,timeName,startTime,endTime);
+        Map<String,Integer> maps = tableColumnRatesDao.getColumnRates(table, column, strings,timeName,startTime,endTime);
         map.put("timestamp",DateTimeKit.formatDateTime(new Date()));
         map.put("data",maps);
         map.put("field",field);
