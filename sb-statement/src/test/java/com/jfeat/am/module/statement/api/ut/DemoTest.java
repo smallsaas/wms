@@ -4,16 +4,14 @@ package com.jfeat.am.module.statement.api.ut;
  * Created by vincenthuang on 18/10/2017.
  */
 
-import com.jfeat.am.module.statement.services.service.TableColumnRatesService;
 import com.jfeat.am.base.BaseJunit;
+import com.jfeat.am.module.statement.services.service.TableColumnRatesService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 /**
  * Created by jackyhuang on 2017/10/16.
