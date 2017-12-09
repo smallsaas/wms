@@ -28,6 +28,13 @@ public class TermConfigServiceImpl  extends CRUDServiceOnlyImpl<TermConfig> impl
     protected BaseMapper<TermConfig> getMasterMapper() {
         return termConfigMapper;
     }
+
+    @Override
+    public TermConfig getTermComfigByType(String type) {
+        TermConfig termConfig = new TermConfig();
+        termConfig.setType(type);
+        return termConfigMapper.selectOne(termConfig);
+    }
 }
 
 

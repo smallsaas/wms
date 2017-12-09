@@ -31,7 +31,7 @@ import java.util.Date;
  * @since 2017-12-09
  */
 @RestController
-@RequestMapping("/api/term/config")
+@RequestMapping("/api")
 public class TermConfigEndpoint extends BaseController {
 
     @Resource
@@ -41,33 +41,38 @@ public class TermConfigEndpoint extends BaseController {
     QueryTermConfigService queryTermConfigService;
 
     /// For debug purpose
-    @GetMapping("/empty")
+    @GetMapping("/term/config/empty")
     public Tip getEmptyTermConfig() {
         return SuccessTip.create(new TermConfig());
     }
 
-    @GetMapping
+    @GetMapping("/term/config")
     public Tip getTermConfigList() {
         return SuccessTip.create(termConfigService.retrieveMasterList());
     }
 
-    @PostMapping
+    @PostMapping("/adm/term/config")
     public Tip createTermConfig(@RequestBody TermConfig entity) {
         return SuccessTip.create(termConfigService.createMaster(entity));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/term/config/{id}")
     public Tip getTermConfig(@PathVariable Long id) {
         return SuccessTip.create(termConfigService.retrieveMaster(id));
     }
 
-    @PutMapping("/{id}")
+    @GetMapping("/term/config/{type}")
+    public Tip getTermConfigByType(@PathVariable String type) {
+        return SuccessTip.create(termConfigService.getTermComfigByType(type));
+    }
+
+    @PutMapping("/adm/term/config/{id}")
     public Tip updateTermConfig(@PathVariable Long id, @RequestBody TermConfig entity) {
         entity.setId(id);
         return SuccessTip.create(termConfigService.updateMaster(entity));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/adm/term/config/{id}")
     public Tip deleteTermConfig(@PathVariable Long id) {
         return SuccessTip.create(termConfigService.deleteMaster(id));
     }

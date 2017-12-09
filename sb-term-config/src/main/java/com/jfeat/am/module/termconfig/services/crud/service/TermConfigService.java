@@ -16,4 +16,6 @@ import com.jfeat.am.common.crud.CRUDServiceOnly;
 
 public interface TermConfigService  extends CRUDServiceOnly<TermConfig> {
 
+    TermConfig getTermComfigByType(String type);
+
 }
