@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.termconfig.services.domain.dao.QueryTermConfigDao">
+    <sql id="Base_Column_List">
+            t_term_config.*
+        </sql>
+        <select id="findTermConfigPage" resultType="TermConfig" parameterType="TermConfig">
+            SELECT t_term_config.*
+            FROM t_term_config
+            WHERE 1=1
+                             <if test="id != null and id>0 ">
+                 AND t_term_config.id LIKE CONCAT('%',#{id},'%')
+            </if>
+                             <if test="type != null and type!= ''">
+                 AND t_term_config.type LIKE CONCAT('%',#{type},'%')
+            </if>
+                             <if test="title != null and title!= ''">
+                 AND t_term_config.title LIKE CONCAT('%',#{title},'%')
+            </if>
+                             <if test="content != null and content!= ''">
+                 AND t_term_config.content LIKE CONCAT('%',#{content},'%')
+            </if>
+                                             <if test="createdTime != null and createdTime>0 ">
+                 AND t_term_config.created_time LIKE CONCAT('%',#{createdTime},'%')
+            </if>
+                    </select>
+</mapper>
