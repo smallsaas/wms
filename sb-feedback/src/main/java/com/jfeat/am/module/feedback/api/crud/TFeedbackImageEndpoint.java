@@ -1,22 +1,13 @@
 package com.jfeat.am.module.feedback.api.crud;
 
-import com.jfeat.am.common.annotation.Permission;
-import com.jfeat.am.module.feedback.api.permission.TFeedbackImagePermission;
-import org.springframework.web.bind.annotation.*;
-
-import com.jfeat.am.common.constant.tips.ErrorTip;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
-
+import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.module.feedback.services.crud.service.TFeedbackImageService;
 import com.jfeat.am.module.feedback.services.persistence.model.TFeedbackImage;
-
-import com.jfeat.am.common.controller.BaseController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
-import java.util.List;
-import java.util.HashMap;
 
 /**
  * <p>
@@ -72,7 +63,6 @@ public class TFeedbackImageEndpoint extends BaseController {
         }
         */
         @GetMapping
-        @Permission({TFeedbackImagePermission.TFeedbackImage_VIEW})
         public Tip show(@RequestHeader("authorization") String token) {
             return null;
         }

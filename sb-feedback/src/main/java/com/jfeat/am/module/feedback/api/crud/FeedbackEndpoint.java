@@ -1,27 +1,17 @@
 package com.jfeat.am.module.feedback.api.crud;
 
 import com.baomidou.mybatisplus.plugins.Page;
-import com.jfeat.am.common.annotation.Permission;
+import com.jfeat.am.common.constant.tips.SuccessTip;
+import com.jfeat.am.common.constant.tips.Tip;
+import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.core.jwt.JWTKit;
-import com.jfeat.am.module.feedback.api.permission.TFeedbackPermission;
 import com.jfeat.am.module.feedback.services.crud.filter.TFeedbackFilter;
+import com.jfeat.am.module.feedback.services.crud.service.TFeedbackService;
 import com.jfeat.am.module.feedback.services.domain.model.TFeedbackModel;
 import org.springframework.web.bind.annotation.*;
 
-import com.jfeat.am.common.constant.tips.ErrorTip;
-import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Tip;
-
-import com.jfeat.am.module.feedback.services.crud.service.TFeedbackService;
-import com.jfeat.am.module.feedback.services.persistence.model.TFeedback;
-
-import com.jfeat.am.common.controller.BaseController;
-
 import javax.annotation.Resource;
-import javax.print.DocFlavor;
-import javax.validation.Valid;
 import java.util.List;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -34,7 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api")
-public class TFeedbackEndpoint extends BaseController {
+public class FeedbackEndpoint extends BaseController {
 
 
     @Resource
@@ -86,7 +76,6 @@ public class TFeedbackEndpoint extends BaseController {
             return SuccessTip.create(page);
         }
         @GetMapping("/null")
-        @Permission({TFeedbackPermission.TFeedback_VIEW})
         public Tip show(@RequestHeader("authorization") String token) {
             return null;
         }
