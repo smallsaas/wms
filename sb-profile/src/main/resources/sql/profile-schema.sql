@@ -43,7 +43,7 @@ DROP TABLE IF EXISTS `t_resume`;
 CREATE TABLE `t_resume` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(26) DEFAULT NULL COMMENT '姓名',
-  `self_evaluate` varchar(26) DEFAULT NULL COMMENT '个人评价',
+  `self_evaluate` varchar(255) DEFAULT NULL COMMENT '个人评价',
   `sex` varchar(26) DEFAULT NULL COMMENT '性别',
   `phone` varchar(26) DEFAULT NULL COMMENT '电话',
   `mobile` varchar(26) DEFAULT NULL COMMENT '手机',
