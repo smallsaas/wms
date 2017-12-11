@@ -11,6 +11,7 @@ import com.jfeat.am.module.feedback.services.domain.model.TFeedbackModel;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -31,9 +32,12 @@ public class FeedbackEndpoint extends BaseController {
     private TFeedbackService tFeedbackService;
 
     @PostMapping("/feedback")
-    public Tip createTFeedback(@RequestBody TFeedbackModel entity) {
+    public Tip createTFeedback(@Valid@RequestBody TFeedbackModel entity) {
             Long userId = JWTKit.getUserId(getHttpServletRequest());
             entity.setUserId(userId);
+            if ((entity.getImages()).size() == 0){
+                return SuccessTip.create(tFeedbackService.createMaster(entity));
+            }
             return SuccessTip.create(tFeedbackService.createMaster(entity,new TFeedbackFilter(),null,null));
             }
 

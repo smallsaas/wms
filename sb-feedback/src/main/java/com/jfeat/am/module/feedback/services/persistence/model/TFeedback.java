@@ -6,6 +6,8 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.io.Serializable;
 
 /**
@@ -33,6 +35,18 @@ public class TFeedback extends Model<TFeedback> {
 	@TableField("deal_opinion")
 	private String dealOpinion;
 
+	@NotBlank
+	@TableField("connect_way")
+	private String connectWay;
+
+
+	public String getConnectWay() {
+		return connectWay;
+	}
+
+	public void setConnectWay(String connectWay) {
+		this.connectWay = connectWay;
+	}
 
 	public Long getId() {
 		return id;
