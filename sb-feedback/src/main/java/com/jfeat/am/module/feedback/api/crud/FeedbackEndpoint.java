@@ -35,7 +35,7 @@ public class FeedbackEndpoint extends BaseController {
     public Tip createTFeedback(@Valid@RequestBody TFeedbackModel entity) {
             Long userId = JWTKit.getUserId(getHttpServletRequest());
             entity.setUserId(userId);
-            if ((entity.getImages()).size() == 0){
+            if (entity.getImages() == null && (entity.getImages()).size() == 0){
                 return SuccessTip.create(tFeedbackService.createMaster(entity));
             }
             return SuccessTip.create(tFeedbackService.createMaster(entity,new TFeedbackFilter(),null,null));

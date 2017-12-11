@@ -1,10 +1,11 @@
 CREATE TABLE IF NOT EXISTS t_feedback (
     id BIGINT(20) primary key,
     user_id BIGINT(20)not null,
-    deal_user_id BIGINT(20)not null,
+    deal_user_id BIGINT(20) DEFAULT null,
     deal_opinion text,
     content text,
     created_date timestamp null,
+    connect_way VARCHAR(50) not null,
     unread integer not null default 1
 ) ENGINE=InnoDB  DEFAULT CHARSET=UTF8;
 
