@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author admin
@@ -32,27 +32,23 @@ public class FeedbackEndpoint extends BaseController {
     private TFeedbackService tFeedbackService;
 
     @PostMapping("/feedback")
-    public Tip createTFeedback(@Valid@RequestBody TFeedbackModel entity) {
-            Long userId = JWTKit.getUserId(getHttpServletRequest());
-            entity.setUserId(userId);
-            if (entity.getImages() == null && (entity.getImages()).size() == 0){
-                return SuccessTip.create(tFeedbackService.createMaster(entity));
-            }
-            return SuccessTip.create(tFeedbackService.createMaster(entity,new TFeedbackFilter(),null,null));
-            }
+    public Tip createTFeedback(@Valid @RequestBody TFeedbackModel entity) {
+        Long userId = JWTKit.getUserId(getHttpServletRequest());
+        entity.setUserId(userId);
+        return SuccessTip.create(tFeedbackService.createMaster(entity, new TFeedbackFilter(), null, null));
+    }
 
     @GetMapping("/feedback/{id}")
     public Tip getTFeedback(@PathVariable Long id) {
-        return SuccessTip.create(tFeedbackService.retrieveMaster(id,new TFeedbackFilter(),null,null).toJSONObject());
+        return SuccessTip.create(tFeedbackService.retrieveMaster(id, new TFeedbackFilter(), null, null).toJSONObject());
     }
-
 
 
     @PutMapping("/adm/feedback/{id}")
     public Tip updateTFeedback(@PathVariable Long id, @RequestBody TFeedbackModel entity) {
         Long userId = JWTKit.getUserId(getHttpServletRequest());
         entity.setDealUserId(userId);
-        return SuccessTip.create(tFeedbackService.updateMaster(entity,new TFeedbackFilter(),null,null));
+        return SuccessTip.create(tFeedbackService.updateMaster(entity, new TFeedbackFilter(), null, null));
     }
 
     @DeleteMapping("/feedback/{id}")
@@ -63,24 +59,25 @@ public class FeedbackEndpoint extends BaseController {
     @GetMapping("/feedback")
     //此方法可能需要自行添加需要的参数,按需要使用
     public Tip queryTFeedbacks(Page page,
-                @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
-                               @RequestParam(required = false)Long id,
-                               @RequestParam(required = false)Long userId,
-                               @RequestParam(required = false)Integer unread,
-                               @RequestParam(required = false)String content,
-                               @RequestParam(required = false)String startTime,
-                               @RequestParam(required = false)String endTime) {
+                               @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                               @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+                               @RequestParam(required = false) Long id,
+                               @RequestParam(required = false) Long userId,
+                               @RequestParam(required = false) Integer unread,
+                               @RequestParam(required = false) String content,
+                               @RequestParam(required = false) String startTime,
+                               @RequestParam(required = false) String endTime) {
 
-            List<Map<String,Object>> records = tFeedbackService.findTFeedbacks(page,id,userId,unread,content,startTime,endTime);
-            page.setCurrent(pageNum);
-            page.setSize(pageSize);
-            page.setRecords(records);
+        List<Map<String, Object>> records = tFeedbackService.findTFeedbacks(page, id, userId, unread, content, startTime, endTime);
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        page.setRecords(records);
 
-            return SuccessTip.create(page);
-        }
-        @GetMapping("/null")
-        public Tip show(@RequestHeader("authorization") String token) {
-            return null;
-        }
+        return SuccessTip.create(page);
+    }
+
+    @GetMapping("/null")
+    public Tip show(@RequestHeader("authorization") String token) {
+        return null;
+    }
 }
