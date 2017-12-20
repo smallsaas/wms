@@ -16,6 +16,7 @@
     <module>general-social</module>
     <module>sb-feedback</module>
     <module>sb-term-config</module>
+    <module>sb-form-attachment</module>
   </modules>
 
   <distributionManagement>
