@@ -1,4 +1,4 @@
-package com.jfeat.am;
+package com.jfeat;
 
 import com.jfeat.am.config.properties.AmProperties;
 import org.slf4j.Logger;

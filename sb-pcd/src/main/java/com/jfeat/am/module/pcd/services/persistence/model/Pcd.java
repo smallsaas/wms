@@ -1,4 +1,4 @@
-package com.jfeat.am.common.persistence.model;
+package com.jfeat.am.module.pcd.services.persistence.model;
 
 import java.io.Serializable;
 
@@ -10,8 +10,8 @@ import java.io.Serializable;
  * 
  * </p>
  *
- * @author admin
- * @since 2017-08-09
+ * @author Code Generator
+ * @since 2017-12-22
  */
 public class Pcd extends Model<Pcd> {
 
@@ -27,33 +27,45 @@ public class Pcd extends Model<Pcd> {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public Pcd setId(Long id) {
 		this.id = id;
+		return this;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public Pcd setName(String name) {
 		this.name = name;
+		return this;
 	}
 
 	public String getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public Pcd setType(String type) {
 		this.type = type;
+		return this;
 	}
 
 	public Long getPid() {
 		return pid;
 	}
 
-	public void setPid(Long pid) {
+	public Pcd setPid(Long pid) {
 		this.pid = pid;
+		return this;
 	}
+
+	public static final String ID = "id";
+
+	public static final String NAME = "name";
+
+	public static final String TYPE = "type";
+
+	public static final String PID = "pid";
 
 	@Override
 	protected Serializable pkVal() {

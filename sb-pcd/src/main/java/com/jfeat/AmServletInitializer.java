@@ -1,4 +1,4 @@
-package com.jfeat.am;
+package com.jfeat;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
