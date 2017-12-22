@@ -8,8 +8,8 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>SpringBoot-TermConfig</name>
-    <description>Seed Component</description>
+    <name>TermConfig</name>
+    <description>TermConfig Component</description>
 
     <parent>
         <groupId>com.jfeat</groupId>

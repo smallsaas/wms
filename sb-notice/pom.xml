@@ -6,7 +6,7 @@
   <artifactId>sb-notice</artifactId>  
   <version>1.0.0</version>  
   <packaging>jar</packaging>  
-  <name>Sb-Notice</name>  
+  <name>Notice</name>
   <description>Notice Component</description>  
   <parent> 
     <groupId>com.jfeat</groupId>  

@@ -6,7 +6,7 @@
   <artifactId>sb-statement</artifactId>
   <version>1.0.0</version>  
   <packaging>jar</packaging>  
-  <name>Sb-Statement</name>
+  <name>Statement</name>
   <description>Statement Component</description>
   <parent> 
     <groupId>com.jfeat</groupId>  

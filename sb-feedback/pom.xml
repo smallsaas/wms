@@ -8,7 +8,7 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>SpringBoot-Feedback</name>
+    <name>Feedback</name>
     <description>Seed Component</description>
 
     <parent>
