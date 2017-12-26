@@ -4,17 +4,18 @@ package com.jfeat.am.module.notice.api.ut;
  * Created by vincenthuang on 18/10/2017.
  */
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.jfeat.am.base.BaseJunit;
-import com.jfeat.am.module.notice.services.service.NoticeService;
+import com.jfeat.am.common.crud.error.CRUDException;
 import com.jfeat.am.module.notice.services.persistence.model.Notice;
+import com.jfeat.am.module.notice.services.service.NoticeService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -42,9 +43,12 @@ public class NoticeTest extends BaseJunit {
 
     @Test
     public void testDateParse()  throws Exception{
-        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-        Date today = format1.parse("2018-01-20");
-        //Date todayTime = format1.parse("2018-01-20 23:00:00");
+        Exception e = new CRUDException(1010, "test");
+
+        JSONObject jsonObject = (JSONObject) JSON.toJSON(e);
+
+        String s = jsonObject.toString();
+
 
         "".toString();
     }
