@@ -9,7 +9,7 @@
         LEFT JOIN t_feedback_image
         ON t_feedback_image.feedback_id = t_feedback.id
         WHERE 1=1
-        id,userId,unread,content,startTime,endTime
+
         <if test="id != null and id > 0">
             AND t_feedback.id = #{id}
         </if>
@@ -28,7 +28,9 @@
     </select>
 
     <sql id="findTFeedbacks">
-        t_feedback.id,t_feedback.user_id AS userId,t_feedback.deal_user_id AS dealUserId,t_feedback.deal_opinion AS dealOpinion,t_feedback.content,t_feedback.created_date AS createdDate,t_feedback.unread,
+        t_feedback.id,
+        t_feedback.user_id AS userId,
+        t_feedback.deal_user_id AS dealUserId,t_feedback.deal_opinion AS dealOpinion,t_feedback.content,t_feedback.created_date AS createdDate,t_feedback.unread,
         t_feedback_image.id AS imageId,t_feedback_image.url
     </sql>
 
