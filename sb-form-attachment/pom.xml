@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.jfeat</groupId>
-    <artifactId>sb-term-config</artifactId>
+    <artifactId>sb-form-attachment</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>TermConfig</name>
-    <description>TermConfig Component</description>
+    <name>Form-Attachment</name>
+    <description>Form Attachment Component</description>
 
     <parent>
         <groupId>com.jfeat</groupId>
@@ -20,8 +20,6 @@
 
     <properties>
         <sb-base.version>1.0.0</sb-base.version>
-        <sb-crud.version>1.0.4-SNAPSHOT</sb-crud.version>
-        <sb-account.version>1.0.0</sb-account.version>
         <skipStandalone>true</skipStandalone>
     </properties>
 
@@ -30,17 +28,6 @@
             <groupId>com.jfeat</groupId>
             <artifactId>sb-base</artifactId>
             <version>${sb-base.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.jfeat</groupId>
-            <artifactId>sb-crud</artifactId>
-            <version>${sb-crud.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.jfeat</groupId>
-            <artifactId>sb-account</artifactId>
-            <version>${sb-account.version}</version>
         </dependency>
 
         <!--spring boot依赖-->
@@ -152,16 +139,16 @@
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
         </dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-			<version>${druid.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>${commons.io.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.github.penggle</groupId>
             <artifactId>kaptcha</artifactId>
@@ -232,24 +219,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>com.jfeat</groupId>
-                <artifactId>sb-code-generator</artifactId>
-                <version>1.0.2</version>
-                <configuration>
-                    <!-- change to your module name -->
-                    <moduleName>termconfig</moduleName>
-                    <dbUrl>jdbc:mysql://127.0.0.1:3306/sbtermconfig</dbUrl>
-                    <username>root</username>
-                    <password>root</password>
-                    <tables>
-                        <table>t_term_config</table>
-                    </tables>
-                    <outputDir>src\main\java</outputDir>
-                    <parentPackage>com.jfeat.am.module</parentPackage>
-                </configuration>
-            </plugin>
-
         </plugins>
         <resources>
             <resource>

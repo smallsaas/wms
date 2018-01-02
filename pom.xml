@@ -16,6 +16,8 @@
     <module>general-social</module>
     <module>sb-feedback</module>
     <module>sb-term-config</module>
+    <module>sb-form-attachment</module>
+    <module>sb-pcd</module>
   </modules>
 
   <distributionManagement>

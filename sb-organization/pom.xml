@@ -6,7 +6,7 @@
   <artifactId>sb-organization</artifactId>  
   <version>1.0.0</version>  
   <packaging>jar</packaging>  
-  <name>SpringBoot-Organization</name>  
+  <name>Organization</name>
   <description>Seed Component</description>  
   <parent> 
     <groupId>com.jfeat</groupId>  

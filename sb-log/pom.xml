@@ -8,7 +8,7 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>SpringBoot-Log</name>
+    <name>Log</name>
     <description>Seed Component</description>
 
     <parent>

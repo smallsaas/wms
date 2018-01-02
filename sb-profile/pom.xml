@@ -8,7 +8,7 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>Sb-Profile</name>
+    <name>Profile</name>
     <description>Profile Component</description>
 
     <parent>
