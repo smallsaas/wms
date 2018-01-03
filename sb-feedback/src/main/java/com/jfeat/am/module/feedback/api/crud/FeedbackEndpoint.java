@@ -1,10 +1,12 @@
 package com.jfeat.am.module.feedback.api.crud;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.jfeat.am.common.annotation.Permission;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.core.jwt.JWTKit;
+import com.jfeat.am.module.feedback.api.permission.FeedbackPermission;
 import com.jfeat.am.module.feedback.services.crud.filter.TFeedbackFilter;
 import com.jfeat.am.module.feedback.services.crud.service.TFeedbackService;
 import com.jfeat.am.module.feedback.services.domain.model.TFeedbackModel;
@@ -32,6 +34,7 @@ public class FeedbackEndpoint extends BaseController {
     private TFeedbackService tFeedbackService;
 
     @PostMapping("/feedback")
+    @Permission(FeedbackPermission.FEEDBACK_VIEW)
     public Tip createTFeedback(@Valid @RequestBody TFeedbackModel entity) {
         Long userId = JWTKit.getUserId(getHttpServletRequest());
         entity.setUserId(userId);
@@ -61,21 +64,31 @@ public class FeedbackEndpoint extends BaseController {
     public Tip queryTFeedbacks(Page page,
                                @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
-                               @RequestParam(required = false) Long id,
-                               @RequestParam(required = false) Long userId,
-                               @RequestParam(required = false) Integer unread,
-                               @RequestParam(required = false) String content,
-                               @RequestParam(required = false) String startTime,
-                               @RequestParam(required = false) String endTime) {
+                               @RequestParam(name = "unread",required = false) Integer unread,
+                               @RequestParam(name = "name",required = false) String name) {
 
-        List<Map<String, Object>> records = tFeedbackService.findTFeedbacks(page, id, userId, unread, content, startTime, endTime);
         page.setCurrent(pageNum);
         page.setSize(pageSize);
-        page.setRecords(records);
-
+        page.setRecords(tFeedbackService.findFeedback(page,name,unread));
         return SuccessTip.create(page);
     }
 
+    @GetMapping("/feedback/list")
+    //此方法可能需要自行添加需要的参数,按需要使用
+    public Tip queryTFeedbacks(Page page,
+                               @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                               @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+                               @RequestParam(required = false) Integer unread,
+                               @RequestParam(required = false) String createName,
+                               @RequestParam(required = false) String startTime,
+                               @RequestParam(required = false) String endTime) {
+
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        page.setRecords(tFeedbackService.findTFeedbacks(page,unread, createName, startTime, endTime));
+
+        return SuccessTip.create(page);
+    }
     @GetMapping("/null")
     public Tip show(@RequestHeader("authorization") String token) {
         return null;

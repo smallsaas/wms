@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS t_feedback (
     id BIGINT(20) primary key,
     user_id BIGINT(20)not null,
     deal_user_id BIGINT(20) DEFAULT null,
+    `create_name` VARCHAR(255) NOT null,
     deal_opinion text,
     content text,
     created_date timestamp null,
