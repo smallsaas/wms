@@ -47,6 +47,7 @@ CREATE TABLE `so_member_care` (
   `id` bigint(20) NOT NULL COMMENT 'ID',
   `member_id` bigint(20) NOT NULL COMMENT '外键/用户',
   `follower_id` bigint(20) NOT NULL COMMENT '外键/用户/粉丝ID',
+  `roles` VARCHAR(26) DEFAULT NULL comment '角色 与 ID 组合 KEY ',
   `follow_time` datetime NOT NULL COMMENT '关注时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

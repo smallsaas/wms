@@ -29,6 +29,11 @@ public class MemberCare extends Model<MemberCare> {
      */
 	@TableField("member_id")
 	private Long memberId;
+	/*
+	* 	角色  member_id 以及 roles 组合为 KEY
+	* */
+	@TableField("roles")
+	private String roles;
     /**
      * 外键/用户/粉丝ID
      */
@@ -40,6 +45,14 @@ public class MemberCare extends Model<MemberCare> {
 	@TableField("follow_time")
 	private Date followTime;
 
+
+	public String getRoles() {
+		return roles;
+	}
+
+	public void setRoles(String roles) {
+		this.roles = roles;
+	}
 
 	public Long getId() {
 		return id;
