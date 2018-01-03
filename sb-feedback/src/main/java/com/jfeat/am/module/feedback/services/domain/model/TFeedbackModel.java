@@ -11,6 +11,15 @@ import java.util.List;
 public class TFeedbackModel extends TFeedback {
 
     List<TFeedbackImage> images;
+    String createUser;
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
 
     public List<TFeedbackImage> getImages() {
         return images;
