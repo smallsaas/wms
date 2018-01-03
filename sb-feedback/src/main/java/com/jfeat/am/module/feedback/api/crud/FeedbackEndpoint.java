@@ -1,6 +1,7 @@
 package com.jfeat.am.module.feedback.api.crud;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.jfeat.am.common.constant.tips.Ids;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
@@ -54,6 +55,11 @@ public class FeedbackEndpoint extends BaseController {
     @DeleteMapping("/feedback/{id}")
     public Tip deleteTFeedback(@PathVariable Long id) {
         return SuccessTip.create(tFeedbackService.deleteMaster(id));
+    }
+
+    @PostMapping("/adm/feedback/bulk/delete")
+    public Tip bulkDeleteTFeedbacks(@RequestBody Ids ids) {
+        return SuccessTip.create(tFeedbackService.bulkDeleteMasterList(ids.getIds()));
     }
 
     @GetMapping("/feedback")
