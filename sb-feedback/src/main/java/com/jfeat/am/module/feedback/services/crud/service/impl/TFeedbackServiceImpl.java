@@ -1,6 +1,7 @@
 package com.jfeat.am.module.feedback.services.crud.service.impl;
         
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.crud.FIELD;
 import com.jfeat.am.common.crud.impl.CRUDServiceOverModelImpl;
@@ -16,6 +17,7 @@ import org.hibernate.validator.internal.constraintvalidators.bv.past.PastValidat
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -84,8 +86,24 @@ public class TFeedbackServiceImpl extends CRUDServiceOverModelImpl<TFeedback,TFe
     }
 
     @Override
-    public List<Map<String, Object>> findTFeedbacks(Page page, Long id, Long userId, Integer unread, String content, String startTime, String endTime) {
-        return queryTFeedbackDao.findTFeedbacks(page,id,userId,unread,content,startTime,endTime);
+    public List<TFeedbackModel> findFeedback(Page<TFeedbackModel> page,String name,Integer unread){
+
+        List<TFeedback> model = tFeedbackMapper.selectList(new EntityWrapper<TFeedback>().eq("unread",unread).like("create_name",name));
+        List<TFeedbackModel> models = new ArrayList<>();
+        for(TFeedback feedback : model){
+            TFeedbackModel feedbackModel = new TFeedbackModel();
+            List<TFeedbackImage> images = tFeedbackImageMapper.selectList(new EntityWrapper<TFeedbackImage>().eq("feedback_id",feedback.getId()));
+            feedbackModel.setImages(images);
+            models.add(feedbackModel);
+        }
+        return models;
+    }
+
+
+    // List  include createUser name
+    public List<TFeedbackModel> findTFeedbacks(Page page,Integer unread, String createName, String startTime, String endTime) {
+        List<TFeedbackModel> models = queryTFeedbackDao.findTFeedbacks(page,unread,createName,startTime,endTime);
+        return models;
     }
 }
 

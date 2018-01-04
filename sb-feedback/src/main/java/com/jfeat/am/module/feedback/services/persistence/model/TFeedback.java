@@ -34,11 +34,21 @@ public class TFeedback extends Model<TFeedback> {
 	private Long dealUserId;
 	@TableField("deal_opinion")
 	private String dealOpinion;
+	@TableField("create_name")
+	private String createName;
 
 	@NotBlank
 	@TableField("connect_way")
 	private String connectWay;
 
+
+	public String getCreateName() {
+		return createName;
+	}
+
+	public void setCreateName(String createName) {
+		this.createName = createName;
+	}
 
 	public String getConnectWay() {
 		return connectWay;
