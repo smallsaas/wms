@@ -34,7 +34,6 @@ public class FeedbackEndpoint extends BaseController {
     private TFeedbackService tFeedbackService;
 
     @PostMapping("/feedback")
-    @Permission(FeedbackPermission.FEEDBACK_VIEW)
     public Tip createTFeedback(@Valid @RequestBody TFeedbackModel entity) {
         Long userId = JWTKit.getUserId(getHttpServletRequest());
         entity.setUserId(userId);
