@@ -8,6 +8,7 @@
 		<result column="member_id" property="memberId" />
 		<result column="follower_id" property="followerId" />
 		<result column="follow_time" property="followTime" />
+		<result column="roles" property="followerId" />
 	</resultMap>
 
 </mapper>
