@@ -27,7 +27,6 @@ public class CountryEndpoint extends BaseController {
     @Resource
     CountryService countryService;
 
-    /// For debug purpose
     @GetMapping("/empty")
     public Tip getEmptyCountry() {
         return SuccessTip.create(new Country());

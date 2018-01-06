@@ -65,8 +65,11 @@ public class FileServiceController extends BaseController {
             target.setReadable(true);
             FileUtils.copyInputStreamToFile(picture.getInputStream(), target);
             logger.info("file uploaded to: {}", target.getAbsolutePath());
+            File reducedFile = ImageUtil.reduce(target);
+            logger.info("file reduced to: {}", reducedFile.getAbsolutePath());
+            pictureName = reducedFile.getName();
             if (blur) {
-                File blurryFile = ImageUtil.gaos(target);
+                File blurryFile = ImageUtil.reduce(ImageUtil.gaos(target));
                 blurryFile.setReadable(true);
                 blurryName = blurryFile.getName();
             }
@@ -125,8 +128,11 @@ public class FileServiceController extends BaseController {
             target.setReadable(true);
             FileUtils.writeByteArrayToFile(target, dataBytes);
             logger.info("file uploaded to: {}", target.getAbsolutePath());
+            File reducedFile = ImageUtil.reduce(target);
+            logger.info("file reduced to: {}", reducedFile.getAbsolutePath());
+            pictureName = reducedFile.getName();
             if (blur) {
-                File blurryFile = ImageUtil.gaos(target);
+                File blurryFile = ImageUtil.reduce(ImageUtil.gaos(target));
                 blurryFile.setReadable(true);
                 blurryName = blurryFile.getName();
             }
