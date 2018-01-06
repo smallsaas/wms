@@ -9,11 +9,12 @@
 		<result column="content" property="content" />
 		<result column="created_date" property="createdDate" />
 		<result column="unread" property="unread" />
+		<result column="solved" property="solved" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_id AS userId, content, created_date AS createdDate, unread
+        id, user_id AS userId, content, created_date AS createdDate, unread, solved
     </sql>
 
 </mapper>
