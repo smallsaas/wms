@@ -25,6 +25,7 @@
 		<result column="bankcard_no" property="bankcardNo" />
 		<result column="bankcard_snapshot" property="bankcardSnapshot" />
 		<result column="tag" property="tag" />
+		<result column="career" property="career" />
 		<result column="field1" property="field1" />
 		<result column="field2" property="field2" />
 		<result column="field3" property="field3" />

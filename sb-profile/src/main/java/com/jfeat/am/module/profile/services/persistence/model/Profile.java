@@ -110,6 +110,10 @@ public class Profile extends Model<Profile> {
 	 */
 	private String tag;
 	/**
+	 * 职业
+	 */
+	private String career;
+	/**
      * 预留字段
      */
 	private String field1;
@@ -121,6 +125,14 @@ public class Profile extends Model<Profile> {
      * 预留字段
      */
 	private String field3;
+
+	public String getCareer() {
+		return career;
+	}
+
+	public void setCareer(String career) {
+		this.career = career;
+	}
 
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
