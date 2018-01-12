@@ -26,7 +26,7 @@ CREATE TABLE `t_profile` (
   `bankcard_no` bigint(20) DEFAULT NULL COMMENT '银行卡帐户',
   `bankcard_snapshot` varchar(26) DEFAULT NULL COMMENT '银行卡图片',
   `tag` varchar(250) DEFAULT NULL,
-    `career` varchar(26) DEFAULT NULL comment '职业',,
+  `career` varchar(26) DEFAULT NULL comment '职业',
   `field1` varchar(26) DEFAULT NULL COMMENT '预留字段',
   `field2` varchar(26) DEFAULT NULL COMMENT '预留字段',
   `field3` varchar(26) DEFAULT NULL COMMENT '预留字段',
