@@ -3,7 +3,7 @@ package com.jfeat.am.module.organization.services.crud.service.impl;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
 import com.jfeat.am.module.organization.services.crud.service.PositionService;
-import com.jfeat.am.module.organization.services.persistence.dao.PositionMapper;
+import com.jfeat.am.module.organization.services.persistence.mapper.PositionMapper;
 import com.jfeat.am.module.organization.services.persistence.model.Position;
 import org.springframework.stereotype.Service;
 

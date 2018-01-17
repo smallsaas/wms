@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -26,5 +27,10 @@ public class QueryDepartmentServiceImpl implements QueryDepartmentService {
     @Override
     public List<DepartmentItem> findDepartmentPage(Department department) {
         return queryDepartmentDao.findDepartmentPage(department);
+    }
+
+    @Override
+    public Map<String, Object> showDepartmentDetail(Long id, String isManager) {
+        return queryDepartmentDao.showDepartmentDetail(id,isManager);
     }
 }

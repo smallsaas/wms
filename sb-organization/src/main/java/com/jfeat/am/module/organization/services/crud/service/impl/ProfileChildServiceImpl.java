@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.jfeat.am.common.crud.impl.CRUDServiceChildImpl;
 import com.jfeat.am.module.organization.services.crud.service.PositionChildService;
 import com.jfeat.am.module.organization.services.crud.service.ProfileChildService;
-import com.jfeat.am.module.organization.services.persistence.dao.StaffMapper;
+import com.jfeat.am.module.organization.services.persistence.mapper.StaffMapper;
 import com.jfeat.am.module.organization.services.persistence.model.Position;
 import com.jfeat.am.module.organization.services.persistence.model.Staff;
 import com.jfeat.am.module.profile.services.persistence.dao.ProfileMapper;

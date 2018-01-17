@@ -1,3 +1,4 @@
+
 SET FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS `t_department`;
@@ -38,4 +39,16 @@ CREATE TABLE `t_staff` (
 `note` text DEFAULT NULL COMMENT '备注',
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `t_department_staff`;
+CREATE TABLE `t_department_staff` (
+`id` bigint NOT NULL,
+`department_id` bigint NOT NULL COMMENT '部门ID',
+`staff_id` bigint NOT NULL COMMENT '员工ID',
+`is_manager` varchar(26) DEFAULT NULL COMMENT '是否主管',
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 

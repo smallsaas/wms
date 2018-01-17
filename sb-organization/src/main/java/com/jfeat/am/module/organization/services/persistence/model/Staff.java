@@ -13,8 +13,8 @@ import java.io.Serializable;
  * 
  * </p>
  *
- * @author Code Generator
- * @since 2017-10-27
+ * @author admin
+ * @since 2018-01-17
  */
 @TableName("t_staff")
 public class Staff extends Model<Staff> {
@@ -23,47 +23,48 @@ public class Staff extends Model<Staff> {
 
 	private Long id;
     /**
-     * ????
+     * 所属部门
      */
 	@TableField("dept_id")
 	private Long deptId;
-
-	@TableField("user_id")
-	private Long userId;
-
     /**
-     * ??
+     * 工龄
      */
 	@TableField("work_age")
 	private Integer workAge;
     /**
-     * ????
+     * 入职时间
      */
 	@TableField("hire_date")
 	private Date hireDate;
     /**
-     * ????
+     * 离职时间
      */
 	@TableField("leave_date")
 	private Date leaveDate;
     /**
-     * ????
+     * 在职状态
      */
 	private String status;
 	@TableField("profile_id")
 	private Long profileId;
     /**
-     * ????
+     * 所属职位
      */
 	@TableField("position_id")
 	private Long positionId;
     /**
-     * ????
+     * 用户ID, 如果没有关联则为NULL
+     */
+	@TableField("user_id")
+	private Long userId;
+    /**
+     * 创建时间
      */
 	@TableField("create_time")
 	private Date createTime;
     /**
-     * ??
+     * 备注
      */
 	private String note;
 
@@ -72,18 +73,64 @@ public class Staff extends Model<Staff> {
 		return id;
 	}
 
-	public Staff setId(Long id) {
+	public void setId(Long id) {
 		this.id = id;
-		return this;
 	}
 
 	public Long getDeptId() {
 		return deptId;
 	}
 
-	public Staff setDeptId(Long deptId) {
+	public void setDeptId(Long deptId) {
 		this.deptId = deptId;
-		return this;
+	}
+
+	public Integer getWorkAge() {
+		return workAge;
+	}
+
+	public void setWorkAge(Integer workAge) {
+		this.workAge = workAge;
+	}
+
+	public Date getHireDate() {
+		return hireDate;
+	}
+
+	public void setHireDate(Date hireDate) {
+		this.hireDate = hireDate;
+	}
+
+	public Date getLeaveDate() {
+		return leaveDate;
+	}
+
+	public void setLeaveDate(Date leaveDate) {
+		this.leaveDate = leaveDate;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Long getProfileId() {
+		return profileId;
+	}
+
+	public void setProfileId(Long profileId) {
+		this.profileId = profileId;
+	}
+
+	public Long getPositionId() {
+		return positionId;
+	}
+
+	public void setPositionId(Long positionId) {
+		this.positionId = positionId;
 	}
 
 	public Long getUserId() {
@@ -94,81 +141,23 @@ public class Staff extends Model<Staff> {
 		this.userId = userId;
 	}
 
-	public Integer getWorkAge() {
-		return workAge;
-	}
-
-	public Staff setWorkAge(Integer workAge) {
-		this.workAge = workAge;
-		return this;
-	}
-
-	public Date getHireDate() {
-		return hireDate;
-	}
-
-	public Staff setHireDate(Date hireDate) {
-		this.hireDate = hireDate;
-		return this;
-	}
-
-	public Date getLeaveDate() {
-		return leaveDate;
-	}
-
-	public Staff setLeaveDate(Date leaveDate) {
-		this.leaveDate = leaveDate;
-		return this;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public Staff setStatus(String status) {
-		this.status = status;
-		return this;
-	}
-
-	public Long getProfileId() {
-		return profileId;
-	}
-
-	public Staff setProfileId(Long profileId) {
-		this.profileId = profileId;
-		return this;
-	}
-
-	public Long getPositionId() {
-		return positionId;
-	}
-
-	public Staff setPositionId(Long positionId) {
-		this.positionId = positionId;
-		return this;
-	}
-
 	public Date getCreateTime() {
 		return createTime;
 	}
 
-	public Staff setCreateTime(Date createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
-		return this;
 	}
 
 	public String getNote() {
 		return note;
 	}
 
-	public Staff setNote(String note) {
+	public void setNote(String note) {
 		this.note = note;
-		return this;
 	}
 
 	public static final String ID = "id";
-
-	public static final String USER_ID = "user_id";
 
 	public static final String DEPT_ID = "dept_id";
 
@@ -184,6 +173,8 @@ public class Staff extends Model<Staff> {
 
 	public static final String POSITION_ID = "position_id";
 
+	public static final String USER_ID = "user_id";
+
 	public static final String CREATE_TIME = "create_time";
 
 	public static final String NOTE = "note";
@@ -197,7 +188,6 @@ public class Staff extends Model<Staff> {
 	public String toString() {
 		return "Staff{" +
 			"id=" + id +
-			", userId=" + userId +
 			", deptId=" + deptId +
 			", workAge=" + workAge +
 			", hireDate=" + hireDate +
@@ -205,6 +195,7 @@ public class Staff extends Model<Staff> {
 			", status=" + status +
 			", profileId=" + profileId +
 			", positionId=" + positionId +
+			", userId=" + userId +
 			", createTime=" + createTime +
 			", note=" + note +
 			"}";
