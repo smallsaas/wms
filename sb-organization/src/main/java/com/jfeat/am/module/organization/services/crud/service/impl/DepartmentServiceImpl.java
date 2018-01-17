@@ -27,6 +27,11 @@ public class DepartmentServiceImpl extends CRUDServiceGroupImpl<Department> impl
     protected BaseMapper getGroupMapper() {
         return departmentMapper;
     }
+
+    @Override
+    public Department getById(Long id) {
+        return departmentMapper.selectById(id);
+    }
 }
 
 

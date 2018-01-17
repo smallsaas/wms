@@ -20,4 +20,5 @@ import java.util.List;
 public interface StaffService extends CRUDServiceOnly<Staff>, CRUDServiceModel<Staff, StaffModel> {
     List<Staff> getStaffsOfDepartment(Long departmentId);
     Staff getStaffByUserId(Long userId);
+    Staff getById(Long id);
 }

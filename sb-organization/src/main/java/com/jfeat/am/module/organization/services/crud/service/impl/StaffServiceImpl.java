@@ -160,6 +160,11 @@ public class StaffServiceImpl extends CRUDServiceOnlyImpl<Staff>
 
         return affected;
     }
+
+    @Override
+    public Staff getById(Long id) {
+        return staffMapper.selectById(id);
+    }
 }
 
 

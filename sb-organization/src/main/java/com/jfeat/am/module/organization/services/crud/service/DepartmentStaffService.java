@@ -9,4 +9,5 @@ public interface DepartmentStaffService {
 
     Integer save(DepartmentStaff departmentStaff);
     Integer delete(Long id);
+    DepartmentStaff get(DepartmentStaff departmentStaff);
 }

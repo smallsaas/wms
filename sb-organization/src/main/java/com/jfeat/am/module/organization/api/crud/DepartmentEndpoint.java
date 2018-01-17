@@ -1,5 +1,6 @@
 package com.jfeat.am.module.organization.api.crud;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.annotation.Permission;
 import com.jfeat.am.common.constant.tips.ErrorTip;
@@ -8,17 +9,23 @@ import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.common.crud.error.CRUDException;
 import com.jfeat.am.core.support.DateTime;
+import com.jfeat.am.core.util.Convert;
 import com.jfeat.am.module.organization.api.permission.DepartmentPermission;
+import com.jfeat.am.module.organization.constant.IsManager;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentService;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentStaffService;
+import com.jfeat.am.module.organization.services.crud.service.StaffService;
 import com.jfeat.am.module.organization.services.domain.model.DepartmentItem;
 import com.jfeat.am.module.organization.services.domain.service.QueryDepartmentService;
 import com.jfeat.am.module.organization.services.persistence.model.Department;
 import com.jfeat.am.module.organization.services.persistence.model.DepartmentStaff;
+import com.jfeat.am.module.organization.services.persistence.model.Staff;
 import org.springframework.web.bind.annotation.*;
+import sun.tools.asm.Cover;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -40,6 +47,8 @@ public class DepartmentEndpoint extends BaseController {
 
     @Resource
     private DepartmentStaffService departmentStaffService;
+    @Resource
+    private StaffService staffService;
 
     @GetMapping("/empty")
     public Tip getEmptyDepartment(){
@@ -53,14 +62,20 @@ public class DepartmentEndpoint extends BaseController {
 
     @GetMapping("/{id}")
     public Tip getDepartment(@PathVariable Long id) {
-        return SuccessTip.create(departmentService.toJSONObject(id));
+        JSONObject department = departmentService.toJSONObject(id);
+        Long departmentId = Convert.toLong(department.get("id"));
+        DepartmentStaff departmentStaff = new DepartmentStaff();
+        departmentStaff.setDepartmentId(departmentId);
+        departmentStaff.setIsManager(IsManager.YES);
+        DepartmentStaff departmentStaffNew = departmentStaffService.get(departmentStaff);
+        Staff staff = new Staff();
+        if (departmentStaffNew != null){
+            staff = staffService.getById(id);
+        }
+        department.put("manager",staff);
+        return SuccessTip.create(department);
     }
 
-//    查看部门详情的时候返回经理的详情
-    @GetMapping("/show/{id}")
-    public Tip getDepartmentDetail(@PathVariable Long id,@RequestParam(required = false)String isManager){
-        return SuccessTip.create(queryDepartmentService.showDepartmentDetail(id,isManager));
-    }
 
     @PutMapping("/{id}")
     public Tip updateDepartment(@PathVariable Long id, @RequestBody Department entity) {

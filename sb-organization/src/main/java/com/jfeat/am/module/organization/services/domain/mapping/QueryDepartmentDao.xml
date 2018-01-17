@@ -47,7 +47,10 @@
             t_department
         LEFT JOIN t_department_staff ON t_department_staff.department_id = t_department.id
         LEFT JOIN t_staff ON t_staff.id = t_department_staff.staff_id
-        WHERE t_department.id = #{id}
+        WHERE 1=1
+        <if test="isManager != null and isManager != ''">
+            AND t_department.id = #{id}
+        </if>
         <if test="isManager != null and isManager != ''">
             AND t_department_staff.is_manager = #{isManager}
         </if>

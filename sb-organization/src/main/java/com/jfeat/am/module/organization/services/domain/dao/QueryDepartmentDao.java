@@ -1,6 +1,7 @@
 package com.jfeat.am.module.organization.services.domain.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.module.organization.services.domain.model.DepartmentItem;
 import com.jfeat.am.module.organization.services.persistence.model.Department;
 import org.apache.ibatis.annotations.Param;
@@ -14,5 +15,5 @@ import java.util.Map;
  */
 public interface QueryDepartmentDao extends BaseMapper<Department> {
     List<DepartmentItem> findDepartmentPage(Department department);
-    Map<String,Object> showDepartmentDetail(@Param("id")Long id,@Param("isManeger")String isManeger);
+    List<Map<String,Object>> showDepartmentDetail(Page<Map<String,Object>> page,@Param("id")Long id,@Param("isManeger")String isManeger);
 }

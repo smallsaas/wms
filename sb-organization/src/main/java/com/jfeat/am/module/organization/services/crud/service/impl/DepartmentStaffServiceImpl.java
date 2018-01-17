@@ -25,4 +25,9 @@ public class DepartmentStaffServiceImpl implements DepartmentStaffService {
     public Integer delete(Long id) {
         return departmentStaffMapper.deleteById(id);
     }
+
+    @Override
+    public DepartmentStaff get(DepartmentStaff departmentStaff) {
+        return departmentStaffMapper.selectOne(departmentStaff);
+    }
 }
