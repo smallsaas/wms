@@ -11,7 +11,7 @@ import com.jfeat.am.module.organization.services.crud.service.PositionChildServi
 import com.jfeat.am.module.organization.services.crud.service.ProfileChildService;
 import com.jfeat.am.module.organization.services.crud.service.StaffService;
 import com.jfeat.am.module.organization.services.domain.model.StaffModel;
-import com.jfeat.am.module.organization.services.persistence.dao.StaffMapper;
+import com.jfeat.am.module.organization.services.persistence.mapper.StaffMapper;
 import com.jfeat.am.module.organization.services.persistence.model.Department;
 import com.jfeat.am.module.organization.services.persistence.model.Position;
 import com.jfeat.am.module.organization.services.persistence.model.Staff;

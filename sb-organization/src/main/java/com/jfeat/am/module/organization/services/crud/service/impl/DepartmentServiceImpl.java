@@ -2,8 +2,8 @@ package com.jfeat.am.module.organization.services.crud.service.impl;
         
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.jfeat.am.common.crud.impl.CRUDServiceGroupImpl;
-import com.jfeat.am.module.organization.services.persistence.dao.DepartmentMapper;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentService;
+import com.jfeat.am.module.organization.services.persistence.mapper.DepartmentMapper;
 import com.jfeat.am.module.organization.services.persistence.model.Department;
 import org.springframework.stereotype.Service;
 

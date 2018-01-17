@@ -10,9 +10,11 @@ import com.jfeat.am.common.crud.error.CRUDException;
 import com.jfeat.am.core.support.DateTime;
 import com.jfeat.am.module.organization.api.permission.DepartmentPermission;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentService;
+import com.jfeat.am.module.organization.services.crud.service.DepartmentStaffService;
 import com.jfeat.am.module.organization.services.domain.model.DepartmentItem;
 import com.jfeat.am.module.organization.services.domain.service.QueryDepartmentService;
 import com.jfeat.am.module.organization.services.persistence.model.Department;
+import com.jfeat.am.module.organization.services.persistence.model.DepartmentStaff;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -36,6 +38,9 @@ public class DepartmentEndpoint extends BaseController {
     @Resource
     private QueryDepartmentService queryDepartmentService;
 
+    @Resource
+    private DepartmentStaffService departmentStaffService;
+
     @GetMapping("/empty")
     public Tip getEmptyDepartment(){
         return SuccessTip.create(new Department());
@@ -49,6 +54,12 @@ public class DepartmentEndpoint extends BaseController {
     @GetMapping("/{id}")
     public Tip getDepartment(@PathVariable Long id) {
         return SuccessTip.create(departmentService.toJSONObject(id));
+    }
+
+//    查看部门详情的时候返回经理的详情
+    @GetMapping("/show/{id}")
+    public Tip getDepartmentDetail(@PathVariable Long id,@RequestParam(required = false)String isManager){
+        return SuccessTip.create(queryDepartmentService.showDepartmentDetail(id,isManager));
     }
 
     @PutMapping("/{id}")
