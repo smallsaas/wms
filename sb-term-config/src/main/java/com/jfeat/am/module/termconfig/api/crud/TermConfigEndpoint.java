@@ -1,22 +1,12 @@
 package com.jfeat.am.module.termconfig.api.crud;
-import org.springframework.web.bind.annotation.GetMapping;
-import com.baomidou.mybatisplus.plugins.Page;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import com.jfeat.am.module.termconfig.services.domain.service.QueryTermConfigService;
+
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
-
-import com.jfeat.am.module.termconfig.services.crud.service.TermConfigService;
-import com.jfeat.am.module.termconfig.services.persistence.model.TermConfig;
-
-import org.springframework.web.bind.annotation.RestController;
 import com.jfeat.am.common.controller.BaseController;
+import com.jfeat.am.module.termconfig.services.crud.service.TermConfigService;
+import com.jfeat.am.module.termconfig.services.domain.service.QueryTermConfigService;
+import com.jfeat.am.module.termconfig.services.persistence.model.TermConfig;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -24,7 +14,7 @@ import java.util.Date;
 
 /**
  * <p>
- *  api
+ * api
  * </p>
  *
  * @author Code Generator
@@ -61,7 +51,7 @@ public class TermConfigEndpoint extends BaseController {
         return SuccessTip.create(termConfigService.retrieveMaster(id));
     }
 
-    @GetMapping("/term/config/{type}")
+    @GetMapping("/term/config/bytype/{type}")
     public Tip getTermConfigByType(@PathVariable String type) {
         return SuccessTip.create(termConfigService.getTermComfigByType(type));
     }
@@ -69,6 +59,7 @@ public class TermConfigEndpoint extends BaseController {
     @PutMapping("/adm/term/config/{id}")
     public Tip updateTermConfig(@PathVariable Long id, @RequestBody TermConfig entity) {
         entity.setId(id);
+        entity.setCreatedTime(new Date());
         return SuccessTip.create(termConfigService.updateMaster(entity));
     }
 
