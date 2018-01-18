@@ -2,6 +2,7 @@ package com.jfeat.am.module.organization.api.crud;
 
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
+import com.jfeat.am.module.organization.constant.IsManager;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentStaffService;
 import com.jfeat.am.module.organization.services.persistence.model.DepartmentStaff;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ public class DepartmentStaffEndpoint {
 
     @PostMapping
     public Tip saveDepartmentStaff(@RequestBody DepartmentStaff departmentStaff){
+        departmentStaff.setIsManager(IsManager.YES);
         return SuccessTip.create(departmentStaffService.save(departmentStaff));
     }
 
@@ -28,6 +30,4 @@ public class DepartmentStaffEndpoint {
     public Tip deleteDepartmentStaff(@PathVariable Long id){
         return SuccessTip.create(departmentStaffService.delete(id));
     }
-
-
 }

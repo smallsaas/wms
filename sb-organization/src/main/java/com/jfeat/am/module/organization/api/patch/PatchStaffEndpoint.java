@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
+import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.organization.services.crud.service.StaffService;
 import com.jfeat.am.module.organization.services.domain.service.QueryDepartmentService;
+import com.jfeat.am.module.organization.services.persistence.model.Staff;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -37,5 +39,12 @@ public class PatchStaffEndpoint extends BaseController {
         page.setRecords(queryDepartmentService.showDepartmentDetail(page,id,isManager));
         return SuccessTip.create(page);
 
+    }
+
+    @GetMapping("/org/mydept/staffs")
+    public Tip selectStaffsOfMyDepartment(){
+        Long userId = JWTKit.getUserId(getHttpServletRequest());
+        Staff staff = staffService.getStaffByUserId(userId);
+        return SuccessTip.create(staffService.getStaffsOfDepartment(staff.getDeptId()));
     }
 }

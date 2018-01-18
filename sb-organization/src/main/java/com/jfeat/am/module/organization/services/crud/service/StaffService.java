@@ -21,4 +21,5 @@ public interface StaffService extends CRUDServiceOnly<Staff>, CRUDServiceModel<S
     List<Staff> getStaffsOfDepartment(Long departmentId);
     Staff getStaffByUserId(Long userId);
     Staff getById(Long id);
+    List<Staff> getStaffsOfMyDepartment(Long departmentId,String name);
 }
