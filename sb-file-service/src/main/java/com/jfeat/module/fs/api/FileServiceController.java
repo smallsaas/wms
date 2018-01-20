@@ -12,6 +12,7 @@ import com.jfeat.am.core.util.ImageUtil;
 import com.jfeat.module.fs.service.LoadFileCodeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,8 @@ public class FileServiceController extends BaseController {
     @Autowired
     LoadFileCodeService loadFileCodeService;
 
-    @ApiOperation(value = "获取Code",response = String.class)
+    @ApiOperation(value = "获取下载码",response = String.class,notes = "登陆后自动生成的一个下载码")
+    @ApiParam(name = "name",value = "文件名称")
     @GetMapping("/api/fs/dlcode")
     public Tip getCode(@RequestParam String name) {
         String code = loadFileCodeService.genAndGetCode(name);
