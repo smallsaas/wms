@@ -10,6 +10,7 @@ import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.core.support.StrKit;
 import com.jfeat.am.core.util.ImageUtil;
 import com.jfeat.module.fs.service.LoadFileCodeService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -29,6 +30,7 @@ import java.util.UUID;
 /**
  * Created by jackyhuang on 2017/7/4.
  */
+@Api(value = "Service")
 @RestController
 public class FileServiceController extends BaseController {
 
@@ -38,6 +40,7 @@ public class FileServiceController extends BaseController {
     @Autowired
     LoadFileCodeService loadFileCodeService;
 
+    @ApiOperation(value = "获取Code",response = String.class)
     @GetMapping("/api/fs/dlcode")
     public Tip getCode(@RequestParam String name) {
         String code = loadFileCodeService.genAndGetCode(name);
@@ -49,7 +52,7 @@ public class FileServiceController extends BaseController {
      * @param picture
      * @return
      */
-    @ApiOperation("multipart方式上传图片")
+    @ApiOperation(value = "multipart方式上传图片",response = FileInfo.class)
     @PostMapping("/api/fs/uploadx")
     @ResponseBody
     public Tip formUpload(@RequestHeader("authorization") String token,
@@ -85,7 +88,7 @@ public class FileServiceController extends BaseController {
      * @return
      * @throws IOException
      */
-    @ApiOperation("Base64格式上传图片")
+    @ApiOperation(value = "Base64格式上传图片",response = FileInfo.class)
     @PostMapping("/api/fs/upload64")
     @ResponseBody
     public Tip base64Upload(@RequestHeader("authorization") String token,
@@ -143,7 +146,7 @@ public class FileServiceController extends BaseController {
         return SuccessTip.create(FileInfo.create(getFileHost(), pictureName, blurryName));
     }
 
-    @ApiOperation("上传文件")
+    @ApiOperation(value = "上传文件",response = FileInfo.class)
     @PostMapping("/api/fs/uploadfile")
     @ResponseBody
     public Tip FileUpload(@RequestHeader("authorization") String token,
@@ -169,7 +172,7 @@ public class FileServiceController extends BaseController {
         return SuccessTip.create(FileInfo.create(getFileHost(), fileName, extensionName, originalFileName, fileSize, path));
     }
 
-    @ApiOperation("下载文件")
+    @ApiOperation(value = "下载文件")
     @GetMapping("/api/pub/fs/loadfile")
     @ResponseBody
     public void loadFile(@RequestParam(required = true) String name,

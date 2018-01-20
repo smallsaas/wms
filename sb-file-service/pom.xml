@@ -20,6 +20,7 @@
 
     <properties>
         <sb-base.version>1.0.0</sb-base.version>
+        <io.swagger.version>1.5.16</io.swagger.version>
         <skipStandalone>true</skipStandalone>
     </properties>
 
@@ -29,6 +30,14 @@
             <artifactId>sb-base</artifactId>
             <version>${sb-base.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-core</artifactId>
+            <version>${io.swagger.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
 
         <!--spring boot依赖-->
         <dependency>
@@ -194,6 +203,37 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>com.github.kongchen</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>3.1.5</version>
+                <configuration>
+                    <apiSources>
+                        <apiSource>
+                            <springmvc>true</springmvc>
+                            <locations>
+                                <location>com.jfeat</location>
+                            </locations>
+                            <info>
+                                <title>${project.name}</title>
+                                <version>${project.version}</version>
+                                <description>${project.description}</description>
+                            </info>
+                            <swaggerDirectory>${project.build.directory}/swagger/</swaggerDirectory>
+                        </apiSource>
+                    </apiSources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
 
         </plugins>
         <resources>
