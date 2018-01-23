@@ -1,5 +1,6 @@
 package com.jfeat.am.module.organization.services.domain.service.impl;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.module.organization.services.domain.dao.QueryDepartmentDao;
 import com.jfeat.am.module.organization.services.domain.model.DepartmentItem;
 import com.jfeat.am.module.organization.services.domain.service.QueryDepartmentService;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -26,5 +28,10 @@ public class QueryDepartmentServiceImpl implements QueryDepartmentService {
     @Override
     public List<DepartmentItem> findDepartmentPage(Department department) {
         return queryDepartmentDao.findDepartmentPage(department);
+    }
+
+    @Override
+    public List<Map<String,Object>> showDepartmentDetail(Page<Map<String,Object>> page,Long id, String isManager) {
+        return queryDepartmentDao.showDepartmentDetail(page,id,isManager);
     }
 }

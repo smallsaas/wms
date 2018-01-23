@@ -23,6 +23,8 @@ public class StaffItem extends Staff{
 
     private String deptName;
 
+    private String isManager;
+
 
     public String getPosition() {
         return position;
@@ -78,5 +80,13 @@ public class StaffItem extends Staff{
 
     public void setDeptName(String deptName) {
         this.deptName = deptName;
+    }
+
+    public String getIsManager() {
+        return isManager;
+    }
+
+    public void setIsManager(String isManager) {
+        this.isManager = isManager;
     }
 }

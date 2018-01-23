@@ -1,22 +1,34 @@
 package com.jfeat.am.module.organization.api.crud;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.annotation.Permission;
 import com.jfeat.am.common.constant.tips.ErrorTip;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
+import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.common.crud.error.CRUDException;
 import com.jfeat.am.core.support.DateTime;
+import com.jfeat.am.core.util.Convert;
 import com.jfeat.am.module.organization.api.permission.DepartmentPermission;
+import com.jfeat.am.module.organization.constant.IsManager;
+import com.jfeat.am.module.organization.services.crud.filter.StaffFilter;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentService;
+import com.jfeat.am.module.organization.services.crud.service.DepartmentStaffService;
+import com.jfeat.am.module.organization.services.crud.service.StaffService;
 import com.jfeat.am.module.organization.services.domain.model.DepartmentItem;
+import com.jfeat.am.module.organization.services.domain.model.StaffModel;
 import com.jfeat.am.module.organization.services.domain.service.QueryDepartmentService;
 import com.jfeat.am.module.organization.services.persistence.model.Department;
+import com.jfeat.am.module.organization.services.persistence.model.DepartmentStaff;
+import com.jfeat.am.module.organization.services.persistence.model.Staff;
 import org.springframework.web.bind.annotation.*;
+import sun.tools.asm.Cover;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -36,6 +48,12 @@ public class DepartmentEndpoint extends BaseController {
     @Resource
     private QueryDepartmentService queryDepartmentService;
 
+    @Resource
+    private DepartmentStaffService departmentStaffService;
+    @Resource
+    private StaffService staffService;
+    private StaffFilter staffFilter = new StaffFilter();
+
     @GetMapping("/empty")
     public Tip getEmptyDepartment(){
         return SuccessTip.create(new Department());
@@ -48,8 +66,20 @@ public class DepartmentEndpoint extends BaseController {
 
     @GetMapping("/{id}")
     public Tip getDepartment(@PathVariable Long id) {
-        return SuccessTip.create(departmentService.toJSONObject(id));
+        JSONObject department = departmentService.toJSONObject(id);
+        Long departmentId = Convert.toLong(department.get("id"));
+        DepartmentStaff departmentStaff = new DepartmentStaff();
+        departmentStaff.setDepartmentId(departmentId);
+        departmentStaff.setIsManager(IsManager.YES);
+        DepartmentStaff departmentStaffNew = departmentStaffService.get(departmentStaff);
+        CRUDObject<StaffModel> staff = new CRUDObject<>();
+        if (departmentStaffNew != null){
+            staff = staffService.retrieveModel(departmentStaffNew.getStaffId(), staffFilter);
+        }
+        department.put("manager",staff.toJSONObject());
+        return SuccessTip.create(department);
     }
+
 
     @PutMapping("/{id}")
     public Tip updateDepartment(@PathVariable Long id, @RequestBody Department entity) {

@@ -1,4 +1,4 @@
-package com.jfeat.am.module.organization.services.persistence.dao;
+package com.jfeat.am.module.organization.services.persistence.mapper;
 
 import com.jfeat.am.module.organization.services.persistence.model.Position;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
@@ -8,8 +8,8 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
   *  Mapper 接口
  * </p>
  *
- * @author Code Generator
- * @since 2017-10-26
+ * @author admin
+ * @since 2018-01-17
  */
 public interface PositionMapper extends BaseMapper<Position> {
 

@@ -28,7 +28,7 @@ public class MyBatisPlusGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir("D:\\work\\Device\\am-base\\src\\main\\java");//这里写你自己的java目录
+        gc.setOutputDir("E:\\mydocuments\\idea\\sb-infrastructure\\sb-organization\\src\\main\\java");//这里写你自己的java目录
         gc.setFileOverride(true);//是否覆盖
         gc.setActiveRecord(true);
         gc.setEnableCache(false);// XML 二级缓存
@@ -50,13 +50,13 @@ public class MyBatisPlusGenerator {
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("root");
-        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/ambase?characterEncoding=utf8");
+        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/sbinfrastructure?characterEncoding=utf8");
         mpg.setDataSource(dsc);
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
         strategy.setEntityColumnConstant(true); //生成字段常量
-        //strategy.setTablePrefix(new String[]{"_"});// 此处可以修改为您的表前缀
+        strategy.setTablePrefix(new String[]{"t_"});// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
         strategy.setLogicDeleteFieldName("delete_flag"); //逻辑删除字段
         mpg.setStrategy(strategy);
@@ -64,9 +64,9 @@ public class MyBatisPlusGenerator {
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setParent(null);
-        pc.setEntity("com.jfeat.am.module.base.services.persistence.model");
-        pc.setMapper("com.jfeat.am.module.base.services.persistence.mapper");
-        pc.setXml("com.jfeat.am.module.base.services.persistence.mapping");
+        pc.setEntity("com.jfeat.am.module.organization.services.persistence.model");
+        pc.setMapper("com.jfeat.am.module.organization.services.persistence.mapper");
+        pc.setXml("com.jfeat.am.module.organization.services.persistence.mapping");
         pc.setService("TTT");       //本项目没用，生成之后删掉
         pc.setServiceImpl("TTT");   //本项目没用，生成之后删掉
         pc.setController("TTT");    //本项目没用，生成之后删掉

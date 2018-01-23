@@ -11,8 +11,8 @@ import java.io.Serializable;
  * 
  * </p>
  *
- * @author Code Generator
- * @since 2017-10-26
+ * @author admin
+ * @since 2018-01-17
  */
 @TableName("t_position")
 public class Position extends Model<Position> {
@@ -21,11 +21,11 @@ public class Position extends Model<Position> {
 
 	private Long id;
     /**
-     * ??
+     * 备注
      */
 	private String name;
     /**
-     * ??
+     * 备注
      */
 	private String note;
 
@@ -34,27 +34,24 @@ public class Position extends Model<Position> {
 		return id;
 	}
 
-	public Position setId(Long id) {
+	public void setId(Long id) {
 		this.id = id;
-		return this;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public Position setName(String name) {
+	public void setName(String name) {
 		this.name = name;
-		return this;
 	}
 
 	public String getNote() {
 		return note;
 	}
 
-	public Position setNote(String note) {
+	public void setNote(String note) {
 		this.note = note;
-		return this;
 	}
 
 	public static final String ID = "id";

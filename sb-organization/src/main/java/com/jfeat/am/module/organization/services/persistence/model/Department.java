@@ -1,11 +1,10 @@
 package com.jfeat.am.module.organization.services.persistence.model;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
+import java.io.Serializable;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
 
 /**
@@ -13,8 +12,8 @@ import java.io.Serializable;
  * 
  * </p>
  *
- * @author Code Generator
- * @since 2017-10-27
+ * @author admin
+ * @since 2018-01-17
  */
 @TableName("t_department")
 public class Department extends Model<Department> {
@@ -23,38 +22,38 @@ public class Department extends Model<Department> {
 
 	private Long id;
     /**
-     * ????
+     * 部门编号
      */
 	private String code;
     /**
-     * ????
+     * 是否机构
      */
 	@TableField("is_org")
 	private Integer isOrg;
 	private Long pid;
     /**
-     * ??
+     * 简称
      */
 	private String name;
     /**
-     * ??
+     * 全称
      */
 	@TableField("full_name")
 	private String fullName;
     /**
-     * ??
+     * 位置
      */
 	private String location;
     /**
-     * ??
+     * 备注
      */
 	private String note;
     /**
-     * ???
+     * 排序号
      */
 	private Integer sort;
     /**
-     * ???????????
+     * 版本（乐观锁保留字段）
      */
 	private Integer version;
 
@@ -63,90 +62,80 @@ public class Department extends Model<Department> {
 		return id;
 	}
 
-	public Department setId(Long id) {
+	public void setId(Long id) {
 		this.id = id;
-		return this;
 	}
 
 	public String getCode() {
 		return code;
 	}
 
-	public Department setCode(String code) {
+	public void setCode(String code) {
 		this.code = code;
-		return this;
 	}
 
 	public Integer getIsOrg() {
 		return isOrg;
 	}
 
-	public Department setIsOrg(Integer isOrg) {
+	public void setIsOrg(Integer isOrg) {
 		this.isOrg = isOrg;
-		return this;
 	}
 
 	public Long getPid() {
 		return pid;
 	}
 
-	public Department setPid(Long pid) {
+	public void setPid(Long pid) {
 		this.pid = pid;
-		return this;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public Department setName(String name) {
+	public void setName(String name) {
 		this.name = name;
-		return this;
 	}
 
 	public String getFullName() {
 		return fullName;
 	}
 
-	public Department setFullName(String fullName) {
+	public void setFullName(String fullName) {
 		this.fullName = fullName;
-		return this;
 	}
 
 	public String getLocation() {
 		return location;
 	}
 
-	public Department setLocation(String location) {
+	public void setLocation(String location) {
 		this.location = location;
-		return this;
 	}
 
 	public String getNote() {
 		return note;
 	}
 
-	public Department setNote(String note) {
+	public void setNote(String note) {
 		this.note = note;
-		return this;
 	}
 
 	public Integer getSort() {
 		return sort;
 	}
 
-	public Department setSort(Integer sort) {
+	public void setSort(Integer sort) {
 		this.sort = sort;
-		return this;
 	}
 
 	public Integer getVersion() {
 		return version;
 	}
 
-	public Department setVersion(Integer version) {
+	public void setVersion(Integer version) {
 		this.version = version;
-		return this;
 	}
 
 	public static final String ID = "id";

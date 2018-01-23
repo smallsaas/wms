@@ -15,4 +15,6 @@ import com.jfeat.am.module.organization.services.persistence.model.Department;
 
 public interface DepartmentService extends CRUDServiceGroup<Department> {
 
+    Department getById(Long id);
+
 }
