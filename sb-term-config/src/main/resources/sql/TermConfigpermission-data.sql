@@ -1,3 +1,6 @@
+SET FOREIGN_KEY_CHECKS = 0;
+
+
 INSERT INTO `perm_group` (`id`, `name`, `identifier`) VALUES
 ('939349783914717189', 'TermConfig模块', 'TermConfig.management');
 
