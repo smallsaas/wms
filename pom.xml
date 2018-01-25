@@ -19,6 +19,7 @@
     <module>sb-form-attachment</module>
     <module>sb-pcd</module>
     <module>sb-file-service</module>
+    <module>sb-starter-test</module>
   </modules>
 
   <distributionManagement>
