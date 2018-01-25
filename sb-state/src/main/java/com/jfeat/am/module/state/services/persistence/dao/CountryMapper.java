@@ -1,6 +1,6 @@
-package com.jfeat.am.module.pcd.services.persistence.dao;
+package com.jfeat.am.module.state.services.persistence.dao;
 
-import com.jfeat.am.module.pcd.services.persistence.model.Country;
+import com.jfeat.am.module.state.services.persistence.model.Country;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * </p>
  *
  * @author Code Generator
- * @since 2017-12-22
+ * @since 2018-01-25
  */
 public interface CountryMapper extends BaseMapper<Country> {
 

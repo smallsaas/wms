@@ -18,7 +18,8 @@
     <module>sb-term-config</module>
     <module>sb-form-attachment</module>
     <module>sb-pcd</module>
-    <module>sb-file-service</module>
+    <module>sb-state</module>
+    <!--<module>sb-file-service</module>-->
   </modules>
 
   <distributionManagement>

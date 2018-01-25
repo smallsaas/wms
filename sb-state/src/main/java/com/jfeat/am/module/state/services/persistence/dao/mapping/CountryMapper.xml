@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jfeat.am.module.pcd.services.persistence.dao.CountryMapper">
+<mapper namespace="com.jfeat.am.module.state.services.persistence.dao.CountryMapper">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.jfeat.am.module.pcd.services.persistence.model.Country">
+	<resultMap id="BaseResultMap" type="com.jfeat.am.module.state.services.persistence.model.Country">
 		<id column="id" property="id" />
+		<result column="code" property="code" />
+		<result column="lang" property="lang" />
 		<result column="name" property="name" />
 		<result column="full_name" property="fullName" />
-		<result column="english_name" property="englishName" />
-		<result column="code" property="code" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, full_name AS fullName, english_name AS englishName, code
+        id, code, lang, name, full_name AS fullName
     </sql>
 
 </mapper>

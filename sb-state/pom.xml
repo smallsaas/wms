@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.jfeat</groupId>
-    <artifactId>sb-pcd</artifactId>
-    <version>1.0.0</version>
+    <artifactId>sb-state</artifactId>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
-    <name>PCD</name>
-    <description>Province/City/District Component</description>
+    <name>Config Country</name>
+    <description>States Provider</description>
 
     <parent>
         <groupId>com.jfeat</groupId>
@@ -234,9 +234,9 @@
                 <version>1.0.2</version>
                 <configuration>
                     <!-- change to your module name -->
-                    <moduleName>pcd</moduleName>
+                    <moduleName>state</moduleName>
                     <tables>
-                        <table>state</table>
+                        <table>country</table>
                     </tables>
                     <dbUrl>jdbc:mysql://127.0.0.1/test?characterEncoding=utf8</dbUrl>
                     <username>root</username>
