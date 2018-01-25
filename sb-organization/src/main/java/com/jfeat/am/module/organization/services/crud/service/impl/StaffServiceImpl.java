@@ -1,18 +1,22 @@
 package com.jfeat.am.module.organization.services.crud.service.impl;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfeat.am.common.crud.CRUD;
 import com.jfeat.am.common.crud.CRUDFilter;
 import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
 import com.jfeat.am.module.organization.constant.BizExceptionEnum;
+import com.jfeat.am.module.organization.constant.IsManager;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentChildService;
 import com.jfeat.am.module.organization.services.crud.service.PositionChildService;
 import com.jfeat.am.module.organization.services.crud.service.ProfileChildService;
 import com.jfeat.am.module.organization.services.crud.service.StaffService;
 import com.jfeat.am.module.organization.services.domain.model.StaffModel;
+import com.jfeat.am.module.organization.services.persistence.mapper.DepartmentStaffMapper;
 import com.jfeat.am.module.organization.services.persistence.mapper.StaffMapper;
 import com.jfeat.am.module.organization.services.persistence.model.Department;
+import com.jfeat.am.module.organization.services.persistence.model.DepartmentStaff;
 import com.jfeat.am.module.organization.services.persistence.model.Position;
 import com.jfeat.am.module.organization.services.persistence.model.Staff;
 import com.jfeat.am.module.profile.services.crud.service.ProfileService;
@@ -37,6 +41,8 @@ public class StaffServiceImpl extends CRUDServiceOnlyImpl<Staff>
 
     @Resource
     private StaffMapper staffMapper;
+    @Resource
+    private DepartmentStaffMapper departmentStaffMapper;
 
     protected BaseMapper<Staff> getMasterMapper() {
         return staffMapper;
@@ -93,6 +99,12 @@ public class StaffServiceImpl extends CRUDServiceOnlyImpl<Staff>
         Staff staff = CRUD.castObject(staffModel);
         affected +=  super.createMaster(staff, crudFilter);*/
 
+//        插入一张中间表
+        DepartmentStaff departmentStaff = new DepartmentStaff();
+        departmentStaff.setDepartmentId(staff.getDeptId());
+        departmentStaff.setStaffId(staff.getId());
+        departmentStaff.setIsManager(IsManager.NO);
+        affected += departmentStaffMapper.insert(departmentStaff);
         return affected;
     }
 
@@ -154,8 +166,12 @@ public class StaffServiceImpl extends CRUDServiceOnlyImpl<Staff>
 
         affected += profileChildService.deleteChild(masterId);
 
+//        删除中间表
+        Staff staff =staffMapper.selectById(masterId);
+        affected += departmentStaffMapper.delete(new EntityWrapper<DepartmentStaff>().eq(DepartmentStaff.DEPARTMENT_ID,staff.getDeptId()).eq(DepartmentStaff.STAFF_ID,staff.getId()));
 
-        /// delete master
+        /// delete m
+        // aster
         affected += getMasterMapper().deleteById(masterId);
 
         return affected;
@@ -164,6 +180,11 @@ public class StaffServiceImpl extends CRUDServiceOnlyImpl<Staff>
     @Override
     public Staff getById(Long id) {
         return staffMapper.selectById(id);
+    }
+
+    @Override
+    public List<Staff> getStaffsOfMyDepartment(Long departmentId, String name) {
+        return null;
     }
 }
 

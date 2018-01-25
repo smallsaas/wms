@@ -20,6 +20,7 @@
     <module>sb-pcd</module>
     <module>sb-file-service</module>
     <module>sb-starter-test</module>
+    <module>sb-view-history</module>
   </modules>
 
   <distributionManagement>

@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.jfeat</groupId>
-    <artifactId>sb-feedback</artifactId>
+    <artifactId>sb-view-history</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>Feedback</name>
-    <description>Seed Component</description>
+    <name>ViewHistory</name>
+    <description>ViewHistory Component</description>
 
     <parent>
         <groupId>com.jfeat</groupId>
@@ -235,16 +235,15 @@
             <plugin>
                 <groupId>com.jfeat</groupId>
                 <artifactId>sb-code-generator</artifactId>
-                <version>1.0.1-SNAPSHOT</version>
+                <version>1.0.2</version>
                 <configuration>
                     <!-- change to your module name -->
-                    <moduleName>feedback</moduleName>
-                    <dbUrl>jdbc:mysql://112.74.26.228:3306/job</dbUrl>
-                    <username>jfeat</username>
-                    <password>jfeat</password>
+                    <moduleName>viewhistory</moduleName>
+                    <dbUrl>jdbc:mysql://127.0.0.1:3306/wegou</dbUrl>
+                    <username>root</username>
+                    <password>root</password>
                     <tables>
-                        <table>t_feedback </table>
-                        <table>t_feedback_image </table>
+                        <table>t_view_history</table>
                     </tables>
                     <outputDir>src\main\java</outputDir>
                     <parentPackage>com.jfeat.am.module</parentPackage>

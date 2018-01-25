@@ -7,15 +7,18 @@ import com.jfeat.am.common.constant.tips.ErrorTip;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
+import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.common.crud.error.CRUDException;
 import com.jfeat.am.core.support.DateTime;
 import com.jfeat.am.core.util.Convert;
 import com.jfeat.am.module.organization.api.permission.DepartmentPermission;
 import com.jfeat.am.module.organization.constant.IsManager;
+import com.jfeat.am.module.organization.services.crud.filter.StaffFilter;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentService;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentStaffService;
 import com.jfeat.am.module.organization.services.crud.service.StaffService;
 import com.jfeat.am.module.organization.services.domain.model.DepartmentItem;
+import com.jfeat.am.module.organization.services.domain.model.StaffModel;
 import com.jfeat.am.module.organization.services.domain.service.QueryDepartmentService;
 import com.jfeat.am.module.organization.services.persistence.model.Department;
 import com.jfeat.am.module.organization.services.persistence.model.DepartmentStaff;
@@ -49,6 +52,7 @@ public class DepartmentEndpoint extends BaseController {
     private DepartmentStaffService departmentStaffService;
     @Resource
     private StaffService staffService;
+    private StaffFilter staffFilter = new StaffFilter();
 
     @GetMapping("/empty")
     public Tip getEmptyDepartment(){
@@ -68,11 +72,11 @@ public class DepartmentEndpoint extends BaseController {
         departmentStaff.setDepartmentId(departmentId);
         departmentStaff.setIsManager(IsManager.YES);
         DepartmentStaff departmentStaffNew = departmentStaffService.get(departmentStaff);
-        Staff staff = new Staff();
+        CRUDObject<StaffModel> staff = new CRUDObject<>();
         if (departmentStaffNew != null){
-            staff = staffService.getById(id);
+            staff = staffService.retrieveModel(departmentStaffNew.getStaffId(), staffFilter);
         }
-        department.put("manager",staff);
+        department.put("manager",staff.toJSONObject());
         return SuccessTip.create(department);
     }
 
