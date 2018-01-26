@@ -22,20 +22,6 @@ public class AmApplication extends WebMvcConfigurerAdapter {
 
     protected final static Logger logger = LoggerFactory.getLogger(AmApplication.class);
 
-    @Autowired
-    AmProperties amProperties;
-
-    /**
-     * 增加swagger的支持
-     */
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        if(amProperties.getSwaggerOpen()){
-            registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-            registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-        }
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(AmApplication.class, args);
         logger.info("AmApplication is sussess!");
