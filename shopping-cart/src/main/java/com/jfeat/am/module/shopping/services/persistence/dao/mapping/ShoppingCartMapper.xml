@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.shopping.services.persistence.dao.ShoppingCartMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.jfeat.am.module.shopping.services.persistence.model.ShoppingCart">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="product_id" property="productId" />
+		<result column="product_name" property="productName" />
+		<result column="cover" property="cover" />
+		<result column="quantity" property="quantity" />
+		<result column="total_price" property="totalPrice" />
+		<result column="created_date" property="createdDate" />
+		<result column="product_specification_id" property="productSpecificationId" />
+		<result column="product_specification_name" property="productSpecificationName" />
+		<result column="fare_id" property="fareId" />
+		<result column="weight" property="weight" />
+		<result column="bulk" property="bulk" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id AS userId, product_id AS productId, product_name AS productName, cover, quantity, total_price AS totalPrice, created_date AS createdDate, product_specification_id AS productSpecificationId, product_specification_name AS productSpecificationName, fare_id AS fareId, weight, bulk
+    </sql>
+
+</mapper>
