@@ -9,7 +9,6 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
-import java.io.Serializable;
 
 /**
  * <p>
@@ -25,17 +24,17 @@ public class ShoppingCart extends Model<ShoppingCart> {
     private static final long serialVersionUID = 1L;
 
 	@TableId(value="id", type= IdType.AUTO)
-	private Integer id;
+	private Long id;
     /**
      * 用户ID
      */
 	@TableField("user_id")
-	private Integer userId;
+	private Long userId;
     /**
      * 产品ID
      */
 	@TableField("product_id")
-	private Integer productId;
+	private Long productId;
     /**
      * 产品名称
      */
@@ -63,7 +62,7 @@ public class ShoppingCart extends Model<ShoppingCart> {
      * 产品规格ID
      */
 	@TableField("product_specification_id")
-	private Integer productSpecificationId;
+	private Long productSpecificationId;
     /**
      * 规格名称
      */
@@ -73,40 +72,40 @@ public class ShoppingCart extends Model<ShoppingCart> {
      * 经营者ID
      */
 	@TableField("fare_id")
-	private Integer fareId;
+	private Long fareId;
     /**
      * 重量
      */
-	private Integer weight;
+	private BigDecimal weight;
     /**
      * 是否批发
      */
 	private Integer bulk;
 
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public ShoppingCart setId(Integer id) {
+	public ShoppingCart setId(Long id) {
 		this.id = id;
 		return this;
 	}
 
-	public Integer getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public ShoppingCart setUserId(Integer userId) {
+	public ShoppingCart setUserId(Long userId) {
 		this.userId = userId;
 		return this;
 	}
 
-	public Integer getProductId() {
+	public Long getProductId() {
 		return productId;
 	}
 
-	public ShoppingCart setProductId(Integer productId) {
+	public ShoppingCart setProductId(Long productId) {
 		this.productId = productId;
 		return this;
 	}
@@ -156,11 +155,11 @@ public class ShoppingCart extends Model<ShoppingCart> {
 		return this;
 	}
 
-	public Integer getProductSpecificationId() {
+	public Long getProductSpecificationId() {
 		return productSpecificationId;
 	}
 
-	public ShoppingCart setProductSpecificationId(Integer productSpecificationId) {
+	public ShoppingCart setProductSpecificationId(Long productSpecificationId) {
 		this.productSpecificationId = productSpecificationId;
 		return this;
 	}
@@ -174,20 +173,20 @@ public class ShoppingCart extends Model<ShoppingCart> {
 		return this;
 	}
 
-	public Integer getFareId() {
+	public Long getFareId() {
 		return fareId;
 	}
 
-	public ShoppingCart setFareId(Integer fareId) {
+	public ShoppingCart setFareId(Long fareId) {
 		this.fareId = fareId;
 		return this;
 	}
 
-	public Integer getWeight() {
+	public BigDecimal getWeight() {
 		return weight;
 	}
 
-	public ShoppingCart setWeight(Integer weight) {
+	public ShoppingCart setWeight(BigDecimal weight) {
 		this.weight = weight;
 		return this;
 	}
