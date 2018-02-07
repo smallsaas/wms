@@ -12,7 +12,6 @@
     <module>sb-organization</module>
     <module>sb-profile</module>
     <module>sb-notice</module>
-    <module>sb-statement</module>
     <module>general-social</module>
     <module>sb-feedback</module>
     <module>sb-term-config</module>
