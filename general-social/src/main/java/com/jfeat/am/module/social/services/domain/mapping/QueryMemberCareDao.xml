@@ -21,4 +21,11 @@
                  AND so_member_care.follow_time LIKE CONCAT('%',#{followTime},'%')
             </if>
                     </select>
+
+
+    <select id="queryMemberCareWithUserByResId" resultType="map">
+        SELECT `user`.avatar,`user`.`name`,`user`.sex,`user`.phone FROM so_member_care
+        LEFT JOIN `user` ON `user`.id = so_member_care.follower_id
+        WHERE so_member_care.member_id = #{id}
+    </select>
 </mapper>

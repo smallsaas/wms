@@ -1,5 +1,6 @@
 package com.jfeat.am.module.social.services.domain.dao;
 
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.jfeat.am.module.social.services.persistence.model.MemberCare;
 
 import com.baomidou.mybatisplus.plugins.Page;
@@ -12,4 +13,6 @@ import java.util.List;
  */
 public interface QueryMemberCareDao extends BaseMapper<MemberCare> {
     List<MemberCare> findMemberCarePage(Page<MemberCare> page,MemberCare membercare);
+
+    List<MemberCare> queryMemberCareWithUserByResId(Page<MemberCare> page,@Param("id")Long id);
 }
