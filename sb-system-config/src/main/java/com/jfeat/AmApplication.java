@@ -29,11 +29,4 @@ public class AmApplication extends WebMvcConfigurerAdapter {
         SpringApplication.run(AmApplication.class, args);
         logger.info("AmApplication is sussess!");
     }
-
-
-    @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder){
-        RestTemplate restTemplate = restTemplateBuilder.build();
-        return restTemplate;
-    }
 }
