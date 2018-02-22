@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/systemconfig")
-public class PatchEndpoint extends BaseController {
+public class SystemConfigPatchEndpoint extends BaseController {
 
 
 }
