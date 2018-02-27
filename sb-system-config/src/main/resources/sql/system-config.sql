@@ -7,7 +7,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `sb_system_config`;
 CREATE TABLE `sb_system_config` (
   `id` bigint(20) NOT NULL,
-  `data_key` text NOT NULL COMMENT 'key',
+  `data_key` varchar(200) NOT NULL COMMENT 'key',
   `data_value` text NOT NULL COMMENT 'value',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
