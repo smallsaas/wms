@@ -24,8 +24,8 @@
 
 
     <select id="queryMemberCareWithUserByResId" resultType="map">
-        SELECT `user`.avatar,`user`.`name`,`user`.sex,`user`.phone FROM so_member_care
-        LEFT JOIN `user` ON `user`.id = so_member_care.follower_id
+        SELECT `user`.avatar,`user`.`name`,`user`.sex,`user`.phone FROM `user`
+        LEFT JOIN so_member_care ON `user`.id = so_member_care.follower_id
         WHERE so_member_care.member_id = #{id}
     </select>
 </mapper>
