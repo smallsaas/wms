@@ -22,5 +22,6 @@ public interface MemberCareService extends CRUDServiceOnly<MemberCare> {
 
     List<MemberCare> queryMemberCareByUserIdAndFollowedId(Long userId,Long followerId);
     List<MemberCare> queryMemberCareWithUserByResId(Page<MemberCare> page,Long id);
+    List<MemberCare> queryMemberCareByUserId(Page<MemberCare> page,@Param("id")Long id);
 
 }

@@ -46,6 +46,11 @@ public class MemberCareServiceImpl extends CRUDServiceOnlyImpl<MemberCare> imple
     public List<MemberCare> queryMemberCareWithUserByResId(Page<MemberCare> page, Long id) {
         return queryMemberCareDao.queryMemberCareWithUserByResId(page,id);
     }
+
+    @Override
+    public List<MemberCare> queryMemberCareByUserId(Page<MemberCare> page, Long id) {
+        return queryMemberCareDao.queryMemberCareByUserId(page,id);
+    }
 }
 
 

@@ -28,4 +28,9 @@
         LEFT JOIN so_member_care ON `user`.id = so_member_care.follower_id
         WHERE so_member_care.member_id = #{id}
     </select>
+
+    <select id="queryMemberCareByUserId" resultType="MemberCare">
+        SELECT * FROM so_member_care
+        WHERE so_member_care.member_id = #{id}
+    </select>
 </mapper>

@@ -15,4 +15,8 @@ public interface QueryMemberCareDao extends BaseMapper<MemberCare> {
     List<MemberCare> findMemberCarePage(Page<MemberCare> page,MemberCare membercare);
 
     List<MemberCare> queryMemberCareWithUserByResId(Page<MemberCare> page,@Param("id")Long id);
+
+    List<MemberCare> queryMemberCareByUserId(Page<MemberCare> page,@Param("id")Long id);
+
+
 }
