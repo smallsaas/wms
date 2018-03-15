@@ -43,6 +43,10 @@ public class TermConfigEndpoint extends BaseController {
 
     @PostMapping("/adm/term/config")
     public Tip createTermConfig(@RequestBody TermConfig entity) {
+        Date now = new Date();
+        entity.setCreatedTime(now);
+        entity.setPreviousModifiedTime(now);
+        entity.setLastModifiedTime(now);
         return SuccessTip.create(termConfigService.createMaster(entity));
     }
 
@@ -58,8 +62,10 @@ public class TermConfigEndpoint extends BaseController {
 
     @PutMapping("/adm/term/config/{id}")
     public Tip updateTermConfig(@PathVariable Long id, @RequestBody TermConfig entity) {
+        TermConfig termConfig = termConfigService.retrieveMaster(id);
         entity.setId(id);
-        entity.setCreatedTime(new Date());
+        entity.setPreviousModifiedTime(termConfig.getLastModifiedTime());
+        entity.setLastModifiedTime(new Date());
         return SuccessTip.create(termConfigService.updateMaster(entity));
     }
 
