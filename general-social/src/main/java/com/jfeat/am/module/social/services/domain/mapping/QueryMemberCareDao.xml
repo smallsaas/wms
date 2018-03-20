@@ -29,8 +29,8 @@
         WHERE so_member_care.member_id = #{id}
     </select>
 
-    <select id="queryMemberCareByUserId" resultType="MemberCare">
-        SELECT * FROM so_member_care
-        WHERE so_member_care.member_id = #{id}
+    <select id="queryMemberCareByUserId" resultType="com.jfeat.am.module.social.services.persistence.model.MemberCare">
+        SELECT id,member_id as memberId,follower_id as followerId,roles,follow_time as followTime FROM so_member_care
+        WHERE so_member_care.follower_id = #{id}
     </select>
 </mapper>
