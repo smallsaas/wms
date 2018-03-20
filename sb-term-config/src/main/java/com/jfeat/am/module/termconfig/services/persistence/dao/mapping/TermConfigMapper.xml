@@ -9,11 +9,13 @@
 		<result column="title" property="title" />
 		<result column="content" property="content" />
 		<result column="created_time" property="createdTime" />
+		<result column="previous_modified_time" property="previousModifiedTime" />
+		<result	 column="last_modified_time" property="lastModifiedTime" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, type, title, content, created_time AS createdTime
+        id, type, title, content, created_time AS createdTime, previous_modified_time AS previousModifiedTime, last_modified_time AS lastModifiedTime
     </sql>
 
 </mapper>
