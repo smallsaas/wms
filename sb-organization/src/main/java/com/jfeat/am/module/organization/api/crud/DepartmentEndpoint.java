@@ -9,10 +9,13 @@ import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.common.crud.error.CRUDException;
+import com.jfeat.am.common.exception.BizExceptionEnum;
+import com.jfeat.am.core.support.BeanKit;
 import com.jfeat.am.core.support.DateTime;
 import com.jfeat.am.core.util.Convert;
 import com.jfeat.am.module.organization.api.permission.DepartmentPermission;
 import com.jfeat.am.module.organization.constant.IsManager;
+import com.jfeat.am.module.organization.kit.OrganizationKit;
 import com.jfeat.am.module.organization.services.crud.filter.StaffFilter;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentService;
 import com.jfeat.am.module.organization.services.crud.service.DepartmentStaffService;
@@ -53,6 +56,8 @@ public class DepartmentEndpoint extends BaseController {
     @Resource
     private StaffService staffService;
     private StaffFilter staffFilter = new StaffFilter();
+    @Resource
+    private OrganizationKit organizationKit;
 
     @GetMapping("/empty")
     public Tip getEmptyDepartment(){
@@ -61,6 +66,9 @@ public class DepartmentEndpoint extends BaseController {
 
     @PostMapping
     public Tip createDepartment(@RequestBody Department entity) {
+        if (organizationKit.checkDepartmentCodeDuplicate(entity.getCode())){
+            return ErrorTip.create(BizExceptionEnum.ALREADY_EXIST);
+        }
         return SuccessTip.create(departmentService.createGroup(entity));
     }
 

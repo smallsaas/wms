@@ -11,7 +11,11 @@ import java.util.Map;
  * Created by vincent on 2017/10/19.
  */
 public interface QueryDepartmentService {
+
     List<DepartmentItem> findDepartmentPage(Department department);
 
-    List<Map<String,Object>> showDepartmentDetail(Page<Map<String,Object>> page,Long id,String isManager);
+    List<Map<String, Object>> showDepartmentDetail(Page<Map<String, Object>> page, Long id, String isManager);
+
+    List<Department> queryDepartmentByCode(String code);
+
 }
