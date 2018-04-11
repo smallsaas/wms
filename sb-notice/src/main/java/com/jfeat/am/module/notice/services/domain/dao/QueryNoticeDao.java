@@ -12,4 +12,7 @@ import java.util.List;
  */
 public interface QueryNoticeDao extends BaseMapper<Notice> {
     List<Notice> findNotices(Page<Notice> page, @Param("notice") Notice notice, @Param("expired") Integer expired);
+
+    List<Notice> findExpiredNotices();
+
 }
