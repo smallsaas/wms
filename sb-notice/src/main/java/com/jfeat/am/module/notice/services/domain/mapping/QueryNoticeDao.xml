@@ -40,4 +40,10 @@
 
         ORDER BY t_notice.id DESC
     </select>
+
+    <select id="findExpiredNotices" resultType="Notice">
+        SELECT t_notice.*
+        FROM t_notice
+        WHERE CURRENT_TIMESTAMP >= t_notice.end_time
+    </select>
 </mapper>
