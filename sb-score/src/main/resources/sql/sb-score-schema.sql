@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS `sb_score`;
+CREATE TABLE `sb_score` (
+	id BIGINT (20) NOT NULL,
+	user_id BIGINT (20) NOT NULL,
+	type VARCHAR (50) NOT NULL COMMENT '类型',
+	score BIGINT(20) NOT NULL COMMENT '积分',
+	update_time DATETIME NULL COMMENT '最近更新时间',
+	PRIMARY KEY (`id`)
+) ENGINE = INNODB DEFAULT CHARSET = UTF8;
+

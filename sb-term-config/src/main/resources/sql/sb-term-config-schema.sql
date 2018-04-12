@@ -1,6 +1,4 @@
-DROP TABLE
-IF EXISTS `t_term_config`;
-
+DROP TABLE IF EXISTS `t_term_config`;
 CREATE TABLE `t_term_config` (
 	id BIGINT (20) NOT NULL,
 	type VARCHAR (50) NOT NULL COMMENT '类型 ABOUT_US,NOTICE,CONNECT_US ...',

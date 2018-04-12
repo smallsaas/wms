@@ -23,6 +23,7 @@
     <module>sb-view-history</module>
     <module>shopping-cart</module>
     <module>sb-system-config</module>
+    <module>sb-score</module>
   </modules>
 
   <distributionManagement>
