@@ -34,7 +34,7 @@ import java.util.Date;
  * @since 2018-04-11
  */
 @RestController
-@RequestMapping("/api/score/score")
+@RequestMapping("/api/score")
 public class ScoreEndpoint extends BaseController {
 
     @Resource
@@ -76,7 +76,7 @@ public class ScoreEndpoint extends BaseController {
         return SuccessTip.create(scoreService.deleteMaster(id));
     }
 
-    @GetMapping
+    /*@GetMapping
     public Tip queryScores(Page<Score> page,
                            @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
@@ -110,5 +110,10 @@ public class ScoreEndpoint extends BaseController {
 //        page.setRecords(queryScoreService.findScorePage(page, score,orderBy));
 
         return SuccessTip.create(page);
+    }*/
+
+    @GetMapping
+    public Tip queryScoresByUserId(@RequestParam(name = "userId", required = false) Long userId){
+        return SuccessTip.create(scoreService.queryScoreByUserId(userId));
     }
 }

@@ -3,6 +3,8 @@ package com.jfeat.am.module.score.services.crud.service;
 import com.jfeat.am.common.crud.CRUDServiceOnly;
 import com.jfeat.am.module.score.services.persistence.model.Score;
 
+import java.util.List;
+
 
 /**
  * <p>
@@ -15,5 +17,7 @@ import com.jfeat.am.module.score.services.persistence.model.Score;
   * Slave : sb_score
   */
 public interface ScoreService  extends CRUDServiceOnly<Score> {
+
+    List<Score> queryScoreByUserId(Long userId);
 
 }
