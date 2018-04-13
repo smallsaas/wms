@@ -1,7 +1,9 @@
 package com.jfeat.am.module.score.web;
 
+import com.google.common.collect.Maps;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
+import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.log.annotation.BusinessLog;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,8 @@ import com.jfeat.am.common.controller.BaseController;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -114,6 +118,17 @@ public class ScoreEndpoint extends BaseController {
 
     @GetMapping
     public Tip queryScoresByUserId(@RequestParam(name = "userId", required = false) Long userId){
-        return SuccessTip.create(scoreService.queryScoreByUserId(userId));
+        if (userId == null){
+            userId = JWTKit.getUserId(getHttpServletRequest());
+        }
+        Map<String,Object> map = Maps.newHashMap();
+        List<Score> scores = scoreService.queryScoreByUserId(userId);
+        Long lifeValue = 0L;
+        for (Score score:scores){
+            lifeValue += score.getScore();
+        }
+        map.put("lifeValue",lifeValue);
+        map.put("scores",scores);
+        return SuccessTip.create(map);
     }
 }
