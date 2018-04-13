@@ -20,7 +20,7 @@ public class ScoreRankJob {
     ScoreRankService scoreRankService;
 
 
-    @Scheduled(cron = "0 0 0 * * ? *")
+    @Scheduled(cron = "0 0 2 ? * *")
     public void audit() {
         logger.info("Start to update score rank");
         scoreRankService.deleteData();
