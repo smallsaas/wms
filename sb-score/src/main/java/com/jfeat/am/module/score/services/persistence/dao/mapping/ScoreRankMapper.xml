@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.score.services.persistence.dao.ScoreRankMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.jfeat.am.module.score.services.persistence.model.ScoreRank">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="total_score" property="totalScore" />
+		<result column="rank" property="rank" />
+		<result column="beat_rate" property="beatRate" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id AS userId, total_score AS totalScore, rank, beat_rate AS beatRate
+    </sql>
+
+</mapper>
