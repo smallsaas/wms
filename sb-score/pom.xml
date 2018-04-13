@@ -256,7 +256,7 @@
                     <username>root</username>
                     <password>root</password>
                     <tables>
-                        <table>sb_score</table>
+                        <table>sb_score_rank</table>
                     </tables>
                     <outputDir>src\main\java</outputDir>
                     <parentPackage>com.jfeat.am.module</parentPackage>
