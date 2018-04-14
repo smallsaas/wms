@@ -1,8 +1,7 @@
 package com.jfeat.am.module.notification.services.persistence.dao;
 
-import com.jfeat.am.module.notification.services.persistence.model.UserNotify;
+import com.jfeat.am.module.notification.services.persistence.model.Subscription;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -12,8 +11,6 @@ import org.apache.ibatis.annotations.Param;
  * @author admin
  * @since 2018-04-14
  */
-public interface UserNotifyMapper extends BaseMapper<UserNotify> {
-
-
+public interface SubscriptionMapper extends BaseMapper<Subscription> {
 
 }

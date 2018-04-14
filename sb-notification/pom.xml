@@ -256,6 +256,8 @@
                     <username>root</username>
                     <password>root</password>
                     <tables>
+                        <table>notify</table>
+                        <table>user_notify</table>
                         <table>subscription</table>
                     </tables>
                     <outputDir>src\main\java</outputDir>

@@ -1,6 +1,7 @@
 package com.jfeat.am.module.notification.api.crud;
 
 import com.jfeat.am.common.annotation.Permission;
+import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.notification.api.permission.UserNotifyPermission;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -72,7 +74,9 @@ public class UserNotifyEndpoint extends BaseController {
         */
         @GetMapping
         @Permission({UserNotifyPermission.UserNotify_VIEW})
-        public Tip show(@RequestHeader("authorization") String token) {
-            return SuccessTip.create();
+        public Tip queryNotifyCountByIsRead(@RequestParam(required = false,defaultValue = "0") Integer isRead) {
+            Long userId = JWTKit.getUserId(getHttpServletRequest());
+            List<Map<String,Object>> maps = userNotifyService.getUnReadCountByUserIdAndIsRead(userId,isRead);
+            return SuccessTip.create(maps);
         }
 }

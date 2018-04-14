@@ -1,6 +1,8 @@
 package com.jfeat.am.module.notification.api.crud;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.annotation.Permission;
+import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.notification.api.permission.NotifyPermission;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,7 +74,12 @@ public class NotifyEndpoint extends BaseController {
         */
         @GetMapping
         @Permission({NotifyPermission.Notify_VIEW})
-        public Tip show(@RequestHeader("authorization") String token) {
-            return SuccessTip.create();
+        public Tip queryNotifyByUserIdAndIsReadAndTargetType(Page<Notify> page,@RequestParam(required = false,defaultValue = "1") Integer pageNum,@RequestParam(required = false,defaultValue = "10") Integer pageSize,@RequestParam(required = false,defaultValue = "0") Integer isRead, @RequestParam(required = false)String tartgetType) {
+            Long userId = JWTKit.getUserId(getHttpServletRequest());
+            page.setCurrent(pageNum);
+            page.setSize(pageSize);
+            List<Notify> notifies = notifyService.queryNotifyByUserIdAndIsReadAndTargetType(page,userId,isRead,tartgetType);
+            page.setRecords(notifies);
+            return SuccessTip.create(page);
         }
 }
