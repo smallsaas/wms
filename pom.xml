@@ -24,6 +24,7 @@
     <module>shopping-cart</module>
     <module>sb-system-config</module>
     <module>sb-score</module>
+    <module>sb-notification</module>
   </modules>
 
   <distributionManagement>
