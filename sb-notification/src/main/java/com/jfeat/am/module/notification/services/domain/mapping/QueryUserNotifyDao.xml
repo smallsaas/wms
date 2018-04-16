@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.notification.services.domain.dao.QueryUserNotifyDao">
 
-    <select id="getUnReadCountByUserIdAndIsRead" resultType="Integer">
+    <select id="getUnReadCountByUserIdAndIsRead" resultType="map">
         SELECT
-        notify.target_type,COUNT(*)
+        notify.target_type AS targetType,COUNT(*) AS num
         FROM
         user_notify
         LEFT JOIN notify ON notify.id = user_notify.notify_id

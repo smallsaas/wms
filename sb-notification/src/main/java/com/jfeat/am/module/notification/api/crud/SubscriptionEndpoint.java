@@ -27,7 +27,7 @@ import java.util.HashMap;
  * @since 2018-04-14
  */
 @RestController
-@RequestMapping("/api/notification/notification/subscription")
+@RequestMapping("/api/notification/subscription")
 public class SubscriptionEndpoint extends BaseController {
 
 

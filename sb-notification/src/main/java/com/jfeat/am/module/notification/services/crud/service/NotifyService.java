@@ -6,6 +6,7 @@ import com.jfeat.am.module.notification.services.persistence.model.Notify;
 import com.jfeat.am.module.notification.services.persistence.model.UserNotify;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -21,7 +22,7 @@ import java.util.List;
 
 public interface NotifyService extends CRUDServiceOnly<Notify> {
 
-    List<Notify> queryNotifyByUserIdAndIsReadAndTargetType(Page<Notify> page,Long userId, Integer isRead, String targetType);
+    List<Map<String,Object>> queryNotifyByUserIdAndIsReadAndTargetType(Page<Map<String,Object>> page, Long userId, Integer isRead);
 
 //    创建订阅
     Boolean subscribe(Long userId, Long targetId, String targetType, List<String> actions);

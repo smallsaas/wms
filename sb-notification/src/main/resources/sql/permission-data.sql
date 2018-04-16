@@ -5,6 +5,8 @@ DROP TABLE IF EXISTS `notify`;
 CREATE TABLE `notify` (
   `id` bigint(20) NOT NULL COMMENT '主键',
   `sender_id` bigint(20) NOT NULL COMMENT '发送者ID',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
+  `name` varchar(100) DEFAULT NULL COMMENT '姓名',
   `content` varchar(255) NOT NULL COMMENT '内容提醒',
   `type` varchar(255) NOT NULL COMMENT '类型公告-xxx，提醒-remind等等',
   `target_id` bigint(20) NOT NULL COMMENT '目标的ID',

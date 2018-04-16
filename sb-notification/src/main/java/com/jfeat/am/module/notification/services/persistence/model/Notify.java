@@ -28,6 +28,14 @@ public class Notify extends Model<Notify> {
      */
 	@TableField("sender_id")
 	private Long senderId;
+	/**
+	 * 头像
+	 */
+	private String avatar;
+	/**
+	 * 姓名
+	 */
+	private String name;
     /**
      * 内容提醒
      */
@@ -73,6 +81,22 @@ public class Notify extends Model<Notify> {
 	public Notify setSenderId(Long senderId) {
 		this.senderId = senderId;
 		return this;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getContent() {
@@ -133,6 +157,10 @@ public class Notify extends Model<Notify> {
 
 	public static final String SENDER_ID = "sender_id";
 
+	public static final String AVATAR = "avatar";
+
+	public static final String NAME = "name";
+
 	public static final String CONTENT = "content";
 
 	public static final String TYPE = "type";
@@ -161,6 +189,8 @@ public class Notify extends Model<Notify> {
 			", targetType=" + targetType +
 			", action=" + action +
 			", createTime=" + createTime +
+			", avatar=" + avatar +
+			", name=" + name +
 			"}";
 	}
 }

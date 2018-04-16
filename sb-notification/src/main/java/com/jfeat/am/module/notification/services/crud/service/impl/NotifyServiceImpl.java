@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -46,8 +47,9 @@ public class NotifyServiceImpl extends CRUDServiceOnlyImpl<Notify> implements No
     }
 
     @Override
-    public List<Notify> queryNotifyByUserIdAndIsReadAndTargetType(Page<Notify> page,Long userId, Integer isRead, String targetType) {
-        return queryNotifyDao.queryNotifyByUserIdAndIsReadAndTargetType(page,userId,isRead,targetType);
+    public List<Map<String,Object>> queryNotifyByUserIdAndIsReadAndTargetType(Page<Map<String,Object>> page,Long userId, Integer isRead) {
+        List<Map<String,Object>> notifies = queryNotifyDao.queryNotifyByUserIdAndIsReadAndTargetType(page,userId,isRead);
+        return notifies;
     }
 
     @Override
@@ -82,11 +84,14 @@ public class NotifyServiceImpl extends CRUDServiceOnlyImpl<Notify> implements No
     public Boolean createRemind(Long targetId, String targetType, String action, Long senderId, String content) {
         Notify notify = new Notify();
         notify.setSenderId(senderId);
+        notify.setAvatar("");
+        notify.setName("");
         notify.setTargetType(targetType);
         notify.setTargetId(targetId);
         notify.setAction(action);
         notify.setContent(content);
         notify.setType("REMIND");
+        notify.setCreateTime(new Date());
         return notifyMapper.insert(notify) == 1;
     }
 
@@ -97,8 +102,10 @@ public class NotifyServiceImpl extends CRUDServiceOnlyImpl<Notify> implements No
         List<Notify> list = Lists.newArrayList();
         for (Subscription subscription:subscriptions){
             List<Notify> notifies = queryNotifyDao.queryNotify(
-                    subscription.getTargetId(),subscription.getTargetType(),subscription.getAction(),subscription.getCreatedAt().toString());
+                    subscription.getTargetId(),subscription.getTargetType(),subscription.getAction(),subscription.getCreatedAt());
             list.addAll(notifies);
+            subscription.setCreatedAt(new Date());
+            subscriptionMapper.updateById(subscription);
         }
         //关联新建UserNotify
         List<UserNotify> userNotifies = Lists.newArrayList();
@@ -106,6 +113,8 @@ public class NotifyServiceImpl extends CRUDServiceOnlyImpl<Notify> implements No
             UserNotify userNotify = new UserNotify();
             userNotify.setUserId(userId);
             userNotify.setNotifyId(notify.getId());
+            userNotify.setIsRead(0);
+            userNotify.setCreateTime(new Date());
             userNotifyMapper.insert(userNotify);
             userNotifies.add(userNotify);
         }

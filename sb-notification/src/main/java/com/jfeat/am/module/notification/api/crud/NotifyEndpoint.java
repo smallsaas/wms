@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -29,7 +30,7 @@ import java.util.HashMap;
  * @since 2018-04-14
  */
 @RestController
-@RequestMapping("/api/notification/notification/notify")
+@RequestMapping("/api/notification/notify")
 public class NotifyEndpoint extends BaseController {
 
 
@@ -73,12 +74,12 @@ public class NotifyEndpoint extends BaseController {
         }
         */
         @GetMapping
-        @Permission({NotifyPermission.Notify_VIEW})
-        public Tip queryNotifyByUserIdAndIsReadAndTargetType(Page<Notify> page,@RequestParam(required = false,defaultValue = "1") Integer pageNum,@RequestParam(required = false,defaultValue = "10") Integer pageSize,@RequestParam(required = false,defaultValue = "0") Integer isRead, @RequestParam(required = false)String tartgetType) {
+//        @Permission({NotifyPermission.Notify_VIEW})
+        public Tip queryNotifyByUserIdAndIsReadAndTargetType(Page<Map<String,Object>> page,@RequestParam(required = false,defaultValue = "1") Integer pageNum,@RequestParam(required = false,defaultValue = "10") Integer pageSize,@RequestParam(required = false,defaultValue = "0") Integer isRead) {
             Long userId = JWTKit.getUserId(getHttpServletRequest());
             page.setCurrent(pageNum);
             page.setSize(pageSize);
-            List<Notify> notifies = notifyService.queryNotifyByUserIdAndIsReadAndTargetType(page,userId,isRead,tartgetType);
+            List<Map<String,Object>> notifies = notifyService.queryNotifyByUserIdAndIsReadAndTargetType(page,userId,isRead);
             page.setRecords(notifies);
             return SuccessTip.create(page);
         }

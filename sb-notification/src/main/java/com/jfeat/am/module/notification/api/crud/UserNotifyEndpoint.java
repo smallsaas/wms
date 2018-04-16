@@ -1,5 +1,6 @@
 package com.jfeat.am.module.notification.api.crud;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.annotation.Permission;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.notification.api.permission.UserNotifyPermission;
@@ -30,7 +31,7 @@ import java.util.Map;
  * @since 2018-04-14
  */
 @RestController
-@RequestMapping("/api/notification/notification/user-notify")
+@RequestMapping("/api/notification/user-notify")
 public class UserNotifyEndpoint extends BaseController {
 
 
@@ -75,7 +76,7 @@ public class UserNotifyEndpoint extends BaseController {
             }
             */
     @GetMapping
-    @Permission({UserNotifyPermission.UserNotify_VIEW})
+//    @Permission({UserNotifyPermission.UserNotify_VIEW})
     public Tip queryNotifyCountByIsRead(@RequestParam(required = false, defaultValue = "0") Integer isRead) {
         Long userId = JWTKit.getUserId(getHttpServletRequest());
         List<Map<String, Object>> maps = userNotifyService.getUnReadCountByUserIdAndIsRead(userId, isRead);
@@ -83,8 +84,10 @@ public class UserNotifyEndpoint extends BaseController {
     }
 
     @GetMapping("/pull/remind")
-    public Tip pullRemind() {
+    public Tip pullRemind(Page<Map<String,Object>> page, @RequestParam(required = false,defaultValue = "1") Integer pageNum, @RequestParam(required = false,defaultValue = "10") Integer pageSize, @RequestParam(required = false,defaultValue = "0") Integer isRead) {
         Long userId = JWTKit.getUserId(getHttpServletRequest());
-        return SuccessTip.create(notifyService.pullRemind(userId));
+        notifyService.pullRemind(userId);
+        List<Map<String,Object>> maps = notifyService.queryNotifyByUserIdAndIsReadAndTargetType(page,userId,isRead);
+        return SuccessTip.create(maps);
     }
 }
