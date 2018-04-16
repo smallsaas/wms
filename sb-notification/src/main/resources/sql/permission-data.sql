@@ -7,7 +7,7 @@ CREATE TABLE `notify` (
   `sender_id` bigint(20) NOT NULL COMMENT '发送者ID',
   `content` varchar(255) NOT NULL COMMENT '内容提醒',
   `type` varchar(255) NOT NULL COMMENT '类型公告-xxx，提醒-remind等等',
-  `target_id` bigint(20) NOT NULL COMMENT '目标ID',
+  `target_id` bigint(20) NOT NULL COMMENT '目标的ID',
   `target_type` varchar(255) NOT NULL COMMENT '目标类型:topic essay prayer memo',
   `action` varchar(255) NOT NULL COMMENT '操作:like comment',
   `create_time` datetime NOT NULL COMMENT '创建时间',

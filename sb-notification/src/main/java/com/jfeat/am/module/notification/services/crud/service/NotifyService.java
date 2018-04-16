@@ -26,6 +26,8 @@ public interface NotifyService extends CRUDServiceOnly<Notify> {
 //    创建订阅
     Boolean subscribe(Long userId, Long targetId, String targetType, List<String> actions);
 
+    Boolean unsubscribe(Long userId, Long targetId, String targetType);
+
 //    创建提醒
     Boolean createRemind(Long targetId, String targetType, String action, Long senderId, String content);
 

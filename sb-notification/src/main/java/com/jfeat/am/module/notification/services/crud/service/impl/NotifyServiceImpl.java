@@ -71,6 +71,14 @@ public class NotifyServiceImpl extends CRUDServiceOnlyImpl<Notify> implements No
     }
 
     @Override
+    public Boolean unsubscribe(Long userId, Long targetId, String targetType) {
+        return subscriptionMapper.delete(new EntityWrapper<Subscription>()
+                .eq(Subscription.USER_ID,userId)
+                .eq(Subscription.TARGET_ID,targetId)
+                .eq(Subscription.TARGET_TYPE,targetType)) > 0;
+    }
+
+    @Override
     public Boolean createRemind(Long targetId, String targetType, String action, Long senderId, String content) {
         Notify notify = new Notify();
         notify.setSenderId(senderId);

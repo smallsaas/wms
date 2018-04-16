@@ -2,6 +2,7 @@ package com.jfeat.am.module.score.listener;
 
 import com.jfeat.am.core.support.BeanKit;
 import com.jfeat.am.module.score.event.ScoreBean;
+import com.jfeat.am.module.score.event.ScoreEvent;
 import com.jfeat.am.module.score.services.crud.service.ScoreService;
 import com.jfeat.am.module.score.services.persistence.dao.ScoreMapper;
 import com.jfeat.am.module.score.services.persistence.model.Score;
@@ -26,7 +27,7 @@ public class ScoreEventListener extends BasicEventListener<ScoreBean> {
 
     @Override
     public boolean supportsEventType(Class<? extends ApplicationEvent> aClass) {
-        return super.supportsEventType(aClass);
+        return aClass == ScoreEvent.class;
     }
 
     @Override
@@ -45,7 +46,11 @@ public class ScoreEventListener extends BasicEventListener<ScoreBean> {
             scoreReturn.setScore(scoreReturn.getScore() + scoreBean.getScore());
             affected += scoreMapper.updateById(scoreReturn);
         }else {
-            BeanKit.copyProperties(scoreBean,scoreReturn);
+            scoreReturn = new Score();
+            scoreReturn.setScore(score);
+            scoreReturn.setType(type);
+            scoreReturn.setUpdateTime(new Date());
+            scoreReturn.setUserId(userId);
             affected += scoreMapper.insert(scoreReturn);
         }
         logger.debug("affected {}", affected);

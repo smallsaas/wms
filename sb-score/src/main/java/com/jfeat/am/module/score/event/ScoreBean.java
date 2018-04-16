@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class ScoreBean {
 
+    private Long Id;
+
     private Long userId;
     /**
      * 类型
@@ -17,6 +19,14 @@ public class ScoreBean {
      * 最近更新时间
      */
     private Date updateTime;
+
+    public Long getId() {
+        return Id;
+    }
+
+    public void setId(Long id) {
+        Id = id;
+    }
 
     public Long getUserId() {
         return userId;

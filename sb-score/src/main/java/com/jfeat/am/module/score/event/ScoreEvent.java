@@ -6,4 +6,6 @@ public class ScoreEvent extends BasicEvent<ScoreBean> {
     public ScoreEvent(Object source, ScoreBean target) {
         super(source, target);
     }
+
+
 }
