@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
 import com.jfeat.am.module.notification.services.crud.service.NotifyService;
 import com.jfeat.am.module.notification.services.domain.dao.QueryNotifyDao;
+import com.jfeat.am.module.notification.services.domain.model.NotifyModel;
 import com.jfeat.am.module.notification.services.persistence.dao.NotifyMapper;
 import com.jfeat.am.module.notification.services.persistence.model.Notify;
 import org.springframework.stereotype.Service;
@@ -36,8 +37,8 @@ public class NotifyServiceImpl extends CRUDServiceOnlyImpl<Notify> implements No
     }
 
     @Override
-    public List<Map<String, Object>> paginationNotifies(Page<Map<String, Object>> page, Long userId, String targetType, Integer isRead) {
-        List<Map<String, Object>> notifies = queryNotifyDao.paginationNotifies(page, userId, targetType, isRead);
+    public List<NotifyModel> paginationNotifies(Page<NotifyModel> page, Long userId, String targetType, Integer isRead) {
+        List<NotifyModel> notifies = queryNotifyDao.paginationNotifies(page, userId, targetType, isRead);
         return notifies;
     }
 

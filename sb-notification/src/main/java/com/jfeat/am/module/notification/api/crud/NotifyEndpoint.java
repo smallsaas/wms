@@ -9,6 +9,7 @@ import com.jfeat.am.core.util.Convert;
 import com.jfeat.am.module.notification.constant.Const;
 import com.jfeat.am.module.notification.services.crud.service.NotifyService;
 import com.jfeat.am.module.notification.services.crud.service.UserNotifyService;
+import com.jfeat.am.module.notification.services.domain.model.NotifyModel;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,7 @@ public class NotifyEndpoint extends BaseController {
 
     @ApiOperation("返回当前用户的通知列表")
     @GetMapping
-    public Tip queryNotify(Page<Map<String, Object>> page,
+    public Tip queryNotify(Page<NotifyModel> page,
                            @RequestParam(required = false, defaultValue = "1") Integer pageNum,
                            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
                            @RequestParam(required = false) String targetType,
@@ -47,11 +48,11 @@ public class NotifyEndpoint extends BaseController {
         Long userId = JWTKit.getUserId(getHttpServletRequest());
         page.setCurrent(pageNum);
         page.setSize(pageSize);
-        List<Map<String, Object>> notifies = notifyService.paginationNotifies(page, userId, targetType, isRead);
+        List<NotifyModel> notifies = notifyService.paginationNotifies(page, userId, targetType, isRead);
         if (!notifies.isEmpty()) {
-            for (Map notify : notifies) {
-                Long id = Convert.toLong(notify.get("userNotifyId"));
-                if (id != null && Const.UN_READ == Convert.toInt(notify.get("isRead"))) {
+            for (NotifyModel notify : notifies) {
+                Long id = notify.getUserNotifyId();
+                if (id != null && Const.UN_READ == notify.getIsRead()) {
                     userNotifyService.read(id);
                 }
             }

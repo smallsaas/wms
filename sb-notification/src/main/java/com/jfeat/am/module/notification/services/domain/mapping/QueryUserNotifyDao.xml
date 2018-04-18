@@ -4,7 +4,8 @@
 
     <select id="queryTypeCount" resultType="map">
         SELECT
-        notify.target_type AS targetType, COUNT(*) AS num
+        notify.target_type AS targetType,
+        COUNT(*) AS num
         FROM
         user_notify
         LEFT JOIN notify ON notify.id = user_notify.notify_id

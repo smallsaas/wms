@@ -2,6 +2,7 @@ package com.jfeat.am.module.notification.services.crud.service;
         
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.crud.CRUDServiceOnly;
+import com.jfeat.am.module.notification.services.domain.model.NotifyModel;
 import com.jfeat.am.module.notification.services.persistence.model.Notify;
 import com.jfeat.am.module.notification.services.persistence.model.UserNotify;
 
@@ -22,7 +23,7 @@ import java.util.Map;
 
 public interface NotifyService extends CRUDServiceOnly<Notify> {
 
-    List<Map<String,Object>> paginationNotifies(Page<Map<String,Object>> page, Long userId, String targetType, Integer isRead);
+    List<NotifyModel> paginationNotifies(Page<NotifyModel> page, Long userId, String targetType, Integer isRead);
 
 }
 
