@@ -2,6 +2,8 @@ package com.jfeat.am.module.score.services.crud.service.impl;
             
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.jfeat.am.common.constant.tips.ErrorTip;
+import com.jfeat.am.common.exception.BizExceptionEnum;
 import com.jfeat.am.module.score.services.crud.dao.ScoreRankDao;
 import com.jfeat.am.module.score.services.persistence.model.ScoreRank;
 import com.jfeat.am.module.score.services.persistence.dao.ScoreRankMapper;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
+
+import java.util.List;
 
 /**
  * <p>
@@ -47,7 +51,11 @@ public class ScoreRankServiceImpl  extends CRUDServiceOnlyImpl<ScoreRank> implem
 
     @Override
     public ScoreRank getScoreRankByUserId(Long userId) {
-        return scoreRankMapper.selectList(new EntityWrapper<ScoreRank>().eq(ScoreRank.USER_ID,userId)).get(0);
+        List<ScoreRank> scoreRanks = scoreRankMapper.selectList(new EntityWrapper<ScoreRank>().eq(ScoreRank.USER_ID,userId));
+        if (scoreRanks.size() > 0){
+            return scoreRanks.get(0);
+        }
+        return new ScoreRank();
     }
 }
 
