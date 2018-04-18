@@ -4,14 +4,17 @@
 
     <select id="queryNotifyByUserIdAndIsReadAndTargetType" resultType="map">
         SELECT
-        notify.id,notify.sender_id AS senderId,notify.content,notify.type,notify.target_id AS targetId,notify.target_type AS targetType,notify.action,notify.create_time AS createTime,user_notify.id AS userNotifyId,user_notify.is_read As isRead
+        notify.id,notify.sender_id AS senderId,notify.content,notify.type,notify.target_id AS targetId,
+        notify.target_type AS targetType,notify.action,notify.create_time AS createTime,
+        user_notify.id AS userNotifyId, user_notify.is_read As isRead
         FROM
         notify
         LEFT JOIN user_notify ON notify.id = user_notify.notify_id
         WHERE
-        user_notify.user_id = #{userId}
+        notify.sender_id &lt;&gt; #{userId}
+        AND user_notify.user_id = #{userId}
         <if test="isRead != null and isRead != ''">
-        AND user_notify.is_read = #{isRead}
+            AND user_notify.is_read = #{isRead}
         </if>
         <if test="targetType != null and targetType != ''">
             AND notify.target_type = #{targetType}
@@ -20,7 +23,8 @@
     </select>
 
     <select id="queryNotify" resultType="Notify">
-        SELECT * FROM notify WHERE notify.target_id = #{targetId} AND notify.target_type = #{targetType} AND notify.action = #{action} AND notify.create_time &gt; #{createAt};
+        SELECT * FROM notify WHERE notify.target_id = #{targetId} AND notify.target_type = #{targetType}
+        AND notify.action = #{action} AND notify.create_time &gt; #{createAt};
     </select>
 
 </mapper>
