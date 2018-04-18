@@ -11,11 +11,7 @@ import java.util.Map;
 
 public interface QueryUserNotifyDao extends BaseMapper<UserNotify> {
 
-    List<UserNotify> findUserNotifys(Page<UserNotify> page,
-                                     @Param("status") String status);
+    List<Map<String,Object>> queryTypeCount(@Param("userId") Long userId, @Param("isRead") Integer isRead);
 
-
-    List<Map<String,Object>> getUnReadCountByUserIdAndIsRead(@Param("userId") Long userId, @Param("isRead") Integer isRead);
-
-    Integer updateUserNotifyByUserId(@Param("userId") Long userId);
+    Integer read(@Param("id") Long id);
 }

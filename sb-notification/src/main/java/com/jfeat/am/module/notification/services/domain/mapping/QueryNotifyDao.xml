@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.notification.services.domain.dao.QueryNotifyDao">
 
-    <select id="queryNotifyByUserIdAndIsReadAndTargetType" resultType="map">
+    <select id="paginationNotifies" resultType="map">
         SELECT
         notify.id,notify.sender_id AS senderId,notify.content,notify.type,notify.target_id AS targetId,
         notify.target_type AS targetType,notify.action,notify.create_time AS createTime,
@@ -22,7 +22,7 @@
         ORDER BY notify.create_time DESC
     </select>
 
-    <select id="queryNotify" resultType="Notify">
+    <select id="queryNotifies" resultType="Notify">
         SELECT * FROM notify WHERE notify.target_id = #{targetId} AND notify.target_type = #{targetType}
         AND notify.action = #{action} AND notify.create_time &gt; #{createAt};
     </select>
