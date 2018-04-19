@@ -16,4 +16,6 @@ public interface QueryUserNotifyDao extends BaseMapper<UserNotify> {
 
 
     List<Map<String,Object>> getUnReadCountByUserIdAndIsRead(@Param("userId") Long userId, @Param("isRead") Integer isRead);
+
+    Integer updateUserNotifyByUserId(@Param("userId") Long userId);
 }

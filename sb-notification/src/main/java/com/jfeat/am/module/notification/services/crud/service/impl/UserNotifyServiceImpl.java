@@ -38,6 +38,18 @@ public class UserNotifyServiceImpl extends CRUDServiceOnlyImpl<UserNotify> imple
     public List<Map<String,Object>> getUnReadCountByUserIdAndIsRead(Long userId, Integer isRead) {
         return queryUserNotifyDao.getUnReadCountByUserIdAndIsRead(userId,isRead);
     }
+
+    @Override
+    public Integer updateUserNotifyByUserId(Long userId) {
+        return queryUserNotifyDao.updateUserNotifyByUserId(userId);
+    }
+
+    @Override
+    public Integer updateById(Long id) {
+        UserNotify userNotify = getMasterMapper().selectById(id);
+        userNotify.setIsRead(1);
+        return getMasterMapper().updateById(userNotify);
+    }
 }
 
 

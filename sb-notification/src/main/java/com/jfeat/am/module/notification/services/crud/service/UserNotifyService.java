@@ -22,4 +22,8 @@ public interface UserNotifyService extends CRUDServiceOnly<UserNotify> {
 
     List<Map<String,Object>> getUnReadCountByUserIdAndIsRead(Long userId, Integer isRead);
 
+    Integer updateUserNotifyByUserId(Long userId);
+
+    Integer updateById(Long id);
+
 }

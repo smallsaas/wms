@@ -5,6 +5,7 @@ import com.jfeat.am.common.annotation.Permission;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.notification.api.permission.UserNotifyPermission;
 import com.jfeat.am.module.notification.services.crud.service.NotifyService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import com.jfeat.am.common.constant.tips.ErrorTip;
@@ -75,19 +76,32 @@ public class UserNotifyEndpoint extends BaseController {
                 return SuccessTip.create(page);
             }
             */
-    @GetMapping
+    /*@GetMapping
 //    @Permission({UserNotifyPermission.UserNotify_VIEW})
     public Tip queryNotifyCountByIsRead(@RequestParam(required = false, defaultValue = "0") Integer isRead) {
         Long userId = JWTKit.getUserId(getHttpServletRequest());
         List<Map<String, Object>> maps = userNotifyService.getUnReadCountByUserIdAndIsRead(userId, isRead);
         return SuccessTip.create(maps);
-    }
+    }*/
 
+    @ApiOperation("返回各种未读的数量")
     @GetMapping("/pull/remind")
-    public Tip pullRemind(Page<Map<String,Object>> page, @RequestParam(required = false,defaultValue = "1") Integer pageNum, @RequestParam(required = false,defaultValue = "10") Integer pageSize, @RequestParam(required = false,defaultValue = "0") Integer isRead) {
+    public Tip pullRemind(Page<Map<String, Object>> page, @RequestParam(required = false, defaultValue = "1") Integer pageNum,
+                          @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                          @RequestParam(required = false) Integer isRead) {
         Long userId = JWTKit.getUserId(getHttpServletRequest());
         notifyService.pullRemind(userId);
-        List<Map<String,Object>> maps = notifyService.queryNotifyByUserIdAndIsReadAndTargetType(page,userId,isRead);
+        List<Map<String, Object>> maps = userNotifyService.getUnReadCountByUserIdAndIsRead(userId, isRead);
         return SuccessTip.create(maps);
+    }
+
+    @PostMapping("/clear/remind")
+    public Tip clearUserNotify(@RequestBody List<Long> ids) {
+        Long userId = JWTKit.getUserId(getHttpServletRequest());
+        Integer affected = 0;
+        for (Long id : ids) {
+            affected += userNotifyService.updateById(id);
+        }
+        return SuccessTip.create(affected);
     }
 }

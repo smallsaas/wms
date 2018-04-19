@@ -22,7 +22,7 @@ import java.util.Map;
 
 public interface NotifyService extends CRUDServiceOnly<Notify> {
 
-    List<Map<String,Object>> queryNotifyByUserIdAndIsReadAndTargetType(Page<Map<String,Object>> page, Long userId, Integer isRead);
+    List<Map<String,Object>> queryNotifyByUserIdAndIsReadAndTargetType(Page<Map<String,Object>> page, Long userId, String targetType, Integer isRead);
 
 //    创建订阅
     Boolean subscribe(Long userId, Long targetId, String targetType, List<String> actions);

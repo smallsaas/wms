@@ -47,8 +47,8 @@ public class NotifyServiceImpl extends CRUDServiceOnlyImpl<Notify> implements No
     }
 
     @Override
-    public List<Map<String,Object>> queryNotifyByUserIdAndIsReadAndTargetType(Page<Map<String,Object>> page,Long userId, Integer isRead) {
-        List<Map<String,Object>> notifies = queryNotifyDao.queryNotifyByUserIdAndIsReadAndTargetType(page,userId,isRead);
+    public List<Map<String,Object>> queryNotifyByUserIdAndIsReadAndTargetType(Page<Map<String,Object>> page,Long userId,String targetType, Integer isRead) {
+        List<Map<String,Object>> notifies = queryNotifyDao.queryNotifyByUserIdAndIsReadAndTargetType(page,userId,targetType,isRead);
         return notifies;
     }
 
