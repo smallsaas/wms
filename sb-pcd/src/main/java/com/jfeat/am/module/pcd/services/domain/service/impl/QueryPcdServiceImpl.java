@@ -3,6 +3,7 @@ package com.jfeat.am.module.pcd.services.domain.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfeat.am.module.pcd.services.domain.service.QueryPcdService;
 import com.jfeat.am.module.pcd.services.persistence.dao.PcdMapper;
+import com.jfeat.am.module.pcd.services.persistence.model.Pcd;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -42,5 +43,15 @@ public class QueryPcdServiceImpl implements QueryPcdService {
             p.put("children", cities);
         });
         return provinces;
+    }
+
+    @Override
+    public List<Pcd> queryPcdByName(String name) {
+        return pcdMapper.selectList(new EntityWrapper<Pcd>().eq(Pcd.NAME,name));
+    }
+
+    @Override
+    public List<Pcd> queryPcdByPid(Long pid) {
+        return pcdMapper.selectList(new EntityWrapper<Pcd>().eq(Pcd.PID,pid));
     }
 }

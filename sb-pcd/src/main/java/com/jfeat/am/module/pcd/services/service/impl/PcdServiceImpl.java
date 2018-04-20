@@ -1,6 +1,7 @@
 package com.jfeat.am.module.pcd.services.service.impl;
             
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfeat.am.module.pcd.services.persistence.model.Pcd;
 import com.jfeat.am.module.pcd.services.persistence.dao.PcdMapper;
 import com.jfeat.am.module.pcd.services.service.PcdService;
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
+
+import java.util.List;
+
 /**
  * <p>
  *  implementation
@@ -28,6 +32,8 @@ public class PcdServiceImpl  extends CRUDServiceOnlyImpl<Pcd> implements PcdServ
     protected BaseMapper<Pcd> getMasterMapper() {
         return pcdMapper;
     }
+
+
 }
 
 

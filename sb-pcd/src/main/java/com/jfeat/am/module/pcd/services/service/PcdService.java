@@ -4,6 +4,8 @@ import com.jfeat.am.module.pcd.services.persistence.model.Pcd;
 
 import com.jfeat.am.common.crud.CRUDServiceOnly;
 
+import java.util.List;
+
 
 /**
  * <p>
@@ -15,5 +17,7 @@ import com.jfeat.am.common.crud.CRUDServiceOnly;
  */
 
 public interface PcdService  extends CRUDServiceOnly<Pcd> {
+
+
 
 }
