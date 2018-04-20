@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface QuerySubscriptionDao  extends BaseMapper<Subscription> {
 
-    List<Subscription> findSubscriptions(Page<Subscription> page,
-            @Param("status") String status);
+    List<Subscription> findSubscriptions(Page<Subscription> page, @Param("status") String status);
 
 }

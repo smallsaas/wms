@@ -2,11 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.notification.services.domain.dao.QueryNotifyDao">
 
-    <select id="queryNotifyByUserIdAndIsReadAndTargetType" resultType="map">
+    <select id="paginationNotifies" resultType="com.jfeat.am.module.notification.services.domain.model.NotifyModel">
         SELECT
-        notify.id,notify.sender_id AS senderId,notify.content,notify.type,notify.target_id AS targetId,
-        notify.target_type AS targetType,notify.action,notify.create_time AS createTime,
-        user_notify.id AS userNotifyId, user_notify.is_read As isRead
+        notify.id,
+        notify.sender_id AS senderId,
+        notify.content,
+        notify.type,
+        notify.target_id AS targetId,
+        notify.target_type AS targetType,
+        notify.action,
+        notify.create_time AS createTime,
+        user_notify.id AS userNotifyId,
+        user_notify.is_read As isRead
         FROM
         notify
         LEFT JOIN user_notify ON notify.id = user_notify.notify_id
@@ -19,12 +26,17 @@
         <if test="targetType != null and targetType != ''">
             AND notify.target_type = #{targetType}
         </if>
-        ORDER BY notify.create_time DESC
+        ORDER BY notify.id DESC
     </select>
 
-    <select id="queryNotify" resultType="Notify">
-        SELECT * FROM notify WHERE notify.target_id = #{targetId} AND notify.target_type = #{targetType}
-        AND notify.action = #{action} AND notify.create_time &gt; #{createAt};
+    <select id="queryNotifies" resultType="Notify">
+        SELECT *
+        FROM notify
+        WHERE
+        notify.target_id = #{targetId}
+        AND notify.target_type = #{targetType}
+        AND notify.action = #{action}
+        AND notify.create_time &gt; #{createAt};
     </select>
 
 </mapper>

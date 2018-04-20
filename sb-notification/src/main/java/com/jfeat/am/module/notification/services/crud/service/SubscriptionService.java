@@ -3,7 +3,7 @@ package com.jfeat.am.module.notification.services.crud.service;
 import com.jfeat.am.common.crud.CRUDServiceOnly;
 import com.jfeat.am.module.notification.services.persistence.model.Subscription;
 
-
+import java.util.List;
 
 
 /**
@@ -18,5 +18,10 @@ import com.jfeat.am.module.notification.services.persistence.model.Subscription;
 
 
 public interface SubscriptionService extends CRUDServiceOnly<Subscription> {
+
+    //    创建订阅
+    Boolean subscribe(Long userId, Long targetId, String targetType, List<String> actions);
+
+    Boolean unsubscribe(Long userId, Long targetId, String targetType);
 
 }

@@ -20,10 +20,13 @@ import java.util.Map;
 
 public interface UserNotifyService extends CRUDServiceOnly<UserNotify> {
 
-    List<Map<String,Object>> getUnReadCountByUserIdAndIsRead(Long userId, Integer isRead);
+    List<Map<String,Object>> queryTypeCount(Long userId, Integer isRead);
 
-    Integer updateUserNotifyByUserId(Long userId);
+    Integer read(Long id);
 
-    Integer updateById(Long id);
+    //    创建提醒
+    Boolean createRemind(Long targetId, String targetType, String action, Long senderId, String content);
 
+    //    返回提醒
+    List<UserNotify> pullRemind(Long userId);
 }

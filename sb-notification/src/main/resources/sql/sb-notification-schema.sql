@@ -1,3 +1,5 @@
+SET FOREIGN_KEY_CHECKS = 0;
+
 -- ----------------------------
 -- Table structure for notify
 -- ----------------------------
@@ -42,25 +44,3 @@ CREATE TABLE IF NOT EXISTS subscription  (
   `created_at` datetime null,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=UTF8;
-
-INSERT INTO `perm_group` (`id`, `name`, `identifier`) VALUES
-('985010100740796421', 'Notify模块', 'Notify.management');
-
-INSERT INTO `perm` (`id`, `groupid`, `name`, `identifier`) VALUES
-('985010100740796418', '985010100740796421', '查看Notify', 'Notify.view'),
-('985010100740796419', '985010100740796421', '更新Notify', 'Notify.update'),
-('985010100740796420', '985010100740796421', '删除Notify', 'Notify.delete');
-INSERT INTO `perm_group` (`id`, `name`, `identifier`) VALUES
-('985010100740796425', 'Subscription模块', 'Subscription.management');
-
-INSERT INTO `perm` (`id`, `groupid`, `name`, `identifier`) VALUES
-('985010100740796422', '985010100740796425', '查看Subscription', 'Subscription.view'),
-('985010100740796423', '985010100740796425', '更新Subscription', 'Subscription.update'),
-('985010100740796424', '985010100740796425', '删除Subscription', 'Subscription.delete');
-INSERT INTO `perm_group` (`id`, `name`, `identifier`) VALUES
-('985010100740796429', 'UserNotify模块', 'UserNotify.management');
-
-INSERT INTO `perm` (`id`, `groupid`, `name`, `identifier`) VALUES
-('985010100740796426', '985010100740796429', '查看UserNotify', 'UserNotify.view'),
-('985010100740796427', '985010100740796429', '更新UserNotify', 'UserNotify.update'),
-('985010100740796428', '985010100740796429', '删除UserNotify', 'UserNotify.delete');
