@@ -23,7 +23,7 @@ import java.util.Map;
 
 public interface NotifyService extends CRUDServiceOnly<Notify> {
 
-    List<NotifyModel> paginationNotifies(Page<NotifyModel> page, Long userId, String targetType, Integer isRead);
+    List<NotifyModel> paginationNotifies(Page<NotifyModel> page, Long userId, List<String> targetTypes, Integer isRead);
 
 }
 

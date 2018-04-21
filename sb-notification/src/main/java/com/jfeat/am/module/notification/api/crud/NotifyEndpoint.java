@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -43,12 +45,13 @@ public class NotifyEndpoint extends BaseController {
     public Tip queryNotify(Page<NotifyModel> page,
                            @RequestParam(required = false, defaultValue = "1") Integer pageNum,
                            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                           @RequestParam(required = false) String targetType,
+                           @RequestParam(value = "targetTypes[]", required = false) String[] targetTypes,
                            @RequestParam(required = false) Integer isRead) {
         Long userId = JWTKit.getUserId(getHttpServletRequest());
         page.setCurrent(pageNum);
         page.setSize(pageSize);
-        List<NotifyModel> notifies = notifyService.paginationNotifies(page, userId, targetType, isRead);
+        List<String> typeList = targetTypes == null ? new ArrayList<>() : Arrays.asList(targetTypes);
+        List<NotifyModel> notifies = notifyService.paginationNotifies(page, userId, typeList, isRead);
         if (!notifies.isEmpty()) {
             for (NotifyModel notify : notifies) {
                 Long id = notify.getUserNotifyId();

@@ -37,8 +37,8 @@ public class NotifyServiceImpl extends CRUDServiceOnlyImpl<Notify> implements No
     }
 
     @Override
-    public List<NotifyModel> paginationNotifies(Page<NotifyModel> page, Long userId, String targetType, Integer isRead) {
-        List<NotifyModel> notifies = queryNotifyDao.paginationNotifies(page, userId, targetType, isRead);
+    public List<NotifyModel> paginationNotifies(Page<NotifyModel> page, Long userId, List<String> targetTypes, Integer isRead) {
+        List<NotifyModel> notifies = queryNotifyDao.paginationNotifies(page, userId, targetTypes, isRead);
         return notifies;
     }
 
