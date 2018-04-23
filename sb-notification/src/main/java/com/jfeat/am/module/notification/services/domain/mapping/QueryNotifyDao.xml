@@ -23,9 +23,9 @@
         <if test="isRead != null and isRead != ''">
             AND user_notify.is_read = #{isRead}
         </if>
-        <if test="targetType != null">
-            AND notify.target_type =
-            <foreach collection="targetType" index="index" item="item" open="(" separator="," close=")">
+        <if test="targetTypes != null and targetTypes.size > 0">
+            AND notify.target_type IN
+            <foreach collection="targetTypes" index="index" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>
         </if>

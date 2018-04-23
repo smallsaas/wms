@@ -15,7 +15,7 @@ public interface QueryNotifyDao extends BaseMapper<Notify> {
 
     List<NotifyModel> paginationNotifies(Page<NotifyModel> page,
                                          @Param("userId") Long userId,
-                                         @Param("targetType") String targetType,
+                                         @Param("targetTypes") List<String> targetTypes,
                                          @Param("isRead") Integer isRead);
 
     List<Notify> queryNotifies(@Param("targetId") Long targetId,
