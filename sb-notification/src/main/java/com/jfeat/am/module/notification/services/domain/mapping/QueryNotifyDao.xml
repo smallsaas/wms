@@ -20,7 +20,7 @@
         WHERE
         notify.sender_id &lt;&gt; #{userId}
         AND user_notify.user_id = #{userId}
-        <if test="isRead != null and isRead != ''">
+        <if test="isRead != null">
             AND user_notify.is_read = #{isRead}
         </if>
         <if test="targetTypes != null and targetTypes.size > 0">
