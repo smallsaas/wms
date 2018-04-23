@@ -23,8 +23,11 @@
         <if test="isRead != null and isRead != ''">
             AND user_notify.is_read = #{isRead}
         </if>
-        <if test="targetType != null and targetType != ''">
-            AND notify.target_type = #{targetType}
+        <if test="targetType != null">
+            AND notify.target_type =
+            <foreach collection="targetType" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
         </if>
         ORDER BY notify.id DESC
     </select>
