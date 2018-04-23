@@ -45,7 +45,7 @@ public class NotifyEndpoint extends BaseController {
     public Tip queryNotify(Page<NotifyModel> page,
                            @RequestParam(required = false, defaultValue = "1") Integer pageNum,
                            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                           @RequestParam(value = "targetTypes[]", required = false) String[] targetTypes,
+                           @RequestParam(value = "targetTypes", required = false) String[] targetTypes,
                            @RequestParam(required = false) Integer isRead) {
         Long userId = JWTKit.getUserId(getHttpServletRequest());
         page.setCurrent(pageNum);
