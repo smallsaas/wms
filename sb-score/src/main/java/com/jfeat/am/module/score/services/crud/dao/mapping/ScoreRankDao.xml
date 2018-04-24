@@ -71,7 +71,7 @@
 		) aa
 		JOIN (
 		SELECT
-		MAX(bb.rank) AS maxRank
+		MAX(bb.rank + 0) AS maxRank
 		FROM
 		(
 		SELECT
