@@ -24,7 +24,7 @@ public class NotifyTest extends BaseJunit {
 
     @Test
     public void testQueryNotifyWithType() throws Exception {
-        RequestBuilder request = get("/api/notification/notify?isRead=0&targetTypes[]=essay");
+        RequestBuilder request = get("/api/notification/notify?isRead=0&targetTypes=essay");
         MvcResult result = mockMvc.perform(request).andExpect(status().isOk()).andReturn();
 
         logger.debug(result.getResponse().getContentAsString());
@@ -32,7 +32,7 @@ public class NotifyTest extends BaseJunit {
 
     @Test
     public void testQueryNotifyWithTypes() throws Exception {
-        RequestBuilder request = get("/api/notification/notify?isRead=0&targetTypes[]=essay&targetTypes[]=topic");
+        RequestBuilder request = get("/api/notification/notify?isRead=0&targetTypes=essay&targetTypes=topic");
         MvcResult result = mockMvc.perform(request).andExpect(status().isOk()).andReturn();
 
         logger.debug(result.getResponse().getContentAsString());
