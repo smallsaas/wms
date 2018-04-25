@@ -19,7 +19,7 @@ UNIQUE (`code`),PRIMARY KEY (`id`)
 DROP TABLE IF EXISTS `t_position`;
 CREATE TABLE `t_position` (
 `id` bigint NOT NULL,
-`name` varchar(26) NOT NULL  COMMENT '备注',
+`name` varchar(26) NOT NULL  COMMENT '名称',
 `note` text DEFAULT NULL COMMENT '备注',
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

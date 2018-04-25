@@ -1,5 +1,6 @@
 package com.jfeat.am.module.organization.api.crud;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.annotation.Permission;
@@ -10,7 +11,6 @@ import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.common.crud.error.CRUDException;
 import com.jfeat.am.common.exception.BizExceptionEnum;
-import com.jfeat.am.core.support.BeanKit;
 import com.jfeat.am.core.support.DateTime;
 import com.jfeat.am.core.util.Convert;
 import com.jfeat.am.module.organization.api.permission.DepartmentPermission;
@@ -25,13 +25,11 @@ import com.jfeat.am.module.organization.services.domain.model.StaffModel;
 import com.jfeat.am.module.organization.services.domain.service.QueryDepartmentService;
 import com.jfeat.am.module.organization.services.persistence.model.Department;
 import com.jfeat.am.module.organization.services.persistence.model.DepartmentStaff;
-import com.jfeat.am.module.organization.services.persistence.model.Staff;
+import com.jfeat.am.module.organization.services.service.patch.PatchDepartmentService;
 import org.springframework.web.bind.annotation.*;
-import sun.tools.asm.Cover;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -58,15 +56,17 @@ public class DepartmentEndpoint extends BaseController {
     private StaffFilter staffFilter = new StaffFilter();
     @Resource
     private OrganizationKit organizationKit;
+    @Resource
+    private PatchDepartmentService patchDepartmentService;
 
     @GetMapping("/empty")
-    public Tip getEmptyDepartment(){
+    public Tip getEmptyDepartment() {
         return SuccessTip.create(new Department());
     }
 
     @PostMapping
     public Tip createDepartment(@RequestBody Department entity) {
-        if (organizationKit.checkDepartmentCodeDuplicate(entity.getCode())){
+        if (organizationKit.checkDepartmentCodeDuplicate(entity.getCode())) {
             return ErrorTip.create(BizExceptionEnum.ALREADY_EXIST);
         }
         return SuccessTip.create(departmentService.createGroup(entity));
@@ -81,10 +81,10 @@ public class DepartmentEndpoint extends BaseController {
         departmentStaff.setIsManager(IsManager.YES);
         DepartmentStaff departmentStaffNew = departmentStaffService.get(departmentStaff);
         CRUDObject<StaffModel> staff = new CRUDObject<>();
-        if (departmentStaffNew != null){
+        if (departmentStaffNew != null) {
             staff = staffService.retrieveModel(departmentStaffNew.getStaffId(), staffFilter);
         }
-        department.put("manager",staff.toJSONObject());
+        department.put("manager", staff.toJSONObject());
         return SuccessTip.create(department);
     }
 
@@ -96,9 +96,9 @@ public class DepartmentEndpoint extends BaseController {
 
     @DeleteMapping("/{id}")
     public Tip deleteDepartment(@PathVariable Long id) {
-        try{
+        try {
             return SuccessTip.create(departmentService.deleteGroup(id));
-        }catch (CRUDException e){
+        } catch (CRUDException e) {
             return ErrorTip.create(e.getCode(), e.getMessage());
         }
     }
@@ -110,19 +110,32 @@ public class DepartmentEndpoint extends BaseController {
     }
 
     @GetMapping("/{id}/parent")
-    public Tip getParentGroup(@PathVariable Long groupId){
+    public Tip getParentGroup(@PathVariable Long groupId) {
         return SuccessTip.create(departmentService.getParentGroup(groupId));
     }
 
     @GetMapping("/groups/root")
-    public Tip getRootGroups(){
+    public Tip getRootGroups() {
         return SuccessTip.create(departmentService.getRootGroups());
     }
 
 
     @GetMapping("/groups")
-    public Tip getGroupsData(){
+    public Tip getGroupsData() {
         return SuccessTip.create(departmentService.toJSONObject());
+    }
+
+    /** 与/groups的结构相同{ items: [] }
+     * @return 树形结构的部门（带有其他表的信息（主要是部门主管的信息）））
+     */
+    @GetMapping("/groups-join")
+    public Tip getGroupsJoinData() {
+        JSONObject jsonObject = departmentService.toJSONObject();
+        JSONArray jsonArray = jsonObject.getJSONArray("items");
+        JSONArray jsonArrayWithOtherMessages = patchDepartmentService.putDatas(jsonArray);
+        JSONObject result = new JSONObject();
+        result.put("items", jsonArrayWithOtherMessages);
+        return SuccessTip.create(result);
     }
 
     @GetMapping
@@ -135,7 +148,7 @@ public class DepartmentEndpoint extends BaseController {
                                         @RequestParam(name = "fullName", required = false) String fullName,
                                         @RequestParam(name = "location", required = false) String location,
                                         @RequestParam(name = "note", required = false) String note,
-                                        @RequestParam(name = "createTime", required = false) DateTime createTime){
+                                        @RequestParam(name = "createTime", required = false) DateTime createTime) {
         page.setCurrent(pageNum);
         page.setSize(pageSize);
 
