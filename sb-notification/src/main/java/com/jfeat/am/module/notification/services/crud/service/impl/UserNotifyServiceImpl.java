@@ -69,7 +69,8 @@ public class UserNotifyServiceImpl extends CRUDServiceOnlyImpl<UserNotify> imple
         notify.setTargetType(targetType);
         notify.setTargetId(targetId);
         notify.setAction(action);
-        notify.setContent(content);
+        int lastIndex = content.length() > 200 ? 200 : content.length();
+        notify.setContent(content.substring(0, lastIndex));
         notify.setType(NotificationType.REMIND.toString());
         notify.setCreateTime(new Date());
         return notifyMapper.insert(notify) == 1;
