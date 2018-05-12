@@ -23,7 +23,7 @@ CREATE TABLE `t_profile` (
   `idcard_no` varchar(255) DEFAULT NULL COMMENT '身份证号码',
   `idcard_front` varchar(255) DEFAULT NULL COMMENT '身份证正面',
   `idcard_back` varchar(255) DEFAULT NULL COMMENT '身份证背面',
-  `bankcard_no` bigint(20) DEFAULT NULL COMMENT '银行卡帐户',
+  `bankcard_no` varchar(255) DEFAULT NULL COMMENT '银行卡帐户',
   `bankcard_snapshot` varchar(26) DEFAULT NULL COMMENT '银行卡图片',
   `tag` varchar(250) DEFAULT NULL,
   `career` varchar(26) DEFAULT NULL comment '职业',
