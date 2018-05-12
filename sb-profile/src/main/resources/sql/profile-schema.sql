@@ -20,7 +20,7 @@ CREATE TABLE `t_profile` (
   `qq` varchar(26) DEFAULT NULL COMMENT 'QQ',
   `email` varchar(26) DEFAULT NULL COMMENT '邮箱',
   `signature` varchar(26) DEFAULT NULL COMMENT '个性签名',
-  `idcard_no` bigint(20) DEFAULT NULL COMMENT '身份证号码',
+  `idcard_no` varchar(255) DEFAULT NULL COMMENT '身份证号码',
   `idcard_front` varchar(255) DEFAULT NULL COMMENT '身份证正面',
   `idcard_back` varchar(255) DEFAULT NULL COMMENT '身份证背面',
   `bankcard_no` bigint(20) DEFAULT NULL COMMENT '银行卡帐户',
