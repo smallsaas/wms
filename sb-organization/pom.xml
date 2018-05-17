@@ -202,6 +202,12 @@
       <artifactId>spring-boot-test</artifactId>
       <version>1.5.7.RELEASE</version>
     </dependency>
+    <!--Power Dependencies-->
+    <dependency>
+      <groupId>com.jfeat</groupId>
+      <artifactId>power-base</artifactId>
+      <version>1.0.0</version>
+    </dependency>
   </dependencies>  
   <build> 
     <plugins> 

@@ -49,6 +49,25 @@ CREATE TABLE `t_department_staff` (
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `t_team`;
+CREATE TABLE `t_team` (
+`id` bigint NOT NULL  AUTO_INCREMENT,
+`team_name` varchar(255) NOT NULL COMMENT '团队名称',
+`team_desc` text DEFAULT NULL COMMENT '团队描述',
+`pid` bigint DEFAULT NULL COMMENT '父级ID',
+UNIQUE(`team_name`),
+PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `t_team_staff`;
+CREATE TABLE `t_team_staff` (
+`id` bigint NOT NULL  AUTO_INCREMENT,
+`team_id` bigint NOT NULL COMMENT '团队ID',
+`staff_id` bigint NOT NULL COMMENT '员工ID',
+`is_leader` smallint NOT NULL COMMENT '领导者(0-N 1-Y)',
+PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
 

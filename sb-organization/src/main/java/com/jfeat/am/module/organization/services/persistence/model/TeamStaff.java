@@ -1,5 +1,7 @@
 package com.jfeat.am.module.organization.services.persistence.model;
 
+import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -13,27 +15,28 @@ import java.io.Serializable;
  * @author admin
  * @since 2018-05-17
  */
-@TableName("t_department_staff")
-public class DepartmentStaff extends Model<DepartmentStaff> {
+@TableName("t_team_staff")
+public class TeamStaff extends Model<TeamStaff> {
 
     private static final long serialVersionUID = 1L;
 
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     /**
-     * 部门ID
+     * 团队ID
      */
-    @TableField("department_id")
-    private Long departmentId;
+    @TableField("team_id")
+    private Long teamId;
     /**
      * 员工ID
      */
     @TableField("staff_id")
     private Long staffId;
     /**
-     * 是否主管
+     * 领导者(0-N 1-Y)
      */
-    @TableField("is_manager")
-    private String isManager;
+    @TableField("is_leader")
+    private Integer isLeader;
 
 
     public Long getId() {
@@ -44,12 +47,12 @@ public class DepartmentStaff extends Model<DepartmentStaff> {
         this.id = id;
     }
 
-    public Long getDepartmentId() {
-        return departmentId;
+    public Long getTeamId() {
+        return teamId;
     }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
     }
 
     public Long getStaffId() {
@@ -60,21 +63,21 @@ public class DepartmentStaff extends Model<DepartmentStaff> {
         this.staffId = staffId;
     }
 
-    public String getIsManager() {
-        return isManager;
+    public Integer getIsLeader() {
+        return isLeader;
     }
 
-    public void setIsManager(String isManager) {
-        this.isManager = isManager;
+    public void setIsLeader(Integer isLeader) {
+        this.isLeader = isLeader;
     }
 
     public static final String ID = "id";
 
-    public static final String DEPARTMENT_ID = "department_id";
+    public static final String TEAM_ID = "team_id";
 
     public static final String STAFF_ID = "staff_id";
 
-    public static final String IS_MANAGER = "is_manager";
+    public static final String IS_LEADER = "is_leader";
 
     @Override
     protected Serializable pkVal() {
@@ -83,11 +86,11 @@ public class DepartmentStaff extends Model<DepartmentStaff> {
 
     @Override
     public String toString() {
-        return "DepartmentStaff{" +
+        return "TeamStaff{" +
         ", id=" + id +
-        ", departmentId=" + departmentId +
+        ", teamId=" + teamId +
         ", staffId=" + staffId +
-        ", isManager=" + isManager +
+        ", isLeader=" + isLeader +
         "}";
     }
 }
