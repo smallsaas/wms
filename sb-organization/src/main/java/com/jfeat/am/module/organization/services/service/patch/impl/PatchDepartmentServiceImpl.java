@@ -8,8 +8,10 @@ import com.jfeat.am.common.persistence.model.User;
 import com.jfeat.am.modular.system.service.UserService;
 import com.jfeat.am.module.organization.constant.IsManager;
 import com.jfeat.am.module.organization.services.crud.service.StaffService;
+import com.jfeat.am.module.organization.services.persistence.mapper.DepartmentMapper;
 import com.jfeat.am.module.organization.services.persistence.mapper.DepartmentStaffMapper;
 import com.jfeat.am.module.organization.services.persistence.mapper.PositionMapper;
+import com.jfeat.am.module.organization.services.persistence.model.Department;
 import com.jfeat.am.module.organization.services.persistence.model.DepartmentStaff;
 import com.jfeat.am.module.organization.services.persistence.model.Position;
 import com.jfeat.am.module.organization.services.persistence.model.Staff;
@@ -37,6 +39,8 @@ public class PatchDepartmentServiceImpl implements PatchDepartmentService {
     PositionMapper positionMapper;
     @Resource
     UserService userService;
+    @Resource
+    DepartmentMapper departmentMapper;
 
     @Override
     public JSONArray putDatas(JSONArray jsonArray) {
@@ -114,5 +118,32 @@ public class PatchDepartmentServiceImpl implements PatchDepartmentService {
         for (int i = 0; i < items.size(); i++) {
             putDatas(items.getJSONObject(i));
         }
+    }
+
+    //检查检查上级部门是否存在循环链，即上级部门一直找上去，不能出现自己 （仅在更新部门时需要检查）
+    public boolean hasPidChain(Long id, Long pid) {
+        //没传id或pid，或所传id在数据库中找不到相应记录，都视为不存在循环链（通过此校验）
+        if (id == null || pid == null) {
+            return false;
+        }
+        Department department = departmentMapper.selectById(id);
+        if (department == null) {
+            return false;
+        }
+
+        Long parentId = pid;
+        while (parentId != null) {
+            Department tempParent = departmentMapper.selectById(parentId);
+            if (tempParent == null) {
+                return false;
+            } else {
+                if (tempParent.getId().equals(id)) {
+                    return true;
+                } else {
+                    parentId = tempParent.getPid();
+                }
+            }
+        }
+        return false;
     }
 }
