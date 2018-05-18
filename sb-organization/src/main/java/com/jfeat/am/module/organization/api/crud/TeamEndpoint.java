@@ -53,7 +53,6 @@ public class TeamEndpoint extends BaseController {
         return SuccessTip.create(teamService.updateTeamIncludeStaff(id,entity));
     }
 
-
     @ApiOperation(value = "删除某个Team",response = Team.class)
     @DeleteMapping("/{id}")
     public Tip deleteTeam(@PathVariable Long id) {
@@ -78,6 +77,4 @@ public class TeamEndpoint extends BaseController {
 
         return SuccessTip.create(page);
     }
-
-
 }

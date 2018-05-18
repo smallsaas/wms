@@ -27,6 +27,9 @@ PRIMARY KEY (`id`)
 DROP TABLE IF EXISTS `t_staff`;
 CREATE TABLE `t_staff` (
 `id` bigint NOT NULL,
+`name` varchar(26) NOT NULL  COMMENT '名称',
+`phone` varchar(26) NOT NULL  COMMENT '电话',
+`sex` varchar(26) DEFAULT NULL COMMENT '性别',
 `dept_id` bigint NOT NULL COMMENT '所属部门',
 `work_age` int(11) DEFAULT NULL COMMENT '工龄',
 `hire_date` datetime DEFAULT NULL COMMENT '入职时间',

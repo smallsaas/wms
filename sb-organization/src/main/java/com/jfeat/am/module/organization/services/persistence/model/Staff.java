@@ -21,6 +21,18 @@ public class Staff extends Model<Staff> {
 
     private Long id;
     /**
+     * 名称
+     */
+    private String name;
+    /**
+     * 电话
+     */
+    private String phone;
+    /**
+     * 电话
+     */
+    private String sex;
+    /**
      * 所属部门
      */
     @TableField("dept_id")
@@ -73,6 +85,30 @@ public class Staff extends Model<Staff> {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public Long getDeptId() {
@@ -177,6 +213,13 @@ public class Staff extends Model<Staff> {
 
     public static final String NOTE = "note";
 
+    public static final String NAME = "name";
+
+    public static final String PHONE = "phone";
+
+    public static final String SEX = "sex";
+
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -185,17 +228,20 @@ public class Staff extends Model<Staff> {
     @Override
     public String toString() {
         return "Staff{" +
-        ", id=" + id +
-        ", deptId=" + deptId +
-        ", workAge=" + workAge +
-        ", hireDate=" + hireDate +
-        ", leaveDate=" + leaveDate +
-        ", status=" + status +
-        ", profileId=" + profileId +
-        ", positionId=" + positionId +
-        ", userId=" + userId +
-        ", createTime=" + createTime +
-        ", note=" + note +
-        "}";
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", sex='" + sex + '\'' +
+                ", deptId=" + deptId +
+                ", workAge=" + workAge +
+                ", hireDate=" + hireDate +
+                ", leaveDate=" + leaveDate +
+                ", status='" + status + '\'' +
+                ", profileId=" + profileId +
+                ", positionId=" + positionId +
+                ", userId=" + userId +
+                ", createTime=" + createTime +
+                ", note='" + note + '\'' +
+                '}';
     }
 }

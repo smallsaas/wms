@@ -5,6 +5,9 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.jfeat.am.module.organization.services.persistence.model.Staff">
         <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+        <result column="sex" property="sex" />
         <result column="dept_id" property="deptId" />
         <result column="work_age" property="workAge" />
         <result column="hire_date" property="hireDate" />
