@@ -7,7 +7,7 @@
     <sql id="staffDepartmentProfilePosition">
         a.id,a.name,a.phone,a.sex,a.user_id AS userId, a.create_time AS createTime,a.dept_id AS deptId,a.profile_id AS profileId,a.position_id AS positionId,a.note,a.leave_date AS leaveDate,a.hire_date AS hireDate,a.work_age AS workAge,a.status,
         b.name AS deptName,b.code as deptCode,
-        c.name,c.birthday AS age,c.mobile,c.sex,
+        c.birthday AS age,c.mobile,
         d.name AS position,e.is_manager AS isManager
     </sql>
     <select id="findStaffs" resultType="StaffItem" parameterType="StaffItem">
