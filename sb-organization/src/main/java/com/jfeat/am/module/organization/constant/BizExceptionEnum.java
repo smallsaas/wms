@@ -8,7 +8,8 @@ import com.jfeat.am.common.exception.BusinessException;
 public enum BizExceptionEnum {
 
     USER_ALREADY_BOUND(2001, "该用户已经绑定其他员工"),
-    STAFF_NOT_FOUND(2002, "找不到该员工");
+    STAFF_NOT_FOUND(2002, "找不到该员工"),
+    DEPT_CIRCULAR_CHAIN(2003, "存在循环指定");
 
 
     private int friendlyCode;
