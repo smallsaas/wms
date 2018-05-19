@@ -1,10 +1,13 @@
 package com.jfeat.am.module.organization.api.crud;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.jfeat.am.common.constant.tips.ErrorTip;
 import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.organization.constant.BizExceptionEnum;
 import com.jfeat.am.module.organization.services.crud.filter.StaffFilter;
+import com.jfeat.am.module.organization.services.crud.service.DepartmentService;
+import com.jfeat.am.module.organization.services.domain.model.ManagerMedol;
 import com.jfeat.am.module.organization.services.domain.model.StaffItem;
 import com.jfeat.am.module.organization.services.domain.model.StaffModel;
 import com.jfeat.am.module.organization.services.domain.service.QueryStaffService;
@@ -36,23 +39,22 @@ public class StaffEndpoint extends BaseController {
 
     @Resource
     private StaffService staffService;
-
     @Resource
     private QueryStaffService queryStaffService;
-
-
     @Resource
-    private ProfileService  profileService;
+    private ProfileService profileService;
 
 
     private StaffFilter staffFilter = new StaffFilter();
 
+
     /**
      * Only for debug
+     *
      * @return
      */
     @GetMapping("/empty")
-    public Tip getEmptyStaff(){
+    public Tip getEmptyStaff() {
         return SuccessTip.create(new StaffModel());
     }
 
@@ -82,7 +84,30 @@ public class StaffEndpoint extends BaseController {
 
     @PutMapping("/{id}")
     public Tip updateStaff(@PathVariable Long id, @RequestBody StaffModel entity) {
+        Staff staff = staffService.getById(id);
+        entity.setIsManager(staff.getIsManager());
+        if (entity.getDeptId().equals(staff.getDeptId())){
+            entity.setIsManager("NO");
+        }
         return SuccessTip.create(staffService.updateModel(entity, staffFilter));
+    }
+
+    @PutMapping("/setmanager")
+    public Tip setManagerStaff(@RequestBody ManagerMedol managerMedol) {
+        Staff staff = staffService.getById(managerMedol.getStaffId());
+        if (staff == null) {
+            return ErrorTip.create(BizExceptionEnum.STAFF_NOT_FOUND.getCode(), BizExceptionEnum.STAFF_NOT_FOUND.getMessage());
+        }
+        if (!staff.getDeptId().equals(managerMedol.getDeptId())){
+            return ErrorTip.create(BizExceptionEnum.STAFF_OUT_OF_DEPARTMENT.getCode(), BizExceptionEnum.STAFF_OUT_OF_DEPARTMENT.getMessage());
+        }
+        List<Staff> staffs = staffService.getStaffsOfMyDepartment(staff.getDeptId());
+        for (Staff staff1:staffs){
+            staff1.setIsManager("NO");
+            staffService.updateMaster(staff1);
+        }
+        staff.setIsManager("YES");
+        return SuccessTip.create(staffService.updateMaster(staff));
     }
 
     @PutMapping("/{id}/profile")
@@ -103,15 +128,15 @@ public class StaffEndpoint extends BaseController {
 
     @GetMapping
     public Tip findStaffs(Page<StaffItem> page,
-                                 @RequestParam(required = false,defaultValue = "1")Integer pageNum,
-                                 @RequestParam(required = false,defaultValue = "10")Integer pageSize,
-                                 @RequestParam(required = false)String name,
-                                 @RequestParam(required = false)String mobile,
-                                 @RequestParam(required = false)Long deptId,
-                                 @RequestParam(required = false)String deptCode,
-                                 @RequestParam(required = false)String deptName,
-                                 @RequestParam(required = false)String position,
-                                 @RequestParam(required = false)Integer workAge){
+                          @RequestParam(required = false, defaultValue = "1") Integer pageNum,
+                          @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                          @RequestParam(required = false) String name,
+                          @RequestParam(required = false) String mobile,
+                          @RequestParam(required = false) Long deptId,
+                          @RequestParam(required = false) String deptCode,
+                          @RequestParam(required = false) String deptName,
+                          @RequestParam(required = false) String position,
+                          @RequestParam(required = false) Integer workAge) {
         page.setCurrent(pageNum);
         page.setSize(pageSize);
 

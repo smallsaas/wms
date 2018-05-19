@@ -77,6 +77,11 @@ public class Staff extends Model<Staff> {
      * 备注
      */
     private String note;
+    /**
+     * 是否主管
+     */
+    @TableField("is_manager")
+    private String isManager;
 
 
     public Long getId() {
@@ -191,6 +196,14 @@ public class Staff extends Model<Staff> {
         this.note = note;
     }
 
+    public String getIsManager() {
+        return isManager;
+    }
+
+    public void setIsManager(String isManager) {
+        this.isManager = isManager;
+    }
+
     public static final String ID = "id";
 
     public static final String DEPT_ID = "dept_id";
@@ -219,6 +232,8 @@ public class Staff extends Model<Staff> {
 
     public static final String SEX = "sex";
 
+    public static final String IS_MANAGER = "is_manager";
+
 
     @Override
     protected Serializable pkVal() {
@@ -242,6 +257,7 @@ public class Staff extends Model<Staff> {
                 ", userId=" + userId +
                 ", createTime=" + createTime +
                 ", note='" + note + '\'' +
+                ", isManager='" + isManager + '\'' +
                 '}';
     }
 }

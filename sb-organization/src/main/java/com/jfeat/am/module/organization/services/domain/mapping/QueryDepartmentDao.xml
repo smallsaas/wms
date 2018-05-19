@@ -45,19 +45,18 @@
             <include refid="showDepartmentDetail"/>
         FROM
             t_department
-        LEFT JOIN t_department_staff ON t_department_staff.department_id = t_department.id
-        LEFT JOIN t_staff ON t_staff.id = t_department_staff.staff_id
+        LEFT JOIN t_staff ON t_staff.dept_id = t_department.id
         WHERE 1=1
         <if test="isManager != null and isManager != ''">
             AND t_department.id = #{id}
         </if>
         <if test="isManager != null and isManager != ''">
-            AND t_department_staff.is_manager = #{isManager}
+            AND t_staff.is_manager = #{isManager}
         </if>
     </select>
 
     <sql id="showDepartmentDetail">
-        t_department.id,t_department.`code`,t_department.is_org AS isOrg,t_department.pid,t_department.`name`,t_department.full_name AS fullName,t_department.location,t_department.note,t_department.sort,t_department.version, t_department_staff.is_manager AS isManager,
+        t_department.id,t_department.`code`,t_department.is_org AS isOrg,t_department.pid,t_department.`name`,t_department.full_name AS fullName,t_department.location,t_department.note,t_department.sort,t_department.version,
         t_staff.id AS staffId,t_staff.dept_id AS deptId,t_staff.work_age AS workAge,t_staff.hire_date AS hireDate,t_staff.leave_date AS leaveDate,t_staff.`status`,t_staff.create_time AS createTime,t_staff.note AS staffNote
     </sql>
 </mapper>

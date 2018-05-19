@@ -18,6 +18,7 @@
         <result column="user_id" property="userId" />
         <result column="create_time" property="createTime" />
         <result column="note" property="note" />
+        <result column="is_manager" property="isManager" />
     </resultMap>
 
 </mapper>

@@ -26,7 +26,7 @@ public class PatchStaffEndpoint extends BaseController {
     @Resource
     private QueryDepartmentService queryDepartmentService;
 
-    @GetMapping("/org/dept/{id}/staffs")
+    @GetMapping("/org/dept/{departmentId}/staffs")
     public Tip selectStaffsOfDepartment( @PathVariable Long departmentId){
         return SuccessTip.create(staffService.getStaffsOfDepartment(departmentId));
     }

@@ -9,7 +9,10 @@ public enum BizExceptionEnum {
 
     USER_ALREADY_BOUND(2001, "该用户已经绑定其他员工"),
     STAFF_NOT_FOUND(2002, "找不到该员工"),
-    DEPT_CIRCULAR_CHAIN(2003, "存在循环指定");
+    DEPT_CIRCULAR_CHAIN(2003, "存在循环指定"),
+    STAFF_NOT_EXIT(2004, "该员工已不存在"),
+    STAFF_IS_MANAGER(2005, "该员工已经是部门经理"),
+    STAFF_OUT_OF_DEPARTMENT(2005, "非该部门员工不能成为该部门经理");
 
 
     private int friendlyCode;

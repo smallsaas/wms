@@ -28,6 +28,7 @@ DROP TABLE IF EXISTS `t_staff`;
 CREATE TABLE `t_staff` (
 `id` bigint NOT NULL,
 `name` varchar(26) NOT NULL  COMMENT '名称',
+`is_manager` varchar(26) DEFAULT NULL COMMENT '是否主管',
 `phone` varchar(26) NOT NULL  COMMENT '电话',
 `sex` varchar(26) DEFAULT NULL COMMENT '性别',
 `dept_id` bigint NOT NULL COMMENT '所属部门',
@@ -43,14 +44,14 @@ CREATE TABLE `t_staff` (
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `t_department_staff`;
-CREATE TABLE `t_department_staff` (
-`id` bigint NOT NULL,
-`department_id` bigint NOT NULL COMMENT '部门ID',
-`staff_id` bigint NOT NULL COMMENT '员工ID',
-`is_manager` varchar(26) DEFAULT NULL COMMENT '是否主管',
-PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+--DROP TABLE IF EXISTS `t_department_staff`;
+--CREATE TABLE `t_department_staff` (
+--`id` bigint NOT NULL,
+--`department_id` bigint NOT NULL COMMENT '部门ID',
+--`staff_id` bigint NOT NULL COMMENT '员工ID',
+--`is_manager` varchar(26) DEFAULT NULL COMMENT '是否主管',
+--PRIMARY KEY (`id`)
+--) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `t_team`;
 CREATE TABLE `t_team` (

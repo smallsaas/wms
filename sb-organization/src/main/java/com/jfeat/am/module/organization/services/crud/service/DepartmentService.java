@@ -17,4 +17,5 @@ public interface DepartmentService extends CRUDServiceGroup<Department> {
 
     Department getById(Long id);
 
+
 }
