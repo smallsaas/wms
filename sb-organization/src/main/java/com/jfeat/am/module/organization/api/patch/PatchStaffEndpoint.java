@@ -27,24 +27,31 @@ public class PatchStaffEndpoint extends BaseController {
     private QueryDepartmentService queryDepartmentService;
 
     @GetMapping("/org/dept/{departmentId}/staffs")
-    public Tip selectStaffsOfDepartment( @PathVariable Long departmentId){
+    public Tip selectStaffsOfDepartment(@PathVariable Long departmentId) {
         return SuccessTip.create(staffService.getStaffsOfDepartment(departmentId));
     }
 
     //    返回经理列表
     @GetMapping("/org/manager")
-    public Tip getDepartmentDetail(Page<Map<String,Object>> page,@RequestParam(required = false,defaultValue = "1")Integer pageNum,@RequestParam(required = false,defaultValue = "30")Integer pageSize,@RequestParam(required = false) Long id,@RequestParam(required = false)String isManager){
+    public Tip getDepartmentDetail(Page<Map<String, Object>> page, @RequestParam(required = false, defaultValue = "1") Integer pageNum, @RequestParam(required = false, defaultValue = "30") Integer pageSize, @RequestParam(required = false) Long id, @RequestParam(required = false) String isManager) {
         page.setCurrent(pageNum);
         page.setSize(pageSize);
-        page.setRecords(queryDepartmentService.showDepartmentDetail(page,id,isManager));
+        page.setRecords(queryDepartmentService.showDepartmentDetail(page, id, isManager));
         return SuccessTip.create(page);
 
     }
 
     @GetMapping("/org/mydept/staffs")
-    public Tip selectStaffsOfMyDepartment(){
+    public Tip selectStaffsOfMyDepartment() {
         Long userId = JWTKit.getUserId(getHttpServletRequest());
         Staff staff = staffService.getStaffByUserId(userId);
         return SuccessTip.create(staffService.getStaffsOfDepartment(staff.getDeptId()));
+    }
+
+    @GetMapping("/org/staffs/me")
+    public Tip me() {
+        Long userId = JWTKit.getUserId(getHttpServletRequest());
+        Staff result = staffService.getStaffByUserId(userId); //可能不是一个staff
+        return SuccessTip.create(result);
     }
 }
