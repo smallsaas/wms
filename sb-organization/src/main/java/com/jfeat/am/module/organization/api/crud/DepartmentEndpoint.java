@@ -69,7 +69,6 @@ public class DepartmentEndpoint extends BaseController {
         if (organizationKit.checkDepartmentCodeDuplicate(entity.getCode())) {
             return ErrorTip.create(BizExceptionEnum.ALREADY_EXIST);
         }
-
         return SuccessTip.create(departmentService.createGroup(entity));
     }
 
@@ -92,10 +91,6 @@ public class DepartmentEndpoint extends BaseController {
 
     @PutMapping("/{id}")
     public Tip updateDepartment(@PathVariable Long id, @RequestBody Department entity) {
-        if (patchDepartmentService.hasPidChain(id, entity.getPid())) {
-            return ErrorTip.create(com.jfeat.am.module.organization.constant.BizExceptionEnum.DEPT_CIRCULAR_CHAIN.getCode(),
-                    com.jfeat.am.module.organization.constant.BizExceptionEnum.DEPT_CIRCULAR_CHAIN.getMessage());
-        }
         return SuccessTip.create(departmentService.updateGroup(entity));
     }
 
@@ -130,9 +125,7 @@ public class DepartmentEndpoint extends BaseController {
         return SuccessTip.create(departmentService.toJSONObject());
     }
 
-    /**
-     * 与/groups的结构相同{ items: [] }
-     *
+    /** 与/groups的结构相同{ items: [] }
      * @return 树形结构的部门（带有其他表的信息（主要是部门主管的信息）））
      */
     @GetMapping("/groups-join")
