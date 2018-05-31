@@ -243,15 +243,14 @@
       <plugin> 
         <groupId>com.jfeat</groupId>  
         <artifactId>sb-code-generator</artifactId>  
-        <version>1.0.2</version>  
+        <version>1.0.2</version>
         <configuration> 
           <!-- change to your module name -->  
           <moduleName>organization</moduleName>  
           <tables> 
-            <table>t_department</table>  
-            <table>t_staff</table>  
-            <table>t_position</table> 
+            <table>t_staff</table>
           </tables>
+          <initialize>false</initialize>
           <dbUrl>jdbc:mysql://120.76.244.80:3308/infrastructure</dbUrl>  
           <username>root</username>  
           <password>root</password>  
