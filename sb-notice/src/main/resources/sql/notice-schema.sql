@@ -25,6 +25,7 @@ CREATE TABLE `t_notice` (
   `title` varchar(255) NOT NULL COMMENT '标题',
   `content` text NOT NULL COMMENT '内容',
   `type` varchar(255) DEFAULT NULL COMMENT '类型',
+  `status` varchar(255) DEFAULT NULL COMMENT '状态',
   `enabled` smallint(5) NOT NULL COMMENT '是否启用 0-否 1-是',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',

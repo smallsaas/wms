@@ -9,6 +9,7 @@
 		<result column="title" property="title" />
 		<result column="content" property="content" />
 		<result column="type" property="type" />
+		<result column="status" property="status" />
 		<result column="enabled" property="enabled" />
 		<result column="create_time" property="createTime" />
 		<result column="update_time" property="updateTime" />
@@ -17,7 +18,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, author, title, content, type, enabled, create_time AS createTime, update_time AS updateTime, end_time AS endTime
+        id, author, status, title, content, type, enabled, create_time AS createTime, update_time AS updateTime, end_time AS endTime
     </sql>
 
 </mapper>
