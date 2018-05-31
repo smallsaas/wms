@@ -30,6 +30,7 @@ CREATE TABLE `t_notice` (
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `end_time` datetime DEFAULT NULL COMMENT '到期时间',
+  `order_num` int DEFAULT '1' COMMENT '排序号',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

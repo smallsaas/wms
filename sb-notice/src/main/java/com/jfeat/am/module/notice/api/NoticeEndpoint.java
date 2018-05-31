@@ -33,7 +33,6 @@ public class NoticeEndpoint extends BaseController {
     @Resource
     QueryNoticeService queryNoticeService;
 
-
     /**
      * PATCH
      *

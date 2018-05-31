@@ -60,6 +60,11 @@ public class Notice extends Model<Notice> {
 	@TableField("end_time")
 	private Date endTime;
 	/**
+	 * 排序号
+	 */
+	@TableField("order_num")
+	private Integer orderNum;
+	/**
 	 * 状态
 	 */
 	private String status;
@@ -154,6 +159,14 @@ public class Notice extends Model<Notice> {
 		this.status = status;
 	}
 
+	public Integer getOrderNum() {
+		return orderNum;
+	}
+
+	public void setOrderNum(Integer orderNum) {
+		this.orderNum = orderNum;
+	}
+
 	public static final String ID = "id";
 
 	public static final String AUTHOR = "author";
@@ -174,6 +187,8 @@ public class Notice extends Model<Notice> {
 
 	public static final String STATUS = "status";
 
+	public static final String ORDER_NUM = "order_num";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -191,6 +206,7 @@ public class Notice extends Model<Notice> {
 				", createTime=" + createTime +
 				", updateTime=" + updateTime +
 				", endTime=" + endTime +
+				", orderNum=" + orderNum +
 				", status='" + status + '\'' +
 				'}';
 	}
