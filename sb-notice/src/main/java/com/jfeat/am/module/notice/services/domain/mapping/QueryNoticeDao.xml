@@ -11,6 +11,9 @@
         <if test="notice.type != null and notice.type!= ''">
             AND t_notice.type LIKE CONCAT('%',#{notice.type},'%')
         </if>
+        <if test="notice.status != null and notice.status!= ''">
+            AND t_notice.status = #{notice.status}
+        </if>
         <if test="notice.enabled != null">
             AND t_notice.enabled = #{notice.enabled}
         </if>
