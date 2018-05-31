@@ -25,6 +25,7 @@
     <module>sb-system-config</module>
     <module>sb-score</module>
     <module>sb-notification</module>
+    <module>stock-evaluation</module>
   </modules>
 
   <distributionManagement>
