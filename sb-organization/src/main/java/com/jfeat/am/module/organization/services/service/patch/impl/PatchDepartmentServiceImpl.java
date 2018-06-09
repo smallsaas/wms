@@ -15,7 +15,6 @@ import com.jfeat.am.module.organization.services.persistence.model.Position;
 import com.jfeat.am.module.organization.services.persistence.model.Staff;
 import com.jfeat.am.module.organization.services.service.patch.PatchDepartmentService;
 import com.jfeat.am.module.profile.services.persistence.dao.ProfileMapper;
-import com.jfeat.am.module.profile.services.persistence.model.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -74,7 +73,7 @@ public class PatchDepartmentServiceImpl implements PatchDepartmentService {
         Long userId = null;
         String userName = null;
         Long staffId = null;
-        String staffProfileName = null;
+        String staffName = null;
         Long positionId = null;
         String positionName = null;
 
@@ -83,14 +82,11 @@ public class PatchDepartmentServiceImpl implements PatchDepartmentService {
             Staff staff = staffService.getById(departmentStaff.getStaffId());
             if (staff != null) {
                 staffId = staff.getId();
+                staffName = staff.getName();
                 if (staff.getUserId() != null) {
                     User user = userService.getById(staff.getUserId());
                     userId = user == null ? null : user.getId();
                     userName = user == null ? null : user.getName();
-                }
-                if (staff.getProfileId() != null) {
-                    Profile staffProfile = profileMapper.selectById(staff.getProfileId());
-                    staffProfileName = staffProfile == null ? null : staffProfile.getName();
                 }
                 if (staff.getPositionId() != null) {
                     Position position = positionMapper.selectById(staff.getPositionId());
@@ -100,7 +96,7 @@ public class PatchDepartmentServiceImpl implements PatchDepartmentService {
             }
         }
         jsonObject.put("staffId", staffId);
-        jsonObject.put("staffProfileName", staffProfileName);
+        jsonObject.put("staffName", staffName);
         jsonObject.put("positionId", positionId);
         jsonObject.put("positionName", positionName);
         jsonObject.put("userId", userId);

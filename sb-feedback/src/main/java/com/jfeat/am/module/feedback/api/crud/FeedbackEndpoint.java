@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
+import com.jfeat.am.common.persistence.model.User;
 import com.jfeat.am.core.jwt.JWTKit;
+import com.jfeat.am.modular.system.service.UserService;
 import com.jfeat.am.module.feedback.services.crud.filter.TFeedbackFilter;
 import com.jfeat.am.module.feedback.services.crud.service.TFeedbackService;
 import com.jfeat.am.module.feedback.services.domain.model.TFeedbackModel;
@@ -28,11 +30,19 @@ public class FeedbackEndpoint extends BaseController {
 
     @Resource
     private TFeedbackService tFeedbackService;
+    @Resource
+    private UserService userService;
 
     @PostMapping("/feedback")
     public Tip createTFeedback(@Valid @RequestBody TFeedbackModel entity) {
         Long userId = JWTKit.getUserId(getHttpServletRequest());
         entity.setUserId(userId);
+        if (entity.getCreateUser() != null) {
+            entity.setCreateName(entity.getCreateUser());
+        } else {
+            User user = userService.getById(userId);
+            entity.setCreateName(user.getName());
+        }
         return SuccessTip.create(tFeedbackService.createMaster(entity, new TFeedbackFilter(), null, null));
     }
 

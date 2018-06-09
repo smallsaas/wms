@@ -84,7 +84,7 @@ public class Profile extends Model<Profile> {
      * 身份证号码
      */
 	@TableField("idcard_no")
-	private Long idcardNo;
+	private String idcardNo;
     /**
      * 身份证正面
      */
@@ -99,7 +99,7 @@ public class Profile extends Model<Profile> {
      * 银行卡帐户
      */
 	@TableField("bankcard_no")
-	private Long bankcardNo;
+	private String bankcardNo;
     /**
      * 银行卡图片
      */
@@ -258,11 +258,11 @@ public class Profile extends Model<Profile> {
 		this.signature = signature;
 	}
 
-	public Long getIdcardNo() {
+	public String getIdcardNo() {
 		return idcardNo;
 	}
 
-	public void setIdcardNo(Long idcardNo) {
+	public void setIdcardNo(String idcardNo) {
 		this.idcardNo = idcardNo;
 	}
 
@@ -282,11 +282,11 @@ public class Profile extends Model<Profile> {
 		this.idcardBack = idcardBack;
 	}
 
-	public Long getBankcardNo() {
+	public String getBankcardNo() {
 		return bankcardNo;
 	}
 
-	public void setBankcardNo(Long bankcardNo) {
+	public void setBankcardNo(String bankcardNo) {
 		this.bankcardNo = bankcardNo;
 	}
 

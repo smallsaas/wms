@@ -33,7 +33,6 @@ public class NoticeEndpoint extends BaseController {
     @Resource
     QueryNoticeService queryNoticeService;
 
-
     /**
      * PATCH
      *
@@ -92,6 +91,7 @@ public class NoticeEndpoint extends BaseController {
             @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
             @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
             @RequestParam(name = "type", required = false) String type,
+            @RequestParam(name = "status", required = false) String status,
             @Range(min = 0, max = 1) @RequestParam(name = "enabled", required = false) Integer enabled,
             @Range(min = 0, max = 1) @RequestParam(name = "expired", required = false) Integer expired,
             @RequestParam(name = "title", required = false) String title,
@@ -105,6 +105,7 @@ public class NoticeEndpoint extends BaseController {
 
         Notice notice = new Notice();
         notice.setType(type);
+        notice.setStatus(status);
         notice.setTitle(title);
         notice.setContent(content);
         notice.setCreateTime(parseDate(createTime));

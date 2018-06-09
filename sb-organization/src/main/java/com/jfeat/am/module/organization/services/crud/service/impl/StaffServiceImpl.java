@@ -183,8 +183,8 @@ public class StaffServiceImpl extends CRUDServiceOnlyImpl<Staff>
     }
 
     @Override
-    public List<Staff> getStaffsOfMyDepartment(Long departmentId, String name) {
-        return null;
+    public List<Staff> getStaffsOfMyDepartment(Long departmentId) {
+        return staffMapper.selectList(new EntityWrapper<Staff>().eq(Staff.DEPT_ID,departmentId));
     }
 }
 

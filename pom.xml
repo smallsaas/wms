@@ -9,7 +9,6 @@
 
   <modules>
     <module>sb-log</module>
-    <module>sb-organization</module>
     <module>sb-profile</module>
     <module>sb-notice</module>
     <module>general-social</module>

@@ -8,7 +8,15 @@ import com.jfeat.am.common.exception.BusinessException;
 public enum BizExceptionEnum {
 
     USER_ALREADY_BOUND(2001, "该用户已经绑定其他员工"),
+<<<<<<< HEAD
+    STAFF_NOT_FOUND(2002, "找不到该员工"),
+    DEPT_CIRCULAR_CHAIN(2003, "存在循环指定"),
+    STAFF_NOT_EXIT(2004, "该员工已不存在"),
+    STAFF_IS_MANAGER(2005, "该员工已经是部门经理"),
+    STAFF_OUT_OF_DEPARTMENT(2005, "非该部门员工不能成为该部门经理");
+=======
     STAFF_NOT_FOUND(2002, "找不到该员工");
+>>>>>>> parent of 7e0c6c2... 检查上级部门是否存在循环链，即上级部门一直找上去，不能出现自己
 
 
     private int friendlyCode;

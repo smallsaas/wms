@@ -5,10 +5,10 @@
         t_staff.*
     </sql>
     <sql id="staffDepartmentProfilePosition">
-        a.id,a.user_id AS userId, a.create_time AS createTime,a.dept_id AS deptId,a.profile_id AS profileId,a.position_id AS positionId,a.note,a.leave_date AS leaveDate,a.hire_date AS hireDate,a.work_age AS workAge,a.status,
+        a.id,a.name,a.phone,a.sex,a.user_id AS userId, a.create_time AS createTime,a.dept_id AS deptId,a.profile_id AS profileId,a.position_id AS positionId,a.note,a.leave_date AS leaveDate,a.hire_date AS hireDate,a.work_age AS workAge,a.status,
         b.name AS deptName,b.code as deptCode,
-        c.name,c.birthday AS age,c.mobile,c.sex,
-        d.name AS position,e.is_manager AS isManager
+        c.birthday AS age,c.mobile,
+        d.name AS position
     </sql>
     <select id="findStaffs" resultType="StaffItem" parameterType="StaffItem">
         SELECT
@@ -16,13 +16,12 @@
         FROM t_staff a LEFT JOIN t_department b ON b.id=a.dept_id
                        LEFT JOIN t_profile c ON c.id=a.profile_id
                        LEFT JOIN t_position d ON d.id=a.position_id
-                      LEFT JOIN t_department_staff e ON e.staff_id = a.id
         WHERE 1=1
         <if test="id != null and id>0 ">
             AND a.id LIKE CONCAT('%',#{id},'%')
         </if>
         <if test="deptId != null and deptId!= ''">
-            AND e.department_id =#{deptId}
+            AND a.dept_id =#{deptId}
         </if>
         <if test="deptCode != null and deptCode!= ''">
             AND b.code LIKE CONCAT('%',#{deptCode},'%')
@@ -31,12 +30,10 @@
             AND b.name LIKE CONCAT('%',#{deptName},'%')
         </if>
         <if test="name != null and name!= ''">
-            AND c.name LIKE CONCAT('%',#{name},'%')
-        </if>
-        <if test="age != null and age>0 ">
+            AND a.name LIKE CONCAT('%',#{name},'%')
         </if>
         <if test="mobile != null and mobile!= ''">
-            AND c.mobile LIKE CONCAT('%',#{mobile},'%')
+            AND a.mobile LIKE CONCAT('%',#{mobile},'%')
         </if>
     </select>
 
