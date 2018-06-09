@@ -32,8 +32,8 @@ public class StockCollect extends Model<StockCollect> {
     /**
      * 活动ID
      */
-	@TableField("activity_id")
-	private Long activityId;
+	@TableField("stock_id")
+	private Long stockId;
     /**
      * 收藏时间
      */
@@ -57,12 +57,12 @@ public class StockCollect extends Model<StockCollect> {
 		this.memberId = memberId;
 	}
 
-	public Long getActivityId() {
-		return activityId;
+	public Long getStockId() {
+		return stockId;
 	}
 
-	public void setActivityId(Long activityId) {
-		this.activityId = activityId;
+	public void setStockId(Long stockId) {
+		this.stockId = stockId;
 	}
 
 	public Date getCreateTime() {
@@ -83,7 +83,7 @@ public class StockCollect extends Model<StockCollect> {
 		return "StockCollect{" +
 			"id=" + id +
 			", memberId=" + memberId +
-			", activityId=" + activityId +
+			", stockId=" + stockId +
 			", createTime=" + createTime +
 			"}";
 	}

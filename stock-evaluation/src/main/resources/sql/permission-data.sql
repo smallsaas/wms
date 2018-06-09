@@ -1,5 +1,3 @@
-INSERT INTO `perm_group` (`id`, `name`, `identifier`) VALUES
-('929261913433206799', 'stock模块', 'MemberBlack.management');
 
 INSERT INTO `perm` (`id`, `groupid`, `name`, `identifier`) VALUES
 ('929261913433206816', '929261913433206819', '查看MemberTrends', 'MemberTrends.view'),

@@ -6,7 +6,7 @@
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.social.services.persistence.model.StockCollect">
 		<result column="id" property="id" />
 		<result column="member_id" property="memberId" />
-		<result column="activity_id" property="activityId" />
+		<result column="stock_id" property="stockId" />
 		<result column="create_time" property="createTime" />
 	</resultMap>
 

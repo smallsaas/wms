@@ -14,8 +14,8 @@
                                              <if test="memberId != null and memberId>0 ">
                  AND se_stock_collect.member_id LIKE CONCAT('%',#{memberId},'%')
             </if>
-                                             <if test="activityId != null and activityId>0 ">
-                 AND se_stock_collect.activity_id LIKE CONCAT('%',#{activityId},'%')
+                                             <if test="stockId != null and stockId>0 ">
+                 AND se_stock_collect.activity_id LIKE CONCAT('%',#{stockId},'%')
             </if>
                                              <if test="createTime != null and createTime>0 ">
                  AND se_stock_collect.create_time LIKE CONCAT('%',#{createTime},'%')

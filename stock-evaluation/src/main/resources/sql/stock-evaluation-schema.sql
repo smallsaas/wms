@@ -16,17 +16,6 @@ Date: 2017-11-14 11:59:24
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for so_stock_collect
--- ----------------------------
-DROP TABLE IF EXISTS `so_stock_collect`;
-CREATE TABLE `so_stock_collect` (
-  `id` bigint(20) NOT NULL COMMENT 'ID',
-  `member_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `activity_id` bigint(20) NOT NULL COMMENT '活动ID',
-  `create_time` datetime NOT NULL COMMENT '收藏时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
 -- Table structure for so_stock_evaluation
 -- ----------------------------
 DROP TABLE IF EXISTS `so_stock_evaluation`;
