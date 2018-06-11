@@ -1,6 +1,6 @@
 package com.jfeat.am.test;
 
-import com.jfeat.am.AmApplication;
+import com.jfeat.AmApplication;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
