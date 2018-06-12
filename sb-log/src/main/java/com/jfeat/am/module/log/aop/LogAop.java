@@ -37,7 +37,7 @@ public class LogAop {
         Object result = point.proceed();
 
         try {
-            handle(point);
+            handle(point,result);
         } catch (Exception e) {
             log.error("日志记录出错!", e);
         }
@@ -45,7 +45,7 @@ public class LogAop {
         return result;
     }
 
-    private void handle(ProceedingJoinPoint point) throws Exception {
+    private void handle(ProceedingJoinPoint point,Object result) throws Exception {
 
         //获取拦截的方法名
         Signature sig = point.getSignature();
@@ -85,6 +85,8 @@ public class LogAop {
                 businessName + "-" + businessValue,
                 className,
                 methodName,
-                sb.toString()));
+                sb.toString(),
+                result.toString())
+                );
     }
 }

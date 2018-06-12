@@ -23,12 +23,13 @@ public class LogTaskFactory {
                                         final String businessName,
                                         final String className,
                                         final String methodName,
-                                        final String msg) {
+                                        final String msg,
+                                        final String result) {
         return new TimerTask() {
             @Override
             public void run() {
                 OperationLog operationLog = LogFactory.createOperationLog(LogType.BUSINESS_LOG.toString(),
-                        userId, userName, businessName, className, methodName, msg);
+                        userId, userName, businessName, className, methodName, msg, result);
                 try {
                     operationLogService.createMaster(operationLog);
                 } catch (Exception e) {

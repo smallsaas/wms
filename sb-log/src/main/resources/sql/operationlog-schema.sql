@@ -10,7 +10,7 @@ CREATE TABLE `t_operation_log` (
 `class_name` varchar(200) DEFAULT NULL COMMENT '类名称',
 `method` varchar(200) DEFAULT NULL COMMENT '方法名称',
 `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-`succeed` varchar(200) DEFAULT NULL COMMENT '成功与否',
+`result` varchar(200) DEFAULT NULL COMMENT '结果',
 `message` text DEFAULT NULL COMMENT '附带信息',
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

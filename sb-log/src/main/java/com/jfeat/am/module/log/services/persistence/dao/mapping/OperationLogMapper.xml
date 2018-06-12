@@ -12,7 +12,7 @@
 		<result column="class_name" property="className" />
 		<result column="method" property="method" />
 		<result column="create_time" property="createTime" />
-		<result column="succeed" property="succeed" />
+		<result column="result" property="result" />
 		<result column="message" property="message" />
 	</resultMap>
 
