@@ -4,15 +4,14 @@
     <sql id="Base_Column_List">
         t_notice.*
     </sql>
+
     <select id="findNotices" resultType="Notice" parameterType="Notice">
-        SELECT t_notice.*
+        select id,author,title,content,type,create_time,end_time,order_num,
+        (case when enabled=1 and end_time >= CURRENT_TIMESTAMP then '启用中' when enabled=0 then '无效' when end_time < CURRENT_TIMESTAMP then '已过期' end) status
         FROM t_notice
         WHERE 1=1
         <if test="notice.type != null and notice.type!= ''">
             AND t_notice.type LIKE CONCAT('%',#{notice.type},'%')
-        </if>
-        <if test="notice.status != null and notice.status!= ''">
-            AND t_notice.status = #{notice.status}
         </if>
         <if test="notice.enabled != null">
             AND t_notice.enabled = #{notice.enabled}
@@ -22,15 +21,6 @@
         </if>
         <if test="notice.content != null and notice.content!= ''">
             AND t_notice.content LIKE CONCAT('%',#{notice.content},'%')
-        </if>
-        <if test="notice.createTime != null">
-            AND t_notice.create_time LIKE CONCAT('%',#{notice.createTime},'%')
-        </if>
-        <if test="notice.updateTime != null">
-            AND t_notice.update_time LIKE CONCAT('%',#{notice.updateTime},'%')
-        </if>
-        <if test="notice.endTime != null">
-            AND t_notice.end_time LIKE CONCAT('%',#{notice.endTime},'%')
         </if>
         <if test="expired != null">
             <if test="expired == 1">
