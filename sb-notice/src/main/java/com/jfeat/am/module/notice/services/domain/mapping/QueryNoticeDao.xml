@@ -47,6 +47,14 @@
     <select id="findExpiredNotices" resultType="Notice">
         SELECT t_notice.*
         FROM t_notice
-        WHERE CURRENT_TIMESTAMP >= t_notice.end_time
+        WHERE t_notice.end_time IS NOT NULL AND CURRENT_TIMESTAMP &gt;= t_notice.end_time
+    </select>
+
+    <select id="findRecentNotices" resultType="Notice">
+        SELECT t_notice.*
+        FROM t_notice
+        WHERE (t_notice.end_time IS NULL OR t_notice.end_time &gt;= CURRENT_TIMESTAMP) AND (t_notice.enabled=1)
+
+        ORDER BY t_notice.end_time DESC,t_notice.order_num DESC
     </select>
 </mapper>

@@ -124,6 +124,19 @@ public class NoticeEndpoint extends BaseController {
         return SuccessTip.create(page);
     }
 
+    /**
+     * 最新公告（必须是未过期，且已启用的。结果按有效时间倒序）
+     */
+    @GetMapping("/recent/notices")
+    public Tip rencentNotices(Page<Notice> page,
+                               @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                               @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize) {
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        page.setRecords(queryNoticeService.findRecentNotices(page));
+        return SuccessTip.create(page);
+    }
+
     private Date parseDate(String dateStr) {
         if (StrKit.isBlank(dateStr)) {
             return null;

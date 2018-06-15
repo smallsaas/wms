@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface QueryNoticeService {
     List<Notice> findNotices(Page<Notice> page, Notice notice, Integer expired);
+
+    List<Notice> findRecentNotices(Page<Notice> page);
 }
