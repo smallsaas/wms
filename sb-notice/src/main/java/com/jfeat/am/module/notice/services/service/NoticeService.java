@@ -18,4 +18,6 @@ public interface NoticeService extends CRUDServiceOnly<Notice> {
 
     public List<Notice> findExpiredNotices();
 
+    public Integer switchEnabled(Long id);
+
 }
