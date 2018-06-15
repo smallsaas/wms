@@ -37,6 +37,7 @@
             AND (t_operation_log.create_time LIKE CONCAT('%',#{createTime},'%')
         </if>
 
+        ORDER BY t_operation_log.create_time DESC,t_operation_log.id DESC
     </select>
 
 </mapper>
