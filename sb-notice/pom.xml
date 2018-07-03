@@ -16,7 +16,7 @@
   </parent>  
   <properties>
     <sb-base.version>1.0.0</sb-base.version>
-    <sb-crud.version>1.0.4-SNAPSHOT</sb-crud.version>
+    <sb-crud.version>1.2.1</sb-crud.version>
     <skipStandalone>true</skipStandalone>
   </properties>
   <dependencies> 
@@ -25,11 +25,7 @@
       <artifactId>sb-base</artifactId>  
       <version>${sb-base.version}</version> 
     </dependency>  
-    <dependency> 
-      <groupId>com.jfeat</groupId>  
-      <artifactId>sb-crud</artifactId>  
-      <version>${sb-crud.version}</version> 
-    </dependency>  
+
     <!--spring boot����-->  
     <dependency> 
       <groupId>org.springframework.boot</groupId>  
@@ -229,7 +225,7 @@
       <plugin> 
         <groupId>com.jfeat</groupId>  
         <artifactId>sb-code-generator</artifactId>  
-        <version>1.0.2</version>  
+        <version>1.2.1</version>
         <configuration> 
           <!-- change to your module name -->  
           <moduleName>notice</moduleName>  
