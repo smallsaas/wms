@@ -1,6 +1,7 @@
 package com.jfeat.am.module.log.aop;
 
 import com.alibaba.fastjson.JSON;
+import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.core.shiro.ShiroKit;
 import com.jfeat.am.core.shiro.ShiroUser;
 import com.jfeat.am.module.log.LogManager;
@@ -37,7 +38,7 @@ public class LogAop {
         Object result = point.proceed();
 
         try {
-            handle(point);
+            handle(point, result);
         } catch (Exception e) {
             log.error("日志记录出错!", e);
         }
@@ -45,7 +46,16 @@ public class LogAop {
         return result;
     }
 
-    private void handle(ProceedingJoinPoint point) throws Exception {
+    private void handle(ProceedingJoinPoint point, Object result) throws Exception {
+        String resultStr = "";
+        if (result != null && result instanceof Tip) {
+            Tip resultTip = (Tip) result;
+            if (resultTip.getCode() == 200) {
+                resultStr = "成功";
+            } else {
+                resultStr = "失败";
+            }
+        }
 
         //获取拦截的方法名
         Signature sig = point.getSignature();
@@ -82,9 +92,11 @@ public class LogAop {
 
         LogManager.me().executeLog(LogTaskFactory.businessLog(user.getId(),
                 user.getName(),
-                businessName + "-" + businessValue,
+                "对" + businessName + "进行了" + businessValue + "操作",
                 className,
                 methodName,
-                sb.toString()));
+                sb.toString(),
+                resultStr)
+        );
     }
 }

@@ -7,6 +7,13 @@
   <packaging>pom</packaging>
   <name>infrastructure</name>
 
+  <parent>
+    <groupId>com.jfeat</groupId>
+    <artifactId>sb-parent</artifactId>
+    <version>1.0.0</version>
+    <relativePath/>
+  </parent>
+
   <modules>
     <module>sb-log</module>
     <module>sb-profile</module>
@@ -26,21 +33,5 @@
     <module>sb-notification</module>
     <module>stock-evaluation</module>
   </modules>
-
-  <distributionManagement>
-    <repository>
-      <id>archiva-internal</id>
-      <name>Internal Repository</name>
-      <url>http://114.215.187.140:8081/repository/internal</url>
-    </repository>
-  </distributionManagement>
-
-  <repositories>
-    <repository>
-      <id>archiva-internal</id>
-      <name>Internal Repository</name>
-      <url>http://114.215.187.140:8081/repository/internal</url>
-    </repository>
-  </repositories>
 
 </project>

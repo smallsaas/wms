@@ -38,6 +38,17 @@ public class NoticeServiceImpl extends CRUDServiceOnlyImpl<Notice> implements No
         return queryNoticeDao.findExpiredNotices();
     }
 
+    @Override
+    public Integer switchEnabled(Long id) {
+        Notice notice = noticeMapper.selectById(id);
+        if (notice.getEnabled() == 1) {
+            notice.setEnabled(0);
+        } else {
+            notice.setEnabled(1);
+        }
+        return noticeMapper.updateById(notice);
+    }
+
 }
 
 

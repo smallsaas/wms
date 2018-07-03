@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author admin
@@ -26,4 +26,10 @@ public class QueryNoticeServiceImpl implements QueryNoticeService {
     public List<Notice> findNotices(Page<Notice> page, Notice notice, Integer expired) {
         return queryNoticeDao.findNotices(page, notice, expired);
     }
+
+    @Override
+    public List<Notice> findRecentNotices(Page<Notice> page) {
+        return queryNoticeDao.findRecentNotices(page);
+    }
+
 }

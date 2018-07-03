@@ -15,4 +15,6 @@ public interface QueryNoticeDao extends BaseMapper<Notice> {
 
     List<Notice> findExpiredNotices();
 
+    List<Notice> findRecentNotices(Page<Notice> page);
+
 }

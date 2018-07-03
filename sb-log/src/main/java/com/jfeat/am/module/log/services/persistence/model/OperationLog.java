@@ -57,7 +57,7 @@ public class OperationLog extends Model<OperationLog> {
     /**
      * 成功与否
      */
-	private String succeed;
+	private String result;
     /**
      * 附带信息
      */
@@ -136,13 +136,12 @@ public class OperationLog extends Model<OperationLog> {
 		return this;
 	}
 
-	public String getSucceed() {
-		return succeed;
+	public String getResult() {
+		return result;
 	}
 
-	public OperationLog setSucceed(String succeed) {
-		this.succeed = succeed;
-		return this;
+	public void setResult(String result) {
+		this.result = result;
 	}
 
 	public String getMessage() {
@@ -168,7 +167,7 @@ public class OperationLog extends Model<OperationLog> {
 
 	public static final String CREATE_TIME = "create_time";
 
-	public static final String SUCCEED = "succeed";
+	public static final String RESULT = "result";
 
 	public static final String MESSAGE = "message";
 
@@ -188,7 +187,7 @@ public class OperationLog extends Model<OperationLog> {
 			", className=" + className +
 			", method=" + method +
 			", createTime=" + createTime +
-			", succeed=" + succeed +
+			", result=" + result +
 			", message=" + message +
 			"}";
 	}

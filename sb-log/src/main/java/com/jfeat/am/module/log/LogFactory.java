@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class LogFactory {
 
-    public static OperationLog createOperationLog(String logType, Long userId, String userName, String businessName, String clazzName, String methodName, String msg) {
+    public static OperationLog createOperationLog(String logType, Long userId, String userName, String businessName, String clazzName, String methodName, String msg, String result) {
         OperationLog operationLog = new OperationLog();
         operationLog.setLogType(logType);
         operationLog.setLogName(businessName);
@@ -19,6 +19,7 @@ public class LogFactory {
         operationLog.setMethod(methodName);
         operationLog.setCreateTime(new Date());
         operationLog.setMessage(msg);
+        operationLog.setResult(result);
         return operationLog;
     }
 

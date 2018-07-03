@@ -35,8 +35,7 @@ public class NoticeEndpoint extends BaseController {
 
     /**
      * PATCH
-     *
-     * */
+     */
     @PostMapping("/{id}/enable")
     public Tip enableNotice(@PathVariable Long id) {
         Notice notice = new Notice();
@@ -45,6 +44,7 @@ public class NoticeEndpoint extends BaseController {
 
         return SuccessTip.create(noticeService.updateMaster(notice));
     }
+
     @PostMapping("/{id}/disable")
     public Tip disableNotice(@PathVariable Long id) {
         Notice notice = new Notice();
@@ -54,8 +54,14 @@ public class NoticeEndpoint extends BaseController {
         return SuccessTip.create(noticeService.updateMaster(notice));
     }
 
+    @PutMapping("/{id}/switchEnabled")
+    public Tip switchEnabled(@PathVariable Long id) {
+        return SuccessTip.create(noticeService.switchEnabled(id));
+    }
+
     /**
      * CRUD
+     *
      * @param entity
      * @return
      */
@@ -99,7 +105,7 @@ public class NoticeEndpoint extends BaseController {
             @RequestParam(name = "createTime", required = false) String createTime,
             @RequestParam(name = "updateTime", required = false) String updateTime,
             @RequestParam(name = "endTime", required = false) String endTime
-            ) {
+    ) {
         page.setCurrent(pageNum);
         page.setSize(pageSize);
 
@@ -115,6 +121,19 @@ public class NoticeEndpoint extends BaseController {
 
         page.setRecords(queryNoticeService.findNotices(page, notice, expired));
 
+        return SuccessTip.create(page);
+    }
+
+    /**
+     * 最新公告（必须是未过期，且已启用的。结果按有效时间倒序）
+     */
+    @GetMapping("/recent/notices")
+    public Tip rencentNotices(Page<Notice> page,
+                               @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                               @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize) {
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        page.setRecords(queryNoticeService.findRecentNotices(page));
         return SuccessTip.create(page);
     }
 
