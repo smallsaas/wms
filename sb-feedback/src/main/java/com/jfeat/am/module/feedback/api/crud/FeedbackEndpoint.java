@@ -10,6 +10,8 @@ import com.jfeat.am.modular.system.service.UserService;
 import com.jfeat.am.module.feedback.services.crud.filter.TFeedbackFilter;
 import com.jfeat.am.module.feedback.services.crud.service.TFeedbackService;
 import com.jfeat.am.module.feedback.services.domain.model.TFeedbackModel;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -24,6 +26,7 @@ import javax.validation.Valid;
  * @since 2017-11-28
  */
 @RestController
+@Api("反馈建议")
 @RequestMapping("/api")
 public class FeedbackEndpoint extends BaseController {
 
@@ -33,6 +36,7 @@ public class FeedbackEndpoint extends BaseController {
     @Resource
     private UserService userService;
 
+    @ApiOperation("提交反馈或建议")
     @PostMapping("/feedback")
     public Tip createTFeedback(@Valid @RequestBody TFeedbackModel entity) {
         Long userId = JWTKit.getUserId(getHttpServletRequest());
@@ -46,12 +50,13 @@ public class FeedbackEndpoint extends BaseController {
         return SuccessTip.create(tFeedbackService.createMaster(entity, new TFeedbackFilter(), null, null));
     }
 
+    @ApiOperation("查看反馈或建议")
     @GetMapping("/feedback/{id}")
     public Tip getTFeedback(@PathVariable Long id) {
         return SuccessTip.create(tFeedbackService.retrieveMaster(id, new TFeedbackFilter(), null, null).toJSONObject());
     }
 
-
+    @ApiOperation("修改反馈或建议")
     @PutMapping("/adm/feedback/{id}")
     public Tip updateTFeedback(@PathVariable Long id, @RequestBody TFeedbackModel entity) {
         Long userId = JWTKit.getUserId(getHttpServletRequest());
@@ -59,12 +64,13 @@ public class FeedbackEndpoint extends BaseController {
         entity.setId(id);
         return SuccessTip.create(tFeedbackService.updateMaster(entity, new TFeedbackFilter(), null, null));
     }
-
+    @ApiOperation("删除反馈或建议")
     @DeleteMapping("/feedback/{id}")
     public Tip deleteTFeedback(@PathVariable Long id) {
         return SuccessTip.create(tFeedbackService.deleteMaster(id));
     }
 
+    @ApiOperation("反馈或建议列表")
     @GetMapping("/feedback")
     //此方法可能需要自行添加需要的参数,按需要使用
     public Tip queryTFeedbacks(Page page,
