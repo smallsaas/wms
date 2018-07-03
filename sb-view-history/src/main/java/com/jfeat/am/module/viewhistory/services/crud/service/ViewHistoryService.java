@@ -4,6 +4,8 @@ import com.jfeat.am.module.viewhistory.services.persistence.model.ViewHistory;
 
 import com.jfeat.am.common.crud.CRUDServiceOnly;
 
+import java.util.List;
+
 
 /**
  * <p>
@@ -16,4 +18,6 @@ import com.jfeat.am.common.crud.CRUDServiceOnly;
 
 public interface ViewHistoryService  extends CRUDServiceOnly<ViewHistory> {
 
+
+    List<ViewHistory> viewHistories(long userId);
 }
