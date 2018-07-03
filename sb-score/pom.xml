@@ -248,7 +248,7 @@
             <plugin>
                 <groupId>com.jfeat</groupId>
                 <artifactId>sb-code-generator</artifactId>
-                <version>1.0.2</version>
+                <version>1.2.1</version>
                 <configuration>
                     <!-- change to your module name -->
                     <moduleName>score</moduleName>

@@ -32,6 +32,7 @@
     <module>sb-score</module>
     <module>sb-notification</module>
     <module>stock-evaluation</module>
+    <module>sb-organization</module>
   </modules>
 
 </project>
