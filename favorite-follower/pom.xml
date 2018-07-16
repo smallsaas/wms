@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.jfeat</groupId>
-    <artifactId>stock-evaluation</artifactId>
+    <artifactId>favorite-follower</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>Stock-Evaluation</name>
-    <description>Stock-Evaluation</description>
+    <name>Favorite-Follower</name>
+    <description>Favorite-Follower</description>
 
     <parent>
         <groupId>com.jfeat</groupId>
@@ -263,24 +263,10 @@
                     <username>root</username>
                     <password>root</password>
                     <tables>
-                        <table>t_stock_evaluation</table>
-                        <table>t_stock_evaluation_image</table>
-                        <table>t_stock_evaluation_star</table>
-                        <table>t_stock_evaluation_addition</table>
+                        <table>t_stock_flower</table>
+                        <table>t_stock_favorite</table>
+
                     </tables>
-
-                    <cruds>
-                        <crud>
-                            <mask>master</mask>
-                            <master>t_stock_evaluation</master>
-                            <slaves>
-                                <slave>t_stock_evaluation_addition</slave>
-                                <slave>t_stock_evaluation_image</slave>
-                                <slave>t_stock_evaluation_star</slave>
-                            </slaves>
-
-                        </crud>
-                    </cruds>
 
 
                     <outputDir>C:\Users\Administrator\Desktop\product\src\main\java</outputDir>

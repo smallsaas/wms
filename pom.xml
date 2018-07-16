@@ -33,6 +33,7 @@
     <module>sb-notification</module>
     <module>stock-evaluation</module>
     <module>sb-organization</module>
+    <module>favorite-follower</module>
   </modules>
 
 </project>
