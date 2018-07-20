@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.domain.dao.QueryRefundDao">
+    <sql id="Base_Column_List">
+        wms_refund.*
+    </sql>
+    <select id="findRefundPage" resultType="RefundRecord" parameterType="RefundRecord">
+        SELECT wms_refund.*
+        FROM wms_refund
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND wms_refund.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.productRefundCode != null and record.productRefundCode!= ''">
+            AND wms_refund.product_refund_code LIKE CONCAT('%',#{record.productRefundCode},'%')
+        </if>
+
+        <if test="record.productProcurementId != null and record.productProcurementId>0 ">
+            AND wms_refund.product_procurement_id LIKE CONCAT('%',#{record.productProcurementId},'%')
+        </if>
+
+        <if test="record.storageOutId != null and record.storageOutId>0 ">
+            AND wms_refund.storage_in_id LIKE CONCAT('%',#{record.storageOutId},'%')
+        </if>
+
+        <if test="record.productRefundWarehouseId != null and record.productRefundWarehouseId>0 ">
+            AND wms_refund.product_refund_warehouse_id LIKE CONCAT('%',#{record.productRefundWarehouseId},'%')
+        </if>
+
+        <if test="record.productRefundQuantities != null and record.productRefundQuantities>0 ">
+            AND wms_refund.product_refund_quantities LIKE CONCAT('%',#{record.productRefundQuantities},'%')
+        </if>
+
+        <if test="record.productRefundTime != null and record.productRefundTime>0 ">
+            AND wms_refund.product_refund_time LIKE CONCAT('%',#{record.productRefundTime},'%')
+        </if>
+
+        <if test="record.productRefundStatus != null and record.productRefundStatus!= ''">
+            AND wms_refund.product_refund_status LIKE CONCAT('%',#{record.productRefundStatus},'%')
+        </if>
+
+        <if test="record.productRefundNote != null and record.productRefundNote!= ''">
+            AND wms_refund.product_refund_note LIKE CONCAT('%',#{record.productRefundNote},'%')
+        </if>
+
+        <if test="record.originatorId != null and record.originatorId>0 ">
+            AND wms_refund.originator_id LIKE CONCAT('%',#{record.originatorId},'%')
+        </if>
+        <if test="record.operator != null and record.operator>0 ">
+            AND wms_refund.operator LIKE CONCAT('%',#{record.operator},'%')
+        </if>
+
+        <if test="record.transactionTime != null and record.transactionTime>0 ">
+            AND wms_refund.transaction_time LIKE CONCAT('%',#{record.transactionTime},'%')
+        </if>
+        <if test="record.field1 != null and record.field1!= ''">
+            AND wms_refund.field1 LIKE CONCAT('%',#{record.field1},'%')
+        </if>
+        <if test="record.field2 != null and record.field2!= ''">
+            AND wms_refund.field2 LIKE CONCAT('%',#{record.field2},'%')
+        </if>
+    </select>
+</mapper>

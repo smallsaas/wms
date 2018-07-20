@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.domain.dao.QueryCheckSkuDao">
+    <sql id="Base_Column_List">
+        wms_check_sku.*
+    </sql>
+    <select id="findCheckSkuPage" resultType="CheckSkuRecord" parameterType="CheckSkuRecord">
+        SELECT wms_check_sku.*
+        FROM wms_check_sku
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND wms_check_sku.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.checkId != null and record.checkId>0 ">
+            AND wms_check_sku.check_id LIKE CONCAT('%',#{record.checkId},'%')
+        </if>
+
+        <if test="record.skuId != null and record.skuId>0 ">
+            AND wms_check_sku.sku_id LIKE CONCAT('%',#{record.skuId},'%')
+        </if>
+
+        <if test="record.warehouseId != null and record.warehouseId>0 ">
+            AND wms_check_sku.warehouse_id LIKE CONCAT('%',#{record.warehouseId},'%')
+        </if>
+
+        <if test="record.factQuantities != null and record.factQuantities>0 ">
+            AND wms_check_sku.fact_quantities LIKE CONCAT('%',#{record.factQuantities},'%')
+        </if>
+
+        <if test="record.deservedQuantities != null and record.deservedQuantities>0 ">
+            AND wms_check_sku.deserved_quantities LIKE CONCAT('%',#{record.deservedQuantities},'%')
+        </if>
+        <if test="record.field1 != null and record.field1!= ''">
+            AND wms_check_sku.field1 LIKE CONCAT('%',#{record.field1},'%')
+        </if>
+        <if test="record.field2 != null and record.field2!= ''">
+            AND wms_check_sku.field2 LIKE CONCAT('%',#{record.field2},'%')
+        </if>
+    </select>
+</mapper>

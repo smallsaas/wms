@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.domain.dao.QueryWarehouseSlotDao">
+    <sql id="Base_Column_List">
+            wms_warehouse_slot.*
+        </sql>
+    <select id="findWarehouseSlotPage" resultType="WarehouseSlotRecord" parameterType="WarehouseSlotRecord">
+      SELECT wms_warehouse_slot.*
+            FROM wms_warehouse_slot
+            WHERE 1=1
+                                <if test="record.id != null and record.id>0 ">
+    AND wms_warehouse_slot.id LIKE CONCAT('%',#{record.id},'%')
+    </if>
+                                        
+                                                                                                     <if test="record.slotCode != null and record.slotCode!= ''">
+    AND wms_warehouse_slot.slot_code LIKE CONCAT('%',#{record.slotCode},'%')
+    </if>
+                                        
+                                                                                                     <if test="record.slotName != null and record.slotName!= ''">
+    AND wms_warehouse_slot.slot_name LIKE CONCAT('%',#{record.slotName},'%')
+    </if>
+                                        
+                                                                                                     <if test="record.warehouseId != null and record.warehouseId>0 ">
+    AND wms_warehouse_slot.warehouse_id LIKE CONCAT('%',#{record.warehouseId},'%')
+    </if>
+                                        
+                                                                                                     <if test="record.slotNote != null and record.slotNote!= ''">
+    AND wms_warehouse_slot.slot_note LIKE CONCAT('%',#{record.slotNote},'%')
+    </if>
+        </select>
+</mapper>

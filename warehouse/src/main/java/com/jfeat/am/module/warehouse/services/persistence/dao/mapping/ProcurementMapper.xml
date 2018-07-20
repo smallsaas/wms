@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.persistence.dao.ProcurementMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Procurement">
+		<id column="id" property="id" />
+		<result column="procurement_code" property="procurementCode" />
+		<result column="supplier_id" property="supplierId" />
+		<result column="storage_in_id" property="storageInId" />
+		<result column="procurement_others_payment" property="procurementOthersPayment" />
+		<result column="procurement_discount" property="procurementDiscount" />
+		<result column="procurement_total" property="procurementTotal" />
+		<result column="procurement_time" property="procurementTime" />
+		<result column="procurement_note" property="procurementNote" />
+		<result column="procure_status" property="procureStatus" />
+		<result column="operator" property="operator" />
+		<result column="originator_id" property="originatorId" />
+		<result column="transaction_time" property="transactionTime" />
+		<result column="field1" property="field1" />
+		<result column="field2" property="field2" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, procurement_code AS procurementCode, supplier_id AS supplierId, storage_in_id AS storageInId, procurement_others_payment AS procurementOthersPayment, procurement_discount AS procurementDiscount, procurement_total AS procurementTotal, procurement_time AS procurementTime, procurement_note AS procurementNote, procure_status AS procureStatus, operator, originator_id AS originatorId, transaction_time AS transactionTime, field1, field2
+    </sql>
+
+</mapper>

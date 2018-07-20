@@ -1,0 +1,43 @@
+{
+
+  "productRefundCode":"productRefundCode",
+  "productProcurementId":"111111111",
+  "procurementOthersPayment":"1000.00",
+  "storageInId":"123456",
+  "productRefundWarehouseId":"123456",
+  "productRefundQuantities":"1000",
+  "productRefundStatus":"productRefundStatus退货状态",
+  "productRefundNote":"退货备注",
+  "storageInModel":{
+    "transactionCode":"transactionCode",
+    "transactionType":"transactionType",
+    "batchNo":"batchNo",
+    "warehouseId":"123456",
+    "slotId":"111111213",
+    "note":"note",
+    "status":"完成",
+    "storageInItems":[
+      {
+        "skuId":"1232321",
+        "transactionSkuPrice":"120.00",
+        "transactionQuantities":"1000",
+        "warehouseId":"12345612"
+
+      },
+      {
+        "skuId":"12323232",
+        "transactionSkuPrice":"110.00",
+        "transactionQuantities":"1000",
+        "warehouseId":"12345612"
+
+      },
+      {
+        "skuId":"123232232",
+        "transactionSkuPrice":"115.00",
+        "transactionQuantities":"1000",
+        "warehouseId":"12345612"
+
+      }
+    ]
+  }
+}

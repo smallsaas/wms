@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.persistence.dao.RefundMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Refund">
+		<id column="id" property="id" />
+		<result column="product_refund_code" property="productRefundCode" />
+		<result column="product_procurement_id" property="productProcurementId" />
+		<result column="storage_Out_id" property="storageOutId" />
+		<result column="product_refund_warehouse_id" property="productRefundWarehouseId" />
+		<result column="product_refund_quantities" property="productRefundQuantities" />
+		<result column="product_refund_time" property="productRefundTime" />
+		<result column="product_refund_status" property="productRefundStatus" />
+		<result column="product_refund_note" property="productRefundNote" />
+		<result column="originator_id" property="originatorId" />
+		<result column="operator" property="operator" />
+		<result column="transaction_time" property="transactionTime" />
+		<result column="field1" property="field1" />
+		<result column="field2" property="field2" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, product_refund_code AS productRefundCode, product_procurement_id AS productProcurementId, storage_out_id AS storageOutId, product_refund_warehouse_id AS productRefundWarehouseId, product_refund_quantities AS productRefundQuantities, product_refund_time AS productRefundTime, product_refund_status AS productRefundStatus, product_refund_note AS productRefundNote, originator_id AS originatorId, operator, transaction_time AS transactionTime, field1, field2
+    </sql>
+
+</mapper>

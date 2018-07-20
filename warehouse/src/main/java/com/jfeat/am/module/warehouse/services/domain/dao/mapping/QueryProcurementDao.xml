@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.domain.dao.QueryProcurementDao">
+    <sql id="Base_Column_List">
+        wms_procurement.*
+    </sql>
+
+    <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.domain.model.ProcurementRecord">
+        <id column="id" property="id" />
+        <result column="procurement_code" property="procurementCode" />
+        <result column="supplier_id" property="supplierId" />
+        <result column="storage_in_id" property="storageInId" />
+        <result column="procurement_others_payment" property="procurementOthersPayment" />
+        <result column="procurement_discount" property="procurementDiscount" />
+        <result column="procurement_total" property="procurementTotal" />
+        <result column="procurement_time" property="procurementTime" />
+        <result column="procurement_note" property="procurementNote" />
+        <result column="procure_status" property="procureStatus" />
+        <result column="operator" property="operator" />
+        <result column="originator_id" property="originatorId" />
+        <result column="transaction_time" property="transactionTime" />
+        <result column="field1" property="field1" />
+        <result column="field2" property="field2" />
+
+
+        <result column="supplierName" property="supplierName" />
+        <result column="warehouseName" property="warehouseName" />
+
+    </resultMap>
+
+    <select id="findProcurementPage" resultMap="BaseResultMap" parameterType="ProcurementRecord">
+        SELECT  wms_procurement.*,
+                wms_suppliers.supplier_name as supplierName,
+                wms_warehouse.warehouse_name as warehouseName
+        FROM wms_procurement
+        left join wms_suppliers on wms_suppliers.id = wms_procurement.supplier_id
+        left join wms_storage_in on wms_storage_in.id = wms_procurement.storage_in_id
+        left join wms_warehouse on wms_warehouse.id = wms_storage_in.warehouse_id
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND wms_procurement.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.procurementCode != null and record.procurementCode!= ''">
+            AND wms_procurement.procurement_code LIKE CONCAT('%',#{record.procurementCode},'%')
+        </if>
+
+        <if test="record.supplierId != null and record.supplierId>0 ">
+            AND wms_procurement.supplier_id LIKE CONCAT('%',#{record.supplierId},'%')
+        </if>
+
+        <if test="record.storageInId != null and record.storageInId>0 ">
+            AND wms_procurement.storage_in_id LIKE CONCAT('%',#{record.storageInId},'%')
+        </if>
+
+        <if test="record.procurementOthersPayment != null and record.procurementOthersPayment>0 ">
+            AND wms_procurement.procurement_others_payment LIKE CONCAT('%',#{record.procurementOthersPayment},'%')
+        </if>
+
+        <if test="record.procurementDiscount != null and record.procurementDiscount>0 ">
+            AND wms_procurement.procurement_discount LIKE CONCAT('%',#{record.procurementDiscount},'%')
+        </if>
+
+        <if test="record.procurementTotal != null and record.procurementTotal>0 ">
+            AND wms_procurement.procurement_total LIKE CONCAT('%',#{record.procurementTotal},'%')
+        </if>
+
+        <if test="record.procurementTime != null and record.procurementTime>0 ">
+            AND wms_procurement.procurement_time LIKE CONCAT('%',#{record.procurementTime},'%')
+        </if>
+
+        <if test="record.procurementNote != null and record.procurementNote!= ''">
+            AND wms_procurement.procurement_note LIKE CONCAT('%',#{record.procurementNote},'%')
+        </if>
+
+        <if test="record.procureStatus != null and record.procureStatus!= ''">
+            AND wms_procurement.procure_status LIKE CONCAT('%',#{record.procureStatus},'%')
+        </if>
+        <if test="record.operator != null and record.operator>0 ">
+            AND wms_procurement.operator LIKE CONCAT('%',#{record.operator},'%')
+        </if>
+
+        <if test="record.originatorId != null and record.originatorId>0 ">
+            AND wms_procurement.originator_id LIKE CONCAT('%',#{record.originatorId},'%')
+        </if>
+
+        <if test="record.transactionTime != null and record.transactionTime>0 ">
+            AND wms_procurement.transaction_time LIKE CONCAT('%',#{record.transactionTime},'%')
+        </if>
+        <if test="record.field1 != null and record.field1!= ''">
+            AND wms_procurement.field1 LIKE CONCAT('%',#{record.field1},'%')
+        </if>
+        <if test="record.field2 != null and record.field2!= ''">
+            AND wms_procurement.field2 LIKE CONCAT('%',#{record.field2},'%')
+        </if>
+    </select>
+</mapper>

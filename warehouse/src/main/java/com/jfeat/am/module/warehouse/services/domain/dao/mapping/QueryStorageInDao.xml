@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.domain.dao.QueryStorageInDao">
+    <sql id="Base_Column_List">
+        wms_storage_in.*
+    </sql>
+
+
+    <resultMap id="BaseStorageInRecord" type="com.jfeat.am.module.warehouse.services.domain.model.StorageInRecord">
+        <id column="id" property="id" />
+        <result column="transaction_code" property="transactionCode" />
+        <result column="transaction_type" property="transactionType" />
+        <result column="transaction_time" property="transactionTime" />
+        <result column="batch_no" property="batchNo" />
+        <result column="warehouse_id" property="warehouseId" />
+        <result column="slot_id" property="slotId" />
+        <result column="note" property="note" />
+        <result column="status" property="status" />
+        <result column="transaction_by" property="transactionBy" />
+        <result column="originator_id" property="originatorId" />
+        <result column="readjust_cost_price" property="readjustCostPrice" />
+        <result column="field1" property="field1" />
+        <result column="field2" property="field2" />
+        <result column="warehouseName" property="warehouseName" />
+        <result column="originatorName" property="originatorName" />
+        <result column="operatorName" property="operatorName" />
+        <result column="slotName" property="slotName" />
+
+        <collection property="storageInItemRecords"
+                    column="id"
+                    select="storageInItems"
+                    ofType="com.jfeat.am.module.warehouse.services.domain.model.StorageInItemRecord">
+
+        </collection>
+
+    </resultMap>
+    <select id="storagesInDetails" resultMap="BaseStorageInRecord" parameterType="long">
+        SELECT wms_storage_in.*,
+        ouser.`name` as originatorName,
+        tuser.`name` as operatorName,
+        wms_warehouse.warehouse_name as warehouseName,
+        wms_warehouse_slot.slot_name as slotName
+
+        FROM wms_storage_in
+        left join user ouser on ouser.id = wms_storage_in.originator_id
+        left join user tuser on tuser.id = wms_storage_in.transaction_by
+        left join wms_warehouse on wms_warehouse.id = wms_storage_in.warehouse_id
+        left join wms_warehouse_slot on wms_warehouse_slot.id = wms_storage_in.slot_id
+        WHERE 1=1
+            AND wms_storage_in.id = #{id}
+    </select>
+
+    <resultMap id="BaseStorageInItemRecord" type="com.jfeat.am.module.warehouse.services.domain.model.StorageInItemRecord">
+        <id column="id" property="id" />
+        <result column="storage_in_id" property="storageInId" />
+        <result column="sku_id" property="skuId" />
+        <result column="transaction_sku_price" property="transactionSkuPrice" />
+        <result column="transaction_quantities" property="transactionQuantities" />
+        <result column="transaction_time" property="transactionTime" />
+        <result column="warehouse_id" property="warehouseId" />
+        <result column="slot_id" property="slotId" />
+
+
+        <result column="skuName" property="skuName" />
+        <result column="skuBarcode" property="skuBarcode" />
+        <result column="skuCode" property="skuCode" />
+        <result column="skuSpec" property="skuSpec" />
+
+
+
+    </resultMap>
+
+    <select id="storageInItems" parameterType="long" resultMap="BaseStorageInItemRecord">
+        SELECT wms_storage_in_item.*,
+                wms_sku.sku_code as skuCode,
+                wms_sku.bar_code as skuBarcode,
+                wms_sku.sku_name as skuName,
+                t_specification.specification_name as skuSpec
+        FROM wms_storage_in_item
+
+        left join wms_storage_in on wms_storage_in_item.storage_in_id = wms_storage_in.id
+
+        LEFT JOIN wms_sku ON wms_storage_in_item.sku_id = wms_sku.id
+
+        LEFT JOIN t_specification ON wms_sku.spec_id = t_specification.id
+
+        WHERE
+        wms_storage_in.id = #{id}
+
+    </select>
+
+
+
+    <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.domain.model.StorageInRecord">
+        <id column="id" property="id" />
+        <result column="transaction_code" property="transactionCode" />
+        <result column="transaction_type" property="transactionType" />
+        <result column="transaction_time" property="transactionTime" />
+        <result column="batch_no" property="batchNo" />
+        <result column="warehouse_id" property="warehouseId" />
+        <result column="slot_id" property="slotId" />
+        <result column="note" property="note" />
+        <result column="status" property="status" />
+        <result column="transaction_by" property="transactionBy" />
+        <result column="originator_id" property="originatorId" />
+        <result column="readjust_cost_price" property="readjustCostPrice" />
+        <result column="field1" property="field1" />
+        <result column="field2" property="field2" />
+        <result column="warehouseName" property="warehouseName" />
+        <result column="originatorName" property="originatorName" />
+        <result column="operatorName" property="operatorName" />
+        <result column="slotName" property="slotName" />
+    </resultMap>
+    <select id="findStorageInPage" resultMap="BaseResultMap" parameterType="StorageInRecord">
+        SELECT wms_storage_in.*,
+        ouser.`name` as originatorName,
+        tuser.`name` as operatorName,
+        wms_warehouse.warehouse_name as warehouseName,
+        wms_warehouse_slot.slot_name as slotName
+
+        FROM wms_storage_in
+        left join user ouser on ouser.id = wms_storage_in.originator_id
+        left join user tuser on tuser.id = wms_storage_in.transaction_by
+        left join wms_warehouse on wms_warehouse.id = wms_storage_in.warehouse_id
+        left join wms_warehouse_slot on wms_warehouse_slot.id = wms_storage_in.slot_id
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND wms_storage_in.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.transactionCode != null and record.transactionCode!= ''">
+            AND wms_storage_in.transaction_code LIKE CONCAT('%',#{record.transactionCode},'%')
+        </if>
+
+        <if test="record.transactionType != null and record.transactionType!= ''">
+            AND wms_storage_in.transaction_type LIKE CONCAT('%',#{record.transactionType},'%')
+        </if>
+
+        <if test="record.transactionTime != null and record.transactionTime>0 ">
+            AND wms_storage_in.transaction_time LIKE CONCAT('%',#{record.transactionTime},'%')
+        </if>
+
+        <if test="record.batchNo != null and record.batchNo!= ''">
+            AND wms_storage_in.batch_no LIKE CONCAT('%',#{record.batchNo},'%')
+        </if>
+
+        <if test="record.warehouseId != null and record.warehouseId>0 ">
+            AND wms_storage_in.warehouse_id LIKE CONCAT('%',#{record.warehouseId},'%')
+        </if>
+
+        <if test="record.slotId != null and record.slotId>0 ">
+            AND wms_storage_in.slot_id LIKE CONCAT('%',#{record.slotId},'%')
+        </if>
+        <if test="record.note != null and record.note!= ''">
+            AND wms_storage_in.note LIKE CONCAT('%',#{record.note},'%')
+        </if>
+        <if test="record.status != null and record.status!= ''">
+            AND wms_storage_in.status LIKE CONCAT('%',#{record.status},'%')
+        </if>
+
+        <if test="record.transactionBy != null and record.transactionBy>0 ">
+            AND wms_storage_in.transaction_by LIKE CONCAT('%',#{record.transactionBy},'%')
+        </if>
+
+        <if test="record.originatorId != null and record.originatorId>0 ">
+            AND wms_storage_in.originator_id LIKE CONCAT('%',#{record.originatorId},'%')
+        </if>
+
+        <if test="record.readjustCostPrice != null and record.readjustCostPrice>0 ">
+            AND wms_storage_in.readjust_cost_price LIKE CONCAT('%',#{record.readjustCostPrice},'%')
+        </if>
+        <if test="record.field1 != null and record.field1!= ''">
+            AND wms_storage_in.field1 LIKE CONCAT('%',#{record.field1},'%')
+        </if>
+        <if test="record.field2 != null and record.field2!= ''">
+            AND wms_storage_in.field2 LIKE CONCAT('%',#{record.field2},'%')
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.domain.dao.QueryTransferDao">
+    <sql id="Base_Column_List">
+        wms_transfer.*
+    </sql>
+
+
+    <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.domain.model.TransferRecord">
+        <id column="id" property="id" />
+        <result column="transaction_code" property="transactionCode" />
+        <result column="from_warehouse_id" property="fromWarehouseId" />
+        <result column="to_warehouse_id" property="toWarehouseId" />
+        <result column="transaction_time" property="transactionTime" />
+        <result column="finish_time" property="finishTime" />
+        <result column="storage_in_id" property="storageOutId" />
+        <result column="storage_out_id" property="storageOutId" />
+        <result column="note" property="note" />
+        <result column="status" property="status" />
+        <result column="operator" property="operator" />
+        <result column="originator_id" property="originatorId" />
+        <result column="field1" property="field1" />
+        <result column="field2" property="field2" />
+
+
+        <result column="fromWarehouseName" property="fromWarehouseName" />
+        <result column="originatorName" property="originatorName" />
+        <result column="operatorName" property="operatorName" />
+        <result column="toWarehouseName" property="toWarehouseName" />
+
+
+    </resultMap>
+
+
+
+    <select id="findTransferPage" resultMap="BaseResultMap" parameterType="TransferRecord">
+        SELECT
+            wms_transfer.*,
+            fwarehouse.warehouse_name as fromWarehouseName,
+            twarehouse.warehouse_name as toWarehouseName,
+            ouser.`name` as originatorName,
+            tuser.`name` as operatorName
+
+        FROM wms_transfer
+
+            left join user ouser on ouser.id = wms_transfer.originator_id
+            left join user tuser on tuser.id = wms_transfer.operator
+
+            left join wms_warehouse fwarehouse on fwarehouse.id = wms_transfer.from_warehouse_id
+            left join wms_warehouse twarehouse on twarehouse.id = wms_transfer.to_warehouse_id
+
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND wms_transfer.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.transactionCode != null and record.transactionCode!= ''">
+            AND wms_transfer.transaction_code LIKE CONCAT('%',#{record.transactionCode},'%')
+        </if>
+
+        <if test="record.fromWarehouseId != null and record.fromWarehouseId>0 ">
+            AND wms_transfer.from_warehouse_id LIKE CONCAT('%',#{record.fromWarehouseId},'%')
+        </if>
+
+        <if test="record.toWarehouseId != null and record.toWarehouseId>0 ">
+            AND wms_transfer.to_warehouse_id LIKE CONCAT('%',#{record.toWarehouseId},'%')
+        </if>
+
+        <if test="record.transactionTime != null and record.transactionTime>0 ">
+            AND wms_transfer.transaction_time LIKE CONCAT('%',#{record.transactionTime},'%')
+        </if>
+
+        <if test="record.storageOutId != null and record.storageOutId>0 ">
+            AND wms_transfer.storage_in_id LIKE CONCAT('%',#{record.storageOutId},'%')
+        </if>
+
+        <if test="record.storageOutId != null and record.storageOutId>0 ">
+            AND wms_transfer.storage_out_id LIKE CONCAT('%',#{record.storageOutId},'%')
+        </if>
+        <if test="record.note != null and record.note!= ''">
+            AND wms_transfer.note LIKE CONCAT('%',#{record.note},'%')
+        </if>
+        <if test="record.status != null and record.status!= ''">
+            AND wms_transfer.status LIKE CONCAT('%',#{record.status},'%')
+        </if>
+        <if test="record.operator != null and record.operator>0 ">
+            AND wms_transfer.operator LIKE CONCAT('%',#{record.operator},'%')
+        </if>
+
+        <if test="record.originatorId != null and record.originatorId>0 ">
+            AND wms_transfer.originator_id LIKE CONCAT('%',#{record.originatorId},'%')
+        </if>
+        <if test="record.field1 != null and record.field1!= ''">
+            AND wms_transfer.field1 LIKE CONCAT('%',#{record.field1},'%')
+        </if>
+        <if test="record.field2 != null and record.field2!= ''">
+            AND wms_transfer.field2 LIKE CONCAT('%',#{record.field2},'%')
+        </if>
+    </select>
+</mapper>

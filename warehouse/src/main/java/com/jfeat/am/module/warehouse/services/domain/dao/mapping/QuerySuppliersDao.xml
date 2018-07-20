@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.domain.dao.QuerySuppliersDao">
+    <sql id="Base_Column_List">
+        wms_suppliers.*
+    </sql>
+
+
+    <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.domain.model.SuppliersModel">
+        <id column="id" property="id" />
+        <result column="supplier_name" property="supplierName" />
+        <result column="supplier_code" property="supplierCode" />
+        <result column="supplier_PCD" property="supplierPCD" />
+        <result column="supplier_address" property="supplierAddress" />
+        <result column="supplier_postcode" property="supplierPostcode" />
+        <result column="supplier_contact_name" property="supplierContactName" />
+        <result column="supplier_contact_phone" property="supplierContactPhone" />
+        <result column="supplier_contact_fax" property="supplierContactFax" />
+        <result column="supplier_contact_email" property="supplierContactEmail" />
+        <result column="supplier_contact_position" property="supplierContactPosition" />
+        <result column="supplier_contact_cell_phone" property="supplierContactCellPhone" />
+        <result column="supplier_account_name" property="supplierAccountName" />
+        <result column="supplier_account_bank" property="supplierAccountBank" />
+        <result column="supplier_account_bank_no" property="supplierAccountBankNo" />
+        <result column="supplier_invoice_title" property="supplierInvoiceTitle" />
+        <result column="supplier_status" property="supplierStatus" />
+        <result column="supplier_note" property="supplierNote" />
+        <result column="supplier_register_time" property="supplierRegisterTime" />
+        <result column="field1" property="field1" />
+        <result column="field2" property="field2" />
+
+        <collection property="supplierProducts"
+                    ofType="com.jfeat.am.module.product.services.persistence.model.Product"
+                    select="allProducts" column="id">
+        </collection>
+
+    </resultMap>
+
+
+    <select id="supplierProducts" resultMap="BaseResultMap" parameterType="SuppliersRecord">
+    SELECT wms_suppliers.*
+    FROM wms_suppliers
+    WHERE 1=1
+        AND wms_suppliers.id = #{id}
+    </select>
+
+    <!--collection Master-->
+    <select id="allProducts" parameterType="long" resultType="com.jfeat.am.module.product.services.persistence.model.Product">
+        SELECT t_product.*
+        FROM
+        t_product
+        LEFT JOIN wms_suppliers_product ON wms_suppliers_product.product_id = t_product.id
+        LEFT JOIN wms_suppliers ON wms_suppliers_product.suppliers_id = wms_suppliers.id
+        WHERE
+        wms_suppliers.id = #{id}
+
+    </select>
+
+
+
+
+
+
+    <select id="findSuppliersPage" resultType="SuppliersRecord" parameterType="SuppliersRecord">
+        SELECT wms_suppliers.*
+        FROM wms_suppliers
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND wms_suppliers.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.supplierName != null and record.supplierName!= ''">
+            AND wms_suppliers.supplier_name LIKE CONCAT('%',#{record.supplierName},'%')
+        </if>
+
+        <if test="record.supplierCode != null and record.supplierCode!= ''">
+            AND wms_suppliers.supplier_code LIKE CONCAT('%',#{record.supplierCode},'%')
+        </if>
+
+        <if test="record.supplierPCD != null and record.supplierPCD!= ''">
+            AND wms_suppliers.supplier_PCD LIKE CONCAT('%',#{record.supplierPCD},'%')
+        </if>
+
+        <if test="record.supplierAddress != null and record.supplierAddress!= ''">
+            AND wms_suppliers.supplier_address LIKE CONCAT('%',#{record.supplierAddress},'%')
+        </if>
+
+        <if test="record.supplierPostcode != null and record.supplierPostcode!= ''">
+            AND wms_suppliers.supplier_postcode LIKE CONCAT('%',#{record.supplierPostcode},'%')
+        </if>
+
+        <if test="record.supplierContactName != null and record.supplierContactName!= ''">
+            AND wms_suppliers.supplier_contact_name LIKE CONCAT('%',#{record.supplierContactName},'%')
+        </if>
+
+        <if test="record.supplierContactPhone != null and record.supplierContactPhone!= ''">
+            AND wms_suppliers.supplier_contact_phone LIKE CONCAT('%',#{record.supplierContactPhone},'%')
+        </if>
+
+        <if test="record.supplierContactFax != null and record.supplierContactFax!= ''">
+            AND wms_suppliers.supplier_contact_fax LIKE CONCAT('%',#{record.supplierContactFax},'%')
+        </if>
+
+        <if test="record.supplierContactEmail != null and record.supplierContactEmail!= ''">
+            AND wms_suppliers.supplier_contact_email LIKE CONCAT('%',#{record.supplierContactEmail},'%')
+        </if>
+
+        <if test="record.supplierContactPosition != null and record.supplierContactPosition!= ''">
+            AND wms_suppliers.supplier_contact_position LIKE CONCAT('%',#{record.supplierContactPosition},'%')
+        </if>
+
+        <if test="record.supplierContactCellPhone != null and record.supplierContactCellPhone!= ''">
+            AND wms_suppliers.supplier_contact_cell_phone LIKE CONCAT('%',#{record.supplierContactCellPhone},'%')
+        </if>
+
+        <if test="record.supplierAccountName != null and record.supplierAccountName!= ''">
+            AND wms_suppliers.supplier_account_name LIKE CONCAT('%',#{record.supplierAccountName},'%')
+        </if>
+
+        <if test="record.supplierAccountBank != null and record.supplierAccountBank!= ''">
+            AND wms_suppliers.supplier_account_bank LIKE CONCAT('%',#{record.supplierAccountBank},'%')
+        </if>
+
+        <if test="record.supplierAccountBankNo != null and record.supplierAccountBankNo>0 ">
+            AND wms_suppliers.supplier_account_bank_no LIKE CONCAT('%',#{record.supplierAccountBankNo},'%')
+        </if>
+
+        <if test="record.supplierInvoiceTitle != null and record.supplierInvoiceTitle!= ''">
+            AND wms_suppliers.supplier_invoice_title LIKE CONCAT('%',#{record.supplierInvoiceTitle},'%')
+        </if>
+
+        <if test="record.supplierStatus != null and record.supplierStatus!= ''">
+            AND wms_suppliers.supplier_status LIKE CONCAT('%',#{record.supplierStatus},'%')
+        </if>
+
+        <if test="record.supplierNote != null and record.supplierNote!= ''">
+            AND wms_suppliers.supplier_note LIKE CONCAT('%',#{record.supplierNote},'%')
+        </if>
+
+        <if test="record.supplierRegisterTime != null and record.supplierRegisterTime>0 ">
+            AND wms_suppliers.supplier_register_time LIKE CONCAT('%',#{record.supplierRegisterTime},'%')
+        </if>
+        <if test="record.field1 != null and record.field1!= ''">
+            AND wms_suppliers.field1 LIKE CONCAT('%',#{record.field1},'%')
+        </if>
+        <if test="record.field2 != null and record.field2!= ''">
+            AND wms_suppliers.field2 LIKE CONCAT('%',#{record.field2},'%')
+        </if>
+    </select>
+</mapper>

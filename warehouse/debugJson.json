@@ -1,0 +1,57 @@
+{
+
+  "skuCode":"sdfsd",
+  "skuPrice":"12.23",
+  "product":{ "productCategoryId":1,
+    "supplierId":10,
+    "productCode":"ssap",
+    "name":"mmpp糖",
+    "englishName":"bullshit",
+    "weight":"1T",
+    "readjustCostPrice":"12.123",
+    "productStandard":"ISO9001",
+    "price":"10000",
+    "suggestedPrice":"10000",
+    "costPrice":"1000",
+    "specification":"瓶/支",
+    "quantities":"1000",
+    "stockCost":"1000",
+    "purchaseAdvance":"1000",
+    "status":"onSale",
+    "sortValue":"1000",
+    "searchKeyWord":"不含糖",
+    "barCode":"barcode",
+    "description":"测试来的，不用处理"
+
+  },
+  "specModels":[{
+    "groupName":"容量",
+    "spec":[{
+      "groupName":"2G"
+    },{
+      "groupName":"3G"
+    },
+      {
+        "groupName":"4G"
+      },
+      {
+        "groupName":"5G"
+      }]
+
+  },
+    {
+      "groupName":"颜色",
+      "spec":[{
+        "groupName":"白色"
+      },{
+        "groupName":"黑色"
+      },
+        {
+          "groupName":"红色"
+        },
+        {
+          "groupName":"灰色"
+        }]
+
+    }]
+}

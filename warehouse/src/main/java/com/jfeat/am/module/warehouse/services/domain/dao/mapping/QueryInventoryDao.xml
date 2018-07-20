@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.domain.dao.QueryInventoryDao">
+    <sql id="Base_Column_List">
+        wms_inventory.*
+    </sql>
+
+    <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Inventory">
+        <id column="id" property="id" />
+        <result column="warehouse_id" property="warehouseId" />
+        <result column="slot_id" property="slotId" />
+        <result column="max_inventory" property="maxInventory" />
+        <result column="min_inventory" property="minInventory" />
+        <result column="sku_id" property="skuId" />
+        <result column="valid_sku" property="validSku" />
+        <result column="advance_quantities" property="advanceQuantities" />
+        <result column="transmit_quantities" property="transmitQuantities" />
+
+        <result column="skuName" property="skuName" />
+        <result column="warehouseName" property="warehouseName" />
+
+    </resultMap>
+
+
+    <select id="findInventoryPage" resultType="InventoryRecord" parameterType="InventoryRecord">
+        SELECT
+
+                wms_inventory.*,
+                wms_sku.sku_name as skuName,
+                wms_warehouse.warehouse_name
+        FROM wms_inventory
+        left join wms_sku on wms_sku.id = wms_inventory.sku_id
+        left join wms_warehouse on wms_warehouse.id = wms_inventory.warehouse_id
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND wms_inventory.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.warehouseId != null and record.warehouseId>0 ">
+            AND wms_inventory.warehouse_id LIKE CONCAT('%',#{record.dxxxxxxxxxxxxxxxxxxxx sswarehouseId},'%')
+        </if>
+
+        <if test="record.slotId != null and record.slotId>0 ">
+            AND wms_inventory.slot_id LIKE CONCAT('%',#{record.slotId},'%')
+        </if>
+
+        <if test="record.maxInventory != null and record.maxInventory>0 ">
+            AND wms_inventory.max_inventory LIKE CONCAT('%',#{record.maxInventory},'%')
+        </if>
+
+        <if test="record.minInventory != null and record.minInventory>0 ">
+            AND wms_inventory.min_inventory LIKE CONCAT('%',#{record.minInventory},'%')
+        </if>
+
+        <if test="record.skuId != null and record.skuId>0 ">
+            AND wms_inventory.sku_id LIKE CONCAT('%',#{record.skuId},'%')
+        </if>
+
+        <if test="record.validSku != null and record.validSku>0 ">
+            AND wms_inventory.valid_sku LIKE CONCAT('%',#{record.validSku},'%')
+        </if>
+
+        <if test="record.advanceQuantities != null and record.advanceQuantities>0 ">
+            AND wms_inventory.advance_quantities LIKE CONCAT('%',#{record.advanceQuantities},'%')
+        </if>
+
+        <if test="record.transmitQuantities != null and record.transmitQuantities>0 ">
+            AND wms_inventory.transmit_quantities LIKE CONCAT('%',#{record.transmitQuantities},'%')
+        </if>
+    </select>
+</mapper>

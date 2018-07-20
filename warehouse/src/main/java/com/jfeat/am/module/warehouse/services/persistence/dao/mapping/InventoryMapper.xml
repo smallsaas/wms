@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.persistence.dao.InventoryMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Inventory">
+		<id column="id" property="id" />
+		<result column="warehouse_id" property="warehouseId" />
+		<result column="slot_id" property="slotId" />
+		<result column="max_inventory" property="maxInventory" />
+		<result column="min_inventory" property="minInventory" />
+		<result column="sku_id" property="skuId" />
+		<result column="valid_sku" property="validSku" />
+		<result column="advance_quantities" property="advanceQuantities" />
+		<result column="transmit_quantities" property="transmitQuantities" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, warehouse_id AS warehouseId, slot_id AS slotId, max_inventory AS maxInventory, min_inventory AS minInventory, sku_id AS skuId, valid_sku AS validSku, advance_quantities AS advanceQuantities, transmit_quantities AS transmitQuantities
+    </sql>
+
+</mapper>

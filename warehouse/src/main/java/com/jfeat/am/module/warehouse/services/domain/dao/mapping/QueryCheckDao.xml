@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.domain.dao.QueryCheckDao">
+    <sql id="Base_Column_List">
+        wms_check.*
+    </sql>
+    <select id="findCheckPage" resultType="com.jfeat.am.module.warehouse.services.domain.model.CheckRecord"
+            parameterType="CheckRecord">
+        SELECT wms_check.*
+        FROM wms_check
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND wms_check.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.checkCode != null and record.checkCode!= ''">
+            AND wms_check.check_code LIKE CONCAT('%',#{record.checkCode},'%')
+        </if>
+
+        <if test="record.checkTime != null and record.checkTime>0 ">
+            AND wms_check.check_time LIKE CONCAT('%',#{record.checkTime},'%')
+        </if>
+
+        <if test="record.profitLost != null and record.profitLost>0 ">
+            AND wms_check.profit_lost LIKE CONCAT('%',#{record.profitLost},'%')
+        </if>
+
+        <if test="record.checkNote != null and record.checkNote!= ''">
+            AND wms_check.check_note LIKE CONCAT('%',#{record.checkNote},'%')
+        </if>
+
+        <if test="record.checkBy != null and record.checkBy>0 ">
+            AND wms_check.check_by LIKE CONCAT('%',#{record.checkBy},'%')
+        </if>
+
+        <if test="record.originatorId != null and record.originatorId>0 ">
+            AND wms_check.originator_id LIKE CONCAT('%',#{record.originatorId},'%')
+        </if>
+        <if test="record.field1 != null and record.field1!= ''">
+            AND wms_check.field1 LIKE CONCAT('%',#{record.field1},'%')
+        </if>
+        <if test="record.field2 != null and record.field2!= ''">
+            AND wms_check.field2 LIKE CONCAT('%',#{record.field2},'%')
+        </if>
+    </select>
+</mapper>

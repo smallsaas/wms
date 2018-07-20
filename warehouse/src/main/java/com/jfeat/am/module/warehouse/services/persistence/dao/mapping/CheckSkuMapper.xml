@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.persistence.dao.CheckSkuMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.CheckSku">
+		<id column="id" property="id" />
+		<result column="check_id" property="checkId" />
+		<result column="sku_id" property="skuId" />
+		<result column="warehouse_id" property="warehouseId" />
+		<result column="fact_quantities" property="factQuantities" />
+		<result column="deserved_quantities" property="deservedQuantities" />
+		<result column="field1" property="field1" />
+		<result column="field2" property="field2" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, check_id AS checkId, sku_id AS skuId, warehouse_id AS warehouseId, fact_quantities AS factQuantities, deserved_quantities AS deservedQuantities, field1, field2
+    </sql>
+
+</mapper>

@@ -1,0 +1,42 @@
+{
+
+  "procurementCode":"procurementCode",
+  "supplierId":"111111111",
+  "procurementOthersPayment":"1000.00",
+  "purcurementDiscount":"0.1",
+  "procurementTotal":"1200.00",
+  "procurementNote":"测试采购",
+  "procurementStatus":"部分入库",
+  "storageInModel":{
+    "transactionCode":"transactionCode",
+    "transactionType":"transactionType",
+    "batchNo":"batchNo",
+    "warehouseId":"123456",
+    "slotId":"111111213",
+    "note":"note",
+    "status":"完成",
+    "storageInItems":[
+      {
+        "skuId":"1232321",
+        "transactionSkuPrice":"120.00",
+        "transactionQuantities":"1000",
+        "warehouseId":"12345612"
+
+      },
+      {
+        "skuId":"12323232",
+        "transactionSkuPrice":"110.00",
+        "transactionQuantities":"1000",
+        "warehouseId":"12345612"
+
+      },
+      {
+        "skuId":"123232232",
+        "transactionSkuPrice":"115.00",
+        "transactionQuantities":"1000",
+        "warehouseId":"12345612"
+
+      }
+    ]
+  }
+}

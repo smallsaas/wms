@@ -1,0 +1,35 @@
+{
+  "transactionType":"入库",
+  "note":"测试数据",
+  "batchNo":"ISO-9001",
+  "transactionBy":1213456,
+  "readjustCostPrice":12.2000,
+  "slotId":120316,
+  "originatorId":"876708082437197827",
+  "transactionCode":"编号",
+  "transactionTime":"2018-07-05 09:52:05",
+  "status":"Draft",
+  "storageInItems":[
+    {
+      "skuId":"1232321",
+      "transactionSkuPrice":"120.00",
+      "transactionQuantities":"1000",
+      "warehouseId":"12345612"
+
+    },
+    {
+      "skuId":"12323232",
+      "transactionSkuPrice":"110.00",
+      "transactionQuantities":"1000",
+      "warehouseId":"12345612"
+
+    },
+    {
+      "skuId":"123232232",
+      "transactionSkuPrice":"115.00",
+      "transactionQuantities":"1000",
+      "warehouseId":"12345612"
+
+    }
+  ]
+}

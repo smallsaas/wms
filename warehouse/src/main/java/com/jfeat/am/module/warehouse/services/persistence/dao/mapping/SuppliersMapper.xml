@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.persistence.dao.SuppliersMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Suppliers">
+		<id column="id" property="id" />
+		<result column="supplier_name" property="supplierName" />
+		<result column="supplier_code" property="supplierCode" />
+		<result column="supplier_PCD" property="supplierPCD" />
+		<result column="supplier_address" property="supplierAddress" />
+		<result column="supplier_postcode" property="supplierPostcode" />
+		<result column="supplier_contact_name" property="supplierContactName" />
+		<result column="supplier_contact_phone" property="supplierContactPhone" />
+		<result column="supplier_contact_fax" property="supplierContactFax" />
+		<result column="supplier_contact_email" property="supplierContactEmail" />
+		<result column="supplier_contact_position" property="supplierContactPosition" />
+		<result column="supplier_contact_cell_phone" property="supplierContactCellPhone" />
+		<result column="supplier_account_name" property="supplierAccountName" />
+		<result column="supplier_account_bank" property="supplierAccountBank" />
+		<result column="supplier_account_bank_no" property="supplierAccountBankNo" />
+		<result column="supplier_invoice_title" property="supplierInvoiceTitle" />
+		<result column="supplier_status" property="supplierStatus" />
+		<result column="supplier_note" property="supplierNote" />
+		<result column="supplier_register_time" property="supplierRegisterTime" />
+		<result column="field1" property="field1" />
+		<result column="field2" property="field2" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, supplier_name AS supplierName, supplier_code AS supplierCode, supplier_PCD AS supplierPCD, supplier_address AS supplierAddress, supplier_postcode AS supplierPostcode, supplier_contact_name AS supplierContactName, supplier_contact_phone AS supplierContactPhone, supplier_contact_fax AS supplierContactFax, supplier_contact_email AS supplierContactEmail, supplier_contact_position AS supplierContactPosition, supplier_contact_cell_phone AS supplierContactCellPhone, supplier_account_name AS supplierAccountName, supplier_account_bank AS supplierAccountBank, supplier_account_bank_no AS supplierAccountBankNo, supplier_invoice_title AS supplierInvoiceTitle, supplier_status AS supplierStatus, supplier_note AS supplierNote, supplier_register_time AS supplierRegisterTime, field1, field2
+    </sql>
+
+</mapper>
