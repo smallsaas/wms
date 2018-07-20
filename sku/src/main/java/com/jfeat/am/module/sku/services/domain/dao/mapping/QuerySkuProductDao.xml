@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.sku.services.domain.dao.QuerySkuProductDao">
+    <sql id="Base_Column_List">
+        t_sku_product.*
+    </sql>
+    <select id="findSkuProductPage" resultType="SkuProductRecord" parameterType="SkuProductRecord">
+        SELECT t_sku_product.*
+        FROM t_sku_product
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND t_sku_product.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.productId != null and record.productId>0 ">
+            AND t_sku_product.product_id LIKE CONCAT('%',#{record.productId},'%')
+        </if>
+
+        <if test="record.skuCode != null and record.skuCode!= ''">
+            AND t_sku_product.sku_code LIKE CONCAT('%',#{record.skuCode},'%')
+        </if>
+
+        <if test="record.skuName != null and record.skuName!= ''">
+            AND t_sku_product.sku_name LIKE CONCAT('%',#{record.skuName},'%')
+        </if>
+        <if test="record.status != null and record.status!= ''">
+            AND t_sku_product.status LIKE CONCAT('%',#{record.status},'%')
+        </if>
+
+        <if test="record.sortValue != null and record.sortValue>0 ">
+            AND t_sku_product.sort_value LIKE CONCAT('%',#{record.sortValue},'%')
+        </if>
+
+        <if test="record.searchKeyWord != null and record.searchKeyWord!= ''">
+            AND t_sku_product.search_key_word LIKE CONCAT('%',#{record.searchKeyWord},'%')
+        </if>
+
+        <if test="record.barCode != null and record.barCode!= ''">
+            AND t_sku_product.bar_code LIKE CONCAT('%',#{record.barCode},'%')
+        </if>
+        <if test="record.description != null and record.description!= ''">
+            AND t_sku_product.description LIKE CONCAT('%',#{record.description},'%')
+        </if>
+
+        <if test="record.skuPrice != null and record.skuPrice>0 ">
+            AND t_sku_product.sku_price LIKE CONCAT('%',#{record.skuPrice},'%')
+        </if>
+
+        <if test="record.readjustCostPrice != null and record.readjustCostPrice>0 ">
+            AND t_sku_product.readjust_cost_price LIKE CONCAT('%',#{record.readjustCostPrice},'%')
+        </if>
+
+        <if test="record.suggestedPrice != null and record.suggestedPrice>0 ">
+            AND t_sku_product.suggested_price LIKE CONCAT('%',#{record.suggestedPrice},'%')
+        </if>
+
+        <if test="record.costPrice != null and record.costPrice>0 ">
+            AND t_sku_product.cost_price LIKE CONCAT('%',#{record.costPrice},'%')
+        </if>
+
+        <if test="record.stockCost != null and record.stockCost>0 ">
+            AND t_sku_product.stock_cost LIKE CONCAT('%',#{record.stockCost},'%')
+        </if>
+
+        <if test="record.createTime != null and record.createTime>0 ">
+            AND t_sku_product.create_time LIKE CONCAT('%',#{record.createTime},'%')
+        </if>
+
+        <if test="record.updateTime != null and record.updateTime>0 ">
+            AND t_sku_product.update_time LIKE CONCAT('%',#{record.updateTime},'%')
+        </if>
+        <if test="record.field1 != null and record.field1!= ''">
+            AND t_sku_product.field1 LIKE CONCAT('%',#{record.field1},'%')
+        </if>
+        <if test="record.field2 != null and record.field2!= ''">
+            AND t_sku_product.field2 LIKE CONCAT('%',#{record.field2},'%')
+        </if>
+        <if test="record.field3 != null and record.field3!= ''">
+            AND t_sku_product.field3 LIKE CONCAT('%',#{record.field3},'%')
+        </if>
+    </select>
+
+
+
+
+
+
+</mapper>
