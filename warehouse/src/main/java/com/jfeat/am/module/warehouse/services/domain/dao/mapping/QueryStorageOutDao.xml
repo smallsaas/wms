@@ -72,9 +72,9 @@
 
     <select id="storageOutItems" parameterType="long" resultMap="BaseStorageOutItemRecord">
         SELECT wms_storage_out_item.*,
-        wms_sku.sku_code as skuCode,
-        wms_sku.bar_code as skuBarcode,
-        wms_sku.sku_name as skuName,
+        t_sku_product.sku_code as skuCode,
+        t_sku_product.bar_code as skuBarcode,
+        t_sku_product.sku_name as skuName,
         t_specification.specification_name as skuSpec
         FROM wms_storage_out_item
 

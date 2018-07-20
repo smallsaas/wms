@@ -85,7 +85,7 @@ public class StorageInEndpoint extends BaseController {
     }
 
     @GetMapping
-    @ApiOperation(value = "入库单列表",response = StorageInModel.class)
+    @ApiOperation(value = "入库单列表",response = StorageInRecord.class)
     public Tip queryStorageIns(Page<StorageInRecord> page,
                                @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,

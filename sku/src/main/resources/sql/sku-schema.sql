@@ -158,4 +158,14 @@ CREATE TABLE `wms_sku_price_history` (
 PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `wms_sku_suppliers_price`;
+CREATE TABLE `wms_sku_suppliers_price` (
+`id` bigint(20) NOT NULL  AUTO_INCREMENT,
+`sku_id` bigint(20) NOT NULL COMMENT '单位Id',
+`suppliers_id` bigint(20) NOT NULL COMMENT '原来价格',
+`refer_price` decimal(12,4) NOT NULL COMMENT '参考 价格',
+`lowest_price` decimal(12,4) DEFAULT NULL COMMENT '最低价格',
+
+PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

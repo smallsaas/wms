@@ -26,10 +26,10 @@
         SELECT
 
                 wms_inventory.*,
-                wms_sku.sku_name as skuName,
+                t_sku_product.sku_name as skuName,
                 wms_warehouse.warehouse_name
         FROM wms_inventory
-        left join wms_sku on wms_sku.id = wms_inventory.sku_id
+        left join t_sku_product on t_sku_product.id = wms_inventory.sku_id
         left join wms_warehouse on wms_warehouse.id = wms_inventory.warehouse_id
         WHERE 1=1
         <if test="record.id != null and record.id>0 ">
@@ -37,7 +37,7 @@
         </if>
 
         <if test="record.warehouseId != null and record.warehouseId>0 ">
-            AND wms_inventory.warehouse_id LIKE CONCAT('%',#{record.dxxxxxxxxxxxxxxxxxxxx sswarehouseId},'%')
+            AND wms_inventory.warehouse_id LIKE CONCAT('%',#{record.warehouseId},'%')
         </if>
 
         <if test="record.slotId != null and record.slotId>0 ">
