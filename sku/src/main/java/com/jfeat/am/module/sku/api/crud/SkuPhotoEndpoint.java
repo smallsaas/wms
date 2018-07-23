@@ -43,7 +43,7 @@ import java.util.Date;
  */
 @RestController
 @Api("sku-图片")
-@RequestMapping("/api/sku")
+@RequestMapping("/api/wms/sku")
 public class SkuPhotoEndpoint extends BaseController {
 
 

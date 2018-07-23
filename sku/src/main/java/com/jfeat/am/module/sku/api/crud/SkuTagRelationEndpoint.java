@@ -39,7 +39,7 @@ import java.util.Date;
  * @since 2018-07-18
  */
 @RestController
-
+@Deprecated
 @RequestMapping("/api/sku/skuTagRelations")
 public class SkuTagRelationEndpoint extends BaseController {
 

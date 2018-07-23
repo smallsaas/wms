@@ -41,7 +41,7 @@ import java.util.Date;
  */
 @RestController
 @Api("wms-sku-状况")
-@RequestMapping("/api/sku/conditions")
+@RequestMapping("/api/wms/sku/conditions")
 public class SkuConditionEndpoint extends BaseController {
 
 

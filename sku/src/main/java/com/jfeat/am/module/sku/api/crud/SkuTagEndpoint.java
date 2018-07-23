@@ -41,7 +41,7 @@ import java.util.Date;
  */
 @RestController
 @Api("")
-@RequestMapping("/api/sku/tags")
+@RequestMapping("/api/wms/sku/tags")
 public class SkuTagEndpoint extends BaseController {
 
 

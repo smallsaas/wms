@@ -37,7 +37,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @Api("sku-规格")
-@RequestMapping("/api/sku/specifications")
+@RequestMapping("/api/wms/sku/specifications")
 public class SkuSpecificationGroupEndpoint extends BaseController {
 
 

@@ -44,7 +44,7 @@ import java.util.Date;
  */
 @RestController
 @Api("sku-Sku管理")
-@RequestMapping("/api/sku/skus")
+@RequestMapping("/api/wms/skus")
 public class SkuProductEndpoint extends BaseController {
 
 
