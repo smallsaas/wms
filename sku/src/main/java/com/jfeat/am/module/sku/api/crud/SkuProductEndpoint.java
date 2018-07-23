@@ -1,6 +1,7 @@
 package com.jfeat.am.module.sku.api.crud;
 
 import com.jfeat.am.module.sku.services.domain.model.CreateSkuProductModel;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,7 +43,7 @@ import java.util.Date;
  * @since 2018-07-18
  */
 @RestController
-
+@Api("sku-Sku管理")
 @RequestMapping("/api/sku/skus")
 public class SkuProductEndpoint extends BaseController {
 

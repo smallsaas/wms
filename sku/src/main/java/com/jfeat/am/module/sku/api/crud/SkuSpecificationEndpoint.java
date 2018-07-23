@@ -37,8 +37,8 @@ import java.util.Date;
  * @since 2018-07-18
  */
 @RestController
-
-@RequestMapping("/api/sku/skuSpecifications")
+@Deprecated
+@RequestMapping("/api/sku/skus/specifications")
 public class SkuSpecificationEndpoint extends BaseController {
 
 

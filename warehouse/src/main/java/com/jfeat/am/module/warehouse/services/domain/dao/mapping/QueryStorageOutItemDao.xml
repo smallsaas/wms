@@ -2,38 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.warehouse.services.domain.dao.QueryStorageOutItemDao">
     <sql id="Base_Column_List">
-            wms_storage_out_item.*
-        </sql>
+        wms_storage_out_item.*
+    </sql>
     <select id="findStorageOutItemPage" resultType="StorageOutItemRecord" parameterType="StorageOutItemRecord">
-      SELECT wms_storage_out_item.*
-            FROM wms_storage_out_item
-            WHERE 1=1
-                                <if test="record.id != null and record.id>0 ">
-    AND wms_storage_out_item.id LIKE CONCAT('%',#{record.id},'%')
-    </if>
-                                        
-                                                                                                                         <if test="record.storageOutId != null and record.storageOutId>0 ">
-    AND wms_storage_out_item.storage_out_id LIKE CONCAT('%',#{record.storageOutId},'%')
-    </if>
-                                        
-                                                                                                     <if test="record.skuId != null and record.skuId>0 ">
-    AND wms_storage_out_item.sku_id LIKE CONCAT('%',#{record.skuId},'%')
-    </if>
-                                        
-                                                                                                                         <if test="record.transactionSkuPrice != null and record.transactionSkuPrice>0 ">
-    AND wms_storage_out_item.transaction_sku_price LIKE CONCAT('%',#{record.transactionSkuPrice},'%')
-    </if>
-                                        
-                                                                                                     <if test="record.transactionQuantities != null and record.transactionQuantities>0 ">
-    AND wms_storage_out_item.transaction_quantities LIKE CONCAT('%',#{record.transactionQuantities},'%')
-    </if>
-                                        
-                                                                                                     <if test="record.transactionTime != null and record.transactionTime>0 ">
-    AND wms_storage_out_item.transaction_time LIKE CONCAT('%',#{record.transactionTime},'%')
-    </if>
-                                        
-                                                                                                     <if test="record.warehouseId != null and record.warehouseId>0 ">
-    AND wms_storage_out_item.warehouse_id LIKE CONCAT('%',#{record.warehouseId},'%')
-    </if>
-        </select>
+        SELECT wms_storage_out_item.*
+        FROM wms_storage_out_item
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND wms_storage_out_item.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.storageOutId != null and record.storageOutId>0 ">
+            AND wms_storage_out_item.storage_out_id LIKE CONCAT('%',#{record.storageOutId},'%')
+        </if>
+
+        <if test="record.skuId != null and record.skuId>0 ">
+            AND wms_storage_out_item.sku_id LIKE CONCAT('%',#{record.skuId},'%')
+        </if>
+
+        <if test="record.transactionSkuPrice != null and record.transactionSkuPrice>0 ">
+            AND wms_storage_out_item.transaction_sku_price LIKE CONCAT('%',#{record.transactionSkuPrice},'%')
+        </if>
+
+        <if test="record.transactionQuantities != null and record.transactionQuantities>0 ">
+            AND wms_storage_out_item.transaction_quantities LIKE CONCAT('%',#{record.transactionQuantities},'%')
+        </if>
+
+        <if test="record.transactionTime != null and record.transactionTime>0 ">
+            AND wms_storage_out_item.transaction_time LIKE CONCAT('%',#{record.transactionTime},'%')
+        </if>
+
+        <if test="record.warehouseId != null and record.warehouseId>0 ">
+            AND wms_storage_out_item.warehouse_id LIKE CONCAT('%',#{record.warehouseId},'%')
+        </if>
+    </select>
 </mapper>

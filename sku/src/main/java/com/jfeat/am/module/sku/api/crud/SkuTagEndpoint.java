@@ -1,5 +1,6 @@
 package com.jfeat.am.module.sku.api.crud;
 
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +40,7 @@ import java.util.Date;
  * @since 2018-07-18
  */
 @RestController
-
+@Api("")
 @RequestMapping("/api/sku/tags")
 public class SkuTagEndpoint extends BaseController {
 

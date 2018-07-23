@@ -39,8 +39,8 @@ import java.util.Date;
  * @since 2018-07-18
  */
 @RestController
-
-@RequestMapping("/api/sku/skuConditionRelations")
+@Deprecated
+@RequestMapping("/api/sku/conditions/relations")
 public class SkuConditionRelationEndpoint extends BaseController {
 
 
