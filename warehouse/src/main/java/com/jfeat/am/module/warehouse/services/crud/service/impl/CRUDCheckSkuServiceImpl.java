@@ -60,7 +60,6 @@ public class CRUDCheckSkuServiceImpl  extends CRUDServicePeerImpl<Check,SkuProdu
     }
 
 
-    @Override
     public JSONObject getRelationData(long l, long l1) {
         return null;
     }
