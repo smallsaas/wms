@@ -1,6 +1,7 @@
 package com.jfeat.am.module.sku.api.crud;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,7 @@ public class SkuUnitEndpoint extends BaseController {
 
     @BusinessLog(name = "SkuUnit", value = "create SkuUnit")
     @PostMapping("/{skuId}/units")
+    @ApiOperation("为 sku 新增 单位")
     public Tip createSkuUnit(@PathVariable long skuId,@RequestBody SkuUnitModel entity) {
 
         Integer affected = 0;
@@ -69,13 +71,17 @@ public class SkuUnitEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
+    @Deprecated
     @GetMapping("/units/{id}")
+    @ApiOperation("查看Sku 单位")
     public Tip getSkuUnit(@PathVariable Long id) {
         return SuccessTip.create(skuUnitService.getSlaveItem(id));
     }
 
     @BusinessLog(name = "SkuUnit", value = "update SkuUnit")
     @PutMapping("/units/{id}")
+    @Deprecated
+    @ApiOperation("修改")
     public Tip updateSkuUnit(@PathVariable Long id, @RequestBody SkuUnitModel entity) {
         entity.setId(id);
         return SuccessTip.create(skuUnitService.updateSlaveItem(entity));
@@ -83,11 +89,15 @@ public class SkuUnitEndpoint extends BaseController {
 
     @BusinessLog(name = "SkuUnit", value = "delete SkuUnit")
     @DeleteMapping("/units/{id}")
+    @Deprecated
+    @ApiOperation("删除 sku 单位")
     public Tip deleteSkuUnit(@PathVariable Long id) {
         return SuccessTip.create(skuUnitService.removeSlaveItem(id));
     }
 
     @GetMapping("/units")
+    @Deprecated
+    @ApiOperation("所有sku单位")
     public Tip querySkuUnits(Page<SkuUnitRecord> page,
                              @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                              @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,

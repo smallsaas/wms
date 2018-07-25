@@ -2,6 +2,7 @@ package com.jfeat.am.module.sku.api.crud;
 
 import com.jfeat.am.module.sku.services.domain.model.CreateSkuProductModel;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,7 @@ public class SkuProductEndpoint extends BaseController {
     QuerySkuProductDao querySkuProductDao;
 
     @BusinessLog(name = "SkuProduct", value = "create SkuProduct")
+    @ApiOperation("新建 sku 同时 新建产品")
     @PostMapping
     public Tip createSkuProduct(@RequestBody CreateSkuProductModel model) {
 
@@ -70,12 +72,14 @@ public class SkuProductEndpoint extends BaseController {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation("查看 sku")
     public Tip getSkuProduct(@PathVariable Long id) {
         return SuccessTip.create(skuProductService.retrieveMaster(id, null, null, null));
     }
 
     @BusinessLog(name = "SkuProduct", value = "update SkuProduct")
     @PutMapping("/{id}")
+    @ApiOperation("修改 sku 同时 (也可以修改产品)")
     public Tip updateSkuProduct(@PathVariable Long id, @RequestBody CreateSkuProductModel entity) {
         entity.getSkus().get(0).setId(id);
         return SuccessTip.create(skuProductService.updateSku(id,entity));
@@ -83,11 +87,13 @@ public class SkuProductEndpoint extends BaseController {
 
     @BusinessLog(name = "SkuProduct", value = "delete SkuProduct")
     @DeleteMapping("/{id}")
+    @ApiOperation("删除单个Sku")
     public Tip deleteSkuProduct(@PathVariable Long id) {
         return SuccessTip.create(skuProductService.deleteSku(id));
     }
 
     @GetMapping
+    @ApiOperation("sku列表")
     public Tip querySkuProducts(Page<SkuProductRecord> page,
                                 @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,

@@ -1,6 +1,7 @@
 package com.jfeat.am.module.sku.api.crud;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,7 @@ public class SkuPhotoEndpoint extends BaseController {
 
     @BusinessLog(name = "SkuPhoto", value = "create SkuPhoto")
     @PostMapping("/{skuId}/photos")
+    @ApiOperation("新增 sku 图片 ")
     public Tip createSkuPhoto(@PathVariable long skuId, @RequestBody SkuPhotoModel entity) {
 
         Integer affected = 0;
@@ -69,24 +71,33 @@ public class SkuPhotoEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
+    @Deprecated
     @GetMapping("/photos/{id}")
+    @ApiOperation("查看 sku 图片 ")
     public Tip getSkuPhoto(@PathVariable Long id) {
         return SuccessTip.create(skuPhotoService.getSlaveItem(id));
     }
 
+    @Deprecated
     @BusinessLog(name = "SkuPhoto", value = "update SkuPhoto")
     @PutMapping("/photos/{id}")
+    @ApiOperation("修改 sku 图片 ")
     public Tip updateSkuPhoto(@PathVariable Long id, @RequestBody SkuPhotoModel entity) {
         entity.setId(id);
         return SuccessTip.create(skuPhotoService.updateSlaveItem(entity));
     }
 
+
+    @Deprecated
     @BusinessLog(name = "SkuPhoto", value = "delete SkuPhoto")
     @DeleteMapping("/photos/{id}")
+    @ApiOperation("删除 sku 图片 ")
     public Tip deleteSkuPhoto(@PathVariable Long id) {
         return SuccessTip.create(skuPhotoService.removeSlaveItem(id));
     }
 
+
+    @Deprecated
     @GetMapping("/photos")
     public Tip querySkuPhotos(Page<SkuPhotoRecord> page,
                               @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
