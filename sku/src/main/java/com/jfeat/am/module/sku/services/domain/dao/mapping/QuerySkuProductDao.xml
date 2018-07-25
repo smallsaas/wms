@@ -7,7 +7,26 @@
     <select id="findSkuProductPage" resultType="SkuProductRecord" parameterType="SkuProductRecord">
         SELECT t_sku_product.*
         FROM t_sku_product
+
+        left join t_sku_tag_relation on t_sku_tag_relation.sku_id = t_sku_product.id
+        left join t_sku_tag on t_sku_tag_relation.tag_id = t_sku_tag.id
+        left join t_sku_specification on t_sku_specification.sku_id = t_sku_product.id
+        left join t_specification_group on t_sku_specification.group_id = t_specification_group.id
+        left join t_product on t_product.id = t_sku_product.product_id
+        left join t_product_category on t_product_category.id = t_product.product_category_id
+
         WHERE 1=1
+
+        <if test="tagName != null and tagName!= ''">
+            AND t_sku_tag.tag_name = #{tagName}
+        </if>
+
+        <if test="specName != null and specName!= '' ">
+            AND t_specification_group.group_name = #{specName}
+        </if>
+        <if test="categoryName != null and categoryName!= '' ">
+            AND t_product_category.category_name = #{categoryName}
+        </if>
         <if test="record.id != null and record.id>0 ">
             AND t_sku_product.id LIKE CONCAT('%',#{record.id},'%')
         </if>
@@ -78,11 +97,9 @@
         <if test="record.field3 != null and record.field3!= ''">
             AND t_sku_product.field3 LIKE CONCAT('%',#{record.field3},'%')
         </if>
+
+        group by t_sku_product.id
     </select>
-
-
-
-
 
 
 </mapper>
