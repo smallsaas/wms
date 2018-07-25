@@ -5,18 +5,8 @@ import com.jfeat.am.module.sku.services.crud.model.SkuProductModel;
 
 import java.util.List;
 
-public class CreateSkuProductModel {
-    Product product;
+public class CreateSkuProductModel extends Product{
     List<SkuProductModel> skus;
-
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
 
     public List<SkuProductModel> getSkus() {
         return skus;

@@ -2,20 +2,19 @@ package com.jfeat.am.module.sku.services.domain.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfeat.am.module.product.services.persistence.dao.ProductMapper;
+import com.jfeat.am.module.product.services.persistence.model.Product;
 import com.jfeat.am.module.sku.services.crud.filter.SkuProductFilter;
 import com.jfeat.am.module.sku.services.crud.model.SkuProductModel;
 import com.jfeat.am.module.sku.services.crud.service.CRUDSkuProductService;
+import com.jfeat.am.module.sku.services.crud.service.impl.CRUDSkuProductServiceImpl;
 import com.jfeat.am.module.sku.services.domain.model.CreateSkuProductModel;
 import com.jfeat.am.module.sku.services.domain.service.SkuProductService;
-
-import com.jfeat.am.module.sku.services.crud.service.impl.CRUDSkuProductServiceImpl;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuPriceHistoryMapper;
-import com.jfeat.am.module.sku.services.persistence.dao.SkuSpecificationMapper;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuSpecificationGroupMapper;
+import com.jfeat.am.module.sku.services.persistence.dao.SkuSpecificationMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuPriceHistory;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.sku.services.persistence.model.SkuSpecification;
-import com.jfeat.am.module.sku.services.persistence.model.SkuSpecificationGroup;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,12 +49,13 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         // 插入 产品
         int affect = 0;
 
-        affect += productMapper.insert(model.getProduct());
+        Product product = model;
+        affect += productMapper.insert(product);
 
 
         for (SkuProductModel entity : model.getSkus()) {
-            entity.setSkuName(model.getProduct().getName());
-            entity.setProductId(model.getProduct().getId());
+            entity.setSkuName(product.getName());
+            entity.setProductId(product.getId());
             SkuProductFilter skuProductFilter = new SkuProductFilter();
             affect += crudSkuProductService.createMaster(entity, skuProductFilter, null, null);
 
@@ -88,7 +88,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
     public Integer updateSku(Long skuId, CreateSkuProductModel model) {
         // 更新 产品
         int affect = 0;
-        affect += productMapper.updateById(model.getProduct());
+        affect += productMapper.updateById(model);
 
         SkuProduct originSkuProduct = crudSkuProductService.retrieveMaster(skuId);
 
@@ -131,6 +131,4 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         affect += crudSkuProductService.deleteMaster(skuId);
         return affect;
     }
-
-
 }
