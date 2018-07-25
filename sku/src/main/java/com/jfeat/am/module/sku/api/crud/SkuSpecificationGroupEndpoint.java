@@ -63,6 +63,14 @@ public class SkuSpecificationGroupEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
+
+    @GetMapping
+    @ApiOperation("获取所有的规格下及该规格下的所有子规格")
+    public Tip allSpecificationGroup() {
+        return SuccessTip.create(skuSpecificationGroupService.allSpec());
+    }
+
+
     @GetMapping("/{id}")
     @ApiOperation("获取某个规格下的所有子规格")
     public Tip getSpecificationGroup(@PathVariable Long id) {
