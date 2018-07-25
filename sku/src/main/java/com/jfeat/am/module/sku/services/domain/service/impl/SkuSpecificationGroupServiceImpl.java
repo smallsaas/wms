@@ -3,20 +3,16 @@ package com.jfeat.am.module.sku.services.domain.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.jfeat.am.core.support.BeanKit;
+import com.jfeat.am.common.constant.tips.Ids;
 import com.jfeat.am.module.sku.services.crud.model.SkuSpecificationGroupModel;
+import com.jfeat.am.module.sku.services.crud.service.impl.CRUDSkuSkuSpecificationGroupServiceImpl;
 import com.jfeat.am.module.sku.services.domain.model.CategorySpecModel;
 import com.jfeat.am.module.sku.services.domain.service.SkuSpecificationGroupService;
-
-import com.jfeat.am.module.sku.services.crud.service.impl.CRUDSkuSkuSpecificationGroupServiceImpl;
+import com.jfeat.am.module.sku.services.persistence.dao.SkuSpecificationGroupMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuSpecificationGroup;
 import org.springframework.stereotype.Service;
-import com.jfeat.am.common.constant.tips.Ids;
 
 import javax.annotation.Resource;
-
-import com.jfeat.am.module.sku.services.persistence.dao.SkuSpecificationGroupMapper;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,7 +93,9 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
 
         SkuSpecificationGroup group = skuSpecificationGroupMapper.selectById(specId);
 
-        List<SkuSpecificationGroup> children = skuSpecificationGroupMapper.selectList(new EntityWrapper<SkuSpecificationGroup>().eq("pid",specId).like("type","Spec"));
+        List<SkuSpecificationGroup> children =
+                skuSpecificationGroupMapper.selectList(new EntityWrapper<SkuSpecificationGroup>()
+                        .eq("pid",specId).like("type","Spec"));
         JSONObject object = JSON.parseObject(JSON.toJSONString(group));
 
         object.put("children",children);
@@ -116,16 +114,29 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
     public List<SkuSpecificationGroupModel> allSpec(){
         List<SkuSpecificationGroupModel> models = new ArrayList<>();
 
-        List<SkuSpecificationGroup> specifications = skuSpecificationGroupMapper.selectList(new EntityWrapper<SkuSpecificationGroup>().like("type","Category"));
+        List<SkuSpecificationGroup> specifications =
+                skuSpecificationGroupMapper.selectList(
+                        new EntityWrapper<SkuSpecificationGroup>().like("type","Category"));
 
+        // Fix: if no category
+        //
+        if(specifications!=null && specifications.size()>0) {
+            for (SkuSpecificationGroup skuSpecificationGroup : specifications) {
+                SkuSpecificationGroupModel model = getSpecChildren(skuSpecificationGroup.getId());
+                models.add(model);
+            }
+        }else{
+            /// get all spec group
+            SkuSpecificationGroupModel model = new SkuSpecificationGroupModel();
+            List<SkuSpecificationGroup> children = skuSpecificationGroupMapper.selectList(
+                    new EntityWrapper<SkuSpecificationGroup>().like("type","Spec"));
+            model.setChildren(children);
 
-
-        for (SkuSpecificationGroup skuSpecificationGroup : specifications){
-            SkuSpecificationGroupModel model = getSpecChildren(skuSpecificationGroup.getId());
+            /// add single spec group
             models.add(model);
         }
-        return models;
 
+        return models;
     }
 
 

@@ -45,13 +45,8 @@ public class CRUDSkuPhotoServiceImpl extends CRUDServiceSlaveImpl<SkuPhoto> impl
 
     @Override
     protected String masterFieldName() {
-        if (true) {
-            throw new RuntimeException("Please check masterField is correct!");
-        }
         return masterField;
     }
-
-
 }
 
 

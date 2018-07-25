@@ -26,10 +26,6 @@ import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
 @Service
 public class CRUDSkuPriceHistoryServiceImpl  extends CRUDServiceOnlyImpl<SkuPriceHistory> implements CRUDSkuPriceHistoryService {
 
-
-
-
-
         @Resource
         private SkuPriceHistoryMapper skuPriceHistoryMapper;
 
@@ -37,13 +33,6 @@ public class CRUDSkuPriceHistoryServiceImpl  extends CRUDServiceOnlyImpl<SkuPric
         protected BaseMapper<SkuPriceHistory> getMasterMapper() {
                 return skuPriceHistoryMapper;
         }
-
-
-
-
-
-
-
 }
 
 
