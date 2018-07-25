@@ -1,6 +1,7 @@
 package com.jfeat.am.module.sku.services.domain.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.jfeat.am.module.product.services.persistence.dao.ProductMapper;
 import com.jfeat.am.module.product.services.persistence.model.Product;
 import com.jfeat.am.module.sku.services.crud.filter.SkuProductFilter;
@@ -52,34 +53,42 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         Product product = model;
         affect += productMapper.insert(product);
 
+        if(model.getSkus()!=null && model.getSkus().size()>0) {
+            for (SkuProductModel entity : model.getSkus()) {
 
-        for (SkuProductModel entity : model.getSkus()) {
-            entity.setSkuName(product.getName());
-            entity.setProductId(product.getId());
-            SkuProductFilter skuProductFilter = new SkuProductFilter();
-            affect += crudSkuProductService.createMaster(entity, skuProductFilter, null, null);
+                //TODO, where to provide sku code ?
+                //
+                entity.setSkuCode(IdWorker.get32UUID());
+                //
 
-            if (entity.getSpecId() == null || entity.getSpecId().size() == 0) {
+                entity.setSkuName(product.getName());
+                entity.setProductId(product.getId());
+                SkuProductFilter skuProductFilter = new SkuProductFilter();
+                affect += crudSkuProductService.createMaster(entity, skuProductFilter, null, null);
 
-            } else {
-                for (Long id : entity.getSpecId()) {
-                    SkuSpecification specification = new SkuSpecification();
-                    specification.setSkuId(skuProductFilter.result().get("id") == null ? null : (Long) skuProductFilter.result().get("id"));
-                    specification.setGroupId(id);
-                    skuSpecificationMapper.insert(specification);
+                if (entity.getSpecId() == null || entity.getSpecId().size() == 0) {
+
+                } else {
+                    for (Long id : entity.getSpecId()) {
+                        SkuSpecification specification = new SkuSpecification();
+                        specification.setSkuId(skuProductFilter.result().get("id") == null ? null : (Long) skuProductFilter.result().get("id"));
+                        specification.setGroupId(id);
+                        skuSpecificationMapper.insert(specification);
+                    }
+                }
+
+                if (entity.getSkuPrice() != null) {
+                    SkuPriceHistory history = new SkuPriceHistory();
+                    // 初始 插入 的时候 原始 以及 修改 后的 价格 都一样
+                    history.setOriginPrice(entity.getSkuPrice());
+                    history.setSkuId(skuProductFilter.result().get("id") == null ? null : (Long) skuProductFilter.result().get("id"));
+                    history.setAfterPrice(entity.getSkuPrice());
+                    history.setUpdateTime(new Date());
+                    affect += skuPriceHistoryMapper.insert(history);
                 }
             }
-
-            if (entity.getSkuPrice() != null) {
-                SkuPriceHistory history = new SkuPriceHistory();
-                // 初始 插入 的时候 原始 以及 修改 后的 价格 都一样
-                history.setOriginPrice(entity.getSkuPrice());
-                history.setSkuId(skuProductFilter.result().get("id") == null ? null : (Long) skuProductFilter.result().get("id"));
-                history.setAfterPrice(entity.getSkuPrice());
-                history.setUpdateTime(new Date());
-                affect += skuPriceHistoryMapper.insert(history);
-            }
         }
+
         return affect;
     }
 

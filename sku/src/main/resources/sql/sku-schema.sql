@@ -34,11 +34,11 @@ CREATE TABLE `t_sku_condition` (
 DROP TABLE IF EXISTS `t_sku_product`;
 CREATE TABLE `t_sku_product` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `product_id` bigint(20) not NULL COMMENT '产品名称',
+  `product_id` bigint(20) NOT NULL COMMENT '产品名称',
   `sku_code` varchar(255) NOT NULL COMMENT 'sku编号',
   `sku_name` varchar(255) NOT NULL COMMENT 'sku名称',
-  `status` varchar(26) not NULL COMMENT '状态',
-  `sort_value` int(11) not NULL COMMENT '排序值',
+  `status` varchar(26) DEFAULT NULL COMMENT '状态',
+  `sort_value` int(11) DEFAULT NULL COMMENT '排序值',
   `search_key_word` varchar(26) DEFAULT NULL COMMENT '搜索关键字',
   `bar_code` varchar(255) DEFAULT NULL COMMENT '条形码',
   `description` text COMMENT '描述',

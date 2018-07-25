@@ -1,37 +1,23 @@
 package com.jfeat.am.module.sku.api.crud;
 
-import com.jfeat.am.module.sku.services.domain.model.CreateSkuProductModel;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
 import com.baomidou.mybatisplus.plugins.Page;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.dao.DuplicateKeyException;
-import com.jfeat.am.module.sku.services.domain.dao.QuerySkuProductDao;
 import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Ids;
 import com.jfeat.am.common.constant.tips.Tip;
-import com.jfeat.am.module.log.annotation.BusinessLog;
+import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
-
-import java.math.BigDecimal;
-
-import com.jfeat.am.module.sku.services.domain.service.SkuProductService;
+import com.jfeat.am.module.log.annotation.BusinessLog;
+import com.jfeat.am.module.sku.services.domain.dao.QuerySkuProductDao;
+import com.jfeat.am.module.sku.services.domain.model.CreateSkuProductModel;
 import com.jfeat.am.module.sku.services.domain.model.SkuProductRecord;
-import com.jfeat.am.module.sku.services.crud.model.SkuProductModel;
-import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
-
-import org.springframework.web.bind.annotation.RestController;
-import com.jfeat.am.common.controller.BaseController;
+import com.jfeat.am.module.sku.services.domain.service.SkuProductService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 
 
