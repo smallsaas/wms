@@ -2,20 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.sku.services.domain.dao.QuerySkuSpecificationGroupDao">
     <sql id="Base_Column_List">
-            t_specification_group.*
-        </sql>
-    <select id="findSpecificationGroupPage" resultType="SpecificationGroupRecord" parameterType="SpecificationGroupRecord">
-      SELECT t_specification_group.*
-            FROM t_specification_group
-            WHERE 1=1
-                                    <if test="record.id != null and record.id>0 ">
-                 AND t_specification_group.id LIKE CONCAT('%',#{record.id},'%')
+        t_specification_group.*
+    </sql>
+    <select id="findSpecificationGroupPage" resultType="SpecificationGroupRecord"
+            parameterType="SpecificationGroupRecord">
+        SELECT t_specification_group.*
+        FROM t_specification_group
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND t_specification_group.id LIKE CONCAT('%',#{record.id},'%')
         </if>
-                                                <if test="record.groupName != null and record.groupName!= ''">
-                 AND t_specification_group.group_name LIKE CONCAT('%',#{record.groupName},'%')
+        <if test="record.groupName != null and record.groupName!= ''">
+            AND t_specification_group.group_name LIKE CONCAT('%',#{record.groupName},'%')
         </if>
-                                <if test="record.pid != null and record.pid>0 ">
-                 AND t_specification_group.pid LIKE CONCAT('%',#{record.pid},'%')
+        <if test="record.pid != null and record.pid>0 ">
+            AND t_specification_group.pid LIKE CONCAT('%',#{record.pid},'%')
         </if>
-             </select>
+    </select>
 </mapper>

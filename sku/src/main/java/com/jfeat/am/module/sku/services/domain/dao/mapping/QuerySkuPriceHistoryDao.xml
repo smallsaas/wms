@@ -2,30 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.sku.services.domain.dao.QuerySkuPriceHistoryDao">
     <sql id="Base_Column_List">
-            wms_sku_price_history.*
-        </sql>
+        wms_sku_price_history.*
+    </sql>
     <select id="findSkuPriceHistoryPage" resultType="SkuPriceHistoryRecord" parameterType="SkuPriceHistoryRecord">
-      SELECT wms_sku_price_history.*
-            FROM wms_sku_price_history
-            WHERE 1=1
-                                <if test="record.id != null and record.id>0 ">
-    AND wms_sku_price_history.id LIKE CONCAT('%',#{record.id},'%')
-    </if>
-                                        
-                                                                                                     <if test="record.skuId != null and record.skuId>0 ">
-    AND wms_sku_price_history.sku_id LIKE CONCAT('%',#{record.skuId},'%')
-    </if>
-                                        
-                                                                                                     <if test="record.originPrice != null and record.originPrice>0 ">
-    AND wms_sku_price_history.origin_price LIKE CONCAT('%',#{record.originPrice},'%')
-    </if>
-                                        
-                                                                                                     <if test="record.afterPrice != null and record.afterPrice>0 ">
-    AND wms_sku_price_history.after_price LIKE CONCAT('%',#{record.afterPrice},'%')
-    </if>
-                                        
-                                                                                                     <if test="record.updateTime != null and record.updateTime>0 ">
-    AND wms_sku_price_history.update_time LIKE CONCAT('%',#{record.updateTime},'%')
-    </if>
-        </select>
+        SELECT wms_sku_price_history.*
+        FROM wms_sku_price_history
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND wms_sku_price_history.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.skuId != null and record.skuId>0 ">
+            AND wms_sku_price_history.sku_id LIKE CONCAT('%',#{record.skuId},'%')
+        </if>
+
+        <if test="record.originPrice != null and record.originPrice>0 ">
+            AND wms_sku_price_history.origin_price LIKE CONCAT('%',#{record.originPrice},'%')
+        </if>
+
+        <if test="record.afterPrice != null and record.afterPrice>0 ">
+            AND wms_sku_price_history.after_price LIKE CONCAT('%',#{record.afterPrice},'%')
+        </if>
+
+        <if test="record.updateTime != null and record.updateTime>0 ">
+            AND wms_sku_price_history.update_time LIKE CONCAT('%',#{record.updateTime},'%')
+        </if>
+    </select>
 </mapper>

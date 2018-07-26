@@ -100,6 +100,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         storageInModel.setTransactionBy(userId);
         storageInModel.setTransactionCode(model.getProcurementCode());
         storageInModel.setTransactionTime(new Date());
+        storageInModel.setWarehouseId(model.getStorageInId());
         storageInModel.setOriginatorId(userId);
         StorageInFilter storageInFilter = new StorageInFilter();
         affected += storageInService.createMaster(storageInModel, storageInFilter, null, null);

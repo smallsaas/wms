@@ -2,22 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.sku.services.domain.dao.QuerySkuConditionDao">
     <sql id="Base_Column_List">
-            t_sku_condition.*
-        </sql>
+        t_sku_condition.*
+    </sql>
     <select id="findSkuConditionPage" resultType="SkuConditionRecord" parameterType="SkuConditionRecord">
-      SELECT t_sku_condition.*
-            FROM t_sku_condition
-            WHERE 1=1
-                                <if test="record.id != null and record.id>0 ">
-    AND t_sku_condition.id LIKE CONCAT('%',#{record.id},'%')
-    </if>
-                                        
-                                                                                                     <if test="record.conditionName != null and record.conditionName!= ''">
-    AND t_sku_condition.condition_name LIKE CONCAT('%',#{record.conditionName},'%')
-    </if>
-                                        
-                                                                                                     <if test="record.conditionDescription != null and record.conditionDescription!= ''">
-    AND t_sku_condition.condition_description LIKE CONCAT('%',#{record.conditionDescription},'%')
-    </if>
-        </select>
+        SELECT t_sku_condition.*
+        FROM t_sku_condition
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND t_sku_condition.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.conditionName != null and record.conditionName!= ''">
+            AND t_sku_condition.condition_name LIKE CONCAT('%',#{record.conditionName},'%')
+        </if>
+
+        <if test="record.conditionDescription != null and record.conditionDescription!= ''">
+            AND t_sku_condition.condition_description LIKE CONCAT('%',#{record.conditionDescription},'%')
+        </if>
+    </select>
 </mapper>

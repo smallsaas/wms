@@ -2,22 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.sku.services.domain.dao.QuerySkuSpecificationDao">
     <sql id="Base_Column_List">
-            t_sku_specification.*
-        </sql>
+        t_sku_specification.*
+    </sql>
     <select id="findSkuSpecificationPage" resultType="SkuSpecificationRecord" parameterType="SkuSpecificationRecord">
-      SELECT t_sku_specification.*
-            FROM t_sku_specification
-            WHERE 1=1
-                                <if test="record.id != null and record.id>0 ">
-    AND t_sku_specification.id LIKE CONCAT('%',#{record.id},'%')
-    </if>
-                                        
-                                                                                                     <if test="record.skuId != null and record.skuId>0 ">
-    AND t_sku_specification.sku_id LIKE CONCAT('%',#{record.skuId},'%')
-    </if>
-                                        
-                                                                                                     <if test="record.groupId != null and record.groupId>0 ">
-    AND t_sku_specification.group_id LIKE CONCAT('%',#{record.groupId},'%')
-    </if>
-        </select>
+        SELECT t_sku_specification.*
+        FROM t_sku_specification
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND t_sku_specification.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.skuId != null and record.skuId>0 ">
+            AND t_sku_specification.sku_id LIKE CONCAT('%',#{record.skuId},'%')
+        </if>
+
+        <if test="record.groupId != null and record.groupId>0 ">
+            AND t_sku_specification.group_id LIKE CONCAT('%',#{record.groupId},'%')
+        </if>
+    </select>
 </mapper>

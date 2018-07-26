@@ -2,26 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.sku.services.domain.dao.QuerySkuPhotoDao">
     <sql id="Base_Column_List">
-            t_sku_photo.*
-        </sql>
+        t_sku_photo.*
+    </sql>
     <select id="findSkuPhotoPage" resultType="SkuPhotoRecord" parameterType="SkuPhotoRecord">
-      SELECT t_sku_photo.*
-            FROM t_sku_photo
-            WHERE 1=1
-                                <if test="record.id != null and record.id>0 ">
-    AND t_sku_photo.id LIKE CONCAT('%',#{record.id},'%')
-    </if>
-                                        
-                                                                                                     <if test="record.photoUrl != null and record.photoUrl!= ''">
-    AND t_sku_photo.photo_url LIKE CONCAT('%',#{record.photoUrl},'%')
-    </if>
-                                        
-                                                                                                     <if test="record.isPrimary != null and record.isPrimary>0 ">
-    AND t_sku_photo.is_primary LIKE CONCAT('%',#{record.isPrimary},'%')
-    </if>
-                                        
-                                                                                                     <if test="record.skuId != null and record.skuId>0 ">
-    AND t_sku_photo.sku_id LIKE CONCAT('%',#{record.skuId},'%')
-    </if>
-        </select>
+        SELECT t_sku_photo.*
+        FROM t_sku_photo
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND t_sku_photo.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.photoUrl != null and record.photoUrl!= ''">
+            AND t_sku_photo.photo_url LIKE CONCAT('%',#{record.photoUrl},'%')
+        </if>
+
+        <if test="record.isPrimary != null and record.isPrimary>0 ">
+            AND t_sku_photo.is_primary LIKE CONCAT('%',#{record.isPrimary},'%')
+        </if>
+
+        <if test="record.skuId != null and record.skuId>0 ">
+            AND t_sku_photo.sku_id LIKE CONCAT('%',#{record.skuId},'%')
+        </if>
+    </select>
 </mapper>
