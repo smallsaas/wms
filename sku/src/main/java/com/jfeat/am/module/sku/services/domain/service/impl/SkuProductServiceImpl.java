@@ -58,7 +58,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
 
                 //TODO, where to provide sku code ?
                 //
-                entity.setSkuCode(IdWorker.get32UUID());
+//                entity.setSkuCode(IdWorker.get32UUID());
                 //
 
                 entity.setSkuName(product.getName());
