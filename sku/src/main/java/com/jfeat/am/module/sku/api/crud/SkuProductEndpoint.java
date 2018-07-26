@@ -60,7 +60,8 @@ public class SkuProductEndpoint extends BaseController {
     @GetMapping("/{id}")
     @ApiOperation("查看 sku")
     public Tip getSkuProduct(@PathVariable Long id) {
-        return SuccessTip.create(skuProductService.retrieveMaster(id, null, null, null));
+        // TODO details
+        return SuccessTip.create(skuProductService.retrieveMaster(id));
     }
 
     @BusinessLog(name = "SkuProduct", value = "update SkuProduct")
