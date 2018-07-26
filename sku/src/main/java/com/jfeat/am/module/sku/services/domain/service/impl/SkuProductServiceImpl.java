@@ -87,9 +87,18 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                     affect += skuPriceHistoryMapper.insert(history);
                 }
             }
-        }
+            return affect;
+        }else {
 
-        return affect;
+            SkuProduct entity = new SkuProduct();
+
+            entity.setSkuName(product.getName());
+            entity.setProductId(product.getId());
+            entity.setSkuCode(product.getProductCode());
+
+            affect += crudSkuProductService.createMaster(entity);
+            return affect;
+        }
     }
 
 
