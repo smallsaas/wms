@@ -43,7 +43,7 @@ CREATE TABLE `t_sku_product` (
   `bar_code` varchar(255) DEFAULT NULL COMMENT '条形码',
   `description` text COMMENT '描述',
 
-  `sku_price` decimal(12,4) NOT NULL COMMENT '产品价格',
+  `sku_price` decimal(12,4) DEFAULT NULL COMMENT '产品价格',
   `readjust_cost_price` decimal(12,4) DEFAULT NULL COMMENT '入库成本调整',
   `suggested_price` decimal(12,4) DEFAULT NULL COMMENT '建议零售价',
   `cost_price` decimal(12,4) DEFAULT NULL COMMENT '成本价格',
