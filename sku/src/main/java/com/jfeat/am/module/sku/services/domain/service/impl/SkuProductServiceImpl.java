@@ -53,7 +53,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         Product product = model;
         affect += productMapper.insert(product);
 
-        if(model.getSkus()!=null && model.getSkus().size()>0) {
+        if (model.getSkus() != null && model.getSkus().size() > 0) {
             for (SkuProductModel entity : model.getSkus()) {
 
                 //TODO, where to provide sku code ?
@@ -87,8 +87,8 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                     affect += skuPriceHistoryMapper.insert(history);
                 }
             }
-            return affect;
-        }else {
+        }
+        else {
 
             SkuProduct entity = new SkuProduct();
 
@@ -97,8 +97,8 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
             entity.setSkuCode(product.getProductCode());
 
             affect += crudSkuProductService.createMaster(entity);
-            return affect;
         }
+        return affect;
     }
 
 
