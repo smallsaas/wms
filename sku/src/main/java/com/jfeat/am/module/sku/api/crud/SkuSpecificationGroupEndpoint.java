@@ -37,7 +37,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @Api("sku-规格")
-@RequestMapping("/api/wms/sku/specifications")
+@RequestMapping("/api/wms/sku")
 public class SkuSpecificationGroupEndpoint extends BaseController {
 
 
@@ -48,8 +48,8 @@ public class SkuSpecificationGroupEndpoint extends BaseController {
     QuerySkuSpecificationGroupDao querySkuSpecificationGroupDao;
 
     @BusinessLog(name = "SkuSpecificationGroup", value = "create SkuSpecificationGroup")
-    @ApiOperation("创建某个类别下的规格属性")
-    @PostMapping
+    @ApiOperation("创建类别及规格")
+    @PostMapping("/specifications")
     public Tip createSpecificationGroup(@RequestBody CategorySpecModel entity) {
 
         Integer affected = 0;
@@ -64,39 +64,47 @@ public class SkuSpecificationGroupEndpoint extends BaseController {
     }
 
 
-    @GetMapping
+    @GetMapping("/specifications")
     @ApiOperation("获取所有的规格下及该规格下的所有子规格")
     public Tip allSpecificationGroup() {
         return SuccessTip.create(skuSpecificationGroupService.allSpec());
     }
 
 
-    @GetMapping("/{id}")
-    @ApiOperation("获取某个规格下的所有子规格")
-    public Tip getSpecificationGroup(@PathVariable Long id) {
-        return SuccessTip.create(skuSpecificationGroupService.getSpecChildren(id));
+    @GetMapping("/category/{categoryId}/specifications")
+    @ApiOperation("获取某个类别下的所有规格(including 子规格)")
+    public Tip getSpecificationGroup(@PathVariable Long categoryId) {
+        return SuccessTip.create(skuSpecificationGroupService.getSpecChildren(categoryId));
     }
 
     @BusinessLog(name = "SkuSpecificationGroup", value = "update SkuSpecificationGroup")
-    @PutMapping("/{id}")
-    @ApiOperation("修改某个类别下的规格属性及本身")
-    public Tip updateSpecificationGroup(@PathVariable Long id, @RequestBody SkuSpecificationGroupModel entity) {
+    @PutMapping("/specifications/{id}")
+    @ApiOperation("修改类别及对应规格")
+    public Tip updateSpecificationGroup(@PathVariable Long id, @RequestBody CategorySpecModel entity) {
         entity.setId(id);
         return SuccessTip.create(skuSpecificationGroupService.updateSpecChildren(id,entity));
     }
 
     @BusinessLog(name = "SkuSpecificationGroup", value = "delete SkuSpecificationGroup")
-    @DeleteMapping("/{id}")
-    @ApiOperation("删除某个父节点或子节点")
+    @DeleteMapping("/specifications/{id}")
+    @ApiOperation("删除某个规格(可以是父级规格也可以是子级规格)")
     public Tip deleteSpecificationGroup(@PathVariable Long id) {
         return SuccessTip.create(skuSpecificationGroupService.deleteMaster(id));
     }
 
+    @BusinessLog(name = "ProductCategory", value = "delete ProductCategory")
+    @DeleteMapping("/category/{id}")
+    @ApiOperation("删除产品类别以及 类别下所有的规格信息")
+    public Tip deleteProductCategory(@PathVariable Long id) {
+        return SuccessTip.create(skuSpecificationGroupService.deleteCategory(id));
+    }
 
 
     @PostMapping("/bulk/delete")
     public Tip deleteList(@RequestBody Ids ids) {
         return SuccessTip.create(skuSpecificationGroupService.bulkDelete(ids));
     }
+
+
 
 }

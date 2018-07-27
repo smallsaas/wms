@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfeat.am.common.constant.tips.Ids;
+import com.jfeat.am.module.product.services.persistence.dao.ProductCategoryMapper;
+import com.jfeat.am.module.product.services.persistence.model.ProductCategory;
 import com.jfeat.am.module.sku.services.crud.model.SkuSpecificationGroupModel;
 import com.jfeat.am.module.sku.services.crud.service.impl.CRUDSkuSkuSpecificationGroupServiceImpl;
 import com.jfeat.am.module.sku.services.domain.model.CategorySpecModel;
 import com.jfeat.am.module.sku.services.domain.service.SkuSpecificationGroupService;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuSpecificationGroupMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuSpecificationGroup;
+import com.jfinal.json.Json;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,117 +31,180 @@ import java.util.List;
 public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGroupServiceImpl implements SkuSpecificationGroupService {
     @Resource
     private SkuSpecificationGroupMapper skuSpecificationGroupMapper;
-
-
-    // 创建 某个 列表 节点 下的 多个 规格
-
-    public Integer specChildren(CategorySpecModel entity) {
-        int affect = 0;
-        for (SkuSpecificationGroupModel group : entity.getGroups()) {
-            group.setPid(entity.getCategoryId());
-            group.setType("Category");
-            SkuSpecificationGroup isExist = skuSpecificationGroupMapper.selectOne(group);
-            if (isExist == null) {
-                // 父级 为空
-                affect += skuSpecificationGroupMapper.insert(group);
-                if (group.getChildren() != null || group.getChildren().size() > 0) {
-                    for (SkuSpecificationGroup child : group.getChildren()) {
-                        // 插入 父节点
-                        child.setType("Spec");
-                        child.setPid(group.getId());
-                        affect += skuSpecificationGroupMapper.insert(child);
-                    }
-                } else {
-
-                }
-
-            } else {
-                if (group.getChildren() != null || group.getChildren().size() > 0) {
-                    for (SkuSpecificationGroup child : group.getChildren()) {
-                        // 子节点  不为空
-                        child.setPid(isExist.getId());
-                        child.setType("Spec");
-                        affect += skuSpecificationGroupMapper.insert(child);
-                    }
-                } else {
-
-                }
-            }
-        }
-        return affect;
-    }
-
-
-    // 更新 某个 列表 节点 下的 多个 规格
-
-    public Integer updateSpecChildren(Long specId, SkuSpecificationGroupModel entity) {
-
-        int affect = 0;
-        if (entity.getChildren() != null || entity.getChildren().size() > 0) {
-            for (SkuSpecificationGroup child : entity.getChildren()) {
-                // 子节点  不为空
-                child.setPid(specId);
-                child.setType("Spec");
-                affect += skuSpecificationGroupMapper.insert(child);
-            }
-        } else {
-
-        }
-        return affect;
-    }
-
-    // 获取 某个 规格 父节点 下的 多个 子规格
-
-    public SkuSpecificationGroupModel getSpecChildren(Long specId) {
-
-        SkuSpecificationGroup group = skuSpecificationGroupMapper.selectById(specId);
-
-        List<SkuSpecificationGroup> children =
-                skuSpecificationGroupMapper.selectList(new EntityWrapper<SkuSpecificationGroup>()
-                        .eq("pid",specId).like("type","Spec"));
-        JSONObject object = JSON.parseObject(JSON.toJSONString(group));
-
-        object.put("children",children);
-
-        SkuSpecificationGroupModel model = JSONObject.parseObject(JSON.toJSONString(object),SkuSpecificationGroupModel.class);
-        return model;
-
-    }
-
+    @Resource
+    ProductCategoryMapper categoryMapper;
 
 
     /**
-     *  所有的 规格 包括 所有的子规格
-     * */
+     * 创建 某个 列表 节点 下的 多个 规格
+     */
+    public Integer specChildren(CategorySpecModel entity) {
 
-    public List<SkuSpecificationGroupModel> allSpec(){
+        int affect = 0;
+        affect += categoryMapper.insert(entity);
+
+        if (entity.getGroups() != null || entity.getGroups().size() > 0) {
+            for (SkuSpecificationGroupModel group : entity.getGroups()) {
+                group.setPid(entity.getId());
+                group.setType("Category");
+                SkuSpecificationGroup isExist = skuSpecificationGroupMapper.selectOne(group);
+                if (isExist == null) {
+                    // 父级 为空
+                    affect += skuSpecificationGroupMapper.insert(group);
+                    if (group.getItems() != null || group.getItems().size() > 0) {
+                        for (SkuSpecificationGroup child : group.getItems()) {
+                            // 插入 父节点
+                            child.setType("Spec");
+                            child.setPid(group.getId());
+                            affect += skuSpecificationGroupMapper.insert(child);
+                        }
+                    }
+                } else {
+                    if (group.getItems() != null || group.getItems().size() > 0) {
+                        for (SkuSpecificationGroup child : group.getItems()) {
+                            // 子节点  不为空
+                            child.setPid(isExist.getId());
+                            child.setType("Spec");
+                            affect += skuSpecificationGroupMapper.insert(child);
+                        }
+                    }
+                }
+            }
+        }
+
+        return affect;
+    }
+
+
+    /**
+     * 更新 某个 列表 节点 下的 多个 规格
+     */
+    public Integer updateSpecChildren(Long categoryId, CategorySpecModel entity) {
+
+        int affect = 0;
+
+        entity.setId(categoryId);
+        categoryMapper.updateById(entity);
+
+        if (entity.getGroups() != null || entity.getGroups().size() > 0) {
+
+            // 执行删除 再插入
+            deleteCategory(categoryId);
+
+
+            for (SkuSpecificationGroupModel group : entity.getGroups()) {
+                group.setPid(entity.getId());
+                group.setType("Category");
+                SkuSpecificationGroup isExist = skuSpecificationGroupMapper.selectOne(group);
+                if (isExist == null) {
+                    // 父级 为空
+                    affect += skuSpecificationGroupMapper.insert(group);
+                    if (group.getItems() != null || group.getItems().size() > 0) {
+                        for (SkuSpecificationGroup child : group.getItems()) {
+                            // 插入 父节点
+                            child.setType("Spec");
+                            child.setPid(group.getId());
+                            affect += skuSpecificationGroupMapper.insert(child);
+                        }
+                    }
+                } else {
+                    if (group.getItems() != null || group.getItems().size() > 0) {
+                        for (SkuSpecificationGroup child : group.getItems()) {
+                            // 子节点  不为空
+                            child.setPid(isExist.getId());
+                            child.setType("Spec");
+                            affect += skuSpecificationGroupMapper.insert(child);
+                        }
+                    }
+                }
+            }
+        } else {
+            deleteCategory(categoryId);
+        }
+        return affect;
+    }
+
+    // 删除 类别  及类别下的所有的所有的规格
+
+    public Integer deleteCategory(Long categoryId) {
+
+        int affect = 0;
+        List<SkuSpecificationGroup> groups = skuSpecificationGroupMapper.selectList(new EntityWrapper<SkuSpecificationGroup>()
+                .eq("pid", categoryId).like("type", "Category"));
+        if (groups == null || groups.size() == 0) {
+            affect += categoryMapper.deleteById(categoryId);
+            return affect;
+        }
+
+        for (SkuSpecificationGroup group : groups) {
+            affect += skuSpecificationGroupMapper.deleteById(group.getId());
+        }
+        affect += categoryMapper.deleteById(categoryId);
+        return affect;
+    }
+
+
+    /**
+     * 获取 某个 列表下 所有的规格，包括子规格
+     * @Param Long categoryId
+     */
+    public List<SkuSpecificationGroupModel> getSpecChildren(Long categoryId) {
+
+        List<SkuSpecificationGroup> groups = skuSpecificationGroupMapper.selectList(new EntityWrapper<SkuSpecificationGroup>()
+                .eq("pid",categoryId).like("type","Category"));
+
+        if (groups != null && groups.size() > 0) {
+
+            List<SkuSpecificationGroupModel> models = new ArrayList<>();
+
+            for (SkuSpecificationGroup group : groups) {
+                List<SkuSpecificationGroup> children = skuSpecificationGroupMapper.selectList(new EntityWrapper<SkuSpecificationGroup>()
+                        .eq("pid",group.getId()).like("type","Spec"));
+                JSONObject json = JSON.parseObject(JSON.toJSONString(group));
+                json.put("items",children);
+                SkuSpecificationGroupModel model = JSON.parseObject(JSON.toJSONString(json),SkuSpecificationGroupModel.class);
+                models.add(model);
+            }
+            return models;
+        } else {
+            return null;
+        }
+    }
+
+
+    /**
+     * 所有的 规格 包括 所有的子规格
+     */
+
+    public List<SkuSpecificationGroupModel> allSpec() {
         List<SkuSpecificationGroupModel> models = new ArrayList<>();
 
         List<SkuSpecificationGroup> specifications =
                 skuSpecificationGroupMapper.selectList(
-                        new EntityWrapper<SkuSpecificationGroup>().like("type","Category"));
-
+                        new EntityWrapper<SkuSpecificationGroup>().like("type", "Category"));
         // Fix: if no category
         //
-        if(specifications!=null && specifications.size()>0) {
+        if (specifications != null && specifications.size() > 0) {
             for (SkuSpecificationGroup skuSpecificationGroup : specifications) {
-                SkuSpecificationGroupModel model = getSpecChildren(skuSpecificationGroup.getId());
+                List<SkuSpecificationGroup> children = skuSpecificationGroupMapper.selectList(new EntityWrapper<SkuSpecificationGroup>()
+                        .eq("pid",skuSpecificationGroup.getId()).like("type","Spec"));
+                JSONObject json = JSON.parseObject(JSON.toJSONString(skuSpecificationGroup));
+                json.put("items",children);
+                SkuSpecificationGroupModel model = JSON.parseObject(JSON.toJSONString(json),SkuSpecificationGroupModel.class);
                 models.add(model);
             }
-        }else{
+        } else {
             /// get all spec group
             SkuSpecificationGroupModel model = new SkuSpecificationGroupModel();
             List<SkuSpecificationGroup> children = skuSpecificationGroupMapper.selectList(
-                    new EntityWrapper<SkuSpecificationGroup>().like("type","Spec"));
-            model.setChildren(children);
-
+                    new EntityWrapper<SkuSpecificationGroup>().like("type", "Spec"));
+            model.setItems(children);
             /// add single spec group
             models.add(model);
         }
 
         return models;
     }
-
 
 
     @Override

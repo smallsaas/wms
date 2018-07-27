@@ -56,11 +56,6 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         if (model.getSkus() != null && model.getSkus().size() > 0) {
             for (SkuProductModel entity : model.getSkus()) {
 
-                //TODO, where to provide sku code ?
-                //
-//                entity.setSkuCode(IdWorker.get32UUID());
-                //
-
                 entity.setSkuName(product.getName());
                 entity.setProductId(product.getId());
                 SkuProductFilter skuProductFilter = new SkuProductFilter();
@@ -90,13 +85,23 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         }
         else {
 
-            SkuProduct entity = new SkuProduct();
-
+            SkuProductModel entity = new SkuProductModel();
+            entity.setSkuPrice(product.getPrice());
+            entity.setSkuCode(product.getProductCode());
             entity.setSkuName(product.getName());
             entity.setProductId(product.getId());
-            entity.setSkuCode(product.getProductCode());
+            SkuProductFilter skuProductFilter = new SkuProductFilter();
+            affect += crudSkuProductService.createMaster(entity, skuProductFilter, null, null);
 
-            affect += crudSkuProductService.createMaster(entity);
+            if (entity.getSkuPrice() != null) {
+                SkuPriceHistory history = new SkuPriceHistory();
+                // 初始 插入 的时候 原始 以及 修改 后的 价格 都一样
+                history.setOriginPrice(entity.getSkuPrice());
+                history.setSkuId(skuProductFilter.result().get("id") == null ? null : (Long) skuProductFilter.result().get("id"));
+                history.setAfterPrice(entity.getSkuPrice());
+                history.setUpdateTime(new Date());
+                affect += skuPriceHistoryMapper.insert(history);
+            }
         }
         return affect;
     }

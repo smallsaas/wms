@@ -9,14 +9,14 @@ import java.util.List;
  */
 public class SkuSpecificationGroupModel extends SkuSpecificationGroup {
 
-    List<SkuSpecificationGroup> children;
+    List<SkuSpecificationGroup> items;
 
 
-    public List<SkuSpecificationGroup> getChildren() {
-        return children;
+    public List<SkuSpecificationGroup> getItems() {
+        return items;
     }
 
-    public void setChildren(List<SkuSpecificationGroup> children) {
-        this.children = children;
+    public void setItems(List<SkuSpecificationGroup> items) {
+        this.items = items;
     }
 }
