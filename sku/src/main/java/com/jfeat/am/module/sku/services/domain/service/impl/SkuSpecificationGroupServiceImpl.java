@@ -86,7 +86,7 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
         entity.setId(categoryId);
         categoryMapper.updateById(entity);
 
-        if (entity.getGroups() != null || entity.getGroups().size() > 0) {
+        if (entity.getGroups() != null && entity.getGroups().size() > 0) {
 
             // 执行删除 再插入
             deleteCategory(categoryId);
