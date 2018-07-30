@@ -43,7 +43,7 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
         int affect = 0;
         affect += categoryMapper.insert(entity);
 
-        if (entity.getGroups() != null || entity.getGroups().size() > 0) {
+        if (entity.getGroups() != null && entity.getGroups().size() > 0) {
             for (SkuSpecificationGroupModel group : entity.getGroups()) {
                 group.setPid(entity.getId());
                 group.setType("Category");
