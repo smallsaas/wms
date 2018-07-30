@@ -4,6 +4,7 @@ import com.jfeat.am.module.sku.services.crud.model.SkuSpecificationGroupModel;
 import com.jfeat.am.module.sku.services.crud.service.CRUDSkuSpecificationGroupService;
 import com.jfeat.am.common.constant.tips.Ids;
 import com.jfeat.am.module.sku.services.domain.model.CategorySpecModel;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ public interface SkuSpecificationGroupService extends CRUDSkuSpecificationGroupS
 
 
     // 创建 某个 列表 节点 下的 多个 规格
+    @Transactional
     Integer specChildren(CategorySpecModel entity);
 
 

@@ -121,7 +121,7 @@ public class CRUDSkuProductServiceImpl extends CRUDServiceOverModelImpl<SkuProdu
             _field.setItemClassName(SkuTagRelation.class);
             _field.setItemMapper(skuTagRelationMapper);
             return _field;
-        }else if (field.compareTo(idConditionKeyName) == 0) {
+        } else if (field.compareTo(idConditionKeyName) == 0) {
             FIELD _field = new FIELD();
             _field.setItemKeyName(field);
             _field.setItemFieldName(idConditionName);
