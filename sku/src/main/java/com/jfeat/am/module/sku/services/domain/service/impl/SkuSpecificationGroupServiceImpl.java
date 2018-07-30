@@ -14,6 +14,7 @@ import com.jfeat.am.module.sku.services.persistence.dao.SkuSpecificationGroupMap
 import com.jfeat.am.module.sku.services.persistence.model.SkuSpecificationGroup;
 import com.jfinal.json.Json;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
     /**
      * 创建 某个 列表 节点 下的 多个 规格
      */
+    @Transactional
     public Integer specChildren(CategorySpecModel entity) {
 
         int affect = 0;

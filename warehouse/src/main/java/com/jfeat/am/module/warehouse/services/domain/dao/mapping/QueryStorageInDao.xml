@@ -72,17 +72,15 @@
 
     <select id="storageInItems" parameterType="long" resultMap="BaseStorageInItemRecord">
         SELECT wms_storage_in_item.*,
-                wms_sku.sku_code as skuCode,
-                wms_sku.bar_code as skuBarcode,
-                wms_sku.sku_name as skuName,
-                t_specification.specification_name as skuSpec
+                t_sku_product.sku_code as skuCode,
+                t_sku_product.bar_code as skuBarcode,
+                t_sku_product.sku_name as skuName
         FROM wms_storage_in_item
 
         left join wms_storage_in on wms_storage_in_item.storage_in_id = wms_storage_in.id
 
-        LEFT JOIN wms_sku ON wms_storage_in_item.sku_id = wms_sku.id
+        LEFT JOIN t_sku_product ON wms_storage_in_item.sku_id = t_sku_product.id
 
-        LEFT JOIN t_specification ON wms_sku.spec_id = t_specification.id
 
         WHERE
         wms_storage_in.id = #{id}

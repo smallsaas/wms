@@ -9,6 +9,8 @@ public class StorageInItemRecord extends StorageInItem{
     String skuName;
     String skuBarcode;
     String skuCode;
+
+    // TODO skuSpec need more details
     String skuSpec;
 
     public String getSkuName() {

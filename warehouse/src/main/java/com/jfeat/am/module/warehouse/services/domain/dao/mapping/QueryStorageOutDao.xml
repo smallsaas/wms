@@ -64,7 +64,6 @@
         <result column="skuName" property="skuName" />
         <result column="skuBarcode" property="skuBarcode" />
         <result column="skuCode" property="skuCode" />
-        <result column="skuSpec" property="skuSpec" />
 
 
 
@@ -72,17 +71,16 @@
 
     <select id="storageOutItems" parameterType="long" resultMap="BaseStorageOutItemRecord">
         SELECT wms_storage_out_item.*,
-        t_sku_product.sku_code as skuCode,
-        t_sku_product.bar_code as skuBarcode,
-        t_sku_product.sku_name as skuName,
-        t_specification.specification_name as skuSpec
+            t_sku_product.sku_code as skuCode,
+            t_sku_product.bar_code as skuBarcode,
+            t_sku_product.sku_name as skuName,
+            t_specification.specification_name as skuSpec
         FROM wms_storage_out_item
 
         left join wms_storage_out on wms_storage_out_item.storage_out_id = wms_storage_out.id
 
-        LEFT JOIN wms_sku ON wms_storage_out_item.sku_id = wms_sku.id
+        LEFT JOIN t_sku_product ON wms_storage_out_item.t_sku_product = wms_sku.id
 
-        LEFT JOIN t_specification ON wms_sku.spec_id = t_specification.id
 
         WHERE
         wms_storage_out.id = #{id}

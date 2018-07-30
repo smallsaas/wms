@@ -36,10 +36,10 @@
     <select id="findTransferPage" resultMap="BaseResultMap" parameterType="TransferRecord">
         SELECT
             wms_transfer.*,
-            fwarehouse.warehouse_name as fromWarehouseName,
-            twarehouse.warehouse_name as toWarehouseName,
-            ouser.`name` as originatorName,
-            tuser.`name` as operatorName
+                fwarehouse.warehouse_name as fromWarehouseName,
+                twarehouse.warehouse_name as toWarehouseName,
+                ouser.`name` as originatorName,
+                tuser.`name` as operatorName
 
         FROM wms_transfer
 
