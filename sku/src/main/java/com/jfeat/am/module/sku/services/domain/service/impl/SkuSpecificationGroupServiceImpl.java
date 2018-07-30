@@ -51,7 +51,7 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
                 if (isExist == null) {
                     // 父级 为空
                     affect += skuSpecificationGroupMapper.insert(group);
-                    if (group.getItems() != null || group.getItems().size() > 0) {
+                    if (group.getItems() != null && group.getItems().size() > 0) {
                         for (SkuSpecificationGroup child : group.getItems()) {
                             // 插入 父节点
                             child.setType("Spec");
@@ -60,7 +60,7 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
                         }
                     }
                 } else {
-                    if (group.getItems() != null || group.getItems().size() > 0) {
+                    if (group.getItems() != null && group.getItems().size() > 0) {
                         for (SkuSpecificationGroup child : group.getItems()) {
                             // 子节点  不为空
                             child.setPid(isExist.getId());
@@ -99,7 +99,7 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
                 if (isExist == null) {
                     // 父级 为空
                     affect += skuSpecificationGroupMapper.insert(group);
-                    if (group.getItems() != null || group.getItems().size() > 0) {
+                    if (group.getItems() != null && group.getItems().size() > 0) {
                         for (SkuSpecificationGroup child : group.getItems()) {
                             // 插入 父节点
                             child.setType("Spec");
@@ -108,7 +108,7 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
                         }
                     }
                 } else {
-                    if (group.getItems() != null || group.getItems().size() > 0) {
+                    if (group.getItems() != null && group.getItems().size() > 0) {
                         for (SkuSpecificationGroup child : group.getItems()) {
                             // 子节点  不为空
                             child.setPid(isExist.getId());
