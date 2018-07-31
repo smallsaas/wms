@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.modular.system.service.UserService;
+import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageOutFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutService;
@@ -87,12 +88,10 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         storageInModel.setTransactionTime(new Date());
 
         // TODO  暂时没有 生成策略
-        storageInModel.setTransactionCode(new IdWorker().toString());
+//        storageInModel.setTransactionCode(new IdWorker().toString());
 //        StorageInFilter storageInFilter = new StorageInFilter();
         storageInService.createStorageIn(userId,storageInModel);
         model.setStorageInId(storageInModel.getId());
-//        model.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
-
 
         StorageOutModel storageOut = new StorageOutModel();
         storageOut.setStorageOutItems(model.getOutItems());
@@ -102,11 +101,13 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         storageOut.setTransactionBy(userId);
         storageOut.setTransactionCode(model.getTransactionCode());
         storageOut.setTransactionTime(new Date());
-//        StorageOutFilter storageOutFilter = new StorageOutFilter();
+        StorageOutFilter storageOutFilter = new StorageOutFilter();
         storageOutService.createStorageOut(userId,storageOut);
         model.setStorageOutId(storageOut.getId());
-//        model.setStorageOutId((Long) storageOutFilter.result().get("id") == null ? null : (Long) storageOutFilter.result().get("id"));
 
+
+//        model.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
+//        model.setStorageOutId((Long) storageOutFilter.result().get("id") == null ? null : (Long) storageOutFilter.result().get("id"));
         model.setOriginatorId(userId);
         model.setOperator(userId);
         model.setTransactionTime(new Date());

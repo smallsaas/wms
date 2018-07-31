@@ -2,6 +2,7 @@ package com.jfeat.am.module.warehouse.services.domain.service.impl;
 
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
+import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageInModel;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageModel;
@@ -47,7 +48,8 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
             entity.setTransactionBy(userId);
         }
         entity.setTransactionTime(new Date());
-        affected = crudStorageInService.createMaster(entity, null, null, null);
+        StorageInFilter storageInFilter = new StorageInFilter();
+        affected = crudStorageInService.createMaster(entity, storageInFilter, null, null);
         if (entity.getStorageInItems() != null && entity.getStorageInItems().size() > 0) {
             for (StorageInItem inItem : entity.getStorageInItems()) {
                 Inventory isExistInventory = new Inventory();
