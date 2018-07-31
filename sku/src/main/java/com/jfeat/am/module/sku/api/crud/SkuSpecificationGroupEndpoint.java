@@ -1,5 +1,6 @@
 package com.jfeat.am.module.sku.api.crud;
 
+import com.jfeat.am.module.product.services.domain.service.ProductCategoryService;
 import com.jfeat.am.module.sku.services.crud.model.SkuSpecificationGroupModel;
 import com.jfeat.am.module.sku.services.domain.model.CategorySpecModel;
 import io.swagger.annotations.Api;
@@ -43,6 +44,8 @@ public class SkuSpecificationGroupEndpoint extends BaseController {
 
     @Resource
     SkuSpecificationGroupService skuSpecificationGroupService;
+    @Resource
+    ProductCategoryService productCategoryService;
 
     @Resource
     QuerySkuSpecificationGroupDao querySkuSpecificationGroupDao;
@@ -96,7 +99,9 @@ public class SkuSpecificationGroupEndpoint extends BaseController {
     @DeleteMapping("/category/{id}")
     @ApiOperation("删除产品类别以及 类别下所有的规格信息")
     public Tip deleteProductCategory(@PathVariable Long id) {
-        return SuccessTip.create(skuSpecificationGroupService.deleteCategory(id));
+        skuSpecificationGroupService.deleteCategory(id);
+        productCategoryService.deleteMaster(id);
+        return SuccessTip.create();
     }
 
 

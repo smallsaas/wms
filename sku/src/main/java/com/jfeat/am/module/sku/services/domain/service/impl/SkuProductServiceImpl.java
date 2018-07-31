@@ -131,7 +131,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         affect += crudSkuProductService.updateMaster(model.getSkus().get(0), null, null, null);
 
 
-        if (model.getSkus().get(0).getSpecId() == null || model.getSkus().get(0).getSpecId().size() == 0) {
+        if (model.getSkus().get(0).getSpecId() == null && model.getSkus().get(0).getSpecId().size() == 0) {
             skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
         } else {
             skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
