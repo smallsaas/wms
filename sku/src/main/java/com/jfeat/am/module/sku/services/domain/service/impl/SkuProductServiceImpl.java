@@ -1,7 +1,9 @@
 package com.jfeat.am.module.sku.services.domain.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.module.product.services.persistence.dao.ProductMapper;
 import com.jfeat.am.module.product.services.persistence.model.Product;
 import com.jfeat.am.module.sku.services.crud.filter.SkuProductFilter;
@@ -11,6 +13,7 @@ import com.jfeat.am.module.sku.services.crud.service.impl.CRUDSkuProductServiceI
 import com.jfeat.am.module.sku.services.domain.model.CreateSkuProductModel;
 import com.jfeat.am.module.sku.services.domain.service.SkuProductService;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuPriceHistoryMapper;
+import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuSpecificationGroupMapper;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuSpecificationMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuPriceHistory;
@@ -20,7 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -43,6 +48,8 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
     SkuSpecificationMapper skuSpecificationMapper;
     @Resource
     ProductMapper productMapper;
+    @Resource
+    SkuProductMapper skuProductMapper;
 
 
     @Transactional
@@ -50,7 +57,8 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         // 插入 产品
         int affect = 0;
 
-        Product product = model;
+        Product product = new Product();
+
         affect += productMapper.insert(product);
 
         if (model.getSkus() != null && model.getSkus().size() > 0) {
@@ -82,8 +90,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                     affect += skuPriceHistoryMapper.insert(history);
                 }
             }
-        }
-        else {
+        } else {
 
             SkuProductModel entity = new SkuProductModel();
             entity.setSkuPrice(product.getPrice());
@@ -153,5 +160,32 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         affect += skuPriceHistoryMapper.delete(new EntityWrapper<SkuPriceHistory>().eq("sku_id", skuId));
         affect += crudSkuProductService.deleteMaster(skuId);
         return affect;
+    }
+
+
+    /**
+     * all sku in this product
+     */
+    public CreateSkuProductModel productsTotalDetails(Long id) {
+
+        Product product = productMapper.selectById(id);
+
+        JSONObject object = JSON.parseObject(JSON.toJSONString(product));
+
+        List<SkuProductModel> models = new ArrayList<>();
+
+
+        List<SkuProduct> skus = skuProductMapper.selectList(new EntityWrapper<SkuProduct>().eq("product_id", id));
+
+        for (SkuProduct sku : skus) {
+            CRUDObject<SkuProductModel> model = crudSkuProductService.retrieveMaster(sku.getId(), null, null, null);
+            SkuProductModel skuDetails = model.toJavaObject(SkuProductModel.class);
+            models.add(skuDetails);
+        }
+
+        object.put("skus", models == null ? null : models);
+
+        CreateSkuProductModel model = JSONObject.parseObject(JSONObject.toJSONString(object), CreateSkuProductModel.class);
+        return model;
     }
 }

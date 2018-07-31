@@ -63,8 +63,8 @@ CREATE TABLE `t_sku_product` (
 -- ----------------------------
 -- Table structure for t_product_condition
 -- ----------------------------
-DROP TABLE IF EXISTS `t_sku_condition`;
-CREATE TABLE `t_sku_condition` (
+DROP TABLE IF EXISTS `t_sku_condition_relation`;
+CREATE TABLE `t_sku_condition_relation` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `sku_id` bigint(20) NOT NULL COMMENT '产品Id',
   `condition_id` bigint(20) NOT NULL COMMENT '标签ID',

@@ -19,4 +19,11 @@ public interface SkuProductService extends CRUDSkuProductService{
 
     @Transactional
     Integer deleteSku(Long skuId);
+
+
+    /**
+     *
+     * all sku in this product
+     * */
+    CreateSkuProductModel productsTotalDetails(Long id);
 }
