@@ -52,17 +52,6 @@ public class StorageInItem extends Model<StorageInItem> {
      */
     @TableField("transaction_time")
     private Date transactionTime;
-    /**
-     * 出入库操作仓库ID
-     */
-    @TableField("warehouse_id")
-    private Long warehouseId;
-
-    /**
-     * 储位
-     */
-    @TableField("slot_id")
-    private Long slotId;
 
 
     public Long getId() {
@@ -119,22 +108,6 @@ public class StorageInItem extends Model<StorageInItem> {
         return this;
     }
 
-    public Long getWarehouseId() {
-        return warehouseId;
-    }
-
-    public StorageInItem setWarehouseId(Long warehouseId) {
-        this.warehouseId = warehouseId;
-        return this;
-    }
-
-    public Long getSlotId() {
-        return slotId;
-    }
-
-    public void setSlotId(Long slotId) {
-        this.slotId = slotId;
-    }
 
     public static final String ID = "id";
 
@@ -148,9 +121,6 @@ public class StorageInItem extends Model<StorageInItem> {
 
     public static final String TRANSACTION_TIME = "transaction_time";
 
-    public static final String WAREHOUSE_ID = "warehouse_id";
-
-    public static final String SLOT_ID = "slot_id";
 
 
     @Override
@@ -167,8 +137,6 @@ public class StorageInItem extends Model<StorageInItem> {
                 ", transactionSkuPrice=" + transactionSkuPrice +
                 ", transactionQuantities=" + transactionQuantities +
                 ", transactionTime=" + transactionTime +
-                ", warehouseId=" + warehouseId +
-                ", slotId=" + slotId +
                 "}";
     }
 }

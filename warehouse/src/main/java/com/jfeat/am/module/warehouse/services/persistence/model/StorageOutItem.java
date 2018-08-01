@@ -50,17 +50,6 @@ public class StorageOutItem extends Model<StorageOutItem> {
      */
 	@TableField("transaction_time")
 	private Date transactionTime;
-    /**
-     * 出入库操作仓库ID
-     */
-	@TableField("warehouse_id")
-	private Long warehouseId;
-
-	/**
-	 * 储位
-	 */
-	@TableField("slot_id")
-	private Long slotId;
 
 
 	public Long getId() {
@@ -111,22 +100,6 @@ public class StorageOutItem extends Model<StorageOutItem> {
 		this.transactionTime = transactionTime;
 	}
 
-	public Long getWarehouseId() {
-		return warehouseId;
-	}
-
-	public void setWarehouseId(Long warehouseId) {
-		this.warehouseId = warehouseId;
-	}
-
-	public Long getSlotId() {
-		return slotId;
-	}
-
-	public void setSlotId(Long slotId) {
-		this.slotId = slotId;
-	}
-
 
 	public static final String ID = "id";
 
@@ -140,9 +113,6 @@ public class StorageOutItem extends Model<StorageOutItem> {
 
 	public static final String TRANSACTION_TIME = "transaction_time";
 
-	public static final String WAREHOUSE_ID = "warehouse_id";
-
-	public static final String SLOT_ID = "slot_id";
 
 	@Override
 	protected Serializable pkVal() {
@@ -158,8 +128,6 @@ public class StorageOutItem extends Model<StorageOutItem> {
 			", transactionSkuPrice=" + transactionSkuPrice +
 			", transactionQuantities=" + transactionQuantities +
 			", transactionTime=" + transactionTime +
-			", warehouseId=" + warehouseId +
-			", slotId=" + slotId +
 			"}";
 	}
 }

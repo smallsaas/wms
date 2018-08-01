@@ -10,13 +10,10 @@
 		<result column="transaction_sku_price" property="transactionSkuPrice" />
 		<result column="transaction_quantities" property="transactionQuantities" />
 		<result column="transaction_time" property="transactionTime" />
-		<result column="warehouse_id" property="warehouseId" />
-		<result column="slot_id" property="slotId" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, storage_in_id AS storageOutId, sku_id AS skuId,slot_id AS slotId, transaction_sku_price AS transactionSkuPrice, transaction_quantities AS transactionQuantities, transaction_time AS transactionTime, warehouse_id AS warehouseId
-    </sql>
+        id, storage_in_id AS storageOutId, sku_id AS skuId, transaction_sku_price AS transactionSkuPrice, transaction_quantities AS transactionQuantities, transaction_time AS transactionTime</sql>
 
 </mapper>
