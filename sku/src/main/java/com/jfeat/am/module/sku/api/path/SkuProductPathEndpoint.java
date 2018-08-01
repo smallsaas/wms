@@ -37,6 +37,13 @@ public class SkuProductPathEndpoint extends BaseController {
         return SuccessTip.create(skuProductService.skuDetails(id));
     }
 
+    @DeleteMapping("/products/{id}")
+    @ApiOperation("产品-包括属于该产品的所有SKU以及该SKU的规格图片等")
+    public Tip deleteProductIncludingSku(@PathVariable Long id){
+
+        return SuccessTip.create(skuProductService.deleteProduct(id));
+    }
+
 
 
     @GetMapping("/products")
