@@ -73,8 +73,7 @@
         SELECT wms_storage_out_item.*,
             t_sku_product.sku_code as skuCode,
             t_sku_product.bar_code as skuBarcode,
-            t_sku_product.sku_name as skuName,
-            t_specification.specification_name as skuSpec
+            t_sku_product.sku_name as skuName
         FROM wms_storage_out_item
 
         left join wms_storage_out on wms_storage_out_item.storage_out_id = wms_storage_out.id
