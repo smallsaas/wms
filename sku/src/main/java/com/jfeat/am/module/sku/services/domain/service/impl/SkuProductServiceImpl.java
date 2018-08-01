@@ -57,7 +57,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         // 插入 产品
         int affect = 0;
 
-        Product product = new Product();
+        Product product = model;
 
         affect += productMapper.insert(product);
 
@@ -115,12 +115,77 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
 
 
     @Transactional
-    public Integer updateSku(Long skuId, CreateSkuProductModel model) {
+    public Integer updateSku(Long productId, CreateSkuProductModel model) {
         // 更新 产品
         int affect = 0;
         affect += productMapper.updateById(model);
 
-        SkuProduct originSkuProduct = crudSkuProductService.retrieveMaster(skuId);
+        List<SkuProductModel> models = model.getSkus();
+
+        for (SkuProductModel entity : models){
+            if(entity.getId() != null){
+
+                SkuPriceHistory history = new SkuPriceHistory();
+                history.setSkuId(entity.getId());
+                SkuPriceHistory originHistory = skuPriceHistoryMapper.selectOne(history);
+                if (entity.getSkuPrice() != null && entity.getSkuPrice().compareTo(originHistory.getAfterPrice()) != 0) {
+                    SkuPriceHistory updateHistory = new SkuPriceHistory();
+                    updateHistory.setSkuId(entity.getId());
+                    updateHistory.setOriginPrice(originHistory.getAfterPrice());
+                    updateHistory.setAfterPrice(entity.getSkuPrice());
+                    updateHistory.setUpdateTime(new Date());
+                    affect += skuPriceHistoryMapper.insert(history);
+                }
+                if (entity.getSpecId() == null || entity.getSpecId().size() == 0) {
+                    affect += skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id",entity.getId()));
+                } else {
+                    for (Long id : entity.getSpecId()) {
+                        affect += skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id",entity.getId()));
+                        SkuSpecification specification = new SkuSpecification();
+                        specification.setSkuId(entity.getId());
+                        specification.setGroupId(id);
+                        affect += skuSpecificationMapper.insert(specification);
+                    }
+                }
+
+                affect += crudSkuProductService.updateMaster(entity,null,null,null);
+            }else {
+                // 修改前不存在 的SKU 执行 重新插入 操作
+                entity.setSkuName(model.getName());
+                entity.setProductId(productId);
+                SkuProductFilter skuProductFilter = new SkuProductFilter();
+                affect += crudSkuProductService.createMaster(entity, skuProductFilter, null, null);
+
+                if (entity.getSpecId() == null || entity.getSpecId().size() == 0) {
+
+                } else {
+                    for (Long id : entity.getSpecId()) {
+                        SkuSpecification specification = new SkuSpecification();
+                        specification.setSkuId(skuProductFilter.result().get("id") == null ? null : (Long) skuProductFilter.result().get("id"));
+                        specification.setGroupId(id);
+                        affect += skuSpecificationMapper.insert(specification);
+                    }
+                }
+
+                if (entity.getSkuPrice() != null) {
+                    SkuPriceHistory history = new SkuPriceHistory();
+                    // 初始 插入 的时候 原始 以及 修改 后的 价格 都一样
+                    history.setOriginPrice(entity.getSkuPrice());
+                    history.setSkuId(skuProductFilter.result().get("id") == null ? null : (Long) skuProductFilter.result().get("id"));
+                    history.setAfterPrice(entity.getSkuPrice());
+                    history.setUpdateTime(new Date());
+                    affect += skuPriceHistoryMapper.insert(history);
+                }
+            }
+
+            return affect;
+
+        }
+
+
+
+
+        /*SkuProduct originSkuProduct = crudSkuProductService.retrieveMaster(skuId);
 
         SkuPriceHistory history = new SkuPriceHistory();
         history.setSkuId(skuId);
@@ -148,7 +213,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                 specification.setGroupId(id);
                 affect += skuSpecificationMapper.insert(specification);
             }
-        }
+        }*/
         return affect;
     }
 

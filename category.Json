@@ -1,0 +1,24 @@
+{
+
+  "categoryName": "类别",
+  "categoryDescription": "第二次更新测试",
+  "groups": [{
+    "groupName": "更新",
+    "items": [{
+      "groupName": "更新"
+    }, {
+      "groupName": "更新2"
+    }, {
+      "groupName": "更新3"
+    }]
+  }, {
+    "groupName": "更新更新",
+    "items": [{
+      "groupName": "更新咯"
+    }, {
+      "groupName": "更新啦"
+    }, {
+      "groupName": "更新了"
+    }]
+  }]
+}
