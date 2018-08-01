@@ -1,6 +1,7 @@
 package com.jfeat.am.module.sku.api.crud;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.jfeat.am.common.constant.tips.Ids;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.common.controller.BaseController;
@@ -61,7 +62,7 @@ public class SkuProductEndpoint extends BaseController {
     @ApiOperation("查看 sku")
     public Tip getSkuProduct(@PathVariable Long id) {
         // TODO details
-        return SuccessTip.create(skuProductService.retrieveMaster(id));
+        return SuccessTip.create(skuProductService.skuTotalDetails(id));
     }
 
     @BusinessLog(name = "SkuProduct", value = "update SkuProduct")
@@ -73,10 +74,10 @@ public class SkuProductEndpoint extends BaseController {
     }
 
     @BusinessLog(name = "SkuProduct", value = "delete SkuProduct")
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @ApiOperation("删除单个Sku")
-    public Tip deleteSkuProduct(@PathVariable Long id) {
-        return SuccessTip.create(skuProductService.deleteSku(id));
+    public Tip deleteSkuProduct(@RequestBody Ids ids) {
+        return SuccessTip.create(skuProductService.deleteSku(ids));
     }
 
     @GetMapping

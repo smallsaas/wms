@@ -2,7 +2,6 @@ package com.jfeat.am.module.sku.services.crud.model;
 
 import java.util.List;
 
-import com.jfeat.am.module.product.services.persistence.model.Product;
 import com.jfeat.am.module.sku.services.persistence.model.*;
 
 /**
@@ -13,6 +12,7 @@ public class SkuProductModel extends SkuProduct {
     private List<SkuPhoto> skuPhotos;
     private List<SkuTagRelation> skuTags;
     private List<SkuConditionRelation> skuConditions;
+    List<SkuSpecificationGroupModel> items;
     List<Long> specId;
 
 
@@ -55,5 +55,13 @@ public class SkuProductModel extends SkuProduct {
 
     public void setSkuConditions(List<SkuConditionRelation> skuConditions) {
         this.skuConditions = skuConditions;
+    }
+
+    public List<SkuSpecificationGroupModel> getItems() {
+        return items;
+    }
+
+    public void setItems(List<SkuSpecificationGroupModel> items) {
+        this.items = items;
     }
 }

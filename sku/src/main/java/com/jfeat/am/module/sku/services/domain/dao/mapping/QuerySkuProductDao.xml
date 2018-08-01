@@ -4,6 +4,31 @@
     <sql id="Base_Column_List">
         t_sku_product.*
     </sql>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jfeat.am.module.sku.services.crud.model.SkuProductModel">
+        <id column="id" property="id" />
+        <result column="product_id" property="productId" />
+        <result column="sku_code" property="skuCode" />
+        <result column="sku_name" property="skuName" />
+        <result column="status" property="status" />
+        <result column="sort_value" property="sortValue" />
+        <result column="search_key_word" property="searchKeyWord" />
+        <result column="bar_code" property="barCode" />
+        <result column="description" property="description" />
+        <result column="sku_price" property="skuPrice" />
+        <result column="readjust_cost_price" property="readjustCostPrice" />
+        <result column="suggested_price" property="suggestedPrice" />
+        <result column="cost_price" property="costPrice" />
+        <result column="stock_cost" property="stockCost" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="field1" property="field1" />
+        <result column="field2" property="field2" />
+        <result column="field3" property="field3" />
+        <collection property=""></collection>
+    </resultMap>
+
+
     <select id="findSkuProductPage" resultType="SkuProductRecord" parameterType="SkuProductRecord">
         SELECT t_sku_product.*
         FROM t_sku_product

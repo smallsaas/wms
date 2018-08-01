@@ -39,7 +39,7 @@ public class SkuProductPathEndpoint extends BaseController {
 
 
 
-        return SuccessTip.create(skuProductService.productsTotalDetails(id));
+        return SuccessTip.create(skuProductService.skuDetails(id));
     }
 
 
