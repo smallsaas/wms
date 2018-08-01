@@ -68,7 +68,6 @@ public class SkuProductEndpoint extends BaseController {
     @PutMapping("/{id}")
     @ApiOperation("修改 sku 同时 (也可以修改产品)")
     public Tip updateSkuProduct(@PathVariable Long id, @RequestBody CreateSkuProductModel entity) {
-        entity.getSkus().get(0).setId(id);
         return SuccessTip.create(skuProductService.updateSkuMaster(id,entity));
     }
 

@@ -34,11 +34,6 @@ public class SkuProductPathEndpoint extends BaseController {
     @ApiOperation("产品-包括属于该产品的所有SKU以及该SKU的规格图片等")
     public Tip productsTotalDetails(@PathVariable Long id){
 
-
-
-
-
-
         return SuccessTip.create(skuProductService.skuDetails(id));
     }
 

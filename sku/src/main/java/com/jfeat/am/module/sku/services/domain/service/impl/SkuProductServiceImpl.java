@@ -118,48 +118,59 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
 
     /**
      * update sku 以及 产品 ，只有一个 sku
-     * */
+     */
     @Transactional
     public Integer updateSkuMaster(Long skuId, CreateSkuProductModel model) {
         // 更新 产品
         int affect = 0;
+        SkuProduct originSkuProduct = crudSkuProductService.retrieveMaster(skuId);
+
+        model.setId(originSkuProduct.getProductId());
         affect += productMapper.updateById(model);
 
-        SkuProduct originSkuProduct = crudSkuProductService.retrieveMaster(skuId);
+
         SkuPriceHistory history = new SkuPriceHistory();
         history.setSkuId(skuId);
         history.setAfterPrice(originSkuProduct.getSkuPrice());
         SkuPriceHistory originHistory = skuPriceHistoryMapper.selectOne(history);
 
+        if (model.getSkus() != null && model.getSkus().size() > 0) {
+            if (model.getSkus().get(0).getSkuPrice() != null && model.getSkus().get(0).getSkuPrice().compareTo(originSkuProduct.getSkuPrice()) != 0) {
+                SkuPriceHistory updateHistory = new SkuPriceHistory();
+                updateHistory.setOriginPrice(originHistory.getAfterPrice());
+                updateHistory.setAfterPrice(model.getSkus().get(0).getSkuPrice());
+                updateHistory.setUpdateTime(new Date());
+                affect += skuPriceHistoryMapper.insert(history);
+            }
+            affect += crudSkuProductService.updateMaster(model.getSkus().get(0), null, null, null);
 
-        if (model.getSkus().get(0).getSkuPrice() != null && model.getSkus().get(0).getSkuPrice().compareTo(originSkuProduct.getSkuPrice()) != 0) {
+
+            if (model.getSkus().get(0).getSpecId() == null || model.getSkus().get(0).getSpecId().size() == 0) {
+                skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
+            } else {
+                skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
+                for (Long id : model.getSkus().get(0).getSpecId()) {
+                    SkuSpecification specification = new SkuSpecification();
+                    specification.setSkuId(skuId);
+                    specification.setGroupId(id);
+                    affect += skuSpecificationMapper.insert(specification);
+                }
+            }
+        }else {
             SkuPriceHistory updateHistory = new SkuPriceHistory();
             updateHistory.setOriginPrice(originHistory.getAfterPrice());
-            updateHistory.setAfterPrice(model.getSkus().get(0).getSkuPrice());
+            updateHistory.setAfterPrice(model.getPrice());
+            updateHistory.setSkuId(skuId);
             updateHistory.setUpdateTime(new Date());
-            affect += skuPriceHistoryMapper.insert(history);
-        }
-        affect += crudSkuProductService.updateMaster(model.getSkus().get(0), null, null, null);
+            affect += skuPriceHistoryMapper.insert(updateHistory);
 
-
-        if (model.getSkus().get(0).getSpecId() == null || model.getSkus().get(0).getSpecId().size() == 0) {
-            skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
-        } else {
-            skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
-            for (Long id : model.getSkus().get(0).getSpecId()) {
-                SkuSpecification specification = new SkuSpecification();
-                specification.setSkuId(skuId);
-                specification.setGroupId(id);
-                affect += skuSpecificationMapper.insert(specification);
-            }
         }
         return affect;
     }
 
     /**
-     *
      * 删除该产品下所有的 sku
-     * */
+     */
     @Transactional
     public Integer deleteSkus(Long productId) {
         int affect = 0;
@@ -178,9 +189,9 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
 
     /**
      * 删除单个 sku
-     * */
+     */
     @Transactional
-    public Integer deleteSku(Long skuId){
+    public Integer deleteSku(Long skuId) {
         int affect = 0;
         affect += skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
         affect += skuPriceHistoryMapper.delete(new EntityWrapper<SkuPriceHistory>().eq("sku_id", skuId));
@@ -195,7 +206,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
 
     /**
      * 删除产品
-     * */
+     */
     @Transactional
     public Integer deleteProduct(Long productId) {
         int affect = deleteSkus(productId);
@@ -205,9 +216,8 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
 
 
     /**
-     *
      * 批量删除 sku
-     * */
+     */
     @Transactional
     public Integer bulkDeleteSku(Ids ids) {
         int affect = 0;
@@ -221,8 +231,6 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         }
         return affect;
     }
-
-
 
 
     /**
@@ -275,7 +283,6 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         CreateSkuProductModel productModel = JSONObject.parseObject(JSONObject.toJSONString(productObject), CreateSkuProductModel.class);
         return productModel;
     }
-
 
 
     @Transactional
