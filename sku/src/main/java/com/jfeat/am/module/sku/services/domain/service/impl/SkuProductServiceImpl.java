@@ -116,7 +116,170 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
     }
 
 
+    /**
+     * update sku 以及 产品 ，只有一个 sku
+     * */
     @Transactional
+    public Integer updateSkuMaster(Long skuId, CreateSkuProductModel model) {
+        // 更新 产品
+        int affect = 0;
+        affect += productMapper.updateById(model);
+
+        SkuProduct originSkuProduct = crudSkuProductService.retrieveMaster(skuId);
+        SkuPriceHistory history = new SkuPriceHistory();
+        history.setSkuId(skuId);
+        history.setAfterPrice(originSkuProduct.getSkuPrice());
+        SkuPriceHistory originHistory = skuPriceHistoryMapper.selectOne(history);
+
+
+        if (model.getSkus().get(0).getSkuPrice() != null && model.getSkus().get(0).getSkuPrice().compareTo(originSkuProduct.getSkuPrice()) != 0) {
+            SkuPriceHistory updateHistory = new SkuPriceHistory();
+            updateHistory.setOriginPrice(originHistory.getAfterPrice());
+            updateHistory.setAfterPrice(model.getSkus().get(0).getSkuPrice());
+            updateHistory.setUpdateTime(new Date());
+            affect += skuPriceHistoryMapper.insert(history);
+        }
+        affect += crudSkuProductService.updateMaster(model.getSkus().get(0), null, null, null);
+
+
+        if (model.getSkus().get(0).getSpecId() == null || model.getSkus().get(0).getSpecId().size() == 0) {
+            skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
+        } else {
+            skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
+            for (Long id : model.getSkus().get(0).getSpecId()) {
+                SkuSpecification specification = new SkuSpecification();
+                specification.setSkuId(skuId);
+                specification.setGroupId(id);
+                affect += skuSpecificationMapper.insert(specification);
+            }
+        }
+        return affect;
+    }
+
+    /**
+     *
+     * 删除该产品下所有的 sku
+     * */
+    @Transactional
+    public Integer deleteSkus(Long productId) {
+        int affect = 0;
+        List<SkuProduct> skus = skuProductMapper.selectList(new EntityWrapper<SkuProduct>().eq("product_id", productId));
+        for (SkuProduct sku : skus) {
+            affect += skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", sku.getId()));
+            affect += skuPriceHistoryMapper.delete(new EntityWrapper<SkuPriceHistory>().eq("sku_id", sku.getId()));
+            affect += skuPhotoMapper.delete(new EntityWrapper<SkuPhoto>().eq("sku_id", sku.getId()));
+            affect += skuTagRelationMapper.delete(new EntityWrapper<SkuTagRelation>().eq("sku_id", sku.getId()));
+            affect += skuUnitMapper.delete(new EntityWrapper<SkuUnit>().eq("sku_id", sku.getId()));
+            affect += crudSkuProductService.deleteMaster(sku.getId());
+        }
+        return affect;
+    }
+
+
+    /**
+     * 删除单个 sku
+     * */
+    @Transactional
+    public Integer deleteSku(Long skuId){
+        int affect = 0;
+        affect += skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
+        affect += skuPriceHistoryMapper.delete(new EntityWrapper<SkuPriceHistory>().eq("sku_id", skuId));
+        affect += skuPhotoMapper.delete(new EntityWrapper<SkuPhoto>().eq("sku_id", skuId));
+        affect += skuTagRelationMapper.delete(new EntityWrapper<SkuTagRelation>().eq("sku_id", skuId));
+        affect += skuUnitMapper.delete(new EntityWrapper<SkuUnit>().eq("sku_id", skuId));
+        affect += crudSkuProductService.deleteMaster(skuId);
+
+        return affect;
+    }
+
+
+    /**
+     * 删除产品
+     * */
+    @Transactional
+    public Integer deleteProduct(Long productId) {
+        int affect = deleteSkus(productId);
+        affect += productMapper.deleteById(productId);
+        return affect;
+    }
+
+
+    /**
+     *
+     * 批量删除 sku
+     * */
+    @Transactional
+    public Integer bulkDeleteSku(Ids ids) {
+        int affect = 0;
+        for (Long skuId : ids.getIds()) {
+            affect += skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
+            affect += skuPriceHistoryMapper.delete(new EntityWrapper<SkuPriceHistory>().eq("sku_id", skuId));
+            affect += skuPhotoMapper.delete(new EntityWrapper<SkuPhoto>().eq("sku_id", skuId));
+            affect += skuTagRelationMapper.delete(new EntityWrapper<SkuTagRelation>().eq("sku_id", skuId));
+            affect += skuUnitMapper.delete(new EntityWrapper<SkuUnit>().eq("sku_id", skuId));
+            affect += crudSkuProductService.deleteMaster(skuId);
+        }
+        return affect;
+    }
+
+
+
+
+    /**
+     * all sku msg including product
+     */
+    @Transactional
+    public CreateSkuProductModel skuTotalDetails(Long id) {
+
+        SkuProduct model = crudSkuProductService.retrieveMaster(id);
+        JSONObject object = JSON.parseObject(JSON.toJSONString(model));
+
+        List<SkuPhoto> photos = skuPhotoMapper.selectList(new EntityWrapper<SkuPhoto>().eq("sku_id", id));
+        object.put("skuPhotos", photos);
+
+        List<SkuSpecification> specifications = skuSpecificationMapper.selectList((new EntityWrapper<SkuSpecification>().eq("sku_id", id)));
+        List<SkuSpecificationGroupModel> groups = new ArrayList<>();
+        for (SkuSpecification skuSpecification : specifications) {
+            SkuSpecificationGroup group = skuSpecificationGroupMapper.selectById(skuSpecification.getGroupId());
+            SkuSpecificationGroup parentGroup = skuSpecificationGroupMapper.selectById(group.getPid());
+            if (groups == null || groups.size() == 0) {
+                JSONObject parent = JSON.parseObject(JSON.toJSONString(parentGroup));
+                parent.put("items", group);
+                SkuSpecificationGroupModel parentModel = JSONObject.parseObject(JSONObject.toJSONString(parent), SkuSpecificationGroupModel.class);
+                groups.add(parentModel);
+            } else {
+                SkuSpecificationGroupModel fixed = new SkuSpecificationGroupModel();
+                for (SkuSpecificationGroupModel isExist : groups) {
+                    if (!parentGroup.getId().equals(isExist.getId())) {
+                        JSONObject parent = JSON.parseObject(JSON.toJSONString(parentGroup));
+                        parent.put("items", group);
+                        fixed = JSONObject.parseObject(JSONObject.toJSONString(parent), SkuSpecificationGroupModel.class);
+                    } else {
+                        fixed.getItems().add(group);
+                    }
+                }
+                groups.add(fixed);
+            }
+        }
+        object.put("items", groups == null ? null : groups);
+
+        SkuProductModel skuProductModel = JSONObject.parseObject(JSONObject.toJSONString(object), SkuProductModel.class);
+
+        Product product = productMapper.selectById(skuProductModel.getProductId());
+        JSONObject productObject = JSON.parseObject(JSON.toJSONString(product));
+
+        List<SkuProductModel> skuProductModels = new ArrayList<>();
+        skuProductModels.add(skuProductModel);
+        productObject.put("skus", skuProductModels == null ? null : skuProductModels);
+
+        CreateSkuProductModel productModel = JSONObject.parseObject(JSONObject.toJSONString(productObject), CreateSkuProductModel.class);
+        return productModel;
+    }
+
+
+
+    @Transactional
+    @Deprecated
     public Integer updateSku(Long productId, CreateSkuProductModel model) {
         // 更新 产品
         int affect = 0;
@@ -184,43 +347,6 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
     }
 
 
-    @Transactional
-    public Integer deleteSkus(Long productId) {
-        int affect = 0;
-        List<SkuProduct> skus = skuProductMapper.selectList(new EntityWrapper<SkuProduct>().eq("product_id", productId));
-        for (SkuProduct sku : skus) {
-            affect += skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", sku.getId()));
-            affect += skuPriceHistoryMapper.delete(new EntityWrapper<SkuPriceHistory>().eq("sku_id", sku.getId()));
-            affect += skuPhotoMapper.delete(new EntityWrapper<SkuPhoto>().eq("sku_id", sku.getId()));
-            affect += skuTagRelationMapper.delete(new EntityWrapper<SkuTagRelation>().eq("sku_id", sku.getId()));
-            affect += skuUnitMapper.delete(new EntityWrapper<SkuUnit>().eq("sku_id", sku.getId()));
-            affect += crudSkuProductService.deleteMaster(sku.getId());
-        }
-        return affect;
-    }
-
-    @Transactional
-    public Integer deleteProduct(Long productId) {
-        int affect = deleteSkus(productId);
-        affect += productMapper.deleteById(productId);
-        return affect;
-    }
-
-    @Transactional
-    public Integer deleteSku(Ids ids) {
-        int affect = 0;
-        for (Long skuId : ids.getIds()) {
-            affect += skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
-            affect += skuPriceHistoryMapper.delete(new EntityWrapper<SkuPriceHistory>().eq("sku_id", skuId));
-            affect += skuPhotoMapper.delete(new EntityWrapper<SkuPhoto>().eq("sku_id", skuId));
-            affect += skuTagRelationMapper.delete(new EntityWrapper<SkuTagRelation>().eq("sku_id", skuId));
-            affect += skuUnitMapper.delete(new EntityWrapper<SkuUnit>().eq("sku_id", skuId));
-            affect += crudSkuProductService.deleteMaster(skuId);
-        }
-        return affect;
-    }
-
-
     /**
      * all sku in this product
      */
@@ -241,55 +367,5 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         CreateSkuProductModel model = JSONObject.parseObject(JSONObject.toJSONString(object), CreateSkuProductModel.class);
         return model;
     }
-
-    /**
-     * all sku msg including product
-     */
-    @Transactional
-    public CreateSkuProductModel skuTotalDetails(Long id) {
-
-        SkuProduct model = crudSkuProductService.retrieveMaster(id);
-        JSONObject object = JSON.parseObject(JSON.toJSONString(model));
-
-        List<SkuPhoto> photos = skuPhotoMapper.selectList(new EntityWrapper<SkuPhoto>().eq("sku_id", id));
-        object.put("skuPhotos", photos);
-
-        List<SkuSpecification> specifications = skuSpecificationMapper.selectList((new EntityWrapper<SkuSpecification>().eq("sku_id", id)));
-        List<SkuSpecificationGroupModel> groups = new ArrayList<>();
-        for (SkuSpecification skuSpecification : specifications) {
-            SkuSpecificationGroup group = skuSpecificationGroupMapper.selectById(skuSpecification.getGroupId());
-            SkuSpecificationGroup parentGroup = skuSpecificationGroupMapper.selectById(group.getPid());
-            if (groups == null || groups.size() == 0) {
-                JSONObject parent = JSON.parseObject(JSON.toJSONString(parentGroup));
-                parent.put("items", group);
-                SkuSpecificationGroupModel parentModel = JSONObject.parseObject(JSONObject.toJSONString(parent), SkuSpecificationGroupModel.class);
-                groups.add(parentModel);
-            } else {
-                SkuSpecificationGroupModel fixed = new SkuSpecificationGroupModel();
-                for (SkuSpecificationGroupModel isExist : groups) {
-                    if (!parentGroup.getId().equals(isExist.getId())) {
-                        JSONObject parent = JSON.parseObject(JSON.toJSONString(parentGroup));
-                        parent.put("items", group);
-                        fixed = JSONObject.parseObject(JSONObject.toJSONString(parent), SkuSpecificationGroupModel.class);
-                    } else {
-                        fixed.getItems().add(group);
-                    }
-                }
-                groups.add(fixed);
-            }
-        }
-        object.put("items", groups == null ? null : groups);
-
-        SkuProductModel skuProductModel = JSONObject.parseObject(JSONObject.toJSONString(object), SkuProductModel.class);
-
-        Product product = productMapper.selectById(skuProductModel.getProductId());
-        JSONObject productObject = JSON.parseObject(JSON.toJSONString(product));
-
-        List<SkuProductModel> skuProductModels = new ArrayList<>();
-        skuProductModels.add(skuProductModel);
-        productObject.put("skus", skuProductModels == null ? null : skuProductModels);
-
-        CreateSkuProductModel productModel = JSONObject.parseObject(JSONObject.toJSONString(productObject), CreateSkuProductModel.class);
-        return productModel;
-    }
 }
+

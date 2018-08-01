@@ -19,6 +19,12 @@ public interface SkuProductService extends CRUDSkuProductService{
     Integer updateSku(Long skuId,CreateSkuProductModel entity);
 
     /**
+     * update sku 以及 产品 ，只有一个 sku
+     * */
+    @Transactional
+    public Integer updateSkuMaster(Long skuId, CreateSkuProductModel model);
+
+    /**
      * 删除 产品下所有的 sku
      *
      * */
@@ -32,13 +38,18 @@ public interface SkuProductService extends CRUDSkuProductService{
     @Transactional
     Integer deleteProduct(Long productId);
 
+
     /**
-     *
-     * 删除 单个 sku
-     *
+     * 删除单个 sku
+     * */
+    @Transactional
+    Integer deleteSku(Long skuId);
+
+    /**
+     *  批量删除sku
      */
     @Transactional
-    Integer deleteSku(Ids ids);
+    Integer bulkDeleteSku(Ids ids);
 
 
     /**

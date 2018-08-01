@@ -61,7 +61,6 @@ public class SkuProductEndpoint extends BaseController {
     @GetMapping("/{id}")
     @ApiOperation("查看 sku")
     public Tip getSkuProduct(@PathVariable Long id) {
-        // TODO details
         return SuccessTip.create(skuProductService.skuTotalDetails(id));
     }
 
@@ -70,14 +69,21 @@ public class SkuProductEndpoint extends BaseController {
     @ApiOperation("修改 sku 同时 (也可以修改产品)")
     public Tip updateSkuProduct(@PathVariable Long id, @RequestBody CreateSkuProductModel entity) {
         entity.getSkus().get(0).setId(id);
-        return SuccessTip.create(skuProductService.updateSku(id,entity));
+        return SuccessTip.create(skuProductService.updateSkuMaster(id,entity));
     }
 
     @BusinessLog(name = "SkuProduct", value = "delete SkuProduct")
-    @DeleteMapping
+    @DeleteMapping("/id")
     @ApiOperation("删除单个Sku")
-    public Tip deleteSkuProduct(@RequestBody Ids ids) {
-        return SuccessTip.create(skuProductService.deleteSku(ids));
+    public Tip deleteSkuProduct(@PathVariable Long id) {
+        return SuccessTip.create(skuProductService.deleteSku(id));
+    }
+
+    @BusinessLog(name = "SkuProduct", value = "delete SkuProduct")
+    @PostMapping("/bulk/delete")
+    @ApiOperation("删除单个Sku")
+    public Tip deleteSkus(@RequestBody Ids ids) {
+        return SuccessTip.create(skuProductService.bulkDeleteSku(ids));
     }
 
     @GetMapping
