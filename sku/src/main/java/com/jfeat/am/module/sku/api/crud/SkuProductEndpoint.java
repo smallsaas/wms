@@ -72,7 +72,7 @@ public class SkuProductEndpoint extends BaseController {
     }
 
     @BusinessLog(name = "SkuProduct", value = "delete SkuProduct")
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     @ApiOperation("删除单个Sku")
     public Tip deleteSkuProduct(@PathVariable Long id) {
         return SuccessTip.create(skuProductService.deleteSku(id));
