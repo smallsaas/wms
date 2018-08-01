@@ -29,8 +29,6 @@ CREATE TABLE `wms_storage_in_item` (
 `transaction_sku_price` decimal(12,4) NOT NULL COMMENT '出\入库价格',
 `transaction_quantities`  int(11)  NOT NULL COMMENT '操作数量',
 `transaction_time` datetime NOT NULL COMMENT '操作时间',
-`warehouse_id` bigint(20) NOT NULL COMMENT '出入库操作仓库ID',
-`slot_id` bigint(20) DEFAULT NULL COMMENT '储位Id',
 PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -63,7 +61,6 @@ CREATE TABLE `wms_storage_out_item` (
 `transaction_sku_price` decimal(12,4) NOT NULL COMMENT '出\入库价格',
 `transaction_quantities`  int(11)  NOT NULL COMMENT '操作数量',
 `transaction_time` datetime DEFAULT NULL COMMENT '操作时间',
-`warehouse_id` bigint(20) DEFAULT NULL COMMENT '出入库操作仓库ID',
 PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -219,32 +216,6 @@ PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-DROP TABLE IF EXISTS `wms_sku`;
-CREATE TABLE `wms_sku` (
-`id` bigint(20) NOT NULL  AUTO_INCREMENT,
-`sku_code` varchar(255) NOT NULL COMMENT 'sku编号',
-`sku_name` varchar(255) NOT NULL COMMENT 'sku名称',
-`unit_id` bigint(20) DEFAULT NULL COMMENT '单位Id',
-`product_id` bigint(20) NOT NULL COMMENT '产品ID',
-`spec_id` bigint(20) DEFAULT NULL COMMENT '产品规格',
-`sku_price` decimal(12,4) NOT NULL COMMENT '产品价格',
-`bar_code` varchar(255) DEFAULT NULL COMMENT '条形码',
-`create_time` datetime NOT NULL COMMENT '创建时间',
-UNIQUE(`sku_code`,`sku_name`),
-PRIMARY KEY (`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `wms_sku_price_history`;
-CREATE TABLE `wms_sku_price_history` (
-`id` bigint(20) NOT NULL  AUTO_INCREMENT,
-`sku_id` bigint(20) NOT NULL COMMENT '单位Id',
-`origin_price` decimal(12,4) NOT NULL COMMENT '原来价格',
-`after_price` decimal(12,4) DEFAULT NULL COMMENT '更新后价格',
-`update_time` datetime DEFAULT NULL COMMENT '更新时间',
-PRIMARY KEY (`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
 DROP TABLE IF EXISTS `wms_check`;
 CREATE TABLE `wms_check` (
 `id` bigint(20) NOT NULL  AUTO_INCREMENT,
@@ -274,18 +245,6 @@ CREATE TABLE `wms_check_sku` (
 UNIQUE(`check_id`,`sku_id`),
 PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-DROP TABLE IF EXISTS `t_product_sku`;
-CREATE TABLE `t_product_sku` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sku_id` bigint(20) NOT NULL COMMENT 'skuId',
-  `unit_id` bigint(20) NOT NULL COMMENT '单位Id',
-  `spec_id` bigint(20) NOT NULL COMMENT '规格 Id',
-  `product_id` bigint(20) NOT NULL COMMENT '产品Id',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY (`product_id`,`sku_id`,`unit_id`,`spec_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
