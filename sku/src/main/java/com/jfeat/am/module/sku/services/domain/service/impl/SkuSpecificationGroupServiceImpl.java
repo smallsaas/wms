@@ -86,10 +86,9 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
 
         int affect = 0;
         entity.setId(categoryId);
-        categoryMapper.updateById(entity);
+        affect += categoryMapper.updateById(entity);
 
         if (entity.getGroups() != null && entity.getGroups().size() > 0) {
-            deleteCategory(categoryId);
             for (SkuSpecificationGroupModel group : entity.getGroups()) {
                 group.setPid(categoryId);
                 group.setType("Category");
@@ -99,26 +98,36 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
                     affect += skuSpecificationGroupMapper.insert(group);
                     if (group.getItems() != null && group.getItems().size() > 0) {
                         for (SkuSpecificationGroup child : group.getItems()) {
-                            // 插入 父节点
                             child.setType("Spec");
                             child.setPid(group.getId());
                             affect += skuSpecificationGroupMapper.insert(child);
                         }
                     }
                 } else {
+                    affect += skuSpecificationGroupMapper.updateById(group);
                     if (group.getItems() != null && group.getItems().size() > 0) {
                         for (SkuSpecificationGroup child : group.getItems()) {
                             // 子节点  不为空
-                            skuSpecificationGroupMapper.delete(new EntityWrapper<SkuSpecificationGroup>().eq("pid",isExist.getId()).like("type","Spec"));
                             child.setPid(isExist.getId());
                             child.setType("Spec");
-                            affect += skuSpecificationGroupMapper.insert(child);
+                            SkuSpecificationGroup originChild = skuSpecificationGroupMapper.selectOne(child);
+                            if (originChild==null){
+                                affect += skuSpecificationGroupMapper.insert(child);
+                            }else {
+                                affect += skuSpecificationGroupMapper.updateById(child);
+                            }
                         }
                     }
                 }
             }
         } else {
-                deleteCategory(categoryId);
+            List<SkuSpecificationGroup> groups = skuSpecificationGroupMapper.selectList(new EntityWrapper<SkuSpecificationGroup>()
+                    .eq("pid", categoryId).like("type", "Category"));
+            for (SkuSpecificationGroup group : groups) {
+                affect += skuSpecificationGroupMapper.delete(new EntityWrapper<SkuSpecificationGroup>()
+                        .eq("pid", group.getId()).like("type", "Spec"));
+                affect += skuSpecificationGroupMapper.deleteById(group.getId());
+            }
         }
         return affect;
     }
