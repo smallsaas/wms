@@ -75,7 +75,6 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
             for (StorageOutItem outItem : model.getItems()) {
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());
-                isExistInventory.setWarehouseId(outItem.getWarehouseId());
                 Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                 if (originInventory != null) {
                     //TODO  前端 怎么去 处理 输入的 数量，大于 库存数量呢 ？

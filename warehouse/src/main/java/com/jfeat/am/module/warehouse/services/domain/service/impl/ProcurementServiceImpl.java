@@ -70,14 +70,12 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             for (StorageInItem inItem : model.getItems()) {
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(inItem.getSkuId());
-                isExistInventory.setWarehouseId(inItem.getWarehouseId());
                 Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                 if (originInventory != null) {
                     if (model.getProcureStatus().compareTo(ProcurementStatus.TotalStorageIn.toString()) == 0) {
                         //全部 入库 则全部 插入
 
                         originInventory.setValidSku(originInventory.getValidSku() + inItem.getTransactionQuantities());
-                        originInventory.setWarehouseId(inItem.getWarehouseId());
                         affected += inventoryMapper.updateById(originInventory);
 
 //                        (model.getProcureStatus().compareTo(ProcurementStatus.WaitForStorageIn.toString()) == 0)
@@ -86,8 +84,6 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                         affected += inventoryMapper.updateById(originInventory);
                     }
                 } else {
-                    isExistInventory.setWarehouseId(inItem.getWarehouseId());
-                    isExistInventory.setSlotId(inItem.getSlotId());
                     isExistInventory.setValidSku(inItem.getTransactionQuantities());
                     affected += inventoryMapper.insert(isExistInventory);
                 }
@@ -132,7 +128,6 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 for (StorageInItem inItem : model.getItems()) {
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(inItem.getSkuId());
-                    isExistInventory.setWarehouseId(inItem.getWarehouseId());
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                     originInventory.setValidSku(originInventory.getValidSku()+inItem.getTransactionQuantities());
                     inventoryMapper.updateById(originInventory);
