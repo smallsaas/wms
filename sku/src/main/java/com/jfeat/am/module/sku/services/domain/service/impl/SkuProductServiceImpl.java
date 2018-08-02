@@ -92,6 +92,15 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                     history.setAfterPrice(entity.getSkuPrice());
                     history.setUpdateTime(new Date());
                     affect += skuPriceHistoryMapper.insert(history);
+                } else {
+                    SkuPriceHistory history = new SkuPriceHistory();
+                    // 初始 插入 的时候 原始 以及 修改 后的 价格 都一样
+                    history.setOriginPrice(null);
+                    history.setSkuId(skuProductFilter.result().get("id") == null ? null : (Long) skuProductFilter.result().get("id"));
+                    history.setAfterPrice(null);
+                    history.setUpdateTime(new Date());
+                    affect += skuPriceHistoryMapper.insert(history);
+
                 }
             }
         } else {
@@ -112,6 +121,14 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                 history.setAfterPrice(entity.getSkuPrice());
                 history.setUpdateTime(new Date());
                 affect += skuPriceHistoryMapper.insert(history);
+            } else {
+                SkuPriceHistory history = new SkuPriceHistory();
+                history.setOriginPrice(null);
+                history.setSkuId(skuProductFilter.result().get("id") == null ? null : (Long) skuProductFilter.result().get("id"));
+                history.setAfterPrice(null);
+                history.setUpdateTime(new Date());
+                affect += skuPriceHistoryMapper.insert(history);
+
             }
         }
         return affect;
@@ -133,7 +150,6 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
 
         SkuPriceHistory history = new SkuPriceHistory();
         history.setSkuId(skuId);
-        history.setAfterPrice(originSkuProduct.getSkuPrice());
         SkuPriceHistory originHistory = skuPriceHistoryMapper.selectOne(history);
 
         if (model.getSkus() != null && model.getSkus().size() > 0) {
@@ -167,12 +183,12 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
             originSkuProduct.setProductId(model.getId());
 
             if (model.getCostPrice() != null && model.getCostPrice().compareTo(originSkuProduct.getSkuPrice()) != 0) {
-            SkuPriceHistory updateHistory = new SkuPriceHistory();
-            updateHistory.setOriginPrice(originHistory.getAfterPrice());
-            updateHistory.setAfterPrice(model.getCostPrice());
-            updateHistory.setSkuId(skuId);
-            updateHistory.setUpdateTime(new Date());
-            affect += skuPriceHistoryMapper.insert(updateHistory);
+                SkuPriceHistory updateHistory = new SkuPriceHistory();
+                updateHistory.setOriginPrice(originHistory.getAfterPrice());
+                updateHistory.setAfterPrice(model.getCostPrice());
+                updateHistory.setSkuId(skuId);
+                updateHistory.setUpdateTime(new Date());
+                affect += skuPriceHistoryMapper.insert(updateHistory);
             }
 
             originSkuProduct.setCostPrice(model.getCostPrice());
