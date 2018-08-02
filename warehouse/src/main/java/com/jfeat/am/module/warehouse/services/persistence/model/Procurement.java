@@ -36,11 +36,6 @@ public class Procurement extends Model<Procurement> {
 	@TableField("supplier_id")
 	private Long supplierId;
     /**
-     * 入库ID
-     */
-	@TableField("storage_in_id")
-	private Long storageInId;
-    /**
      * 采购其他支出
      */
 	@TableField("procurement_others_payment")
@@ -118,15 +113,6 @@ public class Procurement extends Model<Procurement> {
 
 	public Procurement setSupplierId(Long supplierId) {
 		this.supplierId = supplierId;
-		return this;
-	}
-
-	public Long getStorageInId() {
-		return storageInId;
-	}
-
-	public Procurement setStorageInId(Long storageInId) {
-		this.storageInId = storageInId;
 		return this;
 	}
 
@@ -270,7 +256,6 @@ public class Procurement extends Model<Procurement> {
 			"id=" + id +
 			", procurementCode=" + procurementCode +
 			", supplierId=" + supplierId +
-			", storageInId=" + storageInId +
 			", procurementOthersPayment=" + procurementOthersPayment +
 			", procurementDiscount=" + procurementDiscount +
 			", procurementTotal=" + procurementTotal +

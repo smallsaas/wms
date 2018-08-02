@@ -29,6 +29,7 @@ CREATE TABLE `wms_storage_in_item` (
 `transaction_sku_price` decimal(12,4) NOT NULL COMMENT '出\入库价格',
 `transaction_quantities`  int(11)  NOT NULL COMMENT '操作数量',
 `transaction_time` datetime NOT NULL COMMENT '操作时间',
+`type` varchar(26) DEFAULT NULL COMMENT '操作类型',
 PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -128,7 +129,6 @@ CREATE TABLE `wms_procurement` (
 `id` bigint(20) NOT NULL  AUTO_INCREMENT,
 `procurement_code` varchar(255) NOT NULL COMMENT '采购表编号',
 `supplier_id` bigint(20) NOT NULL COMMENT '供应商ID',
-`storage_in_id` bigint(20) NOT NULL COMMENT '入库ID',
 `procurement_others_payment` decimal(12,4) DEFAULT NULL COMMENT '采购其他支出',
 `procurement_discount`  int  DEFAULT NULL COMMENT '采购折扣',
 `procurement_total` decimal(12,4) NOT NULL COMMENT '总花费',

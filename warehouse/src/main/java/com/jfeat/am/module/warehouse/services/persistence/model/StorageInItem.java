@@ -53,6 +53,13 @@ public class StorageInItem extends Model<StorageInItem> {
     @TableField("transaction_time")
     private Date transactionTime;
 
+    /**
+     * 操作时间
+     */
+    @TableField("type")
+    private String type;
+
+
 
     public Long getId() {
         return id;
@@ -108,6 +115,13 @@ public class StorageInItem extends Model<StorageInItem> {
         return this;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public static final String ID = "id";
 
@@ -120,6 +134,8 @@ public class StorageInItem extends Model<StorageInItem> {
     public static final String TRANSACTION_QUANTITIES = "transaction_quantities";
 
     public static final String TRANSACTION_TIME = "transaction_time";
+
+    public static final String TYPE = "type";
 
 
 
@@ -137,6 +153,7 @@ public class StorageInItem extends Model<StorageInItem> {
                 ", transactionSkuPrice=" + transactionSkuPrice +
                 ", transactionQuantities=" + transactionQuantities +
                 ", transactionTime=" + transactionTime +
+                ", type=" + type +
                 "}";
     }
 }

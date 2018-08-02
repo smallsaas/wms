@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.jfeat.am.common.crud.CRUDObject;
+import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.modular.system.service.UserService;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDProcurementService;
@@ -17,6 +18,7 @@ import com.jfeat.am.module.warehouse.services.domain.service.ProcurementService;
 import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDProcurementServiceImpl;
 import com.jfeat.am.module.warehouse.services.domain.service.StorageInService;
 import com.jfeat.am.module.warehouse.services.persistence.dao.InventoryMapper;
+import com.jfeat.am.module.warehouse.services.persistence.dao.ProcurementMapper;
 import com.jfeat.am.module.warehouse.services.persistence.dao.StorageInItemMapper;
 import com.jfeat.am.module.warehouse.services.persistence.dao.StorageInMapper;
 import com.jfeat.am.module.warehouse.services.persistence.model.Inventory;
@@ -28,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -44,13 +47,13 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     StorageInService storageInService;
     @Resource
     CRUDProcurementService procurementService;
+    @Resource
+    ProcurementMapper procurementMapper;
 
     @Resource
     StorageInItemMapper storageInItemMapper;
     @Resource
     StorageInMapper storageInMapper;
-    @Resource
-    UserService userService;
     @Resource
     InventoryMapper inventoryMapper;
 
@@ -58,8 +61,49 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
      * 重构 procurement 问题
      */
     @Transactional
+    public Integer addProcurement(Long userId, ProcurementModel model) {
+
+        int affected = 0;
+
+        model.setOperator(userId);
+        model.setOriginatorId(userId);
+
+        affected += procurementMapper.insert(model);
+        if (model.getItems() == null || model.getItems().size() == 0) {
+            throw new BusinessException(5000, "请先选择需要采购的商品！");
+        }
+        for (StorageInItem item : model.getItems()) {
+            item.setStorageInId(model.getId());
+            item.setType(TransactionType.Procurement.toString());
+            affected += storageInItemMapper.insert(item);
+        }
+        return affected;
+    }
+
+
+    /**
+     * 执行入库
+     */
+    @Transactional
+    public Integer executionStorageIn(Long userId, Long procurementId) {
+
+        int affected = 0;
+
+        List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, procurementId)
+                .eq(StorageInItem.TYPE, TransactionType.Procurement.toString()));
+
+
+
+        return affected;
+    }
+
+
+    /**
+     * 重构 procurement 问题
+     */
+    @Transactional
     @Override
-    public Integer createProcurement(long userId, ProcurementModel model) {
+    public Integer createProcurement(Long userId, ProcurementModel model) {
         /**
          * 1.先执行生成入库单，然后拿到入库单的 id 插入的采购的表单中
          * 2.目前先按所有均以入库逻辑写
@@ -79,7 +123,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                         affected += inventoryMapper.updateById(originInventory);
 
 //                        (model.getProcureStatus().compareTo(ProcurementStatus.WaitForStorageIn.toString()) == 0)
-                    } else{
+                    } else {
                         originInventory.setTransmitQuantities(inItem.getTransactionQuantities());
                         affected += inventoryMapper.updateById(originInventory);
                     }
@@ -96,16 +140,13 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         storageInModel.setTransactionBy(userId);
         storageInModel.setTransactionCode(model.getProcurementCode());
         storageInModel.setTransactionTime(new Date());
-        storageInModel.setWarehouseId(model.getStorageInId());
         storageInModel.setOriginatorId(userId);
         StorageInFilter storageInFilter = new StorageInFilter();
         affected += storageInService.createMaster(storageInModel, storageInFilter, null, null);
 
-        model.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
         model.setOriginatorId(userId);
         model.setOperator(userId);
         model.setProcurementTime(new Date());
-
 
 
         affected += procurementService.createMaster(model);
@@ -123,13 +164,13 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         storageIn.setTransactionBy(userId);
         storageInService.updateMaster(storageIn, null, null, null);
         model.setOperator(userId);
-        if (model.getProcureStatus().compareTo(ProcurementStatus.TotalStorageIn.toString())==0){
+        if (model.getProcureStatus().compareTo(ProcurementStatus.TotalStorageIn.toString()) == 0) {
             if (model.getItems() != null && model.getItems().size() > 0) {
                 for (StorageInItem inItem : model.getItems()) {
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(inItem.getSkuId());
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
-                    originInventory.setValidSku(originInventory.getValidSku()+inItem.getTransactionQuantities());
+                    originInventory.setValidSku(originInventory.getValidSku() + inItem.getTransactionQuantities());
                     inventoryMapper.updateById(originInventory);
                 }
             }

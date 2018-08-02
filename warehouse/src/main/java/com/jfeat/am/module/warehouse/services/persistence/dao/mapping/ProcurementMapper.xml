@@ -7,7 +7,6 @@
 		<id column="id" property="id" />
 		<result column="procurement_code" property="procurementCode" />
 		<result column="supplier_id" property="supplierId" />
-		<result column="storage_in_id" property="storageInId" />
 		<result column="procurement_others_payment" property="procurementOthersPayment" />
 		<result column="procurement_discount" property="procurementDiscount" />
 		<result column="procurement_total" property="procurementTotal" />
@@ -23,7 +22,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, procurement_code AS procurementCode, supplier_id AS supplierId, storage_in_id AS storageInId, procurement_others_payment AS procurementOthersPayment, procurement_discount AS procurementDiscount, procurement_total AS procurementTotal, procurement_time AS procurementTime, procurement_note AS procurementNote, procure_status AS procureStatus, operator, originator_id AS originatorId, transaction_time AS transactionTime, field1, field2
+        id, procurement_code AS procurementCode, supplier_id AS supplierId,procurement_others_payment AS procurementOthersPayment, procurement_discount AS procurementDiscount, procurement_total AS procurementTotal, procurement_time AS procurementTime, procurement_note AS procurementNote, procure_status AS procureStatus, operator, originator_id AS originatorId, transaction_time AS transactionTime, field1, field2
     </sql>
 
 </mapper>
