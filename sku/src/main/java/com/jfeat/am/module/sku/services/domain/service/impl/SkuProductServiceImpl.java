@@ -67,6 +67,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
             for (SkuProductModel entity : model.getSkus()) {
 
                 entity.setSkuName(product.getName());
+                entity.setBarCode(product.getBarCode());
                 entity.setProductId(product.getId());
                 SkuProductFilter skuProductFilter = new SkuProductFilter();
                 affect += crudSkuProductService.createMaster(entity, skuProductFilter, null, null);
@@ -142,6 +143,9 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                 updateHistory.setUpdateTime(new Date());
                 affect += skuPriceHistoryMapper.insert(history);
             }
+            model.getSkus().get(0).setBarCode(model.getBarCode());
+            model.getSkus().get(0).setSkuName(model.getName());
+            model.getSkus().get(0).setSkuPrice(model.getPrice());
             affect += crudSkuProductService.updateMaster(model.getSkus().get(0), null, null, null);
 
 

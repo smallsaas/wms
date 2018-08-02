@@ -53,7 +53,6 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                 isExistInventory.setWarehouseId(entity.getWarehouseId());
                 Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                 if (originInventory != null) {
-                    //TODO  前端 怎么去 处理 输入的 数量，大于 库存数量呢 ？
                     if(outItem.getTransactionQuantities() > originInventory.getValidSku()){
                         throw new BusinessException(4050,"Lack of inventories");
                     }else {
