@@ -6,25 +6,25 @@
     </sql>
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.jfeat.am.module.sku.services.crud.model.SkuProductModel">
-        <id column="id" property="id" />
-        <result column="product_id" property="productId" />
-        <result column="sku_code" property="skuCode" />
-        <result column="sku_name" property="skuName" />
-        <result column="status" property="status" />
-        <result column="sort_value" property="sortValue" />
-        <result column="search_key_word" property="searchKeyWord" />
-        <result column="bar_code" property="barCode" />
-        <result column="description" property="description" />
-        <result column="sku_price" property="skuPrice" />
-        <result column="readjust_cost_price" property="readjustCostPrice" />
-        <result column="suggested_price" property="suggestedPrice" />
-        <result column="cost_price" property="costPrice" />
-        <result column="stock_cost" property="stockCost" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="field1" property="field1" />
-        <result column="field2" property="field2" />
-        <result column="field3" property="field3" />
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="sku_code" property="skuCode"/>
+        <result column="sku_name" property="skuName"/>
+        <result column="status" property="status"/>
+        <result column="sort_value" property="sortValue"/>
+        <result column="search_key_word" property="searchKeyWord"/>
+        <result column="bar_code" property="barCode"/>
+        <result column="description" property="description"/>
+        <result column="sku_price" property="skuPrice"/>
+        <result column="readjust_cost_price" property="readjustCostPrice"/>
+        <result column="suggested_price" property="suggestedPrice"/>
+        <result column="cost_price" property="costPrice"/>
+        <result column="stock_cost" property="stockCost"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="field1" property="field1"/>
+        <result column="field2" property="field2"/>
+        <result column="field3" property="field3"/>
         <collection property=""></collection>
     </resultMap>
 
@@ -39,7 +39,7 @@
         left join t_specification_group on t_sku_specification.group_id = t_specification_group.id
         left join t_product on t_product.id = t_sku_product.product_id
         left join t_product_category on t_product_category.id = t_product.product_category_id
-        left join wms_inventory on  wms_inventory.sku_id = t_sku_product.id
+        left join wms_inventory on wms_inventory.sku_id = t_sku_product.id
         left join wms_warehouse on wms_warehouse.id = wms_inventory.warehouse_id
 
 
@@ -58,6 +58,10 @@
 
         <if test="tagName != null and tagName!= ''">
             AND wms_warehouse.warehouse_name = #{warehouseName}
+        </if>
+
+        <if test="warehouseId != null and warehouseId > 0 ">
+            AND wms_warehouse.#{warehouseId}
         </if>
 
         <if test="record.id != null and record.id>0 ">
