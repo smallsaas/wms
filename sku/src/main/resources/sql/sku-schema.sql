@@ -152,7 +152,7 @@ DROP TABLE IF EXISTS `wms_sku_price_history`;
 CREATE TABLE `wms_sku_price_history` (
 `id` bigint(20) NOT NULL  AUTO_INCREMENT,
 `sku_id` bigint(20) NOT NULL COMMENT '单位Id',
-`origin_price` decimal(12,4) NOT NULL COMMENT '原来价格',
+`origin_price` decimal(12,4) default NULL COMMENT '原来价格',
 `after_price` decimal(12,4) DEFAULT NULL COMMENT '更新后价格',
 `update_time` datetime DEFAULT NULL COMMENT '更新时间',
 PRIMARY KEY (`id`)
