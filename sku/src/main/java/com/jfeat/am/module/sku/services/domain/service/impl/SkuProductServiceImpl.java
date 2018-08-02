@@ -94,12 +94,11 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                     affect += skuPriceHistoryMapper.insert(history);
                 } else {
                     SkuPriceHistory history = new SkuPriceHistory();
-                    // 初始 插入 的时候 原始 以及 修改 后的 价格 都一样
                     history.setOriginPrice(null);
                     history.setSkuId(skuProductFilter.result().get("id") == null ? null : (Long) skuProductFilter.result().get("id"));
                     history.setAfterPrice(null);
                     history.setUpdateTime(new Date());
-                    affect += skuPriceHistoryMapper.insert(history);
+                    affect += skuPriceHistoryMapper.insertAllColumn(history);
 
                 }
             }
@@ -127,7 +126,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                 history.setSkuId(skuProductFilter.result().get("id") == null ? null : (Long) skuProductFilter.result().get("id"));
                 history.setAfterPrice(null);
                 history.setUpdateTime(new Date());
-                affect += skuPriceHistoryMapper.insert(history);
+                affect += skuPriceHistoryMapper.insertAllColumn(history);
 
             }
         }
@@ -153,16 +152,17 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         SkuPriceHistory originHistory = skuPriceHistoryMapper.selectOne(history);
 
         if (model.getSkus() != null && model.getSkus().size() > 0) {
-            if (model.getSkus().get(0).getSkuPrice() != null && model.getSkus().get(0).getSkuPrice().compareTo(originSkuProduct.getSkuPrice()) != 0) {
+            if (model.getSkus().get(0).getSkuPrice() != null &&
+                    model.getSkus().get(0).getSkuPrice().compareTo(originSkuProduct.getSkuPrice()) != 0) {
                 SkuPriceHistory updateHistory = new SkuPriceHistory();
                 updateHistory.setOriginPrice(originHistory.getAfterPrice());
                 updateHistory.setAfterPrice(model.getSkus().get(0).getSkuPrice());
                 updateHistory.setUpdateTime(new Date());
-                affect += skuPriceHistoryMapper.insert(history);
+                affect += skuPriceHistoryMapper.insertAllColumn(history);
             }
             model.getSkus().get(0).setBarCode(model.getBarCode());
             model.getSkus().get(0).setSkuName(model.getName());
-            model.getSkus().get(0).setSkuPrice(model.getPrice());
+            model.getSkus().get(0).setSkuPrice(model.getCostPrice());
             affect += crudSkuProductService.updateMaster(model.getSkus().get(0), null, null, null);
 
 
@@ -188,7 +188,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                 updateHistory.setAfterPrice(model.getCostPrice());
                 updateHistory.setSkuId(skuId);
                 updateHistory.setUpdateTime(new Date());
-                affect += skuPriceHistoryMapper.insert(updateHistory);
+                affect += skuPriceHistoryMapper.insertAllColumn(updateHistory);
             }
 
             originSkuProduct.setCostPrice(model.getCostPrice());
@@ -274,7 +274,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         List<SkuPhoto> photos = skuPhotoMapper.selectList(new EntityWrapper<SkuPhoto>().eq("sku_id", id));
         object.put("skuPhotos", photos);
 
-        List<SkuPriceHistory> histories= skuPriceHistoryMapper.selectList(new EntityWrapper<SkuPriceHistory>().eq("sku_id", id));
+        List<SkuPriceHistory> histories = skuPriceHistoryMapper.selectList(new EntityWrapper<SkuPriceHistory>().eq("sku_id", id));
         object.put("priceHistories", histories);
 
 
