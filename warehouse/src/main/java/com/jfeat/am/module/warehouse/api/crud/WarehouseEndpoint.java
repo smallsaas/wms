@@ -64,11 +64,11 @@ public class WarehouseEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
+    @BusinessLog(name = "Warehouse", value = "view Warehouse")
     @GetMapping("/{id}")
     @ApiOperation(value = "查看仓库信息", response = WarehouseModel.class)
-
     public Tip getWarehouse(@PathVariable Long id) {
-        return SuccessTip.create(warehouseService.retrieveMaster(id, null, null, null).toJSONObject());
+        return SuccessTip.create(warehouseService.warehouseDetails(id));
     }
 
     @BusinessLog(name = "Warehouse", value = "update Warehouse")
