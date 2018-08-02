@@ -102,7 +102,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                 if (originInventory != null) {
                     if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
-                        throw new BusinessException(4050, "Lack of inventories");
+                        throw new BusinessException(4050, "库存不足,"+ "现有库存"+ originInventory.getValidSku() +"小于出库量"+outItem.getTransactionQuantities());
                     } else {
                         originInventory.setValidSku(originInventory.getValidSku() - outItem.getTransactionQuantities());
                         affected += inventoryMapper.updateById(originInventory);

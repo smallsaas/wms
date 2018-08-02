@@ -56,7 +56,6 @@ public class WarehouseEndpoint extends BaseController {
         Integer affected = 0;
         try {
             affected = warehouseService.createMaster(entity, null, null, null);
-            ;
 
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);

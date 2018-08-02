@@ -45,8 +45,25 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             entity.setTransactionBy(userId);
         }
         entity.setTransactionTime(new Date());
-
-
+        affected = crudStorageOutService.createMaster(entity, null, null, null);
+        if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
+            for (StorageOutItem outItem : entity.getStorageOutItems()) {
+                Inventory isExistInventory = new Inventory();
+                isExistInventory.setSkuId(outItem.getSkuId());
+                isExistInventory.setWarehouseId(entity.getWarehouseId());
+                Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                if (originInventory != null) {
+                    if(outItem.getTransactionQuantities() > originInventory.getValidSku()){
+                        throw new BusinessException(4050,"库存不足,"+ "现有库存"+ originInventory.getValidSku() +"小于出库量"+outItem.getTransactionQuantities());
+                    }else {
+                        originInventory.setValidSku(originInventory.getValidSku() - outItem.getTransactionQuantities());
+                        affected += inventoryMapper.updateById(originInventory);
+                    }
+                } else {
+                    throw new BusinessException(4051,"产品不存在，请核对！");
+                }
+            }
+        }
         return affected;
     }
 }
