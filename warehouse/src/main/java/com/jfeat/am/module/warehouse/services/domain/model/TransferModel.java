@@ -10,22 +10,12 @@ import java.util.List;
  * Created by Code Generator on 2018-06-22
  */
 public class TransferModel extends Transfer{
-    List<StorageInItem> inItems;
     List<StorageOutItem> outItems;
     String originatorName;
     String operatorName;
 
     String fromWarehouseName;
     String toWarehouseName;
-
-
-    public List<StorageInItem> getInItems() {
-        return inItems;
-    }
-
-    public void setInItems(List<StorageInItem> inItems) {
-        this.inItems = inItems;
-    }
 
     public List<StorageOutItem> getOutItems() {
         return outItems;

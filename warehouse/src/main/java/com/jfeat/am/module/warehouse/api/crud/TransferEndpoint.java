@@ -74,12 +74,19 @@ public class TransferEndpoint extends BaseController {
     }
 
     @BusinessLog(name = "Transfer", value = "update Transfer")
-    @PutMapping("/{id}")
-    @ApiOperation(value = "修改调拨表",response = TransferModel.class)
-
-    public Tip updateTransfer(@PathVariable Long id, @RequestBody TransferModel entity) {
+    @PutMapping("/{id}/done")
+    @ApiOperation(value = "调拨完成",response = TransferModel.class)
+    public Tip doneTransfer(@PathVariable Long id, @RequestBody TransferModel entity) {
         entity.setId(id);
-        return SuccessTip.create(transferService.updateTransfer(entity, JWTKit.getUserId(getHttpServletRequest())));
+        return SuccessTip.create(transferService.doneTransfer(id,entity, JWTKit.getUserId(getHttpServletRequest())));
+    }
+
+    @BusinessLog(name = "Transfer", value = "update Transfer")
+    @PutMapping("/{id}/cancel")
+    @ApiOperation(value = "调拨作废",response = TransferModel.class)
+    public Tip cancelTransfer(@PathVariable Long id, @RequestBody TransferModel entity) {
+        entity.setId(id);
+        return SuccessTip.create(transferService.cancelTransfer(id,entity, JWTKit.getUserId(getHttpServletRequest())));
     }
 
     @BusinessLog(name = "Transfer", value = "delete Transfer")

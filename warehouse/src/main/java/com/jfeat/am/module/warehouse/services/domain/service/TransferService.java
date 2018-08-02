@@ -10,14 +10,25 @@ import org.springframework.transaction.annotation.Transactional;
 public interface TransferService extends CRUDTransferService{
 
     @Transactional
-    Integer deleteTransfer(long id);
+    Integer deleteTransfer(Long id);
 
-    TransferModel transferDetails(long id);
+    TransferModel transferDetails(Long id);
+
+    /**
+     * 接受方完成 调拨 ，插入 调拨 货物 及 更新 库存 ,接受方拒绝 ，调拨作废，回到 原来的 仓库
+     */
+    @Transactional
+    Integer doneTransfer(Long id,TransferModel model, Long userId);
+
 
     @Transactional
-    Integer updateTransfer(TransferModel model, long userId);
+    Integer createTransfer(TransferModel model, Long userId);
 
+
+    /**
+     * 接受方拒接 调拨 ，插入 调拨 货物 及 更新 库存 ,接受方拒绝 ，调拨作废，回到 原来的 仓库
+     */
     @Transactional
-    Integer createTransfer(TransferModel model, long userId);
-    
+    Integer cancelTransfer(Long id,TransferModel model, Long userId);
+
 }

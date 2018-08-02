@@ -1,0 +1,80 @@
+{
+  "transactionCode": "IN2018020800183qiR",
+  "transactionTime": "2018-08-02 11:37:46",
+  "fromWarehouseId": "2",
+  "toWarehouseId": "2",
+  "note": "是广东省房",
+  "outItems": [
+    {
+      "skuCode": "P2018020800525DtK",
+      "skuName": "测试",
+      "skuId": "1",
+      "transactionSkuPrice": 12,
+      "transactionQuantities": 1,
+      "transactionTime": "2018-08-02 09:33:22"
+    }, {
+      "skuCode": "P2018020800526RUq",
+      "skuName": "美白面膜",
+      "skuId": "2",
+      "transactionSkuPrice": 300,
+      "transactionQuantities": 1,
+      "transactionTime": "2018-08-02 09:33:25"
+    }, {
+      "skuCode": "P2018020800527TOM",
+      "skuName": "product-build",
+      "key": "3",
+      "skuId": "3",
+      "transactionSkuPrice": 123,
+      "transactionQuantities": 1,
+      "transactionTime": "2018-08-02 09:33:31"
+    }, {
+      "skuCode": "P2018020800528GsE",
+      "skuName": "倒是发广发的",
+      "skuId": "4",
+      "transactionSkuPrice": 213,
+      "transactionQuantities": 1,
+      "transactionTime": "2018-08-02 09:33:41"
+    }, {
+      "skuCode": "P2018020800545Fid",
+      "skuName": "撒地方发萨达撒反对",
+      "skuId": "6",
+      "transactionQuantities": 1,
+      "transactionTime": "2018-08-02 11:31:10",
+      "skuBarcode": "321321231312"
+    }, {
+      "skuCode": "P2018020800525DtK",
+      "skuName": "测试",
+      "skuId": "1",
+      "transactionSkuPrice": 12,
+      "transactionQuantities": 1,
+      "transactionTime": "2018-08-02 09:33:22"
+    }, {
+      "skuCode": "P2018020800526RUq",
+      "skuName": "美白面膜",
+      "skuId": "2",
+      "transactionSkuPrice": 300,
+      "transactionQuantities": 1,
+      "transactionTime": "2018-08-02 09:33:25"
+    }, {
+      "skuCode": "P2018020800527TOM",
+      "skuName": "product-build",
+      "skuId": "3",
+      "transactionSkuPrice": 123,
+      "transactionQuantities": 1,
+      "transactionTime": "2018-08-02 09:33:31"
+    }, {
+      "skuCode": "P2018020800528GsE",
+      "skuName": "倒是发广发的",
+      "skuId": "4",
+      "transactionSkuPrice": 213,
+      "transactionQuantities": 1,
+      "transactionTime": "2018-08-02 09:33:41"
+    }, {
+      "skuCode": "P2018020800545Fid",
+      "skuName": "撒地方发萨达撒反对",
+      "skuId": "6",
+      "transactionQuantities": 1,
+      "transactionTime": "2018-08-02 11:31:10",
+      "skuBarcode": "321321231312"
+    }]
+}
