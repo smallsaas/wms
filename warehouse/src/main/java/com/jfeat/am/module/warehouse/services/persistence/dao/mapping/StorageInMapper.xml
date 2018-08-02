@@ -18,11 +18,12 @@
 		<result column="readjust_cost_price" property="readjustCostPrice" />
 		<result column="field1" property="field1" />
 		<result column="field2" property="field2" />
+		<result column="procurement_id" property="procurementId" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, transaction_code AS transactionCode, transaction_type AS transactionType, transaction_time AS transactionTime, batch_no AS batchNo, warehouse_id AS warehouseId, slot_id AS slotId, note, status, transaction_by AS transactionBy, originator_id AS originatorId, readjust_cost_price AS readjustCostPrice, field1, field2
+        id, transaction_code AS transactionCode, procurement_id as procurementId,transaction_type AS transactionType, transaction_time AS transactionTime, batch_no AS batchNo, warehouse_id AS warehouseId, slot_id AS slotId, note, status, transaction_by AS transactionBy, originator_id AS originatorId, readjust_cost_price AS readjustCostPrice, field1, field2
     </sql>
 
 </mapper>

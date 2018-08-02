@@ -9,6 +9,7 @@ import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.modular.system.service.UserService;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDProcurementService;
+import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
 import com.jfeat.am.module.warehouse.services.definition.ProcurementStatus;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementModel;
@@ -49,13 +50,14 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     CRUDProcurementService procurementService;
     @Resource
     ProcurementMapper procurementMapper;
-
     @Resource
     StorageInItemMapper storageInItemMapper;
     @Resource
     StorageInMapper storageInMapper;
     @Resource
     InventoryMapper inventoryMapper;
+    @Resource
+    CRUDStorageInService crudStorageInService;
 
     /**
      * 重构 procurement 问题
@@ -82,19 +84,82 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
 
     /**
-     * 执行入库
+     * 执行入库 可以多次执行 ，但是不能超出总和
      */
     @Transactional
-    public Integer executionStorageIn(Long userId, Long procurementId) {
+    public Integer executionStorageIn(Long userId, Long procurementId,ProcurementModel model) {
 
+        // TODO 前端去控制？入库的总数？
         int affected = 0;
 
-        List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, procurementId)
+        model.setId(procurementId);
+   /*     List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, procurementId)
                 .eq(StorageInItem.TYPE, TransactionType.Procurement.toString()));
+*/
+        StorageInModel in = new StorageInModel();
+        in.setOriginatorId(userId);
+        in.setTransactionBy(userId);
+        in.setTransactionTime(new Date());
+
+        // 使用field1去接收 warehouseId 字段
+        in.setWarehouseId(Long.valueOf(model.getField1()));
+
+        //使用 field 去接收 入库 code
+        in.setTransactionCode(model.getField2());
+
+        in.setProcurementId(procurementId);
+        in.setTransactionType(TransactionType.Procurement.toString());
+        StorageInFilter storageInFilter = new StorageInFilter();
+        in.setStorageInItems(model.getItems());
+
+        for(StorageInItem item : model.getItems()){
+            Inventory isExistInventory = new Inventory();
+            isExistInventory.setSkuId(item.getSkuId());
+            isExistInventory.setWarehouseId(Long.valueOf(model.getField1()));
+            Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+
+            if (originInventory != null) {
+                originInventory.setValidSku(originInventory.getValidSku() + item.getTransactionQuantities());
+                affected += inventoryMapper.updateById(isExistInventory);
+
+                } else {
+                    originInventory.setTransmitQuantities(item.getTransactionQuantities());
+                    originInventory.setAdvanceQuantities(0);
+                    originInventory.setMaxInventory(0);
+                    originInventory.setMaxInventory(item.getTransactionQuantities());
+                    originInventory.setTransmitQuantities(0);
+                    affected += inventoryMapper.insert(originInventory);
+                }
+            }
+
+        affected = crudStorageInService.createMaster(in, storageInFilter, null, null);
 
 
-
+        affected += procurementMapper.updateById(model);
         return affected;
+    }
+
+    /**
+     * 执行入库 可以多次执行 ，但是不能超出总和
+     */
+    @Transactional
+    public ProcurementModel procurementDetails(Long procurementId){
+
+        Procurement procurement = procurementMapper.selectById(procurementId);
+
+        JSONObject object = JSON.parseObject(JSON.toJSONString(procurement));
+
+
+        //采购的商品
+        List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
+                .eq(StorageInItem.TYPE,TransactionType.Procurement.toString()).eq(StorageInItem.STORAGE_IN_ID,procurementId));
+
+
+        List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>().eq(StorageIn.PROCUREMENT_ID,procurement)
+        .eq(StorageIn.TRANSACTION_TYPE,TransactionType.Procurement.toString()));
+
+        return null;
+
     }
 
 

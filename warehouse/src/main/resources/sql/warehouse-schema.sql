@@ -14,6 +14,7 @@ CREATE TABLE `wms_storage_in` (
 `transaction_by` bigint(20) not NULL COMMENT '操作人',
 `originator_id` bigint(20) not NULL COMMENT '制单人',
 `readjust_cost_price` decimal(12,4) DEFAULT NULL COMMENT '入库成本调整',
+`procurement_id` bigint(20) NOT NULL COMMENT '采购订单信息，采购与入库是一对多的关系，非采购入库时，采购的ID为null',
 `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
 `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
 UNIQUE(`transaction_code`),
@@ -62,6 +63,26 @@ CREATE TABLE `wms_storage_out_item` (
 `transaction_sku_price` decimal(12,4) NOT NULL COMMENT '出\入库价格',
 `transaction_quantities`  int(11)  NOT NULL COMMENT '操作数量',
 `transaction_time` datetime DEFAULT NULL COMMENT '操作时间',
+PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `wms_procurement`;
+CREATE TABLE `wms_procurement` (
+`id` bigint(20) NOT NULL  AUTO_INCREMENT,
+`procurement_code` varchar(255) NOT NULL COMMENT '采购表编号',
+`supplier_id` bigint(20) NOT NULL COMMENT '供应商ID',
+`procurement_others_payment` decimal(12,4) DEFAULT NULL COMMENT '采购其他支出',
+`procurement_discount`  int  DEFAULT NULL COMMENT '采购折扣',
+`procurement_total` decimal(12,4) NOT NULL COMMENT '总花费',
+`procurement_time` datetime NOT NULL COMMENT '采购时间',
+`procurement_note`  text  DEFAULT NULL COMMENT '采购备注',
+`procure_status` varchar(26) DEFAULT NULL COMMENT '状态',
+`operator` bigint(20) NOT NULL COMMENT '操作人',
+`originator_id` bigint(20) NOT NULL COMMENT '制单人',
+`transaction_time` datetime NOT NULL COMMENT '操作时间',
+`field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
+`field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
+UNIQUE(`procurement_code`),
 PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -124,25 +145,7 @@ PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-DROP TABLE IF EXISTS `wms_procurement`;
-CREATE TABLE `wms_procurement` (
-`id` bigint(20) NOT NULL  AUTO_INCREMENT,
-`procurement_code` varchar(255) NOT NULL COMMENT '采购表编号',
-`supplier_id` bigint(20) NOT NULL COMMENT '供应商ID',
-`procurement_others_payment` decimal(12,4) DEFAULT NULL COMMENT '采购其他支出',
-`procurement_discount`  int  DEFAULT NULL COMMENT '采购折扣',
-`procurement_total` decimal(12,4) NOT NULL COMMENT '总花费',
-`procurement_time` datetime NOT NULL COMMENT '采购时间',
-`procurement_note`  text  DEFAULT NULL COMMENT '采购备注',
-`procure_status` varchar(26) DEFAULT NULL COMMENT '状态',
-`operator` bigint(20) NOT NULL COMMENT '操作人',
-`originator_id` bigint(20) NOT NULL COMMENT '制单人',
-`transaction_time` datetime NOT NULL COMMENT '操作时间',
-`field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
-`field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
-UNIQUE(`procurement_code`),
-PRIMARY KEY (`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
 DROP TABLE IF EXISTS `wms_refund`;
