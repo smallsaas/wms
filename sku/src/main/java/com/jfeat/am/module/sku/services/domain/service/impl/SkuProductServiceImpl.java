@@ -69,7 +69,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                 entity.setSkuName(product.getName());
                 entity.setBarCode(product.getBarCode());
                 entity.setProductId(product.getId());
-                entity.setCostPrice(product.getCostPrice()==null?null:product.getCostPrice());
+                entity.setCostPrice(product.getCostPrice() == null ? null : product.getCostPrice());
                 SkuProductFilter skuProductFilter = new SkuProductFilter();
                 affect += crudSkuProductService.createMaster(entity, skuProductFilter, null, null);
 
@@ -161,14 +161,22 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                     affect += skuSpecificationMapper.insert(specification);
                 }
             }
-        }else {
+        } else {
+            originSkuProduct.setBarCode(model.getBarCode());
+            originSkuProduct.setSkuName(model.getName());
+            originSkuProduct.setProductId(model.getId());
+
+            if (model.getCostPrice() != null && model.getCostPrice().compareTo(originSkuProduct.getSkuPrice()) != 0) {
             SkuPriceHistory updateHistory = new SkuPriceHistory();
             updateHistory.setOriginPrice(originHistory.getAfterPrice());
-            updateHistory.setAfterPrice(model.getPrice());
+            updateHistory.setAfterPrice(model.getCostPrice());
             updateHistory.setSkuId(skuId);
             updateHistory.setUpdateTime(new Date());
             affect += skuPriceHistoryMapper.insert(updateHistory);
+            }
 
+            originSkuProduct.setCostPrice(model.getCostPrice());
+            crudSkuProductService.updateMaster(originSkuProduct);
         }
         return affect;
     }
