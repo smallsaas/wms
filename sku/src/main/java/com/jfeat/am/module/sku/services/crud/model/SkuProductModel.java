@@ -13,6 +13,7 @@ public class SkuProductModel extends SkuProduct {
     private List<SkuTagRelation> skuTags;
     private List<SkuConditionRelation> skuConditions;
     List<SkuSpecificationGroupModel> items;
+    List<SkuPriceHistory> priceHistories;
     List<Long> specId;
 
 
@@ -63,5 +64,13 @@ public class SkuProductModel extends SkuProduct {
 
     public void setItems(List<SkuSpecificationGroupModel> items) {
         this.items = items;
+    }
+
+    public List<SkuPriceHistory> getPriceHistories() {
+        return priceHistories;
+    }
+
+    public void setPriceHistories(List<SkuPriceHistory> priceHistories) {
+        this.priceHistories = priceHistories;
     }
 }

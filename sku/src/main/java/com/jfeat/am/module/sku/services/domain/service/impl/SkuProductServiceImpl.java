@@ -274,6 +274,9 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         List<SkuPhoto> photos = skuPhotoMapper.selectList(new EntityWrapper<SkuPhoto>().eq("sku_id", id));
         object.put("skuPhotos", photos);
 
+        List<SkuPriceHistory> histories= skuPriceHistoryMapper.selectList(new EntityWrapper<SkuPriceHistory>().eq("sku_id", id));
+        object.put("priceHistories", histories);
+
         List<SkuSpecification> specifications = skuSpecificationMapper.selectList((new EntityWrapper<SkuSpecification>().eq("sku_id", id)));
         List<SkuSpecificationGroupModel> groups = new ArrayList<>();
         for (SkuSpecification skuSpecification : specifications) {
