@@ -69,6 +69,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                 entity.setSkuName(product.getName());
                 entity.setBarCode(product.getBarCode());
                 entity.setProductId(product.getId());
+                entity.setCostPrice(product.getCostPrice()==null?null:product.getCostPrice());
                 SkuProductFilter skuProductFilter = new SkuProductFilter();
                 affect += crudSkuProductService.createMaster(entity, skuProductFilter, null, null);
 
