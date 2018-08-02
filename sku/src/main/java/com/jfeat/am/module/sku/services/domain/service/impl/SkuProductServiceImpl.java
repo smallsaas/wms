@@ -69,6 +69,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                 entity.setSkuName(product.getName());
                 entity.setBarCode(product.getBarCode());
                 entity.setProductId(product.getId());
+                entity.setField1(product.getField1());
                 entity.setCostPrice(product.getCostPrice() == null ? null : product.getCostPrice());
                 SkuProductFilter skuProductFilter = new SkuProductFilter();
                 affect += crudSkuProductService.createMaster(entity, skuProductFilter, null, null);
@@ -107,6 +108,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
             SkuProductModel entity = new SkuProductModel();
             entity.setSkuPrice(product.getPrice());
             entity.setSkuCode(product.getProductCode());
+            entity.setField1(product.getField1());
             entity.setSkuName(product.getName());
             entity.setProductId(product.getId());
             SkuProductFilter skuProductFilter = new SkuProductFilter();
@@ -180,6 +182,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         } else {
             originSkuProduct.setBarCode(model.getBarCode());
             originSkuProduct.setSkuName(model.getName());
+            originSkuProduct.setField1(model.getField1());
             originSkuProduct.setProductId(model.getId());
 
             if (model.getCostPrice() != null && model.getCostPrice().compareTo(originSkuProduct.getSkuPrice()) != 0) {
