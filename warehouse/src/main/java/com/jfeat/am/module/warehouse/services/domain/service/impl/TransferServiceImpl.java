@@ -251,6 +251,9 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
          * 3.tranfer本身的信息
          * */
         Transfer transfer = crudTransferService.retrieveMaster(id);
+        if(transfer == null){
+            return null;
+        }
         JSONObject transferObj = JSON.parseObject(JSONObject.toJSONString(transfer));
 
         StorageOut out = storageOutMapper.selectById(transfer.getStorageOutId());
