@@ -112,6 +112,7 @@ public class SkuProductEndpoint extends BaseController {
                                 @RequestParam(name = "tagName", required = false) String tagName,
                                 @RequestParam(name = "specName", required = false) String specName,
                                 @RequestParam(name = "categoryName", required = false) String categoryName,
+                                @RequestParam(name = "warehouseName", required = false) String warehouseName,
                                 @RequestParam(name = "orderBy", required = false) String orderBy,
                                 @RequestParam(name = "sort", required = false) String sort) {
         if (orderBy != null && orderBy.length() > 0) {
@@ -149,7 +150,7 @@ public class SkuProductEndpoint extends BaseController {
         record.setField2(field2);
         record.setField3(field3);
 
-        page.setRecords(querySkuProductDao.findSkuProductPage(page, record, orderBy,tagName,specName,categoryName));
+        page.setRecords(querySkuProductDao.findSkuProductPage(page, record, orderBy,tagName,specName,categoryName,warehouseName));
 
         return SuccessTip.create(page);
     }

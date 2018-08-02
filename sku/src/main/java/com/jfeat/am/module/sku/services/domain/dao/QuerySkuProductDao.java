@@ -17,5 +17,6 @@ public interface QuerySkuProductDao extends BaseMapper<SkuProductRecord> {
                                               @Param("orderBy") String orderBy,
                                               @Param("tagName") String tagName,
                                               @Param("specName") String specName,
-                                              @Param("categoryName") String categoryName);
+                                              @Param("categoryName") String categoryName,
+                                              @Param("warehouseName") String warehouseName);
 }
