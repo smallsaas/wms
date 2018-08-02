@@ -184,6 +184,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
 
         model.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
+        model.setFinishTime(new Date());
         affected += crudTransferService.updateMaster(model);
         return affected;
     }
@@ -238,6 +239,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
         model.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
         affected += crudTransferService.updateMaster(model);
+        model.setFinishTime(new Date());
         return affected;
     }
 

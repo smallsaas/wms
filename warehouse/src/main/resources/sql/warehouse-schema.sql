@@ -73,7 +73,7 @@ CREATE TABLE `wms_transfer` (
 `to_warehouse_id` bigint(20) NOT NULL COMMENT '调入仓库ID',
 `transaction_time` datetime NOT NULL COMMENT '操作时间',
 `finish_time` datetime DEFAULT NULL COMMENT '操作时间',
-`storage_in_id` bigint(20) NOT NULL COMMENT '入库ID',
+`storage_in_id` bigint(20) DEFAULT NULL COMMENT '入库ID',
 `storage_out_id` bigint(20) NOT NULL COMMENT '出库ID',
 `note`  text  DEFAULT NULL COMMENT '备注',
 `status` varchar(26) DEFAULT NULL COMMENT '状态',
