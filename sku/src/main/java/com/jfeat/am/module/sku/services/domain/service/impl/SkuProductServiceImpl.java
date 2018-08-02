@@ -240,9 +240,10 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
      * 删除产品
      */
     @Transactional
-    public Integer deleteProduct(Long productId) {
-        int affect = deleteSkus(productId);
-        affect += productMapper.deleteById(productId);
+    public Integer deleteProduct(Long skuId) {
+        SkuProduct skuProduct = skuProductMapper.selectById(skuId);
+        int affect = deleteSkus(skuProduct.getProductId());
+        affect += productMapper.deleteById(skuProduct.getProductId());
         return affect;
     }
 

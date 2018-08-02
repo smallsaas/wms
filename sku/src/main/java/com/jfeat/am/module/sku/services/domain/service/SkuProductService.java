@@ -36,7 +36,7 @@ public interface SkuProductService extends CRUDSkuProductService{
      * 删除 产品下所有的 sku 及 产品
      * */
     @Transactional
-    Integer deleteProduct(Long productId);
+    Integer deleteProduct(Long skuId);
 
 
     /**
