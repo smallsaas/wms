@@ -12,6 +12,8 @@ public class ProcurementModel extends Procurement{
 
     List<StorageInItem> items;
 
+
+
     String originatorName;
     String operatorName;
 

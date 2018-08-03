@@ -7,11 +7,14 @@ import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.modular.system.service.UserService;
+import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
+import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDProcurementService;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
 import com.jfeat.am.module.warehouse.services.definition.ProcurementStatus;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
+import com.jfeat.am.module.warehouse.services.domain.model.ProcurementItemRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementModel;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageInModel;
 import com.jfeat.am.module.warehouse.services.domain.service.ProcurementService;
@@ -30,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -58,6 +62,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     InventoryMapper inventoryMapper;
     @Resource
     CRUDStorageInService crudStorageInService;
+    @Resource
+    SkuProductMapper skuProductMapper;
 
     /**
      * 重构 procurement 问题
@@ -87,40 +93,41 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
      * 执行入库 可以多次执行 ，但是不能超出总和
      */
     @Transactional
-    public Integer executionStorageIn(Long userId, Long procurementId,ProcurementModel model) {
+    public Integer executionStorageIn(Long userId, Long procurementId, ProcurementModel model) {
 
-        // TODO 前端去控制？入库的总数？
         int affected = 0;
-
+        int inSuccess = 0;
         model.setId(procurementId);
    /*     List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, procurementId)
                 .eq(StorageInItem.TYPE, TransactionType.Procurement.toString()));
 */
-        StorageInModel in = new StorageInModel();
-        in.setOriginatorId(userId);
-        in.setTransactionBy(userId);
-        in.setTransactionTime(new Date());
+        if (model.getItems() != null && model.getItems().size() > 0) {
 
-        // 使用field1去接收 warehouseId 字段
-        in.setWarehouseId(Long.valueOf(model.getField1()));
+            StorageInModel in = new StorageInModel();
+            in.setOriginatorId(userId);
+            in.setTransactionBy(userId);
+            in.setTransactionTime(new Date());
 
-        //使用 field 去接收 入库 code
-        in.setTransactionCode(model.getField2());
+            // 使用field1去接收 warehouseId 字段
+            in.setWarehouseId(Long.valueOf(model.getField1()));
 
-        in.setProcurementId(procurementId);
-        in.setTransactionType(TransactionType.Procurement.toString());
-        StorageInFilter storageInFilter = new StorageInFilter();
-        in.setStorageInItems(model.getItems());
+            //使用 field 去接收 入库 code
+            in.setTransactionCode(model.getField2());
 
-        for(StorageInItem item : model.getItems()){
-            Inventory isExistInventory = new Inventory();
-            isExistInventory.setSkuId(item.getSkuId());
-            isExistInventory.setWarehouseId(Long.valueOf(model.getField1()));
-            Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+            in.setProcurementId(procurementId);
+            in.setTransactionType(TransactionType.Procurement.toString());
+            StorageInFilter storageInFilter = new StorageInFilter();
+            in.setStorageInItems(model.getItems());
 
-            if (originInventory != null) {
-                originInventory.setValidSku(originInventory.getValidSku() + item.getTransactionQuantities());
-                affected += inventoryMapper.updateById(isExistInventory);
+            for (StorageInItem item : model.getItems()) {
+                Inventory isExistInventory = new Inventory();
+                isExistInventory.setSkuId(item.getSkuId());
+                isExistInventory.setWarehouseId(Long.valueOf(model.getField1()));
+                Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+
+                if (originInventory != null) {
+                    originInventory.setValidSku(originInventory.getValidSku() + item.getTransactionQuantities());
+                    affected += inventoryMapper.updateById(isExistInventory);
 
                 } else {
                     originInventory.setTransmitQuantities(item.getTransactionQuantities());
@@ -132,18 +139,21 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 }
             }
 
-        affected = crudStorageInService.createMaster(in, storageInFilter, null, null);
-
-
+            inSuccess = crudStorageInService.createMaster(in, storageInFilter, null, null);
+            if (inSuccess > 0) {
+                model.setProcureStatus(ProcurementStatus.SectionStorageIn.toString());
+                affected += procurementMapper.updateById(model);
+            }
+        }
         affected += procurementMapper.updateById(model);
         return affected;
     }
 
     /**
-     * 执行入库 可以多次执行 ，但是不能超出总和
+     * 详情
      */
     @Transactional
-    public ProcurementModel procurementDetails(Long procurementId){
+    public ProcurementModel procurementDetails(Long procurementId) {
 
         Procurement procurement = procurementMapper.selectById(procurementId);
 
@@ -152,121 +162,81 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
         //采购的商品
         List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
-                .eq(StorageInItem.TYPE,TransactionType.Procurement.toString()).eq(StorageInItem.STORAGE_IN_ID,procurementId));
+                .eq(StorageInItem.TYPE, TransactionType.Procurement.toString()).eq(StorageInItem.STORAGE_IN_ID, procurementId));
 
+        List<ProcurementItemRecord> records = new ArrayList<>();
 
-        List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>().eq(StorageIn.PROCUREMENT_ID,procurement)
-        .eq(StorageIn.TRANSACTION_TYPE,TransactionType.Procurement.toString()));
+        if (items != null && items.size() > 0) {
 
+            // 采购的 商品
+            for (StorageInItem item : items) {
+
+                ProcurementItemRecord record = new ProcurementItemRecord();
+
+                SkuProduct sku = skuProductMapper.selectById(item.getSkuId());
+                record.setSkuCode(sku.getSkuCode());
+                record.setSkuName(sku.getSkuName());
+                record.setId(item.getId());
+                record.setTransactionTime(item.getTransactionTime());
+                record.setSkuUnit(sku.getField1());
+                // 入库 记录
+                List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>().eq(StorageIn.PROCUREMENT_ID, procurement)
+                        .eq(StorageIn.TRANSACTION_TYPE, TransactionType.Procurement.toString()));
+                if (ins != null && ins.size() > 0) {
+                    // 有入库记录
+                    // 查找 入库 记录下已经入库的商品及数量
+                    for (StorageIn in : ins) {
+                        StorageInItem inItem = new StorageInItem();
+                        inItem.setSkuId(item.getSkuId());
+                        inItem.setStorageInId(in.getId());
+                        // 查找是否存在 这个 商品已经入库
+                        StorageInItem originItem = storageInItemMapper.selectOne(inItem);
+                        if (originItem != null) {
+                            record.setSectionInCount(originItem.getTransactionQuantities());
+                            record.setRemainderCount(item.getTransactionQuantities() - originItem.getTransactionQuantities());
+                        } else {
+                            record.setSectionInCount(0);
+                            record.setRemainderCount(originItem.getTransactionQuantities());
+                        }
+
+                    }
+
+                } else {
+                    // 无入库记录
+                    record.setSectionInCount(0);
+                    record.setRemainderCount(item.getTransactionQuantities());
+                }
+                records.add(record);
+            }
+
+        } else {
+            // 无采购的商品
+
+        }
         return null;
 
     }
 
 
-    /**
-     * 重构 procurement 问题
-     */
     @Transactional
-    @Override
-    public Integer createProcurement(Long userId, ProcurementModel model) {
-        /**
-         * 1.先执行生成入库单，然后拿到入库单的 id 插入的采购的表单中
-         * 2.目前先按所有均以入库逻辑写
-         * */
+    public Integer deleteProcurement(Long id) {
+
         int affected = 0;
+        Procurement procurement = procurementService.retrieveMaster(id);
 
-        if (model.getItems() != null && model.getItems().size() > 0) {
-            for (StorageInItem inItem : model.getItems()) {
-                Inventory isExistInventory = new Inventory();
-                isExistInventory.setSkuId(inItem.getSkuId());
-                Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
-                if (originInventory != null) {
-                    if (model.getProcureStatus().compareTo(ProcurementStatus.TotalStorageIn.toString()) == 0) {
-                        //全部 入库 则全部 插入
+        // 先删除 入库的产品
+        affected += storageInItemMapper.delete(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, procurement.getId()).like(StorageInItem.TYPE, TransactionType.Procurement.toString()));
 
-                        originInventory.setValidSku(originInventory.getValidSku() + inItem.getTransactionQuantities());
-                        affected += inventoryMapper.updateById(originInventory);
+        List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>().eq(StorageIn.PROCUREMENT_ID, procurement)
+                .eq(StorageIn.TRANSACTION_TYPE, TransactionType.Procurement.toString()));
 
-//                        (model.getProcureStatus().compareTo(ProcurementStatus.WaitForStorageIn.toString()) == 0)
-                    } else {
-                        originInventory.setTransmitQuantities(inItem.getTransactionQuantities());
-                        affected += inventoryMapper.updateById(originInventory);
-                    }
-                } else {
-                    isExistInventory.setValidSku(inItem.getTransactionQuantities());
-                    affected += inventoryMapper.insert(isExistInventory);
-                }
-            }
-        }
-
-        StorageInModel storageInModel = new StorageInModel();
-        storageInModel.setTransactionType(TransactionType.Procurement.toString());
-        storageInModel.setStorageInItems(model.getItems());
-        storageInModel.setTransactionBy(userId);
-        storageInModel.setTransactionCode(model.getProcurementCode());
-        storageInModel.setTransactionTime(new Date());
-        storageInModel.setOriginatorId(userId);
-        StorageInFilter storageInFilter = new StorageInFilter();
-        affected += storageInService.createMaster(storageInModel, storageInFilter, null, null);
-
-        model.setOriginatorId(userId);
-        model.setOperator(userId);
-        model.setProcurementTime(new Date());
-
-
-        affected += procurementService.createMaster(model);
-
-        return affected;
-    }
-
-
-    @Transactional
-    public Integer updateProcurement(long userId, ProcurementModel model) {
-
-        CRUDObject<StorageInModel> storageInModel = storageInService.retrieveMasterModel(model.getStorageInId());
-        StorageInModel storageIn = storageInModel.toJavaObject(StorageInModel.class);
-        storageIn.setStorageInItems(model.getItems());
-        storageIn.setTransactionBy(userId);
-        storageInService.updateMaster(storageIn, null, null, null);
-        model.setOperator(userId);
-        if (model.getProcureStatus().compareTo(ProcurementStatus.TotalStorageIn.toString()) == 0) {
-            if (model.getItems() != null && model.getItems().size() > 0) {
-                for (StorageInItem inItem : model.getItems()) {
-                    Inventory isExistInventory = new Inventory();
-                    isExistInventory.setSkuId(inItem.getSkuId());
-                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
-                    originInventory.setValidSku(originInventory.getValidSku() + inItem.getTransactionQuantities());
-                    inventoryMapper.updateById(originInventory);
-                }
+        if (ins != null && ins.size() > 0) {
+            for (StorageIn in : ins) {
+                affected += storageInItemMapper.delete(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, in.getId()));
+                affected += storageInMapper.deleteById(in.getId());
             }
 
         }
-
-        return procurementService.updateMaster(model);
-    }
-
-    public ProcurementModel procurementDetails(long id) {
-        Procurement procurement = procurementService.retrieveMaster(id);
-
-        JSONObject storage = storageInService.retrieveMaster(procurement.getStorageInId(), null, null, null).toJSONObject();
-        StorageInModel storageIn = storage.toJavaObject(StorageInModel.class);
-        JSONObject procurementObj = JSON.parseObject(JSONObject.toJSONString(procurement));
-        procurementObj.put("items", storageIn.getStorageInItems());
-
-        procurementObj.put("originatorName", userService.getById(procurement.getOriginatorId()).getName());
-        if (procurement.getOperator() != null) {
-            procurementObj.put("operatorName",
-                    userService.getById(procurement.getOperator()).getName() == null ? null : userService.getById(procurement.getOperator()).getName());
-        }
-        ProcurementModel model = JSONObject.parseObject(JSONObject.toJSONString(procurementObj), ProcurementModel.class);
-        return model;
-    }
-
-    @Transactional
-    public Integer deleteProcurement(long id) {
-        Procurement procurement = procurementService.retrieveMaster(id);
-        storageInMapper.delete(new EntityWrapper<StorageIn>().eq("id", procurement.getStorageInId()));
-        storageInItemMapper.delete(new EntityWrapper<StorageInItem>().eq("storage_in_id", procurement.getStorageInId()));
         return procurementService.deleteMaster(id);
     }
 

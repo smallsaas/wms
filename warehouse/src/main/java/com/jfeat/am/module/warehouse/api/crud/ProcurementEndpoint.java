@@ -59,7 +59,7 @@ public class ProcurementEndpoint extends BaseController {
     public Tip createProcurement(@RequestBody ProcurementModel entity) {
         Integer affected = 0;
         try {
-            affected = procurementService.createProcurement(JWTKit.getUserId(getHttpServletRequest()),entity);
+            affected = procurementService.addProcurement(JWTKit.getUserId(getHttpServletRequest()),entity);
 
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
@@ -81,7 +81,7 @@ public class ProcurementEndpoint extends BaseController {
 
     public Tip updateProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
         entity.setId(id);
-        return SuccessTip.create(procurementService.updateProcurement(JWTKit.getUserId(getHttpServletRequest()),entity));
+        return SuccessTip.create(procurementService.executionStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
     }
 
     @BusinessLog(name = "Procurement", value = "delete Procurement")
@@ -101,7 +101,6 @@ public class ProcurementEndpoint extends BaseController {
                                  @RequestParam(name = "id", required = false) Long id,
                                  @RequestParam(name = "procurementCode", required = false) String procurementCode,
                                  @RequestParam(name = "supplierId", required = false) Long supplierId,
-                                 @RequestParam(name = "storageInId", required = false) Long storageInId,
                                  @RequestParam(name = "procurementOthersPayment", required = false) BigDecimal procurementOthersPayment,
                                  @RequestParam(name = "procurementDiscount", required = false) Integer procurementDiscount,
                                  @RequestParam(name = "procurementTotal", required = false) BigDecimal procurementTotal,
@@ -133,7 +132,6 @@ public class ProcurementEndpoint extends BaseController {
         record.setId(id);
         record.setProcurementCode(procurementCode);
         record.setSupplierId(supplierId);
-        record.setStorageInId(storageInId);
         record.setProcurementOthersPayment(procurementOthersPayment);
         record.setProcurementTotal(procurementTotal);
         record.setProcurementDiscount(procurementDiscount);

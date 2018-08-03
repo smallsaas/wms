@@ -14,7 +14,7 @@ CREATE TABLE `wms_storage_in` (
 `transaction_by` bigint(20) not NULL COMMENT '操作人',
 `originator_id` bigint(20) not NULL COMMENT '制单人',
 `readjust_cost_price` decimal(12,4) DEFAULT NULL COMMENT '入库成本调整',
-`procurement_id` bigint(20) NOT NULL COMMENT '采购订单信息，采购与入库是一对多的关系，非采购入库时，采购的ID为null',
+`procurement_id` bigint(20) DEFAULT NULL COMMENT '采购订单信息，采购与入库是一对多的关系，非采购入库时，采购的ID为null',
 `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
 `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
 UNIQUE(`transaction_code`),

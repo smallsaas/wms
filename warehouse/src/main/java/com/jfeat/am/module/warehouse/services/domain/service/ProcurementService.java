@@ -12,13 +12,14 @@ public interface ProcurementService extends CRUDProcurementService{
 
 
     @Transactional
-    Integer createProcurement(Long userId, ProcurementModel model);
+    Integer addProcurement(Long userId, ProcurementModel model);
 
-    ProcurementModel procurementDetails(long id);
 
-    @Transactional
-    Integer updateProcurement(long userId, ProcurementModel model);
+    ProcurementModel procurementDetails(Long id);
 
     @Transactional
-    Integer deleteProcurement(long id);
+    Integer executionStorageIn(Long userId, Long procurementId, ProcurementModel model);
+
+    @Transactional
+    Integer deleteProcurement(Long id);
 }
