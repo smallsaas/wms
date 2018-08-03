@@ -108,6 +108,8 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
             SkuProductModel entity = new SkuProductModel();
             entity.setSkuPrice(product.getPrice());
             entity.setSkuCode(product.getProductCode());
+            entity.setBarCode(product.getBarCode());
+            // field 去接收单位
             entity.setField1(product.getField1());
             entity.setSkuName(product.getName());
             entity.setProductId(product.getId());
