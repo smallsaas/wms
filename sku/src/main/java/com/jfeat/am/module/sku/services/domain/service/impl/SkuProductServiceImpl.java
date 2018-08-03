@@ -147,7 +147,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         int affect = 0;
         SkuProduct originSkuProduct = crudSkuProductService.retrieveMaster(skuId);
 
-        model.setId(originSkuProduct.getProductId());
+//        model.setId(originSkuProduct.getProductId());
         affect += productMapper.updateById(model);
 
 
@@ -184,6 +184,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         } else {
             originSkuProduct.setBarCode(model.getBarCode());
             originSkuProduct.setSkuName(model.getName());
+            // field1 接收 单位字段
             originSkuProduct.setField1(model.getField1());
             originSkuProduct.setProductId(model.getId());
 
