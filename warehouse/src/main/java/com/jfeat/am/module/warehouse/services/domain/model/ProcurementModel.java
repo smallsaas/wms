@@ -13,11 +13,14 @@ public class ProcurementModel extends Procurement{
     List<StorageInItem> items;
 
 
+    List<ProcurementItemRecord> records;
+
 
     String originatorName;
     String operatorName;
+    String supplierName;
 
-    Integer SectionStorageIn;
+
 
     public String getOriginatorName() {
         return originatorName;
@@ -43,11 +46,19 @@ public class ProcurementModel extends Procurement{
         this.items = items;
     }
 
-    public Integer getSectionStorageIn() {
-        return SectionStorageIn;
+    public List<ProcurementItemRecord> getRecords() {
+        return records;
     }
 
-    public void setSectionStorageIn(Integer sectionStorageIn) {
-        SectionStorageIn = sectionStorageIn;
+    public void setRecords(List<ProcurementItemRecord> records) {
+        this.records = records;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
     }
 }

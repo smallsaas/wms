@@ -21,14 +21,8 @@ import com.jfeat.am.module.warehouse.services.domain.service.ProcurementService;
 
 import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDProcurementServiceImpl;
 import com.jfeat.am.module.warehouse.services.domain.service.StorageInService;
-import com.jfeat.am.module.warehouse.services.persistence.dao.InventoryMapper;
-import com.jfeat.am.module.warehouse.services.persistence.dao.ProcurementMapper;
-import com.jfeat.am.module.warehouse.services.persistence.dao.StorageInItemMapper;
-import com.jfeat.am.module.warehouse.services.persistence.dao.StorageInMapper;
-import com.jfeat.am.module.warehouse.services.persistence.model.Inventory;
-import com.jfeat.am.module.warehouse.services.persistence.model.Procurement;
-import com.jfeat.am.module.warehouse.services.persistence.model.StorageIn;
-import com.jfeat.am.module.warehouse.services.persistence.model.StorageInItem;
+import com.jfeat.am.module.warehouse.services.persistence.dao.*;
+import com.jfeat.am.module.warehouse.services.persistence.model.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,6 +58,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     CRUDStorageInService crudStorageInService;
     @Resource
     SkuProductMapper skuProductMapper;
+    @Resource
+    SuppliersMapper suppliersMapper;
 
     /**
      * 重构 procurement 问题
@@ -75,7 +71,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
         model.setOperator(userId);
         model.setOriginatorId(userId);
-
+        model.setProcureStatus(ProcurementStatus.WaitForStorageIn.toString());
         affected += procurementMapper.insert(model);
         if (model.getItems() == null || model.getItems().size() == 0) {
             throw new BusinessException(5000, "请先选择需要采购的商品！");
@@ -159,6 +155,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
         JSONObject object = JSON.parseObject(JSON.toJSONString(procurement));
 
+        Suppliers suppliers = suppliersMapper.selectById(procurement.getSupplierId());
+
+        object.put("supplierName",suppliers==null?null:suppliers.getSupplierName());
 
         //采购的商品
         List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
@@ -213,7 +212,10 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             // 无采购的商品
 
         }
-        return null;
+        object.put("records",records);
+        ProcurementModel model = JSON.parseObject(JSON.toJSONString(object),ProcurementModel.class);
+
+        return model;
 
     }
 
