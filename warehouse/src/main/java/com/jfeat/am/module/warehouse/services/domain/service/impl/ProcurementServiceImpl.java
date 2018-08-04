@@ -71,6 +71,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
         model.setOperator(userId);
         model.setOriginatorId(userId);
+        model.setTransactionTime(new Date());
         model.setProcureStatus(ProcurementStatus.WaitForStorageIn.toString());
         affected += procurementMapper.insert(model);
         if (model.getItems() == null || model.getItems().size() == 0) {
