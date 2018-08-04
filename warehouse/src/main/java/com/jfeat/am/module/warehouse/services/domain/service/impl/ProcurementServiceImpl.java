@@ -65,7 +65,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
      * 重构 procurement 问题
      */
     @Transactional
-    public Integer addProcurement(Long userId, ProcurementModel model) {
+    public Integer addProcurement(Long userId, ProcurementModel model){
 
         int affected = 0;
 
@@ -95,10 +95,12 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         int affected = 0;
         int inSuccess = 0;
         model.setId(procurementId);
-   /*     List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, procurementId)
+        List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, procurementId)
                 .eq(StorageInItem.TYPE, TransactionType.Procurement.toString()));
-*/
         if (model.getItems() != null && model.getItems().size() > 0) {
+            // 判断所有的商品是否都已经入库
+            List<Integer> size = new ArrayList<>();
+            int storageInCount = 0 ;
 
             StorageInModel in = new StorageInModel();
             in.setOriginatorId(userId);
