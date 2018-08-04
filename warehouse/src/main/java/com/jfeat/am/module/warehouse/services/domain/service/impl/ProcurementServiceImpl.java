@@ -157,7 +157,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
         Suppliers suppliers = suppliersMapper.selectById(procurement.getSupplierId());
 
-        object.put("supplierName",suppliers==null?null:suppliers.getSupplierName());
+        object.put("supplierName", suppliers == null ? null : suppliers.getSupplierName());
 
         //采购的商品
         List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
@@ -169,7 +169,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
             // 采购的 商品
             for (StorageInItem item : items) {
-
+                int remainderCount = item.getTransactionQuantities();
+                int sectionCount = 0;
                 ProcurementItemRecord record = new ProcurementItemRecord();
 
                 SkuProduct sku = skuProductMapper.selectById(item.getSkuId());
@@ -187,25 +188,22 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     // 有入库记录
                     // 查找 入库 记录下已经入库的商品及数量
                     for (StorageIn in : ins) {
-                        StorageInItem inItem = new StorageInItem();
-                        inItem.setSkuId(item.getSkuId());
-                        inItem.setStorageInId(in.getId());
                         // 查找是否存在 这个 商品已经入库
-                        StorageInItem originItem = storageInItemMapper.selectOne(inItem);
-                        if (originItem != null) {
-                            record.setSectionInCount(originItem.getTransactionQuantities());
-                            record.setRemainderCount(item.getTransactionQuantities() - originItem.getTransactionQuantities());
-                        } else {
-                            record.setSectionInCount(0);
-                            record.setRemainderCount(originItem.getTransactionQuantities());
+                        List<StorageInItem> originItems = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
+                                .eq(StorageInItem.STORAGE_IN_ID, in.getId()).eq(StorageInItem.SKU_ID, item.getSkuId()));
+                        if (originItems != null && originItems.size() > 0) {
+                            for (StorageInItem originItem : originItems) {
+                                // 入库数 以及 剩余 入库数
+                                sectionCount += originItem.getTransactionQuantities();
+                                remainderCount = remainderCount -sectionCount;
+                            }
                         }
-
                     }
 
                 } else {
                     // 无入库记录
-                    record.setSectionInCount(0);
-                    record.setRemainderCount(item.getTransactionQuantities());
+                    record.setSectionInCount(sectionCount);
+                    record.setRemainderCount(remainderCount);
                 }
                 records.add(record);
             }
@@ -214,8 +212,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             // 无采购的商品
 
         }
-        object.put("records",records);
-        ProcurementModel model = JSON.parseObject(JSON.toJSONString(object),ProcurementModel.class);
+        object.put("records", records);
+        ProcurementModel model = JSON.parseObject(JSON.toJSONString(object), ProcurementModel.class);
 
         return model;
 
