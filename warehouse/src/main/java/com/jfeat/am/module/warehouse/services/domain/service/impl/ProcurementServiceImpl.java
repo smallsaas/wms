@@ -177,7 +177,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 record.setSkuName(sku.getSkuName());
                 record.setId(item.getId());
                 record.setTransactionTime(item.getTransactionTime());
+                record.setTransactionQuantities(item.getTransactionQuantities());
                 record.setSkuUnit(sku.getField1());
+                record.setTransactionSkuPrice(item.getTransactionSkuPrice());
                 // 入库 记录
                 List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>().eq(StorageIn.PROCUREMENT_ID, procurement)
                         .eq(StorageIn.TRANSACTION_TYPE, TransactionType.Procurement.toString()));
