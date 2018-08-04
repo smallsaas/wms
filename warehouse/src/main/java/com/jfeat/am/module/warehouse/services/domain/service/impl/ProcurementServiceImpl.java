@@ -123,15 +123,14 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
                 if (originInventory != null) {
                     originInventory.setValidSku(originInventory.getValidSku() + item.getTransactionQuantities());
-                    affected += inventoryMapper.updateById(isExistInventory);
+                    affected += inventoryMapper.updateById(originInventory);
 
                 } else {
-                    originInventory.setTransmitQuantities(item.getTransactionQuantities());
-                    originInventory.setAdvanceQuantities(0);
-                    originInventory.setMaxInventory(0);
-                    originInventory.setMaxInventory(item.getTransactionQuantities());
-                    originInventory.setTransmitQuantities(0);
-                    affected += inventoryMapper.insert(originInventory);
+                    isExistInventory.setTransmitQuantities(item.getTransactionQuantities());
+                    isExistInventory.setAdvanceQuantities(0);
+                    isExistInventory.setMinInventory(0);
+                    isExistInventory.setMaxInventory(item.getTransactionQuantities());
+                    affected += inventoryMapper.insert(isExistInventory);
                 }
             }
 
