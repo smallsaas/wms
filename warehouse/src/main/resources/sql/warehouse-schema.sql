@@ -79,6 +79,7 @@ CREATE TABLE `wms_procurement` (
 `procure_status` varchar(26) DEFAULT NULL COMMENT '状态',
 `operator` bigint(20) NOT NULL COMMENT '操作人',
 `originator_id` bigint(20) NOT NULL COMMENT '制单人',
+`buyer` varchar(255) default null comment '采购员',
 `transaction_time` datetime NOT NULL COMMENT '操作时间',
 `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
 `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',

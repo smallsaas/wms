@@ -18,11 +18,12 @@
 		<result column="transaction_time" property="transactionTime" />
 		<result column="field1" property="field1" />
 		<result column="field2" property="field2" />
+		<result column="buyer" property="buyer" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, procurement_code AS procurementCode, supplier_id AS supplierId,procurement_others_payment AS procurementOthersPayment, procurement_discount AS procurementDiscount, procurement_total AS procurementTotal, procurement_time AS procurementTime, procurement_note AS procurementNote, procure_status AS procureStatus, operator, originator_id AS originatorId, transaction_time AS transactionTime, field1, field2
+        id, procurement_code AS procurementCode, buyer,supplier_id AS supplierId,procurement_others_payment AS procurementOthersPayment, procurement_discount AS procurementDiscount, procurement_total AS procurementTotal, procurement_time AS procurementTime, procurement_note AS procurementNote, procure_status AS procureStatus, operator, originator_id AS originatorId, transaction_time AS transactionTime, field1, field2
     </sql>
 
 </mapper>
