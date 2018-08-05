@@ -1,5 +1,6 @@
 package com.jfeat.am.module.warehouse.services.domain.dao;
 
+import com.jfeat.am.module.warehouse.services.domain.model.ProcurementItemRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementRecord;
 
 import com.baomidou.mybatisplus.plugins.Page;
@@ -32,5 +33,10 @@ public interface QueryProcurementDao extends BaseMapper<ProcurementRecord> {
             "(wms_procurement.id = wms_storage_in.procurement_id AND wms_storage_in.transaction_type = 'Procurement') " +
             "WHERE wms_procurement.id = #{procurementId}")
     Integer sectionCount(@Param("procurementId") Long procurementId);
+
+    // 入库历史记录
+
+    List<ProcurementItemRecord> storageInHistories(@Param("procurementId")Long procurementId);
+
 
 }

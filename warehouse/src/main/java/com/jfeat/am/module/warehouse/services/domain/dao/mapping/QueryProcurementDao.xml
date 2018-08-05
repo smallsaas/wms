@@ -92,4 +92,43 @@
             AND wms_procurement.field2 LIKE CONCAT('%',#{record.field2},'%')
         </if>
     </select>
+
+
+    <resultMap id="ProcurementRecord" type="com.jfeat.am.module.warehouse.services.domain.model.ProcurementItemRecord">
+        <id column="id" property="id" />
+        <result column="storage_in_id" property="storageOutId" />
+        <result column="sku_id" property="skuId" />
+        <result column="transaction_sku_price" property="transactionSkuPrice" />
+        <result column="transaction_quantities" property="transactionQuantities" />
+        <result column="transaction_time" property="transactionTime" />
+        <result column="type" property="type" />
+
+        <result column="skuName" property="skuName" />
+        <result column="skuCode" property="skuCode" />
+        <result column="skuBarcode" property="skuBarcode" />
+        <result column="skuUnit" property="skuUnit" />
+
+    </resultMap>
+
+
+    <select id="storageInHistories" resultMap="ProcurementRecord" parameterType="long">
+        SELECT
+            wms_storage_in_item.*,
+            t_sku_product.sku_code AS skuCode,
+            t_sku_product.sku_name as skuName,
+            t_sku_product.bar_code as skuBarcode,
+            t_sku_product.field1 AS skuUnit
+        FROM
+            wms_storage_in_item
+            LEFT JOIN t_sku_product on t_sku_product.id = wms_storage_in_item.sku_id
+            LEFT JOIN wms_storage_in ON wms_storage_in.id = wms_storage_in_item.storage_in_id
+            LEFT JOIN wms_procurement ON (
+            wms_procurement.id = wms_storage_in.procurement_id
+            AND wms_storage_in.transaction_type = 'Procurement'
+            )
+        WHERE 1=1
+            and wms_procurement.id = #{procurement}
+    </select>
+
+
 </mapper>
