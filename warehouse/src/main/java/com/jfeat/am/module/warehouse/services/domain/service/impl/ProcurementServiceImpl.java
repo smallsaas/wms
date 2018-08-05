@@ -14,6 +14,7 @@ import com.jfeat.am.module.warehouse.services.crud.service.CRUDProcurementServic
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
 import com.jfeat.am.module.warehouse.services.definition.ProcurementStatus;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
+import com.jfeat.am.module.warehouse.services.domain.dao.QueryProcurementDao;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementItemRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementModel;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageInModel;
@@ -60,6 +61,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     SkuProductMapper skuProductMapper;
     @Resource
     SuppliersMapper suppliersMapper;
+    @Resource
+    QueryProcurementDao queryProcurementDao;
 
     /**
      * 重构 procurement 问题
@@ -94,14 +97,12 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
         int affected = 0;
         int inSuccess = 0;
+        // 总需要入库的商品的数量
+        int totalCount = queryProcurementDao.totalCount(procurementId);
+
         model.setId(procurementId);
-        List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, procurementId)
-                .eq(StorageInItem.TYPE, TransactionType.Procurement.toString()));
         if (model.getItems() != null && model.getItems().size() > 0) {
             // 判断所有的商品是否都已经入库
-            List<Integer> size = new ArrayList<>();
-            int storageInCount = 0 ;
-
             StorageInModel in = new StorageInModel();
             in.setOriginatorId(userId);
             in.setTransactionBy(userId);
@@ -136,11 +137,17 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     affected += inventoryMapper.insert(isExistInventory);
                 }
             }
-
             inSuccess = crudStorageInService.createMaster(in, storageInFilter, null, null);
             if (inSuccess > 0) {
-                model.setProcureStatus(ProcurementStatus.SectionStorageIn.toString());
-                affected += procurementMapper.updateById(model);
+                int sectionCount = queryProcurementDao.sectionCount(procurementId);
+                //假设入库数量等于需入库的数量，则设定入库完成，不等于则是部分入库
+                if (sectionCount == totalCount){
+                    model.setProcureStatus(ProcurementStatus.TotalStorageIn.toString());
+                    affected += procurementMapper.updateById(model);
+                }else {
+                    model.setProcureStatus(ProcurementStatus.SectionStorageIn.toString());
+                    affected += procurementMapper.updateById(model);
+                }
             }
         }
         affected += procurementMapper.updateById(model);
