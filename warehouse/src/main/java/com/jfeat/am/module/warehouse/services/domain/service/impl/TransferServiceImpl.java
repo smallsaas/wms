@@ -90,7 +90,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         storageOut.setWarehouseId(model.getFromWarehouseId());
         storageOut.setOriginatorId(userId);
         storageOut.setTransactionBy(userId);
-        storageOut.setTransactionCode(model.getTransactionCode());
+        // 使用调拨记录表中的field1字段去接收出库的code
+        storageOut.setTransactionCode(model.getField1());
         storageOut.setTransactionTime(new Date());
         StorageOutFilter storageOutFilter = new StorageOutFilter();
         List<StorageOutItem> items = new ArrayList<>();

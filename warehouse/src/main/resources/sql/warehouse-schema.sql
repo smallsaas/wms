@@ -30,7 +30,7 @@ CREATE TABLE `wms_storage_in_item` (
 `transaction_sku_price` decimal(12,4) NOT NULL COMMENT '出\入库价格',
 `transaction_quantities`  int(11)  NOT NULL COMMENT '操作数量',
 `transaction_time` datetime default NULL COMMENT '操作时间',
-`type` varchar(26) DEFAULT NULL COMMENT '操作类型',
+`type` varchar(26) DEFAULT 'Others' COMMENT '操作类型',
 PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
