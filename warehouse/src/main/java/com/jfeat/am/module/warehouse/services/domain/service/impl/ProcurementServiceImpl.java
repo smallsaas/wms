@@ -176,18 +176,24 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         //采购的商品
         List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
                 .eq(StorageInItem.TYPE, TransactionType.Procurement.toString()).eq(StorageInItem.STORAGE_IN_ID, procurementId));
+        //采购的商品
 
+        // 入库历史记录
         List<StorageInItemRecord> procurementItems = new ArrayList<>();
+        // 入库历史记录
 
-        // 入库记录
+        //采购的商品
         List<ProcurementItemRecord> records = new ArrayList<>();
-        // 入库记录
+        //采购的商品
 
         if (items != null && items.size() > 0) {
             // 采购的 商品
             for (StorageInItem item : items) {
+
                 int remainderCount = item.getTransactionQuantities();
                 int sectionCount = 0;
+
+
                 ProcurementItemRecord record = new ProcurementItemRecord();
 
                 SkuProduct sku = skuProductMapper.selectById(item.getSkuId());
@@ -202,10 +208,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 record.setSkuUnit(sku.getField1());
                 record.setTransactionSkuPrice(item.getTransactionSkuPrice());
 
-
-
-                // 入库 记录
-                List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>().eq(StorageIn.PROCUREMENT_ID, procurement)
+                // 入库记录
+                List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>().eq(StorageIn.PROCUREMENT_ID, procurementId)
                         .eq(StorageIn.TRANSACTION_TYPE, TransactionType.Procurement.toString()));
                 if (ins != null && ins.size() > 0) {
                     // 有入库记录
@@ -218,7 +222,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                             for (StorageInItem originItem : originItems) {
 
 
-                                // 入库记录
+                                // 入库历史记录
                                 StorageInItemRecord procurementItem = new StorageInItemRecord();
                                 procurementItem.setSkuCode(sku.getSkuCode());
                                 procurementItem.setSkuName(sku.getSkuName());
@@ -230,7 +234,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                                 procurementItem.setTransactionSkuPrice(originItem.getTransactionSkuPrice());
                                 procurementItem.setTransactionTime(originItem.getTransactionTime());
                                 procurementItems.add(procurementItem);
-                                // 入库 记录
+                                // 入库历史记录
 
                                 // 入库数 以及 剩余 入库数
                                 sectionCount += originItem.getTransactionQuantities();
