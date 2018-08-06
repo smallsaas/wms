@@ -112,6 +112,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 }
                 items.add(outItem);
             }
+        }else {
+            throw new BusinessException(4050,"商品不能为空，请先选择商品！");
         }
         storageOut.setStorageOutItems(items);
         affected = crudStorageOutService.createMaster(storageOut, storageOutFilter, null, null);

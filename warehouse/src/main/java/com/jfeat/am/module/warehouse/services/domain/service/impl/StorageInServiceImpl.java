@@ -65,6 +65,8 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
                     affected += inventoryMapper.insert(isExistInventory);
                 }
             }
+        }else {
+            throw new BusinessException(4050,"商品不能为空，请先选择商品！");
         }
         return affected;
     }
