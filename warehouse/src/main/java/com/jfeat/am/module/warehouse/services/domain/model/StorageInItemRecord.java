@@ -13,6 +13,8 @@ public class StorageInItemRecord extends StorageInItem{
     // TODO skuSpec need more details
     String skuSpec;
 
+    String skuUnit;
+
     public String getSkuName() {
         return skuName;
     }
@@ -45,5 +47,11 @@ public class StorageInItemRecord extends StorageInItem{
         this.skuSpec = skuSpec;
     }
 
+    public String getSkuUnit() {
+        return skuUnit;
+    }
 
+    public void setSkuUnit(String skuUnit) {
+        this.skuUnit = skuUnit;
+    }
 }

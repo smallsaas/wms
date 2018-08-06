@@ -15,6 +15,8 @@ public class ProcurementModel extends Procurement{
 
     List<ProcurementItemRecord> records;
 
+    List<StorageInItemRecord> inHistories;
+
 
     String originatorName;
     String operatorName;
@@ -60,5 +62,13 @@ public class ProcurementModel extends Procurement{
 
     public void setSupplierName(String supplierName) {
         this.supplierName = supplierName;
+    }
+
+    public List<StorageInItemRecord> getInHistories() {
+        return inHistories;
+    }
+
+    public void setInHistories(List<StorageInItemRecord> inHistories) {
+        this.inHistories = inHistories;
     }
 }

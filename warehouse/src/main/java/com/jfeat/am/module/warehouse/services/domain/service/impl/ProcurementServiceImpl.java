@@ -14,6 +14,7 @@ import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryProcurementDao;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementItemRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementModel;
+import com.jfeat.am.module.warehouse.services.domain.model.StorageInItemRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageInModel;
 import com.jfeat.am.module.warehouse.services.domain.service.ProcurementService;
 
@@ -176,10 +177,13 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
                 .eq(StorageInItem.TYPE, TransactionType.Procurement.toString()).eq(StorageInItem.STORAGE_IN_ID, procurementId));
 
+        List<StorageInItemRecord> procurementItems = new ArrayList<>();
+
+        // 入库记录
         List<ProcurementItemRecord> records = new ArrayList<>();
+        // 入库记录
 
         if (items != null && items.size() > 0) {
-
             // 采购的 商品
             for (StorageInItem item : items) {
                 int remainderCount = item.getTransactionQuantities();
@@ -191,11 +195,15 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 record.setSkuName(sku.getSkuName());
                 record.setSkuBarcode(sku.getBarCode());
                 record.setId(item.getId());
+                record.setSkuId(item.getSkuId());
                 record.setTransactionTime(item.getTransactionTime());
                 record.setTransactionQuantities(item.getTransactionQuantities());
                 // 使用 t_sku_product 表中的field1 来接收 单个单位，多单位使用多单位表
                 record.setSkuUnit(sku.getField1());
                 record.setTransactionSkuPrice(item.getTransactionSkuPrice());
+
+
+
                 // 入库 记录
                 List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>().eq(StorageIn.PROCUREMENT_ID, procurement)
                         .eq(StorageIn.TRANSACTION_TYPE, TransactionType.Procurement.toString()));
@@ -208,9 +216,26 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                                 .eq(StorageInItem.STORAGE_IN_ID, in.getId()).eq(StorageInItem.SKU_ID, item.getSkuId()));
                         if (originItems != null && originItems.size() > 0) {
                             for (StorageInItem originItem : originItems) {
+
+
+                                // 入库记录
+                                StorageInItemRecord procurementItem = new StorageInItemRecord();
+                                procurementItem.setSkuCode(sku.getSkuCode());
+                                procurementItem.setSkuName(sku.getSkuName());
+                                procurementItem.setSkuBarcode(sku.getBarCode());
+                                procurementItem.setId(item.getId());
+                                // 使用 t_sku_product 表中的field1 来接收 单个单位，多单位使用多单位表
+                                procurementItem.setSkuUnit(sku.getField1());
+                                procurementItem.setTransactionQuantities(originItem.getTransactionQuantities());
+                                procurementItem.setTransactionSkuPrice(originItem.getTransactionSkuPrice());
+                                procurementItem.setTransactionTime(originItem.getTransactionTime());
+                                procurementItems.add(procurementItem);
+                                // 入库 记录
+
                                 // 入库数 以及 剩余 入库数
                                 sectionCount += originItem.getTransactionQuantities();
                                 remainderCount = remainderCount -sectionCount;
+                                // 入库数 以及 剩余 入库数
                             }
                         }
                     }
@@ -227,7 +252,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             // 无采购的商品
 
         }
-        object.put("items",items);
+        object.put("inHistories",procurementItems);
         object.put("records", records);
         ProcurementModel model = JSON.parseObject(JSON.toJSONString(object), ProcurementModel.class);
 
