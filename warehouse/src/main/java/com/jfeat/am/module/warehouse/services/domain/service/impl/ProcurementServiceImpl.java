@@ -228,6 +228,13 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                                 procurementItem.setSkuName(sku.getSkuName());
                                 procurementItem.setSkuBarcode(sku.getBarCode());
                                 procurementItem.setId(item.getId());
+                                procurementItem.setTransactionName(queryProcurementDao.transactionName(in.getTransactionBy()));
+                                procurementItem.setWarehouseName(queryProcurementDao.warehouseName(in.getWarehouseId()));
+                                procurementItem.setStorageInCode(in.getTransactionCode());
+                                procurementItem.setStorageInNote(in.getNote());
+                                procurementItem.setBuyer(procurement.getBuyer());
+                                procurementItem.setProcurementCode(procurement.getProcurementCode());
+                                procurementItem.setProcurementDate(procurement.getProcurementTime());
                                 // 使用 t_sku_product 表中的field1 来接收 单个单位，多单位使用多单位表
                                 procurementItem.setSkuUnit(sku.getField1());
                                 procurementItem.setTransactionQuantities(originItem.getTransactionQuantities());
