@@ -178,7 +178,7 @@ CREATE TABLE `wms_inventory` (
 `max_inventory`  int(11)  DEFAULT NULL COMMENT '库存上限',
 `min_inventory`  int(11)  DEFAULT 0 COMMENT '库存下限',
 `sku_id` bigint(20) NOT NULL COMMENT '库存量ID',
-`valid_sku`  int(11)  DEFAULT NULL COMMENT '可用库存量',
+`valid_sku`  int(11)  DEFAULT 0 COMMENT '可用库存量',
 `advance_quantities`  int(11)  DEFAULT 0 COMMENT '预购量',
 `transmit_quantities`  int(11)  DEFAULT 0 COMMENT '在途量',
 PRIMARY KEY (`id`),
