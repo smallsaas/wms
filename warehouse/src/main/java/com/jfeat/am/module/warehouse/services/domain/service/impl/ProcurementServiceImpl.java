@@ -227,6 +227,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             // 无采购的商品
 
         }
+        object.put("items",items);
         object.put("records", records);
         ProcurementModel model = JSON.parseObject(JSON.toJSONString(object), ProcurementModel.class);
 

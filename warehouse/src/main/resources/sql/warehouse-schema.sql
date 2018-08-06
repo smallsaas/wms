@@ -181,7 +181,8 @@ CREATE TABLE `wms_inventory` (
 `valid_sku`  int(11)  DEFAULT NULL COMMENT '可用库存量',
 `advance_quantities`  int(11)  DEFAULT 0 COMMENT '预购量',
 `transmit_quantities`  int(11)  DEFAULT 0 COMMENT '在途量',
-PRIMARY KEY (`id`)
+PRIMARY KEY (`id`),
+unique(`warehouse_id`,`sku_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
