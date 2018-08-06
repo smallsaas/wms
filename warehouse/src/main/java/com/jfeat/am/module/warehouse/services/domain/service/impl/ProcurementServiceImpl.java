@@ -94,6 +94,37 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     }
 
 
+    @Transactional
+    public Integer updateProcurement(Long userId, ProcurementModel model){
+
+        int affected = 0;
+        BigDecimal totalSpend = BigDecimal.valueOf(0);
+        model.setOperator(userId);
+        model.setOriginatorId(userId);
+        model.setTransactionTime(new Date());
+        model.setProcureStatus(ProcurementStatus.WaitForStorageIn.toString());
+        for (StorageInItem item : model.getItems()) {
+            BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
+            sum = sum.multiply(item.getTransactionSkuPrice());
+            totalSpend = totalSpend.add(sum);
+        }
+        model.setProcurementTotal(totalSpend);
+        affected += procurementMapper.insert(model);
+        if (model.getItems() == null || model.getItems().size() == 0) {
+            throw new BusinessException(5000, "请先选择需要采购的商品！");
+        }
+        for (StorageInItem item : model.getItems()) {
+            item.setStorageInId(model.getId());
+            item.setType(TransactionType.Procurement.toString());
+            affected += storageInItemMapper.insert(item);
+        }
+        return affected;
+    }
+
+
+
+
+
     /**
      * 执行入库 可以多次执行 ，但是不能超出总和
      */
@@ -170,9 +201,12 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         JSONObject object = JSON.parseObject(JSON.toJSONString(procurement));
 
         Suppliers suppliers = suppliersMapper.selectById(procurement.getSupplierId());
-
         object.put("supplierName", suppliers == null ? null : suppliers.getSupplierName());
 
+        // 制单人
+        object.put("originatorName",queryProcurementDao.originatorName(procurement.getOriginatorId()));
+        //操作人
+        object.put("operatorName",queryProcurementDao.operatorName(procurement.getOperator()));
         //采购的商品
         List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
                 .eq(StorageInItem.TYPE, TransactionType.Procurement.toString()).eq(StorageInItem.STORAGE_IN_ID, procurementId));
