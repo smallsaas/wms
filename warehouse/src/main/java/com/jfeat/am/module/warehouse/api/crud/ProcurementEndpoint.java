@@ -77,9 +77,16 @@ public class ProcurementEndpoint extends BaseController {
 
     @BusinessLog(name = "Procurement", value = "update Procurement")
     @PutMapping("/{id}")
-    @ApiOperation(value = "更新采购表单",response = ProcurementModel.class)
-
+    @ApiOperation(value = "更新采购单",response = ProcurementModel.class)
     public Tip updateProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
+        entity.setId(id);
+        return SuccessTip.create(procurementService.updateProcurement(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+    }
+
+    @BusinessLog(name = "Procurement", value = "update Procurement")
+    @PutMapping("/{id}/excution")
+    @ApiOperation(value = "入库",response = ProcurementModel.class)
+    public Tip excutionProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
         entity.setId(id);
         return SuccessTip.create(procurementService.executionStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
     }
