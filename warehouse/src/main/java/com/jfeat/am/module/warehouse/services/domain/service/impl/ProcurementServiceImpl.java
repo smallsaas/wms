@@ -210,14 +210,14 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
                 // 入库记录
                 List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>().eq(StorageIn.PROCUREMENT_ID, procurementId)
-                        .eq(StorageIn.TRANSACTION_TYPE, TransactionType.Procurement.toString()));
+                        .like(StorageIn.TRANSACTION_TYPE, TransactionType.Procurement.toString()));
                 if (ins != null && ins.size() > 0) {
                     // 有入库记录
                     // 查找 入库 记录下已经入库的商品及数量
                     for (StorageIn in : ins) {
                         // 查找是否存在 这个 商品已经入库
                         List<StorageInItem> originItems = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
-                                .eq(StorageInItem.STORAGE_IN_ID, in.getId()).eq(StorageInItem.SKU_ID, item.getSkuId()));
+                                .eq(StorageInItem.STORAGE_IN_ID, in.getId()).eq(StorageInItem.SKU_ID, item.getSkuId()).notLike(StorageInItem.TYPE,TransactionType.Procurement.toString()));
                         if (originItems != null && originItems.size() > 0) {
                             for (StorageInItem originItem : originItems) {
 
@@ -247,6 +247,10 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                                 sectionCount += originItem.getTransactionQuantities();
                                 remainderCount = remainderCount -sectionCount;
                                 // 入库数 以及 剩余 入库数
+
+                                record.setRemainderCount(remainderCount);
+                                record.setSectionInCount(sectionCount);
+                                records.add(record);
                             }
                         }
                     }
@@ -255,8 +259,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     // 无入库记录
                     record.setSectionInCount(sectionCount);
                     record.setRemainderCount(remainderCount);
+                    records.add(record);
                 }
-                records.add(record);
             }
 
         } else {
