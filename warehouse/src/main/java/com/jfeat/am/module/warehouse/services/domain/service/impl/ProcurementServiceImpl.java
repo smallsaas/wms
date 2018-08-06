@@ -3,10 +3,7 @@ package com.jfeat.am.module.warehouse.services.domain.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.toolkit.IdWorker;
-import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.common.exception.BusinessException;
-import com.jfeat.am.modular.system.service.UserService;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
@@ -28,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -71,11 +69,17 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     public Integer addProcurement(Long userId, ProcurementModel model){
 
         int affected = 0;
-
+        BigDecimal totalSpend = BigDecimal.valueOf(0);
         model.setOperator(userId);
         model.setOriginatorId(userId);
         model.setTransactionTime(new Date());
         model.setProcureStatus(ProcurementStatus.WaitForStorageIn.toString());
+        for (StorageInItem item : model.getItems()) {
+            BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
+            sum = sum.multiply(item.getTransactionSkuPrice());
+            totalSpend = totalSpend.add(sum);
+        }
+        model.setProcurementTotal(totalSpend);
         affected += procurementMapper.insert(model);
         if (model.getItems() == null || model.getItems().size() == 0) {
             throw new BusinessException(5000, "请先选择需要采购的商品！");
