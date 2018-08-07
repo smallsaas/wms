@@ -27,7 +27,7 @@ CREATE TABLE `wms_storage_in_item` (
 `id` bigint(20) NOT NULL  AUTO_INCREMENT,
 `storage_in_id` bigint(20) NOT NULL COMMENT '入库ID',
 `sku_id` bigint(20) NOT NULL COMMENT 'SKUID',
-`transaction_sku_price` decimal(12,4) NOT NULL COMMENT '出\入库价格',
+`transaction_sku_price` decimal(12,4) default NULL COMMENT '出\入库价格',
 `transaction_quantities`  int(11)  NOT NULL COMMENT '操作数量',
 `transaction_time` datetime default NULL COMMENT '操作时间',
 `type` varchar(26) DEFAULT 'Others' COMMENT '操作类型',
@@ -60,7 +60,7 @@ CREATE TABLE `wms_storage_out_item` (
 `id` bigint(20) NOT NULL  AUTO_INCREMENT,
 `storage_out_id` bigint(20) NOT NULL COMMENT '入库ID',
 `sku_id` bigint(20) NOT NULL COMMENT 'SKUID',
-`transaction_sku_price` decimal(12,4) NOT NULL COMMENT '出\入库价格',
+`transaction_sku_price` decimal(12,4) DEFAULT NULL COMMENT '出\入库价格',
 `transaction_quantities`  int(11)  NOT NULL COMMENT '操作数量',
 `transaction_time` datetime DEFAULT NULL COMMENT '操作时间',
 PRIMARY KEY (`id`)
