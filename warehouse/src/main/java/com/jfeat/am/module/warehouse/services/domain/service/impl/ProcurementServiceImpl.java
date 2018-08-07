@@ -259,8 +259,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     // 查找 入库 记录下已经入库的商品及数量
                     for (StorageIn in : ins) {
                         // 查找是否存在 这个 商品已经入库
-                        List<StorageInItem> originItems = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
-                                .eq(StorageInItem.STORAGE_IN_ID, in.getId()).eq(StorageInItem.SKU_ID, item.getSkuId()).notLike(StorageInItem.TYPE,TransactionType.Procurement.toString()));
+                        List<StorageInItem> originItems = queryProcurementDao.originItems(in.getId(),item.getSkuId(),TransactionType.Procurement.toString());
                         if (originItems != null && originItems.size() > 0) {
                             for (StorageInItem originItem : originItems) {
 

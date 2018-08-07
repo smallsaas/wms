@@ -5,6 +5,7 @@ import com.jfeat.am.module.warehouse.services.domain.model.ProcurementRecord;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.jfeat.am.module.warehouse.services.persistence.model.StorageInItem;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -53,5 +54,11 @@ public interface QueryProcurementDao extends BaseMapper<ProcurementRecord> {
     // 入库历史记录
     List<ProcurementItemRecord> storageInHistories(@Param("procurementId")Long procurementId);
 
+
+    // mou ge sku
+    @Select("SELECT wms_storage_in_item.* FROM wms_storage_in_item WHERE storage_in_id = #{inId} AND sku_id = #{skuId} AND type != #{type}")
+    List<StorageInItem> originItems(@Param("inId")Long inId,
+                                    @Param("skuId")Long skuId,
+                                    @Param("type")String type);
 
 }
