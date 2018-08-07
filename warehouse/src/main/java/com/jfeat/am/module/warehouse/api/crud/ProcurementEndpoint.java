@@ -68,9 +68,9 @@ public class ProcurementEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
+    @BusinessLog(name = "Procurement", value = "view Procurement")
     @GetMapping("/{id}")
     @ApiOperation(value = "查看采购表单",response = ProcurementModel.class)
-
     public Tip getProcurement(@PathVariable Long id) {
         return SuccessTip.create(procurementService.procurementDetails(id));
     }

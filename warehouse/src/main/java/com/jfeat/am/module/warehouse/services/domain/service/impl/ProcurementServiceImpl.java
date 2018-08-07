@@ -201,7 +201,6 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     /**
      * 详情
      */
-    @Transactional
     public ProcurementModel procurementDetails(Long procurementId) {
 
         Procurement procurement = procurementMapper.selectById(procurementId);
