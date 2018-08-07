@@ -84,6 +84,7 @@
 
         WHERE
         wms_storage_in.id = #{id}
+        and wms_storage_in_item.type != 'Procurement'
 
     </select>
 
