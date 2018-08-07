@@ -106,7 +106,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         } else {
 
             SkuProductModel entity = new SkuProductModel();
-            entity.setSkuPrice(product.getPrice());
+            entity.setCostPrice(product.getCostPrice() == null ? null : product.getCostPrice());
             entity.setSkuCode(product.getProductCode());
             entity.setBarCode(product.getBarCode());
             // field 去接收单位
@@ -188,7 +188,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
             originSkuProduct.setField1(model.getField1());
             originSkuProduct.setProductId(model.getId());
 
-            if (model.getCostPrice() != null && model.getCostPrice().compareTo(originSkuProduct.getSkuPrice()) != 0) {
+            if (model.getCostPrice() != null && model.getCostPrice().compareTo(originSkuProduct.getCostPrice()) != 0) {
                 SkuPriceHistory updateHistory = new SkuPriceHistory();
                 updateHistory.setOriginPrice(originHistory.getAfterPrice());
                 updateHistory.setAfterPrice(model.getCostPrice());
