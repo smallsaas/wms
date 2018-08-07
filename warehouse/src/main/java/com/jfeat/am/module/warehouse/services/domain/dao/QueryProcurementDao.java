@@ -56,7 +56,7 @@ public interface QueryProcurementDao extends BaseMapper<ProcurementRecord> {
 
 
     // mou ge sku
-    @Select("SELECT wms_storage_in_item.* FROM wms_storage_in_item WHERE storage_in_id = #{inId} AND sku_id = #{skuId} AND type != #{type}")
+    @Select("SELECT wms_storage_in_item.* FROM wms_storage_in_item WHERE storage_in_id = #{inId} AND wms_storage_in_item.sku_id = #{skuId} AND wms_storage_in_item.type != #{type}")
     List<StorageInItem> originItems(@Param("inId")Long inId,
                                     @Param("skuId")Long skuId,
                                     @Param("type")String type);
