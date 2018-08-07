@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
+import com.jfeat.am.module.sku.services.persistence.dao.SkuPriceHistoryMapper;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
+import com.jfeat.am.module.sku.services.persistence.model.SkuPriceHistory;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDProcurementService;
@@ -63,6 +65,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     SuppliersMapper suppliersMapper;
     @Resource
     QueryProcurementDao queryProcurementDao;
+    @Resource
+    SkuPriceHistoryMapper skuPriceHistoryMapper;
 
     /**
      * 重构 procurement 问题
@@ -88,6 +92,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         affected += procurementMapper.insert(model);
 
         for (StorageInItem item : model.getItems()) {
+            if (item.getTransactionQuantities() == 0) {
+                throw new BusinessException(4501, "采购数量不能为0，请重新输入！");
+            }
             item.setStorageInId(model.getId());
             item.setType(TransactionType.Procurement.toString());
             affected += storageInItemMapper.insert(item);
@@ -158,42 +165,59 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             in.setProcurementId(procurementId);
             in.setTransactionType(TransactionType.Procurement.toString());
             StorageInFilter storageInFilter = new StorageInFilter();
-            in.setStorageInItems(model.getItems());
 
+            List<StorageInItem> storageInItems = new ArrayList<>();
             for (StorageInItem item : model.getItems()) {
+                if (item.getTransactionQuantities() > 0) {
+                    storageInItems.add(item);
+                    // 某个 sku 的采购的数量
+                    Integer skuProcurementCount = queryProcurementDao.skuProcurementCount(procurementId, item.getSkuId());
+                    //某次采购 某个 sku 入库历史数量
+                    Integer storageInCount = queryProcurementDao.storageInCount(procurementId, item.getSkuId());
+                    if (storageInCount == null) {
+                        storageInCount = 0;
+                    }
+                    if (item.getTransactionQuantities() > (skuProcurementCount - storageInCount)) {
+                        throw new BusinessException(4500, "入库数不能大于采购数，请先核对入库数！");
+                    }
+/*                // 历史价格 信息
+                SkuPriceHistory history = new SkuPriceHistory();
+                history.setSkuId(item.getSkuId());
+                SkuPriceHistory originHistory = skuPriceHistoryMapper.selectOne(history);
+                if (originHistory.getAfterPrice().compareTo(item.getTransactionSkuPrice()) != 0){
+                    originHistory.setAfterPrice(originHistory.getOriginPrice());
+                    originHistory.setAfterPrice(item.getTransactionSkuPrice());
+                    skuPriceHistoryMapper.insert(originHistory);
+                }*/
 
-                Integer storageInCount = queryProcurementDao.storageInCount(procurementId, item.getSkuId());
-                if (item.getTransactionQuantities() > storageInCount) {
-                    throw new BusinessException(4500,"入库数不能大于采购数，请先核对入库数！");
+                    Inventory isExistInventory = new Inventory();
+                    isExistInventory.setSkuId(item.getSkuId());
+                    isExistInventory.setWarehouseId(Long.valueOf(model.getField1()));
+                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+
+                    if (originInventory != null) {
+                        originInventory.setValidSku(originInventory.getValidSku() + item.getTransactionQuantities());
+                        affected += inventoryMapper.updateById(originInventory);
+
+                    } else {
+                        isExistInventory.setTransmitQuantities(item.getTransactionQuantities());
+                        isExistInventory.setAdvanceQuantities(0);
+                        isExistInventory.setMinInventory(0);
+                        isExistInventory.setMaxInventory(item.getTransactionQuantities());
+                        affected += inventoryMapper.insert(isExistInventory);
+                    }
                 }
 
-                Inventory isExistInventory = new Inventory();
-                isExistInventory.setSkuId(item.getSkuId());
-                isExistInventory.setWarehouseId(Long.valueOf(model.getField1()));
-                Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
-
-                if (originInventory != null) {
-                    originInventory.setValidSku(originInventory.getValidSku() + item.getTransactionQuantities());
-                    affected += inventoryMapper.updateById(originInventory);
-
-                } else {
-                    isExistInventory.setTransmitQuantities(item.getTransactionQuantities());
-                    isExistInventory.setAdvanceQuantities(0);
-                    isExistInventory.setMinInventory(0);
-                    isExistInventory.setMaxInventory(item.getTransactionQuantities());
-                    affected += inventoryMapper.insert(isExistInventory);
-                }
             }
+            in.setStorageInItems(storageInItems);
             inSuccess = crudStorageInService.createMaster(in, storageInFilter, null, null);
             if (inSuccess > 0) {
                 int sectionCount = queryProcurementDao.sectionCount(procurementId);
                 //假设入库数量等于需入库的数量，则设定入库完成，不等于则是部分入库
                 if (sectionCount == totalCount) {
                     model.setProcureStatus(ProcurementStatus.TotalStorageIn.toString());
-                    affected += procurementMapper.updateById(model);
                 } else {
                     model.setProcureStatus(ProcurementStatus.SectionStorageIn.toString());
-                    affected += procurementMapper.updateById(model);
                 }
             }
         }

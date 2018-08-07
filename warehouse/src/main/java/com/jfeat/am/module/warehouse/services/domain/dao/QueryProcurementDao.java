@@ -69,4 +69,12 @@ public interface QueryProcurementDao extends BaseMapper<ProcurementRecord> {
     Integer storageInCount(@Param("procurementId")Long procurementId,
                            @Param("skuId")Long skuId);
 
+    // 某个 sku 的采购的数量
+    @Select("SELECT SUM(transaction_quantities) as skuProcurementCount FROM wms_storage_in_item " +
+            "where wms_storage_in_item.storage_in_id = #{procurementId} " +
+            "and wms_storage_in_item.sku_id = #{skuId}" +
+            " and wms_storage_in_item.type = 'Procurement'")
+    Integer skuProcurementCount(@Param("procurementId")Long procurementId,
+                                @Param("skuId")Long skuId);
+
 }
