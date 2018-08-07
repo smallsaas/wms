@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -85,19 +86,19 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                     }
                 }
 
-                if (entity.getSkuPrice() != null) {
+                if (entity.getCostPrice() != null) {
                     SkuPriceHistory history = new SkuPriceHistory();
                     // 初始 插入 的时候 原始 以及 修改 后的 价格 都一样
-                    history.setOriginPrice(entity.getSkuPrice());
+                    history.setOriginPrice(entity.getCostPrice());
                     history.setSkuId(skuProductFilter.result().get("id") == null ? null : (Long) skuProductFilter.result().get("id"));
-                    history.setAfterPrice(entity.getSkuPrice());
+                    history.setAfterPrice(entity.getCostPrice());
                     history.setUpdateTime(new Date());
                     affect += skuPriceHistoryMapper.insert(history);
                 } else {
                     SkuPriceHistory history = new SkuPriceHistory();
-                    history.setOriginPrice(null);
+                    history.setOriginPrice(BigDecimal.valueOf(0L));
                     history.setSkuId(skuProductFilter.result().get("id") == null ? null : (Long) skuProductFilter.result().get("id"));
-                    history.setAfterPrice(null);
+                    history.setAfterPrice(BigDecimal.valueOf(0L));
                     history.setUpdateTime(new Date());
                     affect += skuPriceHistoryMapper.insertAllColumn(history);
 
@@ -116,21 +117,21 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
             SkuProductFilter skuProductFilter = new SkuProductFilter();
             affect += crudSkuProductService.createMaster(entity, skuProductFilter, null, null);
 
-            if (entity.getSkuPrice() != null) {
+            if (entity.getCostPrice() != null) {
                 SkuPriceHistory history = new SkuPriceHistory();
                 // 初始 插入 的时候 原始 以及 修改 后的 价格 都一样
-                history.setOriginPrice(entity.getSkuPrice());
+                history.setOriginPrice(entity.getCostPrice());
                 history.setSkuId(skuProductFilter.result().get("id") == null ? null : (Long) skuProductFilter.result().get("id"));
-                history.setAfterPrice(entity.getSkuPrice());
+                history.setAfterPrice(entity.getCostPrice());
                 history.setUpdateTime(new Date());
                 affect += skuPriceHistoryMapper.insert(history);
             } else {
                 SkuPriceHistory history = new SkuPriceHistory();
-                history.setOriginPrice(null);
+                history.setOriginPrice(BigDecimal.valueOf(0L));
                 history.setSkuId(skuProductFilter.result().get("id") == null ? null : (Long) skuProductFilter.result().get("id"));
-                history.setAfterPrice(null);
+                history.setAfterPrice(BigDecimal.valueOf(0L));
                 history.setUpdateTime(new Date());
-                affect += skuPriceHistoryMapper.insertAllColumn(history);
+                affect += skuPriceHistoryMapper.insert(history);
 
             }
         }
@@ -156,11 +157,11 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         SkuPriceHistory originHistory = skuPriceHistoryMapper.selectOne(history);
 
         if (model.getSkus() != null && model.getSkus().size() > 0) {
-            if (model.getSkus().get(0).getSkuPrice() != null &&
-                    model.getSkus().get(0).getSkuPrice().compareTo(originSkuProduct.getSkuPrice()) != 0) {
+            if (model.getSkus().get(0).getCostPrice() != null &&
+                    model.getSkus().get(0).getCostPrice().compareTo(originSkuProduct.getCostPrice()) != 0) {
                 SkuPriceHistory updateHistory = new SkuPriceHistory();
                 updateHistory.setOriginPrice(originHistory.getAfterPrice());
-                updateHistory.setAfterPrice(model.getSkus().get(0).getSkuPrice());
+                updateHistory.setAfterPrice(model.getSkus().get(0).getCostPrice());
                 updateHistory.setUpdateTime(new Date());
                 affect += skuPriceHistoryMapper.insertAllColumn(history);
             }
