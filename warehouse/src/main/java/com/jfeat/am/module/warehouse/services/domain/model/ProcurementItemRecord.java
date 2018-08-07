@@ -6,6 +6,7 @@ public class ProcurementItemRecord extends StorageInItem {
 
     int sectionInCount;
     int remainderCount;
+    int totalCount;
     String skuName;
     String skuCode;
     String skuUnit;
@@ -57,5 +58,13 @@ public class ProcurementItemRecord extends StorageInItem {
 
     public void setSkuBarcode(String skuBarcode) {
         this.skuBarcode = skuBarcode;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
     }
 }

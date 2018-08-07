@@ -238,6 +238,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 ProcurementItemRecord record = new ProcurementItemRecord();
 
                 SkuProduct sku = skuProductMapper.selectById(item.getSkuId());
+
+                record.setTotalCount(item.getTransactionQuantities()); // caigou zongshu
                 record.setSkuCode(sku.getSkuCode());
                 record.setSkuName(sku.getSkuName());
                 record.setSkuBarcode(sku.getBarCode());
