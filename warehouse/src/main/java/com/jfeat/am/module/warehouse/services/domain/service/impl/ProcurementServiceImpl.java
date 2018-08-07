@@ -68,7 +68,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
      * 重构 procurement 问题
      */
     @Transactional
-    public Integer addProcurement(Long userId, ProcurementModel model){
+    public Integer addProcurement(Long userId, ProcurementModel model) {
 
         int affected = 0;
         if (model.getItems() == null || model.getItems().size() == 0) {
@@ -97,19 +97,19 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
 
     @Transactional
-    public Integer updateProcurement(Long userId, Long procurementId,ProcurementModel model){
+    public Integer updateProcurement(Long userId, Long procurementId, ProcurementModel model) {
         int affected = 0;
 
         Procurement procurement = procurementMapper.selectById(procurementId);
         // 等待入库的情况下才能执行更新的操作
-        if (procurement.getProcureStatus().compareTo(ProcurementStatus.WaitForStorageIn.toString())==0){
+        if (procurement.getProcureStatus().compareTo(ProcurementStatus.WaitForStorageIn.toString()) == 0) {
             model.setId(procurementId);
             model.setOperator(userId);
             model.setTransactionTime(new Date());
             model.setProcureStatus(ProcurementStatus.WaitForStorageIn.toString());
             if (model.getItems() == null || model.getItems().size() == 0) {
                 affected += procurementMapper.updateById(model);
-            }else {
+            } else {
                 BigDecimal totalSpend = BigDecimal.valueOf(0);
                 for (StorageInItem item : model.getItems()) {
                     BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
@@ -128,9 +128,6 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         }
         throw new BusinessException(BusinessCode.ErrorStatus);
     }
-
-
-
 
 
     /**
@@ -164,6 +161,12 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             in.setStorageInItems(model.getItems());
 
             for (StorageInItem item : model.getItems()) {
+
+                Integer storageInCount = queryProcurementDao.storageInCount(procurementId, item.getSkuId());
+                if (item.getTransactionQuantities() > storageInCount) {
+                    throw new BusinessException(4500,"入库数不能大于采购数，请先核对入库数！");
+                }
+
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(item.getSkuId());
                 isExistInventory.setWarehouseId(Long.valueOf(model.getField1()));
@@ -185,10 +188,10 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             if (inSuccess > 0) {
                 int sectionCount = queryProcurementDao.sectionCount(procurementId);
                 //假设入库数量等于需入库的数量，则设定入库完成，不等于则是部分入库
-                if (sectionCount == totalCount){
+                if (sectionCount == totalCount) {
                     model.setProcureStatus(ProcurementStatus.TotalStorageIn.toString());
                     affected += procurementMapper.updateById(model);
-                }else {
+                } else {
                     model.setProcureStatus(ProcurementStatus.SectionStorageIn.toString());
                     affected += procurementMapper.updateById(model);
                 }
@@ -211,9 +214,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         object.put("supplierName", suppliers == null ? null : suppliers.getSupplierName());
 
         // 制单人
-        object.put("originatorName",queryProcurementDao.originatorName(procurement.getOriginatorId()));
+        object.put("originatorName", queryProcurementDao.originatorName(procurement.getOriginatorId()));
         //操作人
-        object.put("operatorName",queryProcurementDao.operatorName(procurement.getOperator()));
+        object.put("operatorName", queryProcurementDao.operatorName(procurement.getOperator()));
         //采购的商品
         List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
                 .eq(StorageInItem.TYPE, TransactionType.Procurement.toString()).eq(StorageInItem.STORAGE_IN_ID, procurementId));
@@ -259,7 +262,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     // 查找 入库 记录下已经入库的商品及数量
                     for (StorageIn in : ins) {
                         // 查找是否存在 这个 商品已经入库
-                        List<StorageInItem> originItems = queryProcurementDao.originItems(in.getId(),item.getSkuId(),TransactionType.Procurement.toString());
+                        List<StorageInItem> originItems = queryProcurementDao.originItems(in.getId(), item.getSkuId(), TransactionType.Procurement.toString());
                         if (originItems != null && originItems.size() > 0) {
                             for (StorageInItem originItem : originItems) {
 
@@ -287,15 +290,17 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
                                 // 入库数 以及 剩余 入库数
                                 sectionCount += originItem.getTransactionQuantities();
-                                remainderCount = remainderCount -sectionCount;
+                                remainderCount = remainderCount - sectionCount;
                                 // 入库数 以及 剩余 入库数
 
-                                record.setRemainderCount(remainderCount);
-                                record.setSectionInCount(sectionCount);
-                                records.add(record);
+
                             }
+
                         }
                     }
+                    record.setRemainderCount(remainderCount);
+                    record.setSectionInCount(sectionCount);
+                    records.add(record);
 
                 } else {
                     // 无入库记录
@@ -309,7 +314,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             // 无采购的商品
 
         }
-        object.put("inHistories",procurementItems);
+        object.put("inHistories", procurementItems);
         object.put("records", records);
         ProcurementModel model = JSON.parseObject(JSON.toJSONString(object), ProcurementModel.class);
 
