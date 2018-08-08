@@ -5,6 +5,8 @@ import com.jfeat.am.module.warehouse.services.domain.model.TransferRecord;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
 import java.util.List;
 
 /**
@@ -12,4 +14,8 @@ import java.util.List;
  */
 public interface QueryTransferDao extends BaseMapper<TransferRecord> {
     List<TransferRecord> findTransferPage(Page<TransferRecord> page, @Param("record") TransferRecord record, @Param("orderBy") String orderBy);
+
+
+    @Select("select t_store_assistant.name from t_store_assistant where t_store_assistant.user_id = #{userId}")
+    String staffName(@Param("userId")Long userId);
 }

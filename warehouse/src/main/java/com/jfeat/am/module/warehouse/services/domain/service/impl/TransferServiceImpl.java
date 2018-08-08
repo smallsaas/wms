@@ -15,6 +15,8 @@ import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutService
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDTransferService;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.definition.TransferStatus;
+import com.jfeat.am.module.warehouse.services.domain.dao.QueryTransferDao;
+import com.jfeat.am.module.warehouse.services.domain.dao.QueryWarehouseDao;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageInModel;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageOutModel;
 import com.jfeat.am.module.warehouse.services.domain.model.TransferModel;
@@ -73,6 +75,11 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
     @Resource
     InventoryMapper inventoryMapper;
+
+    @Resource
+    QueryTransferDao queryTransferDao;
+    @Resource
+    QueryWarehouseDao queryWarehouseDao;
 
     @Transactional
     public Integer createTransfer(TransferModel model, Long userId) {
@@ -264,15 +271,10 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         List<StorageOutItem> items = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,out.getId()));
 
         transferObj.put("outItems", items);
-
-        transferObj.put("originatorName", userService.getById(transfer.getOriginatorId()).getName());
-        transferObj.put("operatorName",
-                userService.getById(transfer.getOperator()).getName() == null ? null : userService.getById(transfer.getOperator()).getName());
-        transferObj.put("fromWarehouseName",
-                warehouseService.retrieveMaster(transfer.getFromWarehouseId()) == null ? null : warehouseService.retrieveMaster(transfer.getFromWarehouseId()).getWarehouseName());
-        transferObj.put("toWarehouseName",
-                warehouseService.retrieveMaster(transfer.getToWarehouseId()) == null ? null : warehouseService.retrieveMaster(transfer.getFromWarehouseId()).getWarehouseName());
-
+        transferObj.put("originatorName",queryTransferDao.staffName(transfer.getOriginatorId()));
+        transferObj.put("operatorName",queryTransferDao.staffName(transfer.getOperator()));
+        transferObj.put("fromWarehouseName",queryWarehouseDao.warehouseName(transfer.getFromWarehouseId()));
+        transferObj.put("toWarehouseName",queryWarehouseDao.warehouseName(transfer.getToWarehouseId()));
         TransferModel model = JSONObject.parseObject(JSONObject.toJSONString(transferObj), TransferModel.class);
         return model;
     }

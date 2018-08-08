@@ -5,6 +5,8 @@ import com.jfeat.am.module.warehouse.services.domain.model.WarehouseRecord;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
 import java.util.List;
 
 /**
@@ -12,4 +14,8 @@ import java.util.List;
  */
 public interface QueryWarehouseDao extends BaseMapper<WarehouseRecord> {
     List<WarehouseRecord> findWarehousePage(Page<WarehouseRecord> page, @Param("record") WarehouseRecord record, @Param("orderBy") String orderBy);
+
+
+    @Select("select wms_warehouse.warehouse_name as warehouseName from wms_warehouse where wms_warehouse.id = #{warehouseId}")
+    String warehouseName(@Param("warehouseId")Long warehouseId);
 }

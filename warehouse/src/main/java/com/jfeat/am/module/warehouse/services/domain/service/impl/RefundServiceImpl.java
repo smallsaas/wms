@@ -84,6 +84,9 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                 Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                 if (originInventory != null) {
                     // 退货数量不能大于库存量
+                    if(originInventory.getValidSku()==null){
+                        originInventory.setValidSku(0);
+                    }
                     if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
                         throw new BusinessException(4050, "\""+sku.getSkuName()+"\"库存不足");
                     } else if (outItem.getTransactionQuantities() > queryRefundDao.skuStorageInCount(model.getProductProcurementId(),outItem.getSkuId())){
