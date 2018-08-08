@@ -36,4 +36,11 @@
             AND wms_storage_in_item.warehouse_id LIKE CONCAT('%',#{record.warehouseId},'%')
         </if>
     </select>
+
+
+
+
+
+
+
 </mapper>

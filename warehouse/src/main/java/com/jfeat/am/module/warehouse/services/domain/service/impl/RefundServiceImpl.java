@@ -15,7 +15,9 @@ import com.jfeat.am.module.warehouse.services.crud.service.CRUDRefundService;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryRefundDao;
 import com.jfeat.am.module.warehouse.services.domain.model.RefundModel;
+import com.jfeat.am.module.warehouse.services.domain.model.StorageOutItemRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageOutModel;
+import com.jfeat.am.module.warehouse.services.domain.model.StorageOutRecord;
 import com.jfeat.am.module.warehouse.services.domain.service.RefundService;
 
 import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDRefundServiceImpl;
@@ -29,7 +31,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -74,9 +78,11 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
          * 2.
          * */
         int affected = 0;
+        int refundTotal = 0;
 
         if (model.getItems() != null && model.getItems().size() > 0) {
             for (StorageOutItem outItem : model.getItems()) {
+                refundTotal += outItem.getTransactionQuantities();
                 SkuProduct sku = skuProductMapper.selectById(outItem.getSkuId());
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());
@@ -123,6 +129,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         model.setOriginatorId(userId);
         model.setOperator(userId);
         model.setTransactionTime(new Date());
+        model.setProductRefundQuantities(refundTotal);
 
         affected += refundService.createMaster(model);
         return affected;
@@ -137,6 +144,25 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         Procurement procurement = procurementMapper.selectById(refund.getProductProcurementId());
         refundObj.put("procurementCode", procurement.getProcurementCode());
 
+        List<StorageOut> storageOuts = storageOutMapper.selectList(new EntityWrapper<StorageOut>().eq(StorageOut.ID,refund.getStorageOutId()).like(StorageOut.TRANSACTION_TYPE,TransactionType.Refund.toString()));
+        List<StorageOutRecord> outRecords = new ArrayList<>();
+
+        if (storageOuts!=null&&storageOuts.size()>0){
+            for (StorageOut out : storageOuts){
+                StorageOutRecord record = queryRefundDao.outRecord(out.getId());
+                List<StorageOutItem> outItems = queryRefundDao.outItems(out.getId());
+                if (outItems!=null&&outItems.size()>0){
+                    List<StorageOutItemRecord> outItemRecords = new ArrayList<>();
+                    for (StorageOutItem item : outItems){
+                        StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
+                        outItemRecords.add(itemRecord);
+                    }
+                    record.setStorageOutItemRecords(outItemRecords);
+                }
+                outRecords.add(record);
+            }
+        }
+        refundObj.put("outRecords", outRecords);
         RefundModel model = JSONObject.parseObject(JSONObject.toJSONString(refundObj), RefundModel.class);
         return model;
     }

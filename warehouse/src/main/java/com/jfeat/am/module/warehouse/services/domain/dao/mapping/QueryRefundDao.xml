@@ -61,4 +61,64 @@
             AND wms_refund.field2 LIKE CONCAT('%',#{record.field2},'%')
         </if>
     </select>
+
+
+
+    <resultMap id="OutItemMap" type="com.jfeat.am.module.warehouse.services.domain.model.StorageOutItemRecord">
+        <id column="id" property="id" />
+        <result column="storage_out_id" property="storageOutId" />
+        <result column="sku_id" property="skuId" />
+        <result column="transaction_sku_price" property="transactionSkuPrice" />
+        <result column="transaction_quantities" property="transactionQuantities" />
+        <result column="transaction_time" property="transactionTime" />
+        <result column="skuName" property="skuName" />
+        <result column="skuBarcode" property="skuBarcode" />
+        <result column="skuCode" property="skuCode" />
+        <result column="skuUnit" property="skuUnit" />
+    </resultMap>
+    <select id="outItemRecord" resultMap="OutItemMap" parameterType="long">
+        SELECT wms_storage_out_item.*,t_sku_product.sku_code as skuCode,
+        t_sku_product.sku_name as skuName,
+        t_sku_product.bar_code as skuBarcode,
+        t_sku_product.field1 as skuUnit
+        FROM wms_storage_out_item
+        left join t_sku_product on t_sku_product.id = wms_storage_out_item.sku_id
+        WHERE 1=1
+        and wms_storage_out_item.id = #{outItemId}
+    </select>
+
+
+    <resultMap id="OutRecordMap" type="com.jfeat.am.module.warehouse.services.domain.model.StorageOutRecord">
+        <id column="id" property="id" />
+        <result column="transaction_code" property="transactionCode" />
+        <result column="transaction_type" property="transactionType" />
+        <result column="transaction_time" property="transactionTime" />
+        <result column="batch_no" property="batchNo" />
+        <result column="note" property="note" />
+        <result column="status" property="status" />
+        <result column="transaction_by" property="transactionBy" />
+        <result column="originator_id" property="originatorId" />
+        <result column="warehouse_id" property="warehouseId" />
+        <result column="slot_id" property="slotId" />
+        <result column="field1" property="field1" />
+        <result column="field2" property="field2" />
+
+        <result column="warehouseName" property="warehouseName" />
+        <result column="originatorName" property="originatorName" />
+        <result column="operatorName" property="operatorName" />
+
+    </resultMap>
+
+    <select id="outRecord" resultMap="OutRecordMap" parameterType="long">
+        SELECT wms_storage_out.*,wms_warehouse.warehouse_name as warehouseName,
+        ouser.`name` as originatorName,
+        tuser.`name` as operator
+        FROM wms_storage_out
+        left join wms_warehouse on wms_warehouse.id = wms_storage_out.warehouse_id
+        left join user ouser on ouser.id = wms_storage_out.originator_id
+        left join user tuser on tuser.id = wms_storage_out.transaction_by
+        WHERE 1=1
+        and wms_storage_out.id = #{outId}
+    </select>
+
 </mapper>

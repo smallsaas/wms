@@ -11,8 +11,7 @@ public class StorageOutItemRecord extends StorageOutItem {
     String skuName;
     String skuBarcode;
     String skuCode;
-    String skuSpec;
-    List<StorageOutItemRecord> storageOutItemRecords;
+    String skuUnit;
 
     public String getSkuName() {
         return skuName;
@@ -38,19 +37,12 @@ public class StorageOutItemRecord extends StorageOutItem {
         this.skuCode = skuCode;
     }
 
-    public String getSkuSpec() {
-        return skuSpec;
+    public String getSkuUnit() {
+        return skuUnit;
     }
 
-    public void setSkuSpec(String skuSpec) {
-        this.skuSpec = skuSpec;
+    public void setSkuUnit(String skuSpec) {
+        this.skuUnit = skuUnit;
     }
 
-    public List<StorageOutItemRecord> getStorageOutItemRecords() {
-        return storageOutItemRecords;
-    }
-
-    public void setStorageOutItemRecords(List<StorageOutItemRecord> storageOutItemRecords) {
-        this.storageOutItemRecords = storageOutItemRecords;
-    }
 }
