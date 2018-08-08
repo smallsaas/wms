@@ -109,10 +109,12 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         StorageOutModel storageOutModel = new StorageOutModel();
         storageOutModel.setTransactionType(TransactionType.Refund.toString());
         storageOutModel.setStorageOutItems(model.getItems());
+        storageOutModel.setWarehouseId(model.getProductRefundWarehouseId());
 
         // 用field1 来接收出库的code
         storageOutModel.setTransactionCode(model.getField1());
         storageOutModel.setTransactionBy(userId);
+        storageOutModel.setOriginatorId(userId);
         storageOutModel.setTransactionTime(new Date());
         StorageOutFilter storageOutFilter = new StorageOutFilter();
         affected += storageOutService.createMaster(storageOutModel, storageOutFilter, null, null);
