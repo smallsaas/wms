@@ -112,6 +112,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
 
         // 用field1 来接收出库的code
         storageOutModel.setTransactionCode(model.getField1());
+        storageOutModel.setTransactionBy(userId);
         storageOutModel.setTransactionTime(new Date());
         StorageOutFilter storageOutFilter = new StorageOutFilter();
         affected += storageOutService.createMaster(storageOutModel, storageOutFilter, null, null);
@@ -137,6 +138,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         RefundModel model = JSONObject.parseObject(JSONObject.toJSONString(refundObj), RefundModel.class);
         return model;
     }
+
 
     @Transactional
     public Integer updateRefund(long userId, RefundModel model) {
