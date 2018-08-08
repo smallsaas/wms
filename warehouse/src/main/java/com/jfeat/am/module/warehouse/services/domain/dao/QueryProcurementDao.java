@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Code Generator on 2018-06-22
  */
 public interface QueryProcurementDao extends BaseMapper<ProcurementRecord> {
-    List<ProcurementRecord> findProcurementPage(Page<ProcurementRecord> page, @Param("record") ProcurementRecord record, @Param("orderBy") String orderBy);
+    List<ProcurementRecord> findProcurementPage(Page<ProcurementRecord> page, @Param("record") ProcurementRecord record, @Param("orderBy") String orderBy,@Param("waitForStorageIn")String waitForStorageIn);
 
 
     // 入库总数目 ，原入库总数目

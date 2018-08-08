@@ -39,6 +39,10 @@
         left join user ouser on ouser.id = wms_procurement.originator_id
         left join user tuser on tuser.id = wms_procurement.operator
         WHERE 1=1
+        <if test="waitForStorageIn != null and waitForStorageIn != ''">
+            AND wms_procurement.procure_status != #{waitForStorageIn}
+        </if>
+
         <if test="record.id != null and record.id>0 ">
             AND wms_procurement.id LIKE CONCAT('%',#{record.id},'%')
         </if>

@@ -118,6 +118,7 @@ public class ProcurementEndpoint extends BaseController {
                                  @RequestParam(name = "originatorId", required = false) Long originatorId,
                                  @RequestParam(name = "transactionTime", required = false) Date transactionTime,
                                  @RequestParam(name = "field1", required = false) String field1,
+                                 @RequestParam(name = "waitForStorageIn", required = false) String waitForStorageIn,
                                  @RequestParam(name = "field2", required = false) String field2,
                                  @RequestParam(name = "orderBy", required = false) String orderBy,
                                  @RequestParam(name = "sort", required = false) String sort) {
@@ -151,7 +152,7 @@ public class ProcurementEndpoint extends BaseController {
         record.setField1(field1);
         record.setField2(field2);
 
-        page.setRecords(queryProcurementDao.findProcurementPage(page, record, orderBy));
+        page.setRecords(queryProcurementDao.findProcurementPage(page, record, orderBy,waitForStorageIn));
 
         return SuccessTip.create(page);
     }
