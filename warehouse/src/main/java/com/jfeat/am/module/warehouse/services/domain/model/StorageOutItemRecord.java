@@ -12,6 +12,8 @@ public class StorageOutItemRecord extends StorageOutItem {
     String skuBarcode;
     String skuCode;
     String skuUnit;
+    String warehouseName;
+    String operator;
 
     public String getSkuName() {
         return skuName;
@@ -45,4 +47,19 @@ public class StorageOutItemRecord extends StorageOutItem {
         this.skuUnit = skuUnit;
     }
 
+    public String getWarehouseName() {
+        return warehouseName;
+    }
+
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
 }

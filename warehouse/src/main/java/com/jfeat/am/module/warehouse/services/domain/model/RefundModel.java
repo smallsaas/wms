@@ -13,7 +13,9 @@ public class RefundModel extends Refund{
     String originatorName;
     String operatorName;
     String procurementCode;
-    List<StorageOutRecord> outRecords;
+//    List<StorageOutRecord> outRecords;
+
+    List<StorageOutItemRecord> itemRecords;
 
     public List<StorageOutItem> getItems() {
         return items;
@@ -47,11 +49,19 @@ public class RefundModel extends Refund{
         this.procurementCode = procurementCode;
     }
 
-    public List<StorageOutRecord> getOutRecords() {
+    /*public List<StorageOutRecord> getOutRecords() {
         return outRecords;
     }
 
     public void setOutRecords(List<StorageOutRecord> outRecords) {
         this.outRecords = outRecords;
+    }*/
+
+    public List<StorageOutItemRecord> getItemRecords() {
+        return itemRecords;
+    }
+
+    public void setItemRecords(List<StorageOutItemRecord> itemRecords) {
+        this.itemRecords = itemRecords;
     }
 }

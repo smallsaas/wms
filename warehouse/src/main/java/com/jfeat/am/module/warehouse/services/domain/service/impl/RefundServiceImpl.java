@@ -145,24 +145,26 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         refundObj.put("procurementCode", procurement.getProcurementCode());
 
         List<StorageOut> storageOuts = storageOutMapper.selectList(new EntityWrapper<StorageOut>().eq(StorageOut.ID,refund.getStorageOutId()).like(StorageOut.TRANSACTION_TYPE,TransactionType.Refund.toString()));
-        List<StorageOutRecord> outRecords = new ArrayList<>();
+//        List<StorageOutRecord> outRecords = new ArrayList<>();
 
+        List<StorageOutItemRecord> outItemRecords = new ArrayList<>();
         if (storageOuts!=null&&storageOuts.size()>0){
             for (StorageOut out : storageOuts){
                 StorageOutRecord record = queryRefundDao.outRecord(out.getId());
                 List<StorageOutItem> outItems = queryRefundDao.outItems(out.getId());
                 if (outItems!=null&&outItems.size()>0){
-                    List<StorageOutItemRecord> outItemRecords = new ArrayList<>();
                     for (StorageOutItem item : outItems){
                         StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
+                        itemRecord.setOperator(record.getOperatorName());
+                        itemRecord.setWarehouseName(record.getWarehouseName());
                         outItemRecords.add(itemRecord);
                     }
                     record.setStorageOutItemRecords(outItemRecords);
                 }
-                outRecords.add(record);
+//                outRecords.add(record);
             }
         }
-        refundObj.put("outRecords", outRecords);
+        refundObj.put("itemRecords", outItemRecords);
         RefundModel model = JSONObject.parseObject(JSONObject.toJSONString(refundObj), RefundModel.class);
         return model;
     }
