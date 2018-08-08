@@ -32,7 +32,7 @@ public interface QueryProcurementDao extends BaseMapper<ProcurementRecord> {
             "LEFT JOIN wms_storage_in ON wms_storage_in.id = wms_storage_in_item.storage_in_id " +
             "LEFT JOIN wms_procurement ON " +
             "(wms_procurement.id = wms_storage_in.procurement_id AND wms_storage_in.transaction_type = 'Procurement') " +
-            "WHERE wms_procurement.id = #{procurementId}")
+            "WHERE wms_procurement.id = #{procurementId} AND wms_storage_in_item.type != 'Procurement'")
     Integer sectionCount(@Param("procurementId") Long procurementId);
 
 
