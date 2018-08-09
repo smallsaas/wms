@@ -139,6 +139,7 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
         check.setId(checkId);
         check.setStatus(CheckStatus.CheckOut.toString());
         check.setCheckTime(new Date());
+        check.setProfitLost(totalProfitLostValue);
 
         affected += checkMapper.updateById(check);
         return affected;

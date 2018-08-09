@@ -24,4 +24,8 @@ public interface QueryCheckDao extends BaseMapper<CheckRecord> {
     @Select("select wms_inventory.valid_sku from wms_inventory where wms_inventory.warehouse_id = #{warehouseId} and wms_inventory.sku_id = #{skuId}")
     Integer validCount(@Param("warehouseId")Long warehouseId,
                        @Param("skuId")Long skuId);
+
+    // 某次盘点总的缺失值
+    @Select("select sum(wms_check_sku.profit_lost) from wms_check_sku left join wms_check on wms_check.id = wms_check_sku.check_id where wms_check.id = #{checkId}")
+    Integer profitLost(@Param("checkId")Long checkId);
 }
