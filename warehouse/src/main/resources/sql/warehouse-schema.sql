@@ -230,7 +230,7 @@ CREATE TABLE `wms_check` (
 `check_note`  text  DEFAULT NULL COMMENT '盘点备注',
 `check_by` bigint(20) default NULL COMMENT '经手人',
 `originator_id` bigint(20) NOT NULL COMMENT '制单人',
-`status` varchar(20) not null comment 'check status'
+`status` varchar(20) not null comment 'check status',
 `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
 `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
 UNIQUE(`check_code`),
