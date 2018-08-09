@@ -172,26 +172,29 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
          * */
 
         int affected = 0;
-        TransferModel model = transferDetails(id);
+        Transfer transfer = crudTransferService.retrieveMaster(id);
+        StorageOut storageOut = storageOutMapper.selectById(transfer.getStorageOutId());
+        List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,storageOut.getId()));
 
         StorageInModel storageIn = new StorageInModel();
         storageIn.setTransactionType(TransactionType.TransferIn.toString());
-        storageIn.setWarehouseId(model.getToWarehouseId());
+        storageIn.setWarehouseId(transfer.getToWarehouseId());
         storageIn.setOriginatorId(userId);
         storageIn.setTransactionBy(userId);
-        storageIn.setTransactionCode(model.getTransactionCode());
+        // needs code ?
+        storageIn.setTransactionCode(transfer.getTransactionCode());
         storageIn.setTransactionTime(new Date());
         StorageInFilter storageInFilter = new StorageInFilter();
         List<StorageInItem> items = new ArrayList<>();
 
-        if (model.getOutItems() != null && model.getOutItems().size() > 0) {
-            for (StorageOutItem outItem : model.getOutItems()) {
+        if (storageOutItems != null && storageOutItems.size() > 0) {
+            for (StorageOutItem outItem : storageOutItems) {
 
                 StorageInItem inItem = new StorageInItem();
 
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());
-                isExistInventory.setWarehouseId(model.getToWarehouseId());
+                isExistInventory.setWarehouseId(transfer.getToWarehouseId());
                 Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
 
                 if (originInventory != null) {
@@ -221,10 +224,10 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         affected += crudStorageInService.createMaster(storageIn, storageInFilter, null, null);
 
 
-        model.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
-        model.setFinishTime(new Date());
-        model.setStatus(TransferStatus.Done.toString());
-        affected += crudTransferService.updateMaster(model);
+        transfer.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
+        transfer.setFinishTime(new Date());
+        transfer.setStatus(TransferStatus.Done.toString());
+        affected += crudTransferService.updateMaster(transfer);
         return affected;
     }
 
