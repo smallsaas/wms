@@ -33,9 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -115,6 +113,25 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                     } else {
                         originInventory.setValidSku(originInventory.getValidSku() - outItem.getTransactionQuantities());
                         affected += inventoryMapper.updateById(originInventory);
+
+                        // 接收方为在途数
+                        Inventory inventory = new Inventory();
+                        inventory.setSkuId(outItem.getSkuId());
+                        inventory.setWarehouseId(model.getToWarehouseId());
+                        Inventory toInventory = inventoryMapper.selectOne(inventory);
+                        if (toInventory == null){
+                            inventory.setValidSku(0);
+                            inventory.setMinInventory(0);
+                            inventory.setAdvanceQuantities(0);
+                            inventory.setMaxInventory(outItem.getTransactionQuantities());
+                            inventory.setTransmitQuantities(outItem.getTransactionQuantities());
+                            affected += inventoryMapper.insert(inventory);  //假设 接收方没有 ，则新建
+                        }else {
+
+                            toInventory.setTransmitQuantities(outItem.getTransactionQuantities());
+                            affected += inventoryMapper.updateAllColumnById(toInventory); //有 则是在途数
+
+                        }
                     }
                 } else {
                     throw new BusinessException(BusinessCode.NotImplement);
@@ -171,11 +188,13 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
                 if (originInventory != null) {
                     originInventory.setValidSku(originInventory.getValidSku() + outItem.getTransactionQuantities());
+                    originInventory.setTransmitQuantities(0);
                     affected += inventoryMapper.updateById(originInventory);
                 } else {
                     isExistInventory.setMaxInventory(outItem.getTransactionQuantities());
                     isExistInventory.setAdvanceQuantities(0);
                     isExistInventory.setMinInventory(0);
+                    isExistInventory.setTransmitQuantities(0);
                     isExistInventory.setValidSku(outItem.getTransactionQuantities());
                     isExistInventory.setSkuId(outItem.getSkuId());
                     affected += inventoryMapper.insert(isExistInventory);
@@ -225,8 +244,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         if (model.getOutItems() != null && model.getOutItems().size() > 0) {
             for (StorageOutItem outItem : model.getOutItems()) {
 
+                // come back to from warehouse
                 StorageInItem inItem = new StorageInItem();
-
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());
                 isExistInventory.setWarehouseId(model.getFromWarehouseId());
@@ -234,6 +253,14 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
                 originInventory.setValidSku(originInventory.getValidSku() + outItem.getTransactionQuantities());
                 affected += inventoryMapper.updateById(originInventory);
+
+                // 接收方 在途数 == 0
+                Inventory inventory = new Inventory();
+                inventory.setSkuId(outItem.getSkuId());
+                inventory.setWarehouseId(model.getToWarehouseId());
+                Inventory toInventory = inventoryMapper.selectOne(inventory);
+                toInventory.setTransmitQuantities(0);
+                affected += inventoryMapper.updateById(toInventory);
 
 
                 inItem.setSkuId(outItem.getSkuId());

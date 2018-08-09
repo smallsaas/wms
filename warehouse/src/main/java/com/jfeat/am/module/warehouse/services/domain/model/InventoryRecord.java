@@ -10,6 +10,10 @@ public class InventoryRecord extends Inventory{
 
     String skuName;
     String warehouseName;
+    String skuBarcode;
+    String skuCode;
+    String skuUnit;
+    Integer originCount;
 
     public String getSkuName() {
         return skuName;
@@ -25,5 +29,37 @@ public class InventoryRecord extends Inventory{
 
     public void setWarehouseName(String warehouseName) {
         this.warehouseName = warehouseName;
+    }
+
+    public String getSkuBarcode() {
+        return skuBarcode;
+    }
+
+    public void setSkuBarcode(String skuBarcode) {
+        this.skuBarcode = skuBarcode;
+    }
+
+    public String getSkuCode() {
+        return skuCode;
+    }
+
+    public void setSkuCode(String skuCode) {
+        this.skuCode = skuCode;
+    }
+
+    public String getSkuUnit() {
+        return skuUnit;
+    }
+
+    public void setSkuUnit(String skuUnit) {
+        this.skuUnit = skuUnit;
+    }
+
+    public Integer getOriginCount() {
+        return originCount;
+    }
+
+    public void setOriginCount(Integer originCount) {
+        this.originCount = originCount;
     }
 }
