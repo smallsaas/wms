@@ -146,6 +146,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
         model.setStorageOutId((Long) storageOutFilter.result().get("id") == null ? null : (Long) storageOutFilter.result().get("id"));
 
+        model.setStatus(TransferStatus.Transfer.toString());
         model.setOriginatorId(userId);
         model.setOperator(userId);
         model.setTransactionTime(new Date());
@@ -215,6 +216,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
         model.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
         model.setFinishTime(new Date());
+        model.setStatus(TransferStatus.Done.toString());
         affected += crudTransferService.updateMaster(model);
         return affected;
     }
@@ -276,8 +278,9 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         affected += crudStorageInService.createMaster(storageIn, storageInFilter, null, null);
 
         model.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
-        affected += crudTransferService.updateMaster(model);
+        model.setStatus(TransferStatus.Cancel.toString());
         model.setFinishTime(new Date());
+        affected += crudTransferService.updateMaster(model);
         return affected;
     }
 
