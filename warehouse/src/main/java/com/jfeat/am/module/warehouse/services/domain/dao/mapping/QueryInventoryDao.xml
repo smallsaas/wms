@@ -75,4 +75,67 @@
             AND wms_inventory.transmit_quantities LIKE CONCAT('%',#{record.transmitQuantities},'%')
         </if>
     </select>
+
+
+    <!-- 单个商品的出入库明细 -->
+
+
+    <!--
+    SELECT
+    sout.id,
+    sout.transaction_code AS transactionCode,
+    sout.transaction_type as transactionType,
+    sout.transaction_time as transactionTime,
+    sout.batch_no as batchNo,
+    sout.warehouse_id as warehouseId,
+    sout.slot_id as slotId,
+    sout.note as note,
+    sout.status as status,
+    sout.transaction_by as transactionBy,
+    sout.originator_id as originatorId,
+    NULL as readjustCostPrice,
+    NULL as procurementId,
+    sout.field1,
+    sout.field2,
+    t_sku_product.sku_name as skuName,
+    t_sku_product.bar_code as skuBarcode,
+    t_sku_product.sku_code as skuCode,
+    t_sku_product.field1 as skuUnit,
+    wms_warehouse.warehouse_name as warehousName
+    FROM wms_storage_out sout
+    LEFT JOIN wms_storage_out_item on wms_storage_out_item.storage_out_id = sout.id
+    LEFT JOIN t_sku_product on t_sku_product.id = wms_storage_out_item.sku_id
+    LEFT JOIN wms_warehouse on wms_warehouse.id = sout.warehouse_id
+
+
+    UNION
+    SELECT
+    sin.id,
+    sin.transaction_code AS transactionCode,
+    sin.transaction_type as transactionType,
+    sin.transaction_time as transactionTime,
+    sin.batch_no as batchNo,
+    sin.warehouse_id as warehouseId,
+    sin.slot_id as slotId,
+    sin.note as note,
+    sin.status as status,
+    sin.transaction_by as transactionBy,
+    sin.originator_id as originatorId,
+    sin.readjust_cost_price as readjustCostPrice,
+    sin.procurement_id as procurementId,
+    sin.field1,
+    sin.field2,
+    t_sku_product.sku_name as skuName,
+    t_sku_product.bar_code as skuBarcode,
+    t_sku_product.sku_code as skuCode,
+    t_sku_product.field1 as skuUnit,
+    wms_warehouse.warehouse_name as warehousName
+    FROM wms_storage_in sin
+    LEFT JOIN wms_storage_in_item on (wms_storage_in_item.storage_in_id = sin.id AND wms_storage_in_item.type!='Procurement')
+    LEFT JOIN t_sku_product on t_sku_product.id = wms_storage_in_item.sku_id
+    LEFT JOIN wms_warehouse on wms_warehouse.id = sin.warehouse_id
+
+    ORDER BY transactionTime DESC
+    -->
+
 </mapper>
