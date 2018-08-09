@@ -200,7 +200,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                         affected += inventoryMapper.updateById(originInventory);
 
                     } else {
-                        isExistInventory.setTransmitQuantities(item.getTransactionQuantities());
+                        isExistInventory.setTransmitQuantities(0);
                         isExistInventory.setAdvanceQuantities(0);
                         isExistInventory.setMinInventory(0);
                         isExistInventory.setMaxInventory(item.getTransactionQuantities());
