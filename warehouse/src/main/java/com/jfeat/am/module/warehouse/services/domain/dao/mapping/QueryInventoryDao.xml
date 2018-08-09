@@ -17,7 +17,11 @@
         <result column="transmit_quantities" property="transmitQuantities" />
 
         <result column="skuName" property="skuName" />
+        <result column="skuBarcode" property="skuBarcode" />
+        <result column="skuCode" property="skuCode" />
+        <result column="skuUnit" property="skuUnit" />
         <result column="warehouseName" property="warehouseName" />
+
 
     </resultMap>
 
@@ -27,6 +31,9 @@
 
                 wms_inventory.*,
                 t_sku_product.sku_name as skuName,
+                t_sku_product.bar_code as skuBarcode,
+                t_sku_product.sku_code as skuCode,
+                t_sku_product.field1 as skuUnit,
                 wms_warehouse.warehouse_name
         FROM wms_inventory
         left join t_sku_product on t_sku_product.id = wms_inventory.sku_id

@@ -13,7 +13,7 @@ public class InventoryRecord extends Inventory{
     String skuBarcode;
     String skuCode;
     String skuUnit;
-    Integer originCount;
+    Integer originCount;   // backup
 
     public String getSkuName() {
         return skuName;
