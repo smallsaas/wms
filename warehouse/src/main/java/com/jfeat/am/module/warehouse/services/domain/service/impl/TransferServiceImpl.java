@@ -18,6 +18,7 @@ import com.jfeat.am.module.warehouse.services.definition.TransferStatus;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryTransferDao;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryWarehouseDao;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageInModel;
+import com.jfeat.am.module.warehouse.services.domain.model.StorageOutItemRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageOutModel;
 import com.jfeat.am.module.warehouse.services.domain.model.TransferModel;
 import com.jfeat.am.module.warehouse.services.domain.service.StorageInService;
@@ -266,11 +267,9 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         }
         JSONObject transferObj = JSON.parseObject(JSONObject.toJSONString(transfer));
 
-        StorageOut out = storageOutMapper.selectById(transfer.getStorageOutId());
 
-        List<StorageOutItem> items = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,out.getId()));
-
-        transferObj.put("outItems", items);
+        List<StorageOutItemRecord> outItemRecords = queryTransferDao.outItemRecords(transfer.getStorageOutId());
+        transferObj.put("outItemRecords",outItemRecords);
         transferObj.put("originatorName",queryTransferDao.staffName(transfer.getOriginatorId()));
         transferObj.put("operatorName",queryTransferDao.staffName(transfer.getOperator()));
         transferObj.put("fromWarehouseName",queryWarehouseDao.warehouseName(transfer.getFromWarehouseId()));

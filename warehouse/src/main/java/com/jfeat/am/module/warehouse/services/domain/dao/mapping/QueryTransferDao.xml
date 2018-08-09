@@ -97,4 +97,30 @@
             AND wms_transfer.field2 LIKE CONCAT('%',#{record.field2},'%')
         </if>
     </select>
+
+
+    <resultMap id="OutItemMap" type="com.jfeat.am.module.warehouse.services.domain.model.StorageOutItemRecord">
+        <id column="id" property="id" />
+        <result column="storage_out_id" property="storageOutId" />
+        <result column="sku_id" property="skuId" />
+        <result column="transaction_sku_price" property="transactionSkuPrice" />
+        <result column="transaction_quantities" property="transactionQuantities" />
+        <result column="transaction_time" property="transactionTime" />
+        <result column="skuName" property="skuName" />
+        <result column="skuBarcode" property="skuBarcode" />
+        <result column="skuCode" property="skuCode" />
+        <result column="skuUnit" property="skuUnit" />
+    </resultMap>
+    <select id="outItemRecords" resultMap="OutItemMap" parameterType="long">
+        SELECT wms_storage_out_item.*,t_sku_product.sku_code as skuCode,
+        t_sku_product.sku_name as skuName,
+        t_sku_product.bar_code as skuBarcode,
+        t_sku_product.field1 as skuUnit
+        FROM wms_storage_out_item
+        left join t_sku_product on t_sku_product.id = wms_storage_out_item.sku_id
+        left join wms_storage_out on wms_storage_out.id = wms_storage_out_item.storage_out_id
+        WHERE 1=1
+        and wms_storage_out.id = #{outId}
+    </select>
+
 </mapper>

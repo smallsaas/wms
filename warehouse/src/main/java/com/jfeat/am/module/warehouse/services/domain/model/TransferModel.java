@@ -17,6 +17,8 @@ public class TransferModel extends Transfer{
     String fromWarehouseName;
     String toWarehouseName;
 
+    List<StorageOutItemRecord> outItemRecords;
+
     public List<StorageOutItem> getOutItems() {
         return outItems;
     }
@@ -55,5 +57,13 @@ public class TransferModel extends Transfer{
 
     public void setToWarehouseName(String toWarehouseName) {
         this.toWarehouseName = toWarehouseName;
+    }
+
+    public List<StorageOutItemRecord> getOutItemRecords() {
+        return outItemRecords;
+    }
+
+    public void setOutItemRecords(List<StorageOutItemRecord> outItemRecords) {
+        this.outItemRecords = outItemRecords;
     }
 }
