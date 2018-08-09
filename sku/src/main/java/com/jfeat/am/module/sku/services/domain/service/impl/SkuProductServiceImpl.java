@@ -13,7 +13,9 @@ import com.jfeat.am.module.sku.services.crud.model.SkuProductModel;
 import com.jfeat.am.module.sku.services.crud.model.SkuSpecificationGroupModel;
 import com.jfeat.am.module.sku.services.crud.service.CRUDSkuProductService;
 import com.jfeat.am.module.sku.services.crud.service.impl.CRUDSkuProductServiceImpl;
+import com.jfeat.am.module.sku.services.domain.dao.QuerySkuProductDao;
 import com.jfeat.am.module.sku.services.domain.model.CreateSkuProductModel;
+import com.jfeat.am.module.sku.services.domain.model.SkuStorageDetails;
 import com.jfeat.am.module.sku.services.domain.service.SkuProductService;
 import com.jfeat.am.module.sku.services.persistence.dao.*;
 import com.jfeat.am.module.sku.services.persistence.model.*;
@@ -53,6 +55,8 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
     SkuPhotoMapper skuPhotoMapper;
     @Resource
     SkuTagRelationMapper skuTagRelationMapper;
+    @Resource
+    QuerySkuProductDao querySkuProductDao;
 
 
     @Transactional
@@ -323,6 +327,10 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         List<SkuProductModel> skuProductModels = new ArrayList<>();
         skuProductModels.add(skuProductModel);
         productObject.put("skus", skuProductModels == null ? null : skuProductModels);
+
+        // all storage history
+        List<SkuStorageDetails> skuStorageDetails = querySkuProductDao.skuStorageDetails(id);
+        productObject.put("storageDetails",skuStorageDetails);
 
         CreateSkuProductModel productModel = JSONObject.parseObject(JSONObject.toJSONString(productObject), CreateSkuProductModel.class);
         return productModel;

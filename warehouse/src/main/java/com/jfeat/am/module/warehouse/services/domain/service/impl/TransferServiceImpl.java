@@ -96,7 +96,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
         StorageOutModel storageOut = new StorageOutModel();
         storageOut.setStorageOutItems(model.getOutItems());
-        storageOut.setTransactionType(TransactionType.Transfer.toString());
+        storageOut.setTransactionType(TransactionType.TransferOut.toString());
         storageOut.setWarehouseId(model.getFromWarehouseId());
         storageOut.setOriginatorId(userId);
         storageOut.setTransactionBy(userId);
@@ -174,7 +174,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         int affected = 0;
 
         StorageInModel storageIn = new StorageInModel();
-        storageIn.setTransactionType(TransactionType.Transfer.toString());
+        storageIn.setTransactionType(TransactionType.TransferIn.toString());
         storageIn.setWarehouseId(model.getToWarehouseId());
         storageIn.setOriginatorId(userId);
         storageIn.setTransactionBy(userId);
@@ -240,7 +240,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         int affected = 0;
 
         StorageInModel storageIn = new StorageInModel();
-        storageIn.setTransactionType(TransactionType.Transfer.toString());
+        storageIn.setTransactionType(TransactionType.OthersStorageIn.toString());
         storageIn.setWarehouseId(model.getFromWarehouseId());
         storageIn.setOriginatorId(userId);
         storageIn.setTransactionBy(userId);
