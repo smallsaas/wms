@@ -165,13 +165,14 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
      * 接受方完成 调拨 ，插入 调拨 货物 及 更新 库存 ,接受方拒绝 ，调拨作废，回到 原来的 仓库
      */
     @Transactional
-    public Integer doneTransfer(Long id,TransferModel model, Long userId) {
+    public Integer doneTransfer(Long id, Long userId) {
         /**
          * 1.调拨包括了两个仓库的出入库 主动为出 被动为入
          *
          * */
 
         int affected = 0;
+        TransferModel model = transferDetails(id);
 
         StorageInModel storageIn = new StorageInModel();
         storageIn.setTransactionType(TransactionType.TransferIn.toString());
@@ -231,7 +232,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
      * 接受方拒接 调拨 ，插入 调拨 货物 及 更新 库存 ,接受方拒绝 ，调拨作废，回到 原来的 仓库
      */
     @Transactional
-    public Integer cancelTransfer(Long id,TransferModel model, Long userId) {
+    public Integer cancelTransfer(Long id,Long userId) {
         /**
          * 1.调拨包括了两个仓库的出入库 主动为出 被动为入
          *
@@ -239,6 +240,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
         int affected = 0;
 
+        TransferModel model = transferDetails(id);
         StorageInModel storageIn = new StorageInModel();
         storageIn.setTransactionType(TransactionType.OthersStorageIn.toString());
         storageIn.setWarehouseId(model.getFromWarehouseId());
