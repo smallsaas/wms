@@ -225,11 +225,12 @@ DROP TABLE IF EXISTS `wms_check`;
 CREATE TABLE `wms_check` (
 `id` bigint(20) NOT NULL  AUTO_INCREMENT,
 `check_code` varchar(255) NOT NULL COMMENT '盘点编号',
-`check_time` datetime NOT NULL COMMENT '盘点时间',
+`check_time` datetime default NULL COMMENT '盘点时间',
 `profit_lost`  int(11)  NOT NULL COMMENT '盈亏(缺失值)',
 `check_note`  text  DEFAULT NULL COMMENT '盘点备注',
-`check_by` bigint(20) NOT NULL COMMENT '经手人',
+`check_by` bigint(20) default NULL COMMENT '经手人',
 `originator_id` bigint(20) NOT NULL COMMENT '制单人',
+`status` varchar(20) not null comment 'check status'
 `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
 `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
 UNIQUE(`check_code`),
