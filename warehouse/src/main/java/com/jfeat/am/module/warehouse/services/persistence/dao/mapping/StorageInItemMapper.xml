@@ -15,6 +15,6 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, storage_in_id AS storageOutId, sku_id AS skuId,type, transaction_sku_price AS transactionSkuPrice, transaction_quantities AS transactionQuantities, transaction_time AS transactionTime</sql>
+        id, storage_in_id AS storageInId, sku_id AS skuId,type, transaction_sku_price AS transactionSkuPrice, transaction_quantities AS transactionQuantities, transaction_time AS transactionTime</sql>
 
 </mapper>
