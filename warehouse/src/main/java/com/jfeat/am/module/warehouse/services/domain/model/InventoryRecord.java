@@ -14,6 +14,7 @@ public class InventoryRecord extends Inventory{
     String skuCode;
     String skuUnit;
     Integer originCount;   // backup
+    Integer transmitCount;
 
     public String getSkuName() {
         return skuName;
@@ -61,5 +62,13 @@ public class InventoryRecord extends Inventory{
 
     public void setOriginCount(Integer originCount) {
         this.originCount = originCount;
+    }
+
+    public Integer getTransmitCount() {
+        return transmitCount;
+    }
+
+    public void setTransmitCount(Integer transmitCount) {
+        this.transmitCount = transmitCount;
     }
 }

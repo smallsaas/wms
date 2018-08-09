@@ -5,7 +5,7 @@
         wms_inventory.*
     </sql>
 
-    <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Inventory">
+    <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.domain.model.InventoryRecord">
         <id column="id" property="id" />
         <result column="warehouse_id" property="warehouseId" />
         <result column="slot_id" property="slotId" />
@@ -34,7 +34,8 @@
                 t_sku_product.bar_code as skuBarcode,
                 t_sku_product.sku_code as skuCode,
                 t_sku_product.field1 as skuUnit,
-                wms_warehouse.warehouse_name
+                wms_warehouse.warehouse_name,
+                sum(wms_inventory.transmit_quantities) as transmitCount
         FROM wms_inventory
         left join t_sku_product on t_sku_product.id = wms_inventory.sku_id
         left join wms_warehouse on wms_warehouse.id = wms_inventory.warehouse_id
@@ -75,6 +76,70 @@
             AND wms_inventory.transmit_quantities LIKE CONCAT('%',#{record.transmitQuantities},'%')
         </if>
     </select>
+
+
+
+    <!--
+
+    SELECT
+	sin.id,
+	sin.storage_in_id AS storageInId,
+	sin.sku_id AS skuId,
+	sin.type,
+	sin.transaction_sku_price AS transactionSkuPrice,
+	sin.transaction_quantities AS transactionQuantities,
+	sin.transaction_time AS transactionTime,
+	t_sku_product.sku_name AS skuName,
+	t_sku_product.bar_code AS skuBarcode,
+	t_sku_product.sku_code AS skuCode,
+	t_sku_product.field1 AS skuUnit,
+	wms_warehouse.warehouse_name AS warehouseName,
+	wms_storage_in.transaction_type as transactionType,
+	wms_storage_in.transaction_code AS transactionCode
+FROM
+	wms_storage_in_item sin
+LEFT JOIN wms_storage_in ON (
+	sin.storage_in_id = wms_storage_in.id
+	AND sin.type != 'Procurement'
+)
+LEFT JOIN t_sku_product ON t_sku_product.id = sin.sku_id
+LEFT JOIN wms_warehouse ON wms_warehouse.id = wms_storage_in.warehouse_id
+WHERE
+	1 = 1
+AND t_sku_product.id = 1
+UNION
+	SELECT
+		sout.id,
+		sout.storage_out_id AS storageOutId,
+		sout.sku_id AS skuId,
+		sout.transaction_sku_price AS transactionSkuPrice,
+		sout.transaction_quantities AS transactionQuantities,
+		NULL AS type,
+		sout.transaction_time AS transactionTime,
+		t_sku_product.sku_name AS skuName,
+		t_sku_product.bar_code AS skuBarcode,
+		t_sku_product.sku_code AS skuCode,
+		t_sku_product.field1 AS skuUnit,
+		wms_warehouse.warehouse_name AS warehouseName,
+		wms_storage_out.transaction_type as transactionType,
+		wms_storage_out.transaction_code AS transactionCode,
+		wms_inventory.valid_sku as validValue
+FROM wms_storage_out_item sout
+LEFT JOIN wms_storage_out ON 	sout.storage_out_id = wms_storage_out.id
+LEFT JOIN t_sku_product ON t_sku_product.id = sout.sku_id
+LEFT JOIN wms_warehouse ON wms_warehouse.id = wms_storage_out.warehouse_id
+LEFT JOIN wms
+WHERE
+	1 = 1
+AND t_sku_product.id = 1
+
+
+
+
+    -->
+
+
+
 
 
     <!-- 单个商品的出入库明细 -->

@@ -169,6 +169,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             List<StorageInItem> storageInItems = new ArrayList<>();
             for (StorageInItem item : model.getItems()) {
                 if (item.getTransactionQuantities() > 0) {
+                    SkuProduct skuProduct = skuProductMapper.selectById(item.getSkuId());
                     storageInItems.add(item);
                     // 某个 sku 的采购的数量
                     Integer skuProcurementCount = queryProcurementDao.skuProcurementCount(procurementId, item.getSkuId());
@@ -178,7 +179,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                         storageInCount = 0;
                     }
                     if (item.getTransactionQuantities() > (skuProcurementCount - storageInCount)) {
-                        throw new BusinessException(4500, "入库数不能大于采购数，请先核对入库数！");
+                        throw new BusinessException(4500, "\""+skuProduct.getSkuName()+"\""+"入库数不能大于采购数，请先核对入库数！");
                     }
 /*                // 历史价格 信息
                 SkuPriceHistory history = new SkuPriceHistory();

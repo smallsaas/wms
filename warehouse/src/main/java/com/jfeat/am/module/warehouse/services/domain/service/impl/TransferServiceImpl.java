@@ -8,6 +8,8 @@ import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.modular.system.service.UserService;
+import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
+import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageOutFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
@@ -79,6 +81,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
     QueryTransferDao queryTransferDao;
     @Resource
     QueryWarehouseDao queryWarehouseDao;
+    @Resource
+    SkuProductMapper skuProductMapper;
 
     @Transactional
     public Integer createTransfer(TransferModel model, Long userId) {
@@ -103,13 +107,14 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         List<StorageOutItem> items = new ArrayList<>();
         if (model.getOutItems() != null && model.getOutItems().size() > 0) {
             for (StorageOutItem outItem : model.getOutItems()) {
+                SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());
                 isExistInventory.setWarehouseId(model.getFromWarehouseId());
                 Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                 if (originInventory != null) {
                     if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
-                        throw new BusinessException(4050, "库存不足,"+ "现有库存"+ originInventory.getValidSku() +"小于出库量"+outItem.getTransactionQuantities());
+                        throw new BusinessException(4050, "\""+skuProduct.getSkuName()+"\""+"库存不足,"+ "现有库存"+ originInventory.getValidSku() +"小于出库量"+outItem.getTransactionQuantities());
                     } else {
                         originInventory.setValidSku(originInventory.getValidSku() - outItem.getTransactionQuantities());
                         affected += inventoryMapper.updateById(originInventory);
@@ -127,8 +132,9 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                             inventory.setTransmitQuantities(outItem.getTransactionQuantities());
                             affected += inventoryMapper.insert(inventory);  //假设 接收方没有 ，则新建
                         }else {
-
-                            toInventory.setTransmitQuantities(outItem.getTransactionQuantities());
+                            int originCount = toInventory.getTransmitQuantities();
+                            originCount += outItem.getTransactionQuantities();
+                            toInventory.setTransmitQuantities(originCount);
                             affected += inventoryMapper.updateAllColumnById(toInventory); //有 则是在途数
 
                         }
