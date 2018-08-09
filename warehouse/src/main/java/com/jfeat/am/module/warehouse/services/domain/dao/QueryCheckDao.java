@@ -4,6 +4,7 @@ import com.jfeat.am.module.warehouse.services.domain.model.CheckRecord;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.jfeat.am.module.warehouse.services.domain.model.CheckSkuRecord;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
@@ -12,4 +13,8 @@ import java.util.List;
  */
 public interface QueryCheckDao extends BaseMapper<CheckRecord> {
     List<CheckRecord> findCheckPage(Page<CheckRecord> page, @Param("record") CheckRecord record, @Param("orderBy") String orderBy);
+
+
+    List<CheckSkuRecord> skuRecords(@Param("checkId")Long checkId);
+
 }

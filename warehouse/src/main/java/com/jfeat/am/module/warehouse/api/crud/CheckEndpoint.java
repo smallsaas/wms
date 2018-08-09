@@ -1,5 +1,6 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
+import com.jfeat.am.core.jwt.JWTKit;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,7 +57,8 @@ public class CheckEndpoint extends BaseController {
 
         Integer affected = 0;
         try {
-            affected = checkService.createMaster(entity);
+            Long userId = JWTKit.getUserId(getHttpServletRequest());
+            affected = checkService.createCheckList(userId,entity);
 
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
@@ -65,28 +67,34 @@ public class CheckEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
+    @BusinessLog(name = "Check", value = "view Check")
     @GetMapping("/{id}")
     @ApiOperation(value = "查看库存盘点", response = CheckModel.class)
-
     public Tip getCheck(@PathVariable Long id) {
-        return SuccessTip.create(checkService.retrieveMaster(id));
+        return SuccessTip.create(checkService.checkDetails(id));
     }
 
     @BusinessLog(name = "Check", value = "update Check")
-    @PutMapping("/{id}")
-    @ApiOperation(value = "修改库存盘点", response = CheckModel.class)
-
+    @PutMapping("/{id}/checking")
+    @ApiOperation(value = "执行盘点", response = CheckModel.class)
     public Tip updateCheck(@PathVariable Long id, @RequestBody CheckModel entity) {
         entity.setId(id);
-        return SuccessTip.create(checkService.updateMaster(entity));
+        return SuccessTip.create(checkService.actionCheck(id,entity));
+    }
+
+    @BusinessLog(name = "Check", value = "update Check")
+    @PutMapping("/{id}/done")
+    @ApiOperation(value = "完成盘点", response = CheckModel.class)
+    public Tip doneCheck(@PathVariable Long id, @RequestBody CheckModel entity) {
+        entity.setId(id);
+        return SuccessTip.create(checkService.checkedCheck(id,entity));
     }
 
     @BusinessLog(name = "Check", value = "delete Check")
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "删除库存盘点", response = CheckModel.class)
-
+    @ApiOperation(value = "删除库存盘点 only status WaitForCheck", response = CheckModel.class)
     public Tip deleteCheck(@PathVariable Long id) {
-        return SuccessTip.create(checkService.deleteMaster(id));
+        return SuccessTip.create(checkService.deleteCheck(id));
     }
 
     @GetMapping

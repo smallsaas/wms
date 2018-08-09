@@ -43,4 +43,46 @@
             AND wms_check.field2 LIKE CONCAT('%',#{record.field2},'%')
         </if>
     </select>
+
+
+    <resultMap id="SkuRecords" type="com.jfeat.am.module.warehouse.services.domain.model.CheckSkuRecord">
+        <id column="id" property="id"/>
+        <result column="check_id" property="checkId"/>
+        <result column="sku_id" property="skuId"/>
+        <result column="warehouse_id" property="warehouseId"/>
+
+        <result column="profit_lost" property="profitLost"/>
+        <result column="fact_quantities" property="factQuantities"/>
+        <result column="deserved_quantities" property="deservedQuantities"/>
+        <result column="field1" property="field1"/>
+        <result column="field2" property="field2"/>
+
+
+        <result column="skuName" property="skuName"/>
+        <result column="skuBarcode" property="skuBarcode"/>
+        <result column="skuCode" property="skuCode"/>
+        <result column="skuUnit" property="skuUnit"/>
+        <result column="warehouseName" property="warehouseName"/>
+
+    </resultMap>
+
+    <select id="skuRecords" resultType="SkuRecords" parameterType="long">
+        SELECT
+
+        wms_check_sku.*,
+        t_sku_product.sku_name as skuName,
+        t_sku_product.bar_code as skuBarcode,
+        t_sku_product.sku_code as skuCode,
+        t_sku_product.field1 as skuUnit,
+        wms_warehouse.warehouse_name
+        FROM wms_check_sku
+        left join t_sku_product on t_sku_product.id = wms_check_sku.sku_id
+        left join wms_warehouse on wms_warehouse.id = wms_check_sku.warehouse_id
+        left join wms_check on wms_check.id = wms_check_sku.check_id
+        WHERE 1=1
+        and wms_check.id =#{checkId}
+
+    </select>
+
+
 </mapper>
