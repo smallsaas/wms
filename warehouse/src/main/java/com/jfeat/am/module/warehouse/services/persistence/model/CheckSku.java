@@ -56,6 +56,11 @@ public class CheckSku extends Model<CheckSku> {
     @TableField("deserved_quantities")
     private Integer deservedQuantities;
     /**
+     * 校对钱的数量，如果缺失值为0的话，该值同应有量相同
+     */
+    @TableField("before_proof_quantities")
+    private Integer beforeProofQuantities;
+    /**
      * 保留字段
      */
     private String field1;
@@ -119,6 +124,15 @@ public class CheckSku extends Model<CheckSku> {
         return this;
     }
 
+
+    public Integer getBeforeProofQuantities() {
+        return beforeProofQuantities;
+    }
+
+    public void setBeforeProofQuantities(Integer beforeProofQuantities) {
+        this.beforeProofQuantities = beforeProofQuantities;
+    }
+
     public Integer getProfitLost() {
         return profitLost;
     }
@@ -157,6 +171,8 @@ public class CheckSku extends Model<CheckSku> {
 
     public static final String DESERVED_QUANTITIES = "deserved_quantities";
 
+    public static final String BEFORE_PROOF_QUANTITIES = "before_proof_quantities";
+
     public static final String FIELD1 = "field1";
 
     public static final String PROFIT_LOST = "profit_lost";
@@ -177,6 +193,7 @@ public class CheckSku extends Model<CheckSku> {
                 ", warehouseId=" + warehouseId +
                 ", factQuantities=" + factQuantities +
                 ", deservedQuantities=" + deservedQuantities +
+                ", beforeProofQuantities=" + beforeProofQuantities +
                 ", field1=" + field1 +
                 ", field2=" + field2 +
                 ", profitLost=" + profitLost +

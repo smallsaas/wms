@@ -12,13 +12,14 @@
 		<result column="profit_lost" property="profitLost" />
 		<result column="fact_quantities" property="factQuantities" />
 		<result column="deserved_quantities" property="deservedQuantities" />
+		<result column="before_proof_quantities" property="beforeProofQuantities" />
 		<result column="field1" property="field1" />
 		<result column="field2" property="field2" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, check_id AS checkId, profit_lost AS profitLost, sku_id AS skuId, warehouse_id AS warehouseId, fact_quantities AS factQuantities, deserved_quantities AS deservedQuantities, field1, field2
+        id, check_id AS checkId, before_proof_quantities as beforeProofQuantities,profit_lost AS profitLost, sku_id AS skuId, warehouse_id AS warehouseId, fact_quantities AS factQuantities, deserved_quantities AS deservedQuantities, field1, field2
     </sql>
 
 </mapper>

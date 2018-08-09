@@ -26,7 +26,7 @@ public interface CheckService extends CRUDCheckService{
      * finish check modified data
      * */
     @Transactional
-    Integer checkedCheck(Long checkId,CheckModel model);
+    Integer checkedCheck(Long checkId);
 
 
     CheckRecord checkDetails(Long checkId);
