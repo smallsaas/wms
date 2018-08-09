@@ -243,25 +243,29 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
         int affected = 0;
 
-        TransferModel model = transferDetails(id);
+        Transfer transfer = crudTransferService.retrieveMaster(id);
+        StorageOut storageOut = storageOutMapper.selectById(transfer.getStorageOutId());
+        List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,storageOut.getId()));
+
         StorageInModel storageIn = new StorageInModel();
         storageIn.setTransactionType(TransactionType.OthersStorageIn.toString());
-        storageIn.setWarehouseId(model.getFromWarehouseId());
+        storageIn.setWarehouseId(transfer.getFromWarehouseId());
         storageIn.setOriginatorId(userId);
         storageIn.setTransactionBy(userId);
-        storageIn.setTransactionCode(model.getTransactionCode());
+        // 这个 code 应该怎么去处理呢？
+        storageIn.setTransactionCode(transfer.getTransactionCode());
         storageIn.setTransactionTime(new Date());
         StorageInFilter storageInFilter = new StorageInFilter();
         List<StorageInItem> items = new ArrayList<>();
 
-        if (model.getOutItems() != null && model.getOutItems().size() > 0) {
-            for (StorageOutItem outItem : model.getOutItems()) {
+        if (storageOutItems != null && storageOutItems.size() > 0) {
+            for (StorageOutItem outItem : storageOutItems) {
 
                 // come back to from warehouse
                 StorageInItem inItem = new StorageInItem();
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());
-                isExistInventory.setWarehouseId(model.getFromWarehouseId());
+                isExistInventory.setWarehouseId(transfer.getFromWarehouseId());
                 Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
 
                 originInventory.setValidSku(originInventory.getValidSku() + outItem.getTransactionQuantities());
@@ -270,11 +274,10 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 // 接收方 在途数 == 0
                 Inventory inventory = new Inventory();
                 inventory.setSkuId(outItem.getSkuId());
-                inventory.setWarehouseId(model.getToWarehouseId());
+                inventory.setWarehouseId(transfer.getToWarehouseId());
                 Inventory toInventory = inventoryMapper.selectOne(inventory);
                 toInventory.setTransmitQuantities(0);
                 affected += inventoryMapper.updateById(toInventory);
-
 
                 inItem.setSkuId(outItem.getSkuId());
                 inItem.setTransactionQuantities(outItem.getTransactionQuantities());
@@ -288,10 +291,10 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         storageIn.setStorageInItems(items);
         affected += crudStorageInService.createMaster(storageIn, storageInFilter, null, null);
 
-        model.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
-        model.setStatus(TransferStatus.Cancel.toString());
-        model.setFinishTime(new Date());
-        affected += crudTransferService.updateMaster(model);
+        transfer.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
+        transfer.setStatus(TransferStatus.Cancel.toString());
+        transfer.setFinishTime(new Date());
+        affected += crudTransferService.updateMaster(transfer);
         return affected;
     }
 
