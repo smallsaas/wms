@@ -70,7 +70,7 @@ public class StorageOut extends Model<StorageOut> {
      * 操作人
      */
     @TableField("transaction_by")
-    private Long transactionBy;
+    private String transactionBy;
     /**
      * 制单人
      */
@@ -165,11 +165,11 @@ public class StorageOut extends Model<StorageOut> {
         return this;
     }
 
-    public Long getTransactionBy() {
+    public String getTransactionBy() {
         return transactionBy;
     }
 
-    public StorageOut setTransactionBy(Long transactionBy) {
+    public StorageOut setTransactionBy(String transactionBy) {
         this.transactionBy = transactionBy;
         return this;
     }

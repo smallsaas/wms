@@ -74,7 +74,8 @@ public class Transfer extends Model<Transfer> {
     /**
      * 操作人
      */
-    private Long operator;
+    @TableField("transaction_by")
+    private String transactionBy;
     /**
      * 制单人
      */
@@ -179,13 +180,12 @@ public class Transfer extends Model<Transfer> {
         return this;
     }
 
-    public Long getOperator() {
-        return operator;
+    public String getTransactionBy() {
+        return transactionBy;
     }
 
-    public Transfer setOperator(Long operator) {
-        this.operator = operator;
-        return this;
+    public void setTransactionBy(String transactionBy) {
+        this.transactionBy = transactionBy;
     }
 
     public Long getOriginatorId() {
@@ -235,7 +235,7 @@ public class Transfer extends Model<Transfer> {
 
     public static final String STATUS = "status";
 
-    public static final String OPERATOR = "operator";
+    public static final String TRANSACTION_BY = "transaction_by";
 
     public static final String ORIGINATOR_ID = "originator_id";
 
@@ -261,7 +261,7 @@ public class Transfer extends Model<Transfer> {
                 ", storageOutId=" + storageOutId +
                 ", note=" + note +
                 ", status=" + status +
-                ", operator=" + operator +
+                ", transactionBy=" + transactionBy +
                 ", originatorId=" + originatorId +
                 ", field1=" + field1 +
                 ", field2=" + field2 +

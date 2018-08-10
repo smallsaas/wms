@@ -55,10 +55,10 @@ public class Check extends Model<Check> {
     @TableField("warehouse_id")
     private Long warehouseId;
     /**
-     * 经手人
+     * 操作人
      */
-    @TableField("check_by")
-    private Long checkBy;
+    @TableField("transaction_by")
+    private String transactionBy;
     /**
      * 制单人
      */
@@ -132,13 +132,12 @@ public class Check extends Model<Check> {
         return this;
     }
 
-    public Long getCheckBy() {
-        return checkBy;
+    public String getTransactionBy() {
+        return transactionBy;
     }
 
-    public Check setCheckBy(Long checkBy) {
-        this.checkBy = checkBy;
-        return this;
+    public void setTransactionBy(String transactionBy) {
+        this.transactionBy = transactionBy;
     }
 
     public Long getOriginatorId() {
@@ -188,7 +187,7 @@ public class Check extends Model<Check> {
 
     public static final String CHECK_NOTE = "check_note";
 
-    public static final String CHECK_BY = "check_by";
+    public static final String TRANSACTION_BY = "transaction_by";
 
     public static final String ORIGINATOR_ID = "originator_id";
 
@@ -213,7 +212,7 @@ public class Check extends Model<Check> {
                 ", profitLost=" + profitLost +
                 ", warehouseId=" + warehouseId +
                 ", checkNote=" + checkNote +
-                ", checkBy=" + checkBy +
+                ", transactionBy=" + transactionBy +
                 ", originatorId=" + originatorId +
                 ", status=" + status +
                 ", field1=" + field1 +

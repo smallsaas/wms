@@ -9,7 +9,7 @@
 		<result column="check_time" property="checkTime" />
 		<result column="profit_lost" property="profitLost" />
 		<result column="check_note" property="checkNote" />
-		<result column="check_by" property="checkBy" />
+		<result column="transaction_by" property="transactionBy" />
 		<result column="originator_id" property="originatorId" />
 		<result column="warehouse_id" property="warehouseId" />
 		<result column="field1" property="field1" />
@@ -19,7 +19,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, check_code AS checkCode, warehouse_id AS warehouseId,status,check_time AS checkTime, profit_lost AS profitLost, check_note AS checkNote, check_by AS checkBy, originator_id AS originatorId, field1, field2
+        id, check_code AS checkCode, warehouse_id AS warehouseId,transaction_by as transactionBy,status,check_time AS checkTime, profit_lost AS profitLost, check_note AS checkNote,originator_id AS originatorId, field1, field2
     </sql>
 
 </mapper>

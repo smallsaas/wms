@@ -74,7 +74,8 @@ public class Refund extends Model<Refund> {
     /**
      * 操作人
      */
-    private Long operator;
+    @TableField("transaction_by")
+    private String transactionBy;
     /**
      * 操作时间
      */
@@ -181,13 +182,12 @@ public class Refund extends Model<Refund> {
         return this;
     }
 
-    public Long getOperator() {
-        return operator;
+    public String getTransactionBy() {
+        return transactionBy;
     }
 
-    public Refund setOperator(Long operator) {
-        this.operator = operator;
-        return this;
+    public void setTransactionBy(String transactionBy) {
+        this.transactionBy = transactionBy;
     }
 
     public Date getTransactionTime() {
@@ -237,7 +237,7 @@ public class Refund extends Model<Refund> {
 
     public static final String ORIGINATOR_ID = "originator_id";
 
-    public static final String OPERATOR = "operator";
+    public static final String TRANSACTION_BY = "transaction_by";
 
     public static final String TRANSACTION_TIME = "transaction_time";
 
@@ -263,7 +263,7 @@ public class Refund extends Model<Refund> {
                 ", productRefundStatus=" + productRefundStatus +
                 ", productRefundNote=" + productRefundNote +
                 ", originatorId=" + originatorId +
-                ", operator=" + operator +
+                ", transactionBy=" + transactionBy +
                 ", transactionTime=" + transactionTime +
                 ", field1=" + field1 +
                 ", field2=" + field2 +

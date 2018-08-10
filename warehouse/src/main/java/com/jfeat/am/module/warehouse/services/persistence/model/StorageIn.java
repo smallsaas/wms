@@ -71,7 +71,7 @@ public class StorageIn extends Model<StorageIn> {
      * 操作人
      */
     @TableField("transaction_by")
-    private Long transactionBy;
+    private String transactionBy;
     /**
      * 制单人
      */
@@ -179,11 +179,11 @@ public class StorageIn extends Model<StorageIn> {
         return this;
     }
 
-    public Long getTransactionBy() {
+    public String getTransactionBy() {
         return transactionBy;
     }
 
-    public StorageIn setTransactionBy(Long transactionBy) {
+    public StorageIn setTransactionBy(String transactionBy) {
         this.transactionBy = transactionBy;
         return this;
     }

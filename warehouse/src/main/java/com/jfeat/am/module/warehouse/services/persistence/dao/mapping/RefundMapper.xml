@@ -14,7 +14,7 @@
 		<result column="product_refund_status" property="productRefundStatus" />
 		<result column="product_refund_note" property="productRefundNote" />
 		<result column="originator_id" property="originatorId" />
-		<result column="operator" property="operator" />
+		result column="transaction_by" property="transactionBy" />
 		<result column="transaction_time" property="transactionTime" />
 		<result column="field1" property="field1" />
 		<result column="field2" property="field2" />
@@ -22,7 +22,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, product_refund_code AS productRefundCode, product_procurement_id AS productProcurementId, storage_out_id AS storageOutId, product_refund_warehouse_id AS productRefundWarehouseId, product_refund_quantities AS productRefundQuantities, product_refund_time AS productRefundTime, product_refund_status AS productRefundStatus, product_refund_note AS productRefundNote, originator_id AS originatorId, operator, transaction_time AS transactionTime, field1, field2
+        id, product_refund_code AS productRefundCode, transaction_by as transactionBy,product_procurement_id AS productProcurementId, storage_out_id AS storageOutId, product_refund_warehouse_id AS productRefundWarehouseId, product_refund_quantities AS productRefundQuantities, product_refund_time AS productRefundTime, product_refund_status AS productRefundStatus, product_refund_note AS productRefundNote, originator_id AS originatorId, transaction_time AS transactionTime, field1, field2
     </sql>
 
 </mapper>

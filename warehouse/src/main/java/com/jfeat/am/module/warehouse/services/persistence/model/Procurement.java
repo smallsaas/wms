@@ -70,7 +70,8 @@ public class Procurement extends Model<Procurement> {
     /**
      * 操作人
      */
-    private Long operator;
+    @TableField("transaction_by")
+    private String transactionBy;
     /**
      * 制单人
      */
@@ -178,13 +179,12 @@ public class Procurement extends Model<Procurement> {
         return this;
     }
 
-    public Long getOperator() {
-        return operator;
+    public String getTransactionBy() {
+        return transactionBy;
     }
 
-    public Procurement setOperator(Long operator) {
-        this.operator = operator;
-        return this;
+    public void setTransactionBy(String transactionBy) {
+        this.transactionBy = transactionBy;
     }
 
     public Long getOriginatorId() {
@@ -251,7 +251,7 @@ public class Procurement extends Model<Procurement> {
 
     public static final String PROCURE_STATUS = "procure_status";
 
-    public static final String OPERATOR = "operator";
+    public static final String TRANSACTION_BY = "transaction_by";
 
     public static final String ORIGINATOR_ID = "originator_id";
 
@@ -281,7 +281,7 @@ public class Procurement extends Model<Procurement> {
                 ", procurementTime=" + procurementTime +
                 ", procurementNote=" + procurementNote +
                 ", procureStatus=" + procureStatus +
-                ", operator=" + operator +
+                ", transactionBy=" + transactionBy +
                 ", originatorId=" + originatorId +
                 ", transactionTime=" + transactionTime +
                 ", field1=" + field1 +
