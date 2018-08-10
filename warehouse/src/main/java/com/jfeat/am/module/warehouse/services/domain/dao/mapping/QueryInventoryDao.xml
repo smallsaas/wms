@@ -34,8 +34,7 @@
                 t_sku_product.bar_code as skuBarcode,
                 t_sku_product.sku_code as skuCode,
                 t_sku_product.field1 as skuUnit,
-                wms_warehouse.warehouse_name,
-                sum(wms_inventory.transmit_quantities) as transmitCount
+                wms_warehouse.warehouse_name
         FROM wms_inventory
         left join t_sku_product on t_sku_product.id = wms_inventory.sku_id
         left join wms_warehouse on wms_warehouse.id = wms_inventory.warehouse_id
