@@ -174,9 +174,10 @@
         UNION
         SELECT
             sout.sku_id AS skuId,
+            NULL AS type,
             sout.transaction_sku_price AS transactionSkuPrice,
             sout.transaction_quantities AS transactionQuantities,
-            NULL AS type,
+
             sout.transaction_time AS transactionTime,
             t_sku_product.sku_name AS skuName,
             t_sku_product.bar_code AS skuBarcode,
