@@ -6,8 +6,10 @@
     </sql>
     <select id="findCheckPage" resultType="com.jfeat.am.module.warehouse.services.domain.model.CheckRecord"
             parameterType="CheckRecord">
-        SELECT wms_check.*
+        SELECT wms_check.*,
+        wms_warehouse.warehouse_name as warehouseName
         FROM wms_check
+        left join wms_warehouse on wms_warehouse.id = wms_check.warehouse_id
         WHERE 1=1
         <if test="record.id != null and record.id>0 ">
             AND wms_check.id LIKE CONCAT('%',#{record.id},'%')
