@@ -43,10 +43,8 @@
         FROM wms_transfer
 
             left join user ouser on ouser.id = wms_transfer.originator_id
-
             left join wms_warehouse fwarehouse on fwarehouse.id = wms_transfer.from_warehouse_id
             left join wms_warehouse twarehouse on twarehouse.id = wms_transfer.to_warehouse_id
-
         WHERE 1=1
         <if test="record.id != null and record.id>0 ">
             AND wms_transfer.id LIKE CONCAT('%',#{record.id},'%')

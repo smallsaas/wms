@@ -111,12 +111,11 @@
 
     <select id="outRecord" resultMap="OutRecordMap" parameterType="long">
         SELECT wms_storage_out.*,wms_warehouse.warehouse_name as warehouseName,
-        ouser.`name` as originatorName,
-        tuser.`name` as operator
+        ouser.`name` as originatorName
         FROM wms_storage_out
         left join wms_warehouse on wms_warehouse.id = wms_storage_out.warehouse_id
         left join user ouser on ouser.id = wms_storage_out.originator_id
-        left join user tuser on tuser.id = wms_storage_out.transaction_by
+
         WHERE 1=1
         and wms_storage_out.id = #{outId}
     </select>

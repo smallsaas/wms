@@ -37,13 +37,11 @@
     <select id="storagesInDetails" resultMap="BaseStorageInRecord" parameterType="long">
         SELECT wms_storage_in.*,
         ouser.`name` as originatorName,
-        tuser.`name` as operatorName,
         wms_warehouse.warehouse_name as warehouseName,
         wms_warehouse_slot.slot_name as slotName
 
         FROM wms_storage_in
         left join user ouser on ouser.id = wms_storage_in.originator_id
-        left join user tuser on tuser.id = wms_storage_in.transaction_by
         left join wms_warehouse on wms_warehouse.id = wms_storage_in.warehouse_id
         left join wms_warehouse_slot on wms_warehouse_slot.id = wms_storage_in.slot_id
         WHERE 1=1
@@ -60,28 +58,21 @@
         <result column="warehouse_id" property="warehouseId" />
         <result column="slot_id" property="slotId" />
 
-
         <result column="skuName" property="skuName" />
         <result column="skuBarcode" property="skuBarcode" />
         <result column="skuCode" property="skuCode" />
-        <result column="skuSpec" property="skuSpec" />
-
-
-
+        <result column="skuUnit" property="skuUnit" />
     </resultMap>
 
     <select id="storageInItems" parameterType="long" resultMap="BaseStorageInItemRecord">
         SELECT wms_storage_in_item.*,
                 t_sku_product.sku_code as skuCode,
                 t_sku_product.bar_code as skuBarcode,
-                t_sku_product.sku_name as skuName
+                t_sku_product.sku_name as skuName,
+                t_sku_product.field1 as skuUnit
         FROM wms_storage_in_item
-
         left join wms_storage_in on wms_storage_in_item.storage_in_id = wms_storage_in.id
-
         LEFT JOIN t_sku_product ON wms_storage_in_item.sku_id = t_sku_product.id
-
-
         WHERE
         wms_storage_in.id = #{id}
         and wms_storage_in_item.type != 'Procurement'
