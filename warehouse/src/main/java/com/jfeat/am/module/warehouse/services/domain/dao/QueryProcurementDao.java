@@ -36,9 +36,6 @@ public interface QueryProcurementDao extends BaseMapper<ProcurementRecord> {
     Integer sectionCount(@Param("procurementId") Long procurementId);
 
 
-    // 入库经办人
-    @Select("select t_store_assistant.name from t_store_assistant where t_store_assistant.user_id = #{userId}")
-    String transactionName(@Param("userId")Long userId);
     // 进入的仓库的名称
     @Select("select wms_warehouse.warehouse_name from wms_warehouse where wms_warehouse.id = #{warehouseId}")
     String warehouseName(@Param("warehouseId")Long warehouseId);

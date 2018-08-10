@@ -55,7 +55,6 @@ public class BaseJunit {
     @Test
     public void testDemo(){
         ProcurementModel procurementModel = new ProcurementModel();
-        procurementModel.setOperator(1L);
         procurementModel.setOriginatorId(41L);
         StorageInModel storage = new StorageInModel();
         storage.setBatchNo("asdfsadf");
