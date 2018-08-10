@@ -39,4 +39,8 @@ public interface QueryRefundDao extends BaseMapper<RefundRecord> {
 
     StorageOutRecord outRecord(@Param("outId")Long outId);
 
+    //某次采购的某个商品总以退货的数量
+    Integer finishedRefundCount(@Param("skuId")Long skuId,
+                                @Param("procurementId")Long procurementId);
+
 }

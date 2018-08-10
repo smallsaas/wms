@@ -14,7 +14,9 @@ import com.jfeat.am.module.warehouse.services.crud.service.CRUDProcurementServic
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
 import com.jfeat.am.module.warehouse.services.definition.ProcurementStatus;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
+import com.jfeat.am.module.warehouse.services.domain.dao.QueryCheckDao;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryProcurementDao;
+import com.jfeat.am.module.warehouse.services.domain.dao.QueryRefundDao;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementItemRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementModel;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageInItemRecord;
@@ -67,6 +69,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     QueryProcurementDao queryProcurementDao;
     @Resource
     SkuPriceHistoryMapper skuPriceHistoryMapper;
+    @Resource
+    QueryRefundDao queryRefundDao;
 
     /**
      * 重构 procurement 问题
@@ -262,13 +266,14 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
                 int remainderCount = item.getTransactionQuantities();
                 int sectionCount = 0;
-
+                int canRefundCount = sectionCount; // ke tui huo shu
+                Integer finishedRefundCount = queryRefundDao.finishedRefundCount(item.getSkuId(),procurementId);//tui huo shu
 
                 ProcurementItemRecord record = new ProcurementItemRecord();
 
                 SkuProduct sku = skuProductMapper.selectById(item.getSkuId());
 
-                record.setTotalCount(item.getTransactionQuantities()); // caigou zongshu
+                record.setTotalCount(item.getTransactionQuantities()); // cai gou zong shu
                 record.setSkuCode(sku.getSkuCode());
                 record.setSkuName(sku.getSkuName());
                 record.setSkuBarcode(sku.getBarCode());
@@ -318,18 +323,24 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                                 sectionCount += originItem.getTransactionQuantities();
                                 remainderCount = remainderCount - sectionCount;
                                 // 入库数 以及 剩余 入库数
-
+                                if (finishedRefundCount==null){
+                                    canRefundCount = sectionCount;
+                                }else{
+                                    canRefundCount=sectionCount-finishedRefundCount;
+                                }
 
                             }
 
                         }
                     }
+                    record.setCanRefundCount(canRefundCount);
                     record.setRemainderCount(remainderCount);
                     record.setSectionInCount(sectionCount);
                     records.add(record);
 
                 } else {
                     // 无入库记录
+                    record.setCanRefundCount(canRefundCount);
                     record.setSectionInCount(sectionCount);
                     record.setRemainderCount(remainderCount);
                     records.add(record);

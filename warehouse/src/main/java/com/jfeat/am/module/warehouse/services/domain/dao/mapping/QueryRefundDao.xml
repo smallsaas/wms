@@ -121,4 +121,24 @@
         and wms_storage_out.id = #{outId}
     </select>
 
+
+
+
+    <!-- 已退货总数   -->
+
+    <select id="finishedRefundCount" resultType="int" parameterType="long">
+
+        SELECT SUM(wms_storage_out_item.transaction_quantities) AS refundCount
+        FROM wms_storage_out_item
+        LEFT JOIN wms_storage_out
+            on wms_storage_out.id = wms_storage_out_item.storage_out_id
+        LEFT JOIN wms_refund
+            on (wms_storage_out.id = wms_refund.storage_out_id AND wms_storage_out.transaction_type = 'Refund')
+        LEFT JOIN wms_procurement
+            on wms_refund.product_procurement_id = wms_procurement.id
+        WHERE wms_storage_out_item.sku_id=#{skuId}
+        AND wms_procurement.id=#{procurementId}
+
+    </select>
+
 </mapper>
