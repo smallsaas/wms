@@ -281,10 +281,13 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
     public CreateSkuProductModel skuTotalDetails(Long id) {
 
         SkuProduct model = crudSkuProductService.retrieveMaster(id);
+        if (model==null){
+            return null;
+        }
         JSONObject object = JSON.parseObject(JSON.toJSONString(model));
 
         List<SkuPhoto> photos = skuPhotoMapper.selectList(new EntityWrapper<SkuPhoto>().eq("sku_id", id));
-        object.put("skuPhotos", photos);
+        object.put("skuPhotos", photos==null?null:photos);
 
         List<SkuPriceHistory> histories = skuPriceHistoryMapper.selectList(new EntityWrapper<SkuPriceHistory>().eq("sku_id", id));
         object.put("priceHistories", histories);
