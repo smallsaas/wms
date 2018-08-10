@@ -106,7 +106,7 @@ public class RefundEndpoint extends BaseController {
                             @RequestParam(name = "productRefundStatus", required = false) String productRefundStatus,
                             @RequestParam(name = "productRefundNote", required = false) String productRefundNote,
                             @RequestParam(name = "originatorId", required = false) Long originatorId,
-                            @RequestParam(name = "operator", required = false) Long operator,
+                            @RequestParam(name = "transactionBy", required = false) String transactionBy,
                             @RequestParam(name = "transactionTime", required = false) Date transactionTime,
                             @RequestParam(name = "field1", required = false) String field1,
                             @RequestParam(name = "field2", required = false) String field2,
@@ -137,7 +137,7 @@ public class RefundEndpoint extends BaseController {
         record.setProductRefundStatus(productRefundStatus);
         record.setProductRefundNote(productRefundNote);
         record.setOriginatorId(originatorId);
-        record.setOperator(operator);
+        record.setTransactionBy(transactionBy);
         record.setTransactionTime(transactionTime);
         record.setField1(field1);
         record.setField2(field2);

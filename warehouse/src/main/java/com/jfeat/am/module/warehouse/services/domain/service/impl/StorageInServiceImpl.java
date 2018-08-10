@@ -44,9 +44,6 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
     public Integer createStorageIn(long userId, StorageInModel entity) {
         Integer affected = 0;
         entity.setOriginatorId(userId);
-        if (entity.getTransactionBy() == null) {
-            entity.setTransactionBy(userId);
-        }
         entity.setTransactionTime(new Date());
         StorageInFilter storageInFilter = new StorageInFilter();
         affected = crudStorageInService.createMaster(entity, storageInFilter, null, null);

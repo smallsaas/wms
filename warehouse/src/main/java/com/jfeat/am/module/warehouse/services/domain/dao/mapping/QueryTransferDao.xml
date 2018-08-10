@@ -17,7 +17,7 @@
         <result column="storage_out_id" property="storageOutId" />
         <result column="note" property="note" />
         <result column="status" property="status" />
-        <result column="operator" property="operator" />
+        <result column="transaction_by" property="transactionBy" />
         <result column="originator_id" property="originatorId" />
         <result column="field1" property="field1" />
         <result column="field2" property="field2" />
@@ -38,13 +38,11 @@
             wms_transfer.*,
                 fwarehouse.warehouse_name as fromWarehouseName,
                 twarehouse.warehouse_name as toWarehouseName,
-                ouser.`name` as originatorName,
-                tuser.`name` as operatorName
+                ouser.`name` as originatorName
 
         FROM wms_transfer
 
             left join user ouser on ouser.id = wms_transfer.originator_id
-            left join user tuser on tuser.id = wms_transfer.operator
 
             left join wms_warehouse fwarehouse on fwarehouse.id = wms_transfer.from_warehouse_id
             left join wms_warehouse twarehouse on twarehouse.id = wms_transfer.to_warehouse_id
@@ -83,8 +81,8 @@
         <if test="record.status != null and record.status!= ''">
             AND wms_transfer.status LIKE CONCAT('%',#{record.status},'%')
         </if>
-        <if test="record.operator != null and record.operator>0 ">
-            AND wms_transfer.operator LIKE CONCAT('%',#{record.operator},'%')
+        <if test="record.transactionBy != null and record.transactionBy!= ''">
+            AND wms_transfer.transaction_by LIKE CONCAT('%',#{record.transactionBy},'%')
         </if>
 
         <if test="record.originatorId != null and record.originatorId>0 ">

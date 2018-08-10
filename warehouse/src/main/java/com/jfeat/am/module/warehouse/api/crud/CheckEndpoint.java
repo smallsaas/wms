@@ -107,7 +107,7 @@ public class CheckEndpoint extends BaseController {
                            @RequestParam(name = "checkTime", required = false) Date checkTime,
                            @RequestParam(name = "profitLost", required = false) Integer profitLost,
                            @RequestParam(name = "checkNote", required = false) String checkNote,
-                           @RequestParam(name = "checkBy", required = false) Long checkBy,
+                           @RequestParam(name = "transactionBy", required = false) String transactionBy,
                            @RequestParam(name = "originatorId", required = false) Long originatorId,
                            @RequestParam(name = "field1", required = false) String field1,
                            @RequestParam(name = "field2", required = false) String field2,
@@ -133,7 +133,7 @@ public class CheckEndpoint extends BaseController {
         record.setCheckTime(checkTime);
         record.setProfitLost(profitLost);
         record.setCheckNote(checkNote);
-        record.setCheckBy(checkBy);
+        record.setTransactionBy(transactionBy);
         record.setOriginatorId(originatorId);
         record.setField1(field1);
         record.setField2(field2);

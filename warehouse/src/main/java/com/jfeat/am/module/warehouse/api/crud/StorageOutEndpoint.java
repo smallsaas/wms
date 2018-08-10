@@ -95,7 +95,7 @@ public class StorageOutEndpoint extends BaseController {
                                 @RequestParam(name = "batchNo", required = false) String batchNo,
                                 @RequestParam(name = "note", required = false) String note,
                                 @RequestParam(name = "status", required = false) String status,
-                                @RequestParam(name = "transactionBy", required = false) Long transactionBy,
+                                @RequestParam(name = "transactionBy", required = false) String transactionBy,
                                 @RequestParam(name = "originatorId", required = false) Long originatorId,
                                 @RequestParam(name = "field1", required = false) String field1,
                                 @RequestParam(name = "field2", required = false) String field2,

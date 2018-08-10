@@ -41,9 +41,6 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     public Integer createStorageOut(long userId, StorageOutModel entity) {
         Integer affected = 0;
         entity.setOriginatorId(userId);
-        if (entity.getTransactionBy() == null) {
-            entity.setTransactionBy(userId);
-        }
         entity.setTransactionTime(new Date());
         if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
             for (StorageOutItem outItem : entity.getStorageOutItems()) {

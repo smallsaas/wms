@@ -113,13 +113,11 @@
     <select id="findStorageInPage" resultMap="BaseResultMap" parameterType="StorageInRecord">
         SELECT wms_storage_in.*,
         ouser.`name` as originatorName,
-        tuser.`name` as operatorName,
         wms_warehouse.warehouse_name as warehouseName,
         wms_warehouse_slot.slot_name as slotName
 
         FROM wms_storage_in
         left join user ouser on ouser.id = wms_storage_in.originator_id
-        left join user tuser on tuser.id = wms_storage_in.transaction_by
         left join wms_warehouse on wms_warehouse.id = wms_storage_in.warehouse_id
         left join wms_warehouse_slot on wms_warehouse_slot.id = wms_storage_in.slot_id
         WHERE 1=1
@@ -157,7 +155,7 @@
             AND wms_storage_in.status LIKE CONCAT('%',#{record.status},'%')
         </if>
 
-        <if test="record.transactionBy != null and record.transactionBy>0 ">
+        <if test="record.transactionBy != null and record.transactionBy!= ''">
             AND wms_storage_in.transaction_by LIKE CONCAT('%',#{record.transactionBy},'%')
         </if>
 

@@ -114,7 +114,7 @@ public class ProcurementEndpoint extends BaseController {
                                  @RequestParam(name = "procurementTime", required = false) Date procurementTime,
                                  @RequestParam(name = "procurementNote", required = false) String procurementNote,
                                  @RequestParam(name = "procureStatus", required = false) String procureStatus,
-                                 @RequestParam(name = "operator", required = false) Long operator,
+                                 @RequestParam(name = "transactionBy", required = false) String transactionBy,
                                  @RequestParam(name = "originatorId", required = false) Long originatorId,
                                  @RequestParam(name = "transactionTime", required = false) Date transactionTime,
                                  @RequestParam(name = "field1", required = false) String field1,
@@ -146,7 +146,7 @@ public class ProcurementEndpoint extends BaseController {
         record.setProcurementTime(procurementTime);
         record.setProcurementNote(procurementNote);
         record.setProcureStatus(procureStatus);
-        record.setOperator(operator);
+        record.setTransactionBy(transactionBy);
         record.setOriginatorId(originatorId);
         record.setTransactionTime(transactionTime);
         record.setField1(field1);

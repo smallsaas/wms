@@ -83,7 +83,6 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             throw new BusinessException(5000, "请先选择需要采购的商品！");
         }
         BigDecimal totalSpend = BigDecimal.valueOf(0);
-        model.setOperator(userId);
         model.setOriginatorId(userId);
         model.setTransactionTime(new Date());
         model.setProcureStatus(ProcurementStatus.WaitForStorageIn.toString());
@@ -115,7 +114,6 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         // 等待入库的情况下才能执行更新的操作
         if (procurement.getProcureStatus().compareTo(ProcurementStatus.WaitForStorageIn.toString()) == 0) {
             model.setId(procurementId);
-            model.setOperator(userId);
             model.setTransactionTime(new Date());
             model.setProcureStatus(ProcurementStatus.WaitForStorageIn.toString());
             if (model.getItems() == null || model.getItems().size() == 0) {
@@ -157,7 +155,6 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             // 判断所有的商品是否都已经入库
             StorageInModel in = new StorageInModel();
             in.setOriginatorId(userId);
-            in.setTransactionBy(userId);
             in.setTransactionTime(new Date());
 
             // 使用field1去接收 warehouseId 字段
@@ -245,8 +242,6 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
         // 制单人
         object.put("originatorName", queryProcurementDao.originatorName(procurement.getOriginatorId()));
-        //操作人
-        object.put("operatorName", queryProcurementDao.operatorName(procurement.getOperator()));
         //采购的商品
         List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
                 .eq(StorageInItem.TYPE, TransactionType.Procurement.toString()).eq(StorageInItem.STORAGE_IN_ID, procurementId));
@@ -304,7 +299,6 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                                 procurementItem.setSkuName(sku.getSkuName());
                                 procurementItem.setSkuBarcode(sku.getBarCode());
                                 procurementItem.setId(item.getId());
-                                procurementItem.setTransactionName(queryProcurementDao.transactionName(in.getTransactionBy()));
                                 procurementItem.setWarehouseName(queryProcurementDao.warehouseName(in.getWarehouseId()));
                                 procurementItem.setStorageInCode(in.getTransactionCode());
                                 procurementItem.setStorageInNote(in.getNote());

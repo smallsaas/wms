@@ -98,7 +98,7 @@ public class StorageInEndpoint extends BaseController {
                                @RequestParam(name = "slotId", required = false) Long slotId,
                                @RequestParam(name = "note", required = false) String note,
                                @RequestParam(name = "status", required = false) String status,
-                               @RequestParam(name = "transactionBy", required = false) Long transactionBy,
+                               @RequestParam(name = "transactionBy", required = false) String transactionBy,
                                @RequestParam(name = "originatorId", required = false) Long originatorId,
                                @RequestParam(name = "readjustCostPrice", required = false) BigDecimal readjustCostPrice,
                                @RequestParam(name = "field1", required = false) String field1,

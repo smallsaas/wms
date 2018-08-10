@@ -37,13 +37,11 @@
     <select id="storagesOutDetails" resultMap="BaseStorageOutRecord" parameterType="long">
         SELECT wms_storage_out.*,
         ouser.`name` as originatorName,
-        tuser.`name` as operatorName,
         wms_warehouse.warehouse_name as warehouseName,
         wms_warehouse_slot.slot_name as slotName
 
         FROM wms_storage_out
         left join user ouser on ouser.id = wms_storage_out.originator_id
-        left join user tuser on tuser.id = wms_storage_out.transaction_by
         left join wms_warehouse on wms_warehouse.id = wms_storage_out.warehouse_id
         left join wms_warehouse_slot on wms_warehouse_slot.id = wms_storage_out.slot_id
         WHERE 1=1

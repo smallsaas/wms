@@ -110,7 +110,7 @@ public class TransferEndpoint extends BaseController {
                               @RequestParam(name = "storageOutId", required = false) Long storageOutId,
                               @RequestParam(name = "note", required = false) String note,
                               @RequestParam(name = "status", required = false) String status,
-                              @RequestParam(name = "operator", required = false) Long operator,
+                              @RequestParam(name = "transactionBy", required = false) String transactionBy,
                               @RequestParam(name = "originatorId", required = false) Long originatorId,
                               @RequestParam(name = "field1", required = false) String field1,
                               @RequestParam(name = "field2", required = false) String field2,
@@ -140,7 +140,7 @@ public class TransferEndpoint extends BaseController {
         record.setStorageOutId(storageOutId);
         record.setNote(note);
         record.setStatus(status);
-        record.setOperator(operator);
+        record.setTransactionBy(transactionBy);
         record.setOriginatorId(originatorId);
         record.setField1(field1);
         record.setField2(field2);

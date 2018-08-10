@@ -122,15 +122,14 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
 
         // 用field1 来接收出库的code
         storageOutModel.setTransactionCode(model.getField1());
-        storageOutModel.setTransactionBy(userId);
         storageOutModel.setOriginatorId(userId);
+        storageOutModel.setTransactionBy(model.getTransactionBy());
         storageOutModel.setTransactionTime(new Date());
         StorageOutFilter storageOutFilter = new StorageOutFilter();
         affected += storageOutService.createMaster(storageOutModel, storageOutFilter, null, null);
 
         model.setStorageOutId((Long) storageOutFilter.result().get("id") == null ? null : (Long) storageOutFilter.result().get("id"));
         model.setOriginatorId(userId);
-        model.setOperator(userId);
         model.setTransactionTime(new Date());
         model.setProductRefundQuantities(refundTotal);
 
@@ -182,8 +181,6 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         storageOut.setStorageOutItems(model.getItems());
         storageOutService.updateMaster(storageOut, null, null, null);
 
-        model.setOperator(userId);
-        // TODO 产品经理说，他也不知道有什么状态 所以我随便打了状态
         return refundService.updateMaster(model);
     }
 
