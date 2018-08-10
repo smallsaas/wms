@@ -226,6 +226,7 @@ CREATE TABLE `wms_check` (
 `id` bigint(20) NOT NULL  AUTO_INCREMENT,
 `check_code` varchar(255) NOT NULL COMMENT '盘点编号',
 `check_time` datetime default NULL COMMENT '盘点时间',
+`warehouse_id` bigint(20) NOT NULL COMMENT '盘点仓库ID',
 `profit_lost`  int(11)  NOT NULL COMMENT '盈亏(缺失值)',
 `check_note`  text  DEFAULT NULL COMMENT '盘点备注',
 `check_by` bigint(20) default NULL COMMENT '经手人',

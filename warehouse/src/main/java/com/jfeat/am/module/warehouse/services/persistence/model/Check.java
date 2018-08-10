@@ -48,6 +48,12 @@ public class Check extends Model<Check> {
      */
     @TableField("check_note")
     private String checkNote;
+
+    /**
+     * 仓库ID
+     */
+    @TableField("warehouse_id")
+    private Long warehouseId;
     /**
      * 经手人
      */
@@ -88,6 +94,15 @@ public class Check extends Model<Check> {
     public Check setCheckCode(String checkCode) {
         this.checkCode = checkCode;
         return this;
+    }
+
+
+    public Long getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(Long warehouseId) {
+        this.warehouseId = warehouseId;
     }
 
     public Date getCheckTime() {
@@ -169,6 +184,8 @@ public class Check extends Model<Check> {
 
     public static final String PROFIT_LOST = "profit_lost";
 
+    public static final String WAREHOUSE_ID = "warehouse_id";
+
     public static final String CHECK_NOTE = "check_note";
 
     public static final String CHECK_BY = "check_by";
@@ -194,6 +211,7 @@ public class Check extends Model<Check> {
                 ", checkCode=" + checkCode +
                 ", checkTime=" + checkTime +
                 ", profitLost=" + profitLost +
+                ", warehouseId=" + warehouseId +
                 ", checkNote=" + checkNote +
                 ", checkBy=" + checkBy +
                 ", originatorId=" + originatorId +

@@ -10,6 +10,7 @@ import java.util.List;
 public class CheckRecord extends Check{
 
     List<CheckSkuRecord> skuRecords;
+    String warehouseName;
 
 
     public List<CheckSkuRecord> getSkuRecords() {
@@ -18,5 +19,13 @@ public class CheckRecord extends Check{
 
     public void setSkuRecords(List<CheckSkuRecord> skuRecords) {
         this.skuRecords = skuRecords;
+    }
+
+    public String getWarehouseName() {
+        return warehouseName;
+    }
+
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
     }
 }

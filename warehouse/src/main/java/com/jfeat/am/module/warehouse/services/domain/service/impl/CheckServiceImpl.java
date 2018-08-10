@@ -7,6 +7,7 @@ import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.warehouse.services.definition.CheckStatus;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryCheckDao;
+import com.jfeat.am.module.warehouse.services.domain.dao.QueryWarehouseDao;
 import com.jfeat.am.module.warehouse.services.domain.model.CheckModel;
 import com.jfeat.am.module.warehouse.services.domain.model.CheckRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.CheckSkuRecord;
@@ -47,7 +48,8 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
     QueryCheckDao queryCheckDao;
     @Resource
     InventoryMapper inventoryMapper;
-
+    @Resource
+    QueryWarehouseDao queryWarehouseDao;
 
     /**
      * 新建盘点单
@@ -64,7 +66,8 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
             throw new BusinessException(5000, "请选择需要盘点的商品");
         }
         for (CheckSku sku : model.getCheckSkus()) {
-            Integer validCount  = queryCheckDao.validCount(sku.getWarehouseId(),sku.getSkuId());
+            Integer validCount = queryCheckDao.validCount(sku.getWarehouseId(), sku.getSkuId());
+            sku.setWarehouseId(model.getWarehouseId());
             sku.setDeservedQuantities(validCount);
             sku.setCheckId(model.getId());
             affected += checkSkuMapper.insert(sku);
@@ -128,8 +131,8 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
             inventory.setWarehouseId(sku.getWarehouseId());
             inventory.setSkuId(sku.getSkuId());
             Inventory originInventory = inventoryMapper.selectOne(inventory);
-            if (originInventory==null){
-                throw new BusinessException(10000,"未知错误，请联系专业人员");
+            if (originInventory == null) {
+                throw new BusinessException(10000, "未知错误，请联系专业人员");
             }
             originInventory.setValidSku(sku.getFactQuantities());
             affected += inventoryMapper.updateAllColumnById(originInventory);
@@ -149,6 +152,7 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
         Check check = checkMapper.selectById(checkId);
         JSONObject checkObj = JSON.parseObject(JSON.toJSONString(check));
         List<CheckSkuRecord> records = queryCheckDao.skuRecords(checkId);
+        checkObj.put("warehouseName", queryWarehouseDao.warehouseName(check.getWarehouseId()));
         checkObj.put("skuRecords", records);
         CheckRecord record = JSON.parseObject(JSON.toJSONString(checkObj), CheckRecord.class);
         return record;
