@@ -45,7 +45,6 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             entity.setTransactionBy(userId);
         }
         entity.setTransactionTime(new Date());
-        affected = crudStorageOutService.createMaster(entity, null, null, null);
         if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
             for (StorageOutItem outItem : entity.getStorageOutItems()) {
                 Inventory isExistInventory = new Inventory();
@@ -66,6 +65,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         }else {
             throw new BusinessException(4050,"商品不能为空，请先选择商品！");
         }
+        affected = crudStorageOutService.createMaster(entity, null, null, null);
         return affected;
     }
 }
