@@ -80,8 +80,10 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         int affected = 0;
         int refundTotal = 0;
 
+        List<StorageOutItem> storageOutItems =new ArrayList<>();
         if (model.getItems() != null && model.getItems().size() > 0) {
             for (StorageOutItem outItem : model.getItems()) {
+                outItem.setRelationCode(model.getProcurementCode());
                 refundTotal += outItem.getTransactionQuantities();
                 SkuProduct sku = skuProductMapper.selectById(outItem.getSkuId());
                 Inventory isExistInventory = new Inventory();
@@ -109,6 +111,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                 } else {
                     throw new BusinessException(4060,"该仓库不存在\""+sku.getSkuName()+"\"商品");
                 }
+                storageOutItems.add(outItem);
             }
         }
         else {
@@ -117,7 +120,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
 
         StorageOutModel storageOutModel = new StorageOutModel();
         storageOutModel.setTransactionType(TransactionType.Refund.toString());
-        storageOutModel.setStorageOutItems(model.getItems());
+        storageOutModel.setStorageOutItems(storageOutItems);
         storageOutModel.setWarehouseId(model.getProductRefundWarehouseId());
 
         // 用field1 来接收出库的code
@@ -172,6 +175,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     }
 
 
+    @Deprecated
     @Transactional
     public Integer updateRefund(long userId, RefundModel model) {
 

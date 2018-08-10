@@ -171,6 +171,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             for (StorageInItem item : model.getItems()) {
                 if (item.getTransactionQuantities() > 0) {
                     SkuProduct skuProduct = skuProductMapper.selectById(item.getSkuId());
+                    item.setRelationCode(model.getProcurementCode());
                     storageInItems.add(item);
                     // 某个 sku 的采购的数量
                     Integer skuProcurementCount = queryProcurementDao.skuProcurementCount(procurementId, item.getSkuId());

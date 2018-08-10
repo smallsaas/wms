@@ -22,5 +22,5 @@ public interface QuerySkuProductDao extends BaseMapper<SkuProductRecord> {
                                               @Param("warehouseName") String warehouseName,
                                               @Param("warehouseId")  Long warehouseId);
 
-    List<SkuStorageDetails> skuStorageDetails(@Param("skuId")Long skuId);
+    List<SkuStorageDetails> skuStorageDetails(Page<SkuStorageDetails> page,@Param("skuId")Long skuId);
 }

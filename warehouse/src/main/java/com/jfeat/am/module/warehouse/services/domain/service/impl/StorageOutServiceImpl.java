@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -42,8 +44,11 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         Integer affected = 0;
         entity.setOriginatorId(userId);
         entity.setTransactionTime(new Date());
+        List<StorageOutItem> storageOutItems = new ArrayList<>();
         if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
             for (StorageOutItem outItem : entity.getStorageOutItems()) {
+                outItem.setRelationCode(outItem.getRelationCode());
+                storageOutItems.add(outItem);
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());
                 isExistInventory.setWarehouseId(entity.getWarehouseId());
@@ -62,6 +67,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         }else {
             throw new BusinessException(4050,"商品不能为空，请先选择商品！");
         }
+        entity.setStorageOutItems(storageOutItems);
         affected = crudStorageOutService.createMaster(entity, null, null, null);
         return affected;
     }

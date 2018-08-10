@@ -36,6 +36,7 @@ public class StorageServiceImpl implements StorageService {
     /**
     *  出入 库 汇总
     * */
+    @Deprecated
     public StorageModel totalStorage(){
         StorageModel model = new StorageModel();
         List<StorageOut> outs = outMapper.selectList(new EntityWrapper<StorageOut>().orderBy("transaction_time",false));

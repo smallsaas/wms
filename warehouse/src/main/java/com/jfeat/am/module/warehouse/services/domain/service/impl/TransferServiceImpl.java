@@ -277,6 +277,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 affected += inventoryMapper.updateById(toInventory);
 
                 inItem.setSkuId(outItem.getSkuId());
+                inItem.setRelationCode(transfer.getTransactionCode());
                 inItem.setTransactionQuantities(outItem.getTransactionQuantities());
                 inItem.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
                 inItem.setTransactionTime(new Date());
