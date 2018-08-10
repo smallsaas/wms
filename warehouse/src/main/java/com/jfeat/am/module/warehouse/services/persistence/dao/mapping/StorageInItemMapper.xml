@@ -11,10 +11,11 @@
 		<result column="transaction_quantities" property="transactionQuantities" />
 		<result column="transaction_time" property="transactionTime" />
 		<result column="type" property="type" />
+		<result column="relation_code" property="relationCode" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, storage_in_id AS storageInId, sku_id AS skuId,type, transaction_sku_price AS transactionSkuPrice, transaction_quantities AS transactionQuantities, transaction_time AS transactionTime</sql>
+        id, storage_in_id AS storageInId, relation_code as relationCode,sku_id AS skuId,type, transaction_sku_price AS transactionSkuPrice, transaction_quantities AS transactionQuantities, transaction_time AS transactionTime</sql>
 
 </mapper>

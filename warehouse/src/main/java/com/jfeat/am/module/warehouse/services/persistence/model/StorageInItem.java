@@ -59,6 +59,12 @@ public class StorageInItem extends Model<StorageInItem> {
     @TableField("type")
     private String type;
 
+    /**
+     * 关联的操作编号
+     */
+    @TableField("relation_code")
+    private String relationCode;
+
 
 
     public Long getId() {
@@ -115,6 +121,14 @@ public class StorageInItem extends Model<StorageInItem> {
         return this;
     }
 
+    public String getRelationCode() {
+        return relationCode;
+    }
+
+    public void setRelationCode(String relationCode) {
+        this.relationCode = relationCode;
+    }
+
     public String getType() {
         return type;
     }
@@ -137,6 +151,8 @@ public class StorageInItem extends Model<StorageInItem> {
 
     public static final String TYPE = "type";
 
+    public static final String RELATION_CODE = "relation_code";
+
 
 
     @Override
@@ -154,6 +170,7 @@ public class StorageInItem extends Model<StorageInItem> {
                 ", transactionQuantities=" + transactionQuantities +
                 ", transactionTime=" + transactionTime +
                 ", type=" + type +
+                ", relationCode=" + relationCode +
                 "}";
     }
 }
