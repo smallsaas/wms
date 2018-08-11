@@ -18,6 +18,7 @@ public class SkuStorageDetails {
     String transactionType;
     String transactionCode;
     Integer validValue;
+    String relationCode;
 
 
     public Long getSkuId() {
@@ -122,5 +123,13 @@ public class SkuStorageDetails {
 
     public void setValidValue(Integer validValue) {
         this.validValue = validValue;
+    }
+
+    public String getRelationCode() {
+        return relationCode;
+    }
+
+    public void setRelationCode(String relationCode) {
+        this.relationCode = relationCode;
     }
 }
