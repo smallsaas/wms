@@ -98,6 +98,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             if (item.getTransactionQuantities() == 0) {
                 throw new BusinessException(4501, "采购数量不能为0，请重新输入！");
             }
+            item.setRelationCode(model.getProcurementCode());
             item.setStorageInId(model.getId());
             item.setType(TransactionType.Procurement.toString());
             affected += storageInItemMapper.insert(item);
