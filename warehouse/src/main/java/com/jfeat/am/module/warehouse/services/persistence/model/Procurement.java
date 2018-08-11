@@ -92,7 +92,7 @@ public class Procurement extends Model<Procurement> {
     private String field2;
 
     /**
-     * 状态
+     * 采购员
      */
     @TableField("buyer")
     private String buyer;
