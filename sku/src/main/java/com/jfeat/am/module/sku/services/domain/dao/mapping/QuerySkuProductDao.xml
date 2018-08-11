@@ -147,6 +147,7 @@
         SELECT
             sin.sku_id AS skuId,
             sin.type,
+            sin.relation_code as relationCode,
             sin.transaction_sku_price AS transactionSkuPrice,
             sin.transaction_quantities AS transactionQuantities,
             sin.transaction_time AS transactionTime,
@@ -175,6 +176,7 @@
         SELECT
             sout.sku_id AS skuId,
             NULL AS type,
+            sout.relation_code as relationCode,
             sout.transaction_sku_price AS transactionSkuPrice,
             sout.transaction_quantities AS transactionQuantities,
 

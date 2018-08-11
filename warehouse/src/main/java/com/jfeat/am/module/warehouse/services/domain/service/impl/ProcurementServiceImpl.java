@@ -150,7 +150,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         int inSuccess = 0;
         // 总需要入库的商品的数量
         int totalCount = queryProcurementDao.totalCount(procurementId);
-        
+
         Procurement procurement = procurementMapper.selectById(procurementId);
         model.setId(procurementId);
         if (model.getItems() != null && model.getItems().size() > 0) {
