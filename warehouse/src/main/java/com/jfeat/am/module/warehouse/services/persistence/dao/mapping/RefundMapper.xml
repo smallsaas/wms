@@ -14,7 +14,7 @@
 		<result column="product_refund_status" property="productRefundStatus" />
 		<result column="product_refund_note" property="productRefundNote" />
 		<result column="originator_id" property="originatorId" />
-		result column="transaction_by" property="transactionBy" />
+		<result column="transaction_by" property="transactionBy" />
 		<result column="transaction_time" property="transactionTime" />
 		<result column="field1" property="field1" />
 		<result column="field2" property="field2" />
