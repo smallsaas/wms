@@ -47,7 +47,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         List<StorageOutItem> storageOutItems = new ArrayList<>();
         if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
             for (StorageOutItem outItem : entity.getStorageOutItems()) {
-                outItem.setRelationCode(outItem.getRelationCode());
+                outItem.setRelationCode(entity.getTransactionCode());
                 storageOutItems.add(outItem);
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());
