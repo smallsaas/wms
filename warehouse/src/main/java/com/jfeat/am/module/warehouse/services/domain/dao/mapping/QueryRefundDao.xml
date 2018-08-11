@@ -47,8 +47,8 @@
         <if test="record.originatorId != null and record.originatorId>0 ">
             AND wms_refund.originator_id LIKE CONCAT('%',#{record.originatorId},'%')
         </if>
-        <if test="record.operator != null and record.operator>0 ">
-            AND wms_refund.operator LIKE CONCAT('%',#{record.operator},'%')
+        <if test="record.transactionBy != null and record.transactionBy!= '' ">
+            AND wms_refund.transaction_by LIKE CONCAT('%',#{record.transactionBy},'%')
         </if>
 
         <if test="record.transactionTime != null and record.transactionTime>0 ">
