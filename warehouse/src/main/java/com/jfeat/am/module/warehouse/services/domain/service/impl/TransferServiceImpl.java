@@ -87,6 +87,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         storageOut.setTransactionType(TransactionType.TransferOut.toString());
         storageOut.setWarehouseId(model.getFromWarehouseId());
         storageOut.setOriginatorId(userId);
+        storageOut.setOriginatorName(model.getOriginatorName());
         storageOut.setTransactionBy(model.getTransactionBy());
         // 使用调拨记录表中的field1字段去接收出库的code
         storageOut.setTransactionCode(model.getField1());
@@ -204,6 +205,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         storageIn.setTransactionType(TransactionType.TransferIn.toString());
         storageIn.setWarehouseId(transfer.getToWarehouseId());
         storageIn.setOriginatorId(userId);
+        storageIn.setOriginatorName(transfer.getOriginatorName());
         // needs code ?
         storageIn.setTransactionCode(transfer.getField1().replace("OUT","IN"));
         storageIn.setTransactionTime(new Date());
@@ -274,6 +276,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         storageIn.setTransactionType(TransactionType.OthersStorageIn.toString());
         storageIn.setWarehouseId(transfer.getFromWarehouseId());
         storageIn.setOriginatorId(userId);
+        storageIn.setOriginatorName(transfer.getOriginatorName());
         // 这个 code 应该怎么去处理呢？
         storageIn.setTransactionCode(transfer.getField1().replace("OUT","IN"));
         storageIn.setTransactionTime(new Date());
@@ -304,7 +307,6 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
         List<StorageOutItemRecord> outItemRecords = queryTransferDao.outItemRecords(transfer.getStorageOutId());
         transferObj.put("outItemRecords",outItemRecords);
-        transferObj.put("originatorName",queryTransferDao.staffName(transfer.getOriginatorId()));
         transferObj.put("fromWarehouseName",queryWarehouseDao.warehouseName(transfer.getFromWarehouseId()));
         transferObj.put("toWarehouseName",queryWarehouseDao.warehouseName(transfer.getToWarehouseId()));
         TransferModel model = JSONObject.parseObject(JSONObject.toJSONString(transferObj), TransferModel.class);

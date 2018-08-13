@@ -9,7 +9,6 @@ public class ProcurementRecord extends Procurement{
     String supplierName;
     String warehouseName;
     String buyer;
-    String originatorName;
 
 
     public String getSupplierName() {
@@ -36,11 +35,4 @@ public class ProcurementRecord extends Procurement{
         this.buyer = buyer;
     }
 
-    public String getOriginatorName() {
-        return originatorName;
-    }
-
-    public void setOriginatorName(String originatorName) {
-        this.originatorName = originatorName;
-    }
 }

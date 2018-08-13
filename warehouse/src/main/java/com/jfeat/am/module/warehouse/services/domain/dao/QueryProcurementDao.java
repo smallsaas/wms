@@ -40,10 +40,6 @@ public interface QueryProcurementDao extends BaseMapper<ProcurementRecord> {
     @Select("select wms_warehouse.warehouse_name from wms_warehouse where wms_warehouse.id = #{warehouseId}")
     String warehouseName(@Param("warehouseId")Long warehouseId);
 
-    //采购制单人
-    @Select("select t_store_assistant.name from t_store_assistant where t_store_assistant.user_id = #{originatorId}")
-    String originatorName(@Param("originatorId")Long originatorId);
-
     // 采购经办人
     @Select("select t_store_assistant.name from t_store_assistant where t_store_assistant.user_id = #{operatorId}")
     String operatorName(@Param("operatorId")Long operatorId);

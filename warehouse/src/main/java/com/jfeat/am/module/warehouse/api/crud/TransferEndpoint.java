@@ -57,6 +57,8 @@ public class TransferEndpoint extends BaseController {
 
         Integer affected = 0;
         try {
+            String userName = JWTKit.getAccount(getHttpServletRequest());
+            entity.setOriginatorName(userName);
             affected = transferService.createTransfer(entity, JWTKit.getUserId(getHttpServletRequest()));
 
         } catch (DuplicateKeyException e) {

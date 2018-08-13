@@ -11,7 +11,6 @@ public class StorageOutRecord extends StorageOut{
 
     String warehouseName;
     String slotName;
-    String originatorName;
     String operatorName;
     List<StorageOutItemRecord> storageOutItemRecords;
 
@@ -30,14 +29,6 @@ public class StorageOutRecord extends StorageOut{
 
     public void setSlotName(String slotName) {
         this.slotName = slotName;
-    }
-
-    public String getOriginatorName() {
-        return originatorName;
-    }
-
-    public void setOriginatorName(String originatorName) {
-        this.originatorName = originatorName;
     }
 
     public String getOperatorName() {

@@ -11,7 +11,6 @@ import java.util.List;
  */
 public class TransferModel extends Transfer{
     List<StorageOutItem> outItems;
-    String originatorName;
     String operatorName;
 
     String fromWarehouseName;
@@ -25,14 +24,6 @@ public class TransferModel extends Transfer{
 
     public void setOutItems(List<StorageOutItem> outItems) {
         this.outItems = outItems;
-    }
-
-    public String getOriginatorName() {
-        return originatorName;
-    }
-
-    public void setOriginatorName(String originatorName) {
-        this.originatorName = originatorName;
     }
 
     public String getOperatorName() {

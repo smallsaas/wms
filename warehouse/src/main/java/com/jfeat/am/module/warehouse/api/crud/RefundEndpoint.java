@@ -57,6 +57,8 @@ public class RefundEndpoint extends BaseController {
 
         Integer affected = 0;
         try {
+            String userName = JWTKit.getAccount(getHttpServletRequest());
+            entity.setOriginatorName(userName);
             affected = refundService.createRefund(JWTKit.getUserId(getHttpServletRequest()),entity);
 
         } catch (DuplicateKeyException e) {

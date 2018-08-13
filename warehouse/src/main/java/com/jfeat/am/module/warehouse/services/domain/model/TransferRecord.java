@@ -9,7 +9,6 @@ public class TransferRecord extends Transfer{
 
 
     String fromWarehouseName;
-    String originatorName;
     String operatorName;
     String toWarehouseName;
 
@@ -20,14 +19,6 @@ public class TransferRecord extends Transfer{
 
     public void setFromWarehouseName(String fromWarehouseName) {
         this.fromWarehouseName = fromWarehouseName;
-    }
-
-    public String getOriginatorName() {
-        return originatorName;
-    }
-
-    public void setOriginatorName(String originatorName) {
-        this.originatorName = originatorName;
     }
 
     public String getOperatorName() {

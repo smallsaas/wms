@@ -10,7 +10,7 @@ import java.util.List;
 public class StorageInRecord extends StorageIn{
     String warehouseName;
     String slotName;
-    String originatorName;
+
     String operatorName;
     List<StorageInItemRecord> storageInItemRecords;
 
@@ -29,14 +29,6 @@ public class StorageInRecord extends StorageIn{
 
     public void setSlotName(String slotName) {
         this.slotName = slotName;
-    }
-
-    public String getOriginatorName() {
-        return originatorName;
-    }
-
-    public void setOriginatorName(String originatorName) {
-        this.originatorName = originatorName;
     }
 
     public String getOperatorName() {

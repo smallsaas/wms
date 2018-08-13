@@ -57,7 +57,10 @@ public class CheckEndpoint extends BaseController {
 
         Integer affected = 0;
         try {
+            String userName = JWTKit.getAccount(getHttpServletRequest());
             Long userId = JWTKit.getUserId(getHttpServletRequest());
+            entity.setOriginatorName(userName);
+            entity.setOriginatorId(userId);
             affected = checkService.createCheckList(userId,entity);
 
         } catch (DuplicateKeyException e) {

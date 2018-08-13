@@ -17,25 +17,22 @@
         <result column="procure_status" property="procureStatus" />
         <result column="transaction_by" property="transactionBy" />
         <result column="originator_id" property="originatorId" />
+        <result column="originator_name" property="originatorName" />
         <result column="transaction_time" property="transactionTime" />
         <result column="field1" property="field1" />
         <result column="field2" property="field2" />
 
-
         <result column="supplierName" property="supplierName" />
         <result column="warehouseName" property="warehouseName" />
         <result column="buyer" property="buyer" />
-        <result column="originatorName" property="originatorName" />
 
     </resultMap>
 
     <select id="findProcurementPage" resultMap="BaseResultMap" parameterType="ProcurementRecord">
         SELECT  wms_procurement.*,
-                 wms_suppliers.supplier_name as supplierName,
-                 ouser.`name` as originatorName
+                 wms_suppliers.supplier_name as supplierName
         FROM wms_procurement
         left join wms_suppliers on wms_suppliers.id = wms_procurement.supplier_id
-        left join user ouser on ouser.id = wms_procurement.originator_id
         WHERE 1=1
         <if test="waitForStorageIn != null and waitForStorageIn != ''">
             AND wms_procurement.procure_status != #{waitForStorageIn}

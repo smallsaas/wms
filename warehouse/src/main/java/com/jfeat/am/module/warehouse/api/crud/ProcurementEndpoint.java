@@ -59,6 +59,8 @@ public class ProcurementEndpoint extends BaseController {
     public Tip createProcurement(@RequestBody ProcurementModel entity) {
         Integer affected = 0;
         try {
+            String userName = JWTKit.getAccount(getHttpServletRequest());
+            entity.setOriginatorName(userName);
             affected = procurementService.addProcurement(JWTKit.getUserId(getHttpServletRequest()),entity);
 
         } catch (DuplicateKeyException e) {

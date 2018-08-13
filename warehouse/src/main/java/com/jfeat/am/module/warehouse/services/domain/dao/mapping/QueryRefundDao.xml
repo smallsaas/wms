@@ -98,24 +98,19 @@
         <result column="status" property="status" />
         <result column="transaction_by" property="transactionBy" />
         <result column="originator_id" property="originatorId" />
+        <result column="originator_name" property="originatorName" />
         <result column="warehouse_id" property="warehouseId" />
         <result column="slot_id" property="slotId" />
         <result column="field1" property="field1" />
         <result column="field2" property="field2" />
 
         <result column="warehouseName" property="warehouseName" />
-        <result column="originatorName" property="originatorName" />
-        <result column="operatorName" property="operatorName" />
-
     </resultMap>
 
     <select id="outRecord" resultMap="OutRecordMap" parameterType="long">
-        SELECT wms_storage_out.*,wms_warehouse.warehouse_name as warehouseName,
-        ouser.`name` as originatorName
+        SELECT wms_storage_out.*,wms_warehouse.warehouse_name as warehouseName
         FROM wms_storage_out
         left join wms_warehouse on wms_warehouse.id = wms_storage_out.warehouse_id
-        left join user ouser on ouser.id = wms_storage_out.originator_id
-
         WHERE 1=1
         and wms_storage_out.id = #{outId}
     </select>

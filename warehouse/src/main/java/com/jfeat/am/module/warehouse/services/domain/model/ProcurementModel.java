@@ -18,19 +18,10 @@ public class ProcurementModel extends Procurement{
     List<StorageInItemRecord> inHistories;
 
 
-    String originatorName;
     String operatorName;
     String supplierName;
 
 
-
-    public String getOriginatorName() {
-        return originatorName;
-    }
-
-    public void setOriginatorName(String originatorName) {
-        this.originatorName = originatorName;
-    }
 
     public String getOperatorName() {
         return operatorName;

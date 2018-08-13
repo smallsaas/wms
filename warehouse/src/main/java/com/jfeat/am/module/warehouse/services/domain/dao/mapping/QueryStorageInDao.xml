@@ -22,7 +22,7 @@
         <result column="field1" property="field1" />
         <result column="field2" property="field2" />
         <result column="warehouseName" property="warehouseName" />
-        <result column="originatorName" property="originatorName" />
+        <result column="originator_name" property="originatorName" />
         <result column="operatorName" property="operatorName" />
         <result column="slotName" property="slotName" />
 
@@ -36,12 +36,10 @@
     </resultMap>
     <select id="storagesInDetails" resultMap="BaseStorageInRecord" parameterType="long">
         SELECT wms_storage_in.*,
-        ouser.`name` as originatorName,
         wms_warehouse.warehouse_name as warehouseName,
         wms_warehouse_slot.slot_name as slotName
 
         FROM wms_storage_in
-        left join user ouser on ouser.id = wms_storage_in.originator_id
         left join wms_warehouse on wms_warehouse.id = wms_storage_in.warehouse_id
         left join wms_warehouse_slot on wms_warehouse_slot.id = wms_storage_in.slot_id
         WHERE 1=1
@@ -97,18 +95,16 @@
         <result column="field1" property="field1" />
         <result column="field2" property="field2" />
         <result column="warehouseName" property="warehouseName" />
-        <result column="originatorName" property="originatorName" />
+        <result column="originator_name" property="originatorName" />
         <result column="operatorName" property="operatorName" />
         <result column="slotName" property="slotName" />
     </resultMap>
     <select id="findStorageInPage" resultMap="BaseResultMap" parameterType="StorageInRecord">
         SELECT wms_storage_in.*,
-        ouser.`name` as originatorName,
         wms_warehouse.warehouse_name as warehouseName,
         wms_warehouse_slot.slot_name as slotName
 
         FROM wms_storage_in
-        left join user ouser on ouser.id = wms_storage_in.originator_id
         left join wms_warehouse on wms_warehouse.id = wms_storage_in.warehouse_id
         left join wms_warehouse_slot on wms_warehouse_slot.id = wms_storage_in.slot_id
         WHERE 1=1

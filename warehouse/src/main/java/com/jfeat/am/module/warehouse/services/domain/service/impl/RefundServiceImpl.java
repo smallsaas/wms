@@ -128,6 +128,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         // 用field1 来接收出库的code
         storageOutModel.setTransactionCode(model.getField1());
         storageOutModel.setOriginatorId(userId);
+        storageOutModel.setOriginatorName(model.getOriginatorName());
         storageOutModel.setTransactionBy(model.getTransactionBy());
         storageOutModel.setTransactionTime(new Date());
         StorageOutFilter storageOutFilter = new StorageOutFilter();

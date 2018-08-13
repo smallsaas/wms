@@ -10,7 +10,6 @@ import java.util.List;
  */
 public class RefundModel extends Refund{
     List<StorageOutItem> items;
-    String originatorName;
     String operatorName;
     String procurementCode;
 //    List<StorageOutRecord> outRecords;
@@ -25,13 +24,6 @@ public class RefundModel extends Refund{
         this.items = items;
     }
 
-    public String getOriginatorName() {
-        return originatorName;
-    }
-
-    public void setOriginatorName(String originatorName) {
-        this.originatorName = originatorName;
-    }
 
     public String getOperatorName() {
         return operatorName;

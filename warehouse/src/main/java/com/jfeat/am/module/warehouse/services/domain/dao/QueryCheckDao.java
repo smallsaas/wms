@@ -19,11 +19,6 @@ public interface QueryCheckDao extends BaseMapper<CheckRecord> {
 
     List<CheckSkuRecord> skuRecords(@Param("checkId")Long checkId);
 
-    // originatorName
-    @Select("select user.name as originatorName from user where user.id = #{userId}")
-    String originatorName(@Param("userId")Long userId);
-
-
     // 盘点 初始化的时候某个仓库某个商品的库存数量
     @Select("select wms_inventory.valid_sku from wms_inventory where wms_inventory.warehouse_id = #{warehouseId} and wms_inventory.sku_id = #{skuId}")
     Integer validCount(@Param("warehouseId")Long warehouseId,

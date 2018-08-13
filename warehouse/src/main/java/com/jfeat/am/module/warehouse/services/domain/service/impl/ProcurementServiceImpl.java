@@ -118,8 +118,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             model.setTransactionTime(new Date());
             model.setProcureStatus(ProcurementStatus.WaitForStorageIn.toString());
             if (model.getItems() == null || model.getItems().size() == 0) {
-                affected += procurementMapper.updateById(model);
+                throw new BusinessException(5002,"请至少选择一种需要采购的商品");
             } else {
+                storageInItemMapper.delete(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID,procurementId).eq(StorageInItem.TYPE,TransactionType.Procurement.toString()));
                 BigDecimal totalSpend = BigDecimal.valueOf(0);
                 for (StorageInItem item : model.getItems()) {
                     BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
@@ -128,9 +129,10 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 }
                 model.setProcurementTotal(totalSpend);
                 for (StorageInItem item : model.getItems()) {
+
                     item.setStorageInId(procurementId);
                     item.setType(TransactionType.Procurement.toString());
-                    affected += storageInItemMapper.updateById(item);
+                    affected += storageInItemMapper.insert(item);
                 }
                 affected += procurementMapper.updateById(model);
             }
@@ -158,6 +160,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             StorageInModel in = new StorageInModel();
             in.setOriginatorId(userId);
             in.setTransactionTime(new Date());
+            in.setOriginatorName(model.getOriginatorName());
 
             // 使用field1去接收 warehouseId 字段
             in.setWarehouseId(Long.valueOf(model.getField1()));
@@ -243,8 +246,6 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         Suppliers suppliers = suppliersMapper.selectById(procurement.getSupplierId());
         object.put("supplierName", suppliers == null ? null : suppliers.getSupplierName());
 
-        // 制单人
-        object.put("originatorName", queryProcurementDao.originatorName(procurement.getOriginatorId()));
         //采购的商品
         List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
                 .eq(StorageInItem.TYPE, TransactionType.Procurement.toString()).eq(StorageInItem.STORAGE_IN_ID, procurementId));

@@ -54,6 +54,8 @@ public class StorageOutEndpoint extends BaseController {
     @PostMapping
     @ApiOperation(value = "新建出库单",response = StorageOutModel.class)
     public Tip createStorageOut(@RequestBody StorageOutModel entity) {
+        String userName = JWTKit.getAccount(getHttpServletRequest());
+        entity.setOriginatorName(userName);
         return SuccessTip.create(storageOutService.createStorageOut(JWTKit.getUserId(getHttpServletRequest()),entity));
     }
 

@@ -57,6 +57,8 @@ public class StorageInEndpoint extends BaseController {
     @PostMapping
     @ApiOperation(value = "新建入库单",response = StorageInModel.class)
     public Tip createStorageIn(@RequestBody StorageInModel entity) {
+        String userName = JWTKit.getAccount(getHttpServletRequest());
+        entity.setOriginatorName(userName);
         return SuccessTip.create(storageInService.createStorageIn(JWTKit.getUserId(getHttpServletRequest()),entity));
     }
 
