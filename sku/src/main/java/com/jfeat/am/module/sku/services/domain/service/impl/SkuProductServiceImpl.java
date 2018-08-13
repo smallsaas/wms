@@ -3,12 +3,10 @@ package com.jfeat.am.module.sku.services.domain.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.constant.tips.Ids;
 import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.module.product.services.persistence.dao.ProductMapper;
 import com.jfeat.am.module.product.services.persistence.model.Product;
-import com.jfeat.am.module.product.services.persistence.model.SpecificationGroup;
 import com.jfeat.am.module.sku.services.crud.filter.SkuProductFilter;
 import com.jfeat.am.module.sku.services.crud.model.SkuProductModel;
 import com.jfeat.am.module.sku.services.crud.model.SkuSpecificationGroupModel;
@@ -16,7 +14,6 @@ import com.jfeat.am.module.sku.services.crud.service.CRUDSkuProductService;
 import com.jfeat.am.module.sku.services.crud.service.impl.CRUDSkuProductServiceImpl;
 import com.jfeat.am.module.sku.services.domain.dao.QuerySkuProductDao;
 import com.jfeat.am.module.sku.services.domain.model.CreateSkuProductModel;
-import com.jfeat.am.module.sku.services.domain.model.SkuStorageDetails;
 import com.jfeat.am.module.sku.services.domain.service.SkuProductService;
 import com.jfeat.am.module.sku.services.persistence.dao.*;
 import com.jfeat.am.module.sku.services.persistence.model.*;
@@ -331,14 +328,6 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         List<SkuProductModel> skuProductModels = new ArrayList<>();
         skuProductModels.add(skuProductModel);
         productObject.put("skus", skuProductModels == null ? null : skuProductModels);
-
-        //TODO  page device
-        Page<SkuStorageDetails> page = new Page<>();
-        Integer pageSize =10;
-        Integer pageNum = 1;
-        // all storage history
-        List<SkuStorageDetails> skuStorageDetails = querySkuProductDao.skuStorageDetails(page,id);
-        productObject.put("storageDetails",skuStorageDetails);
 
         CreateSkuProductModel productModel = JSONObject.parseObject(JSONObject.toJSONString(productObject), CreateSkuProductModel.class);
         return productModel;

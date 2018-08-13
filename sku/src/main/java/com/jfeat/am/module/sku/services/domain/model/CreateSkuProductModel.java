@@ -7,7 +7,6 @@ import java.util.List;
 
 public class CreateSkuProductModel extends Product{
     List<SkuProductModel> skus;
-    List<SkuStorageDetails> storageDetails;
 
     public List<SkuProductModel> getSkus() {
         return skus;
@@ -17,11 +16,4 @@ public class CreateSkuProductModel extends Product{
         this.skus = skus;
     }
 
-    public List<SkuStorageDetails> getStorageDetails() {
-        return storageDetails;
-    }
-
-    public void setStorageDetails(List<SkuStorageDetails> storageDetails) {
-        this.storageDetails = storageDetails;
-    }
 }

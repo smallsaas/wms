@@ -1,4 +1,4 @@
-package com.jfeat.am.module.sku.services.domain.model;
+package com.jfeat.am.module.warehouse.services.domain.model;
 
 import java.math.BigDecimal;
 import java.util.Date;

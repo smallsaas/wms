@@ -1,5 +1,6 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
+import com.jfeat.am.module.warehouse.services.domain.model.SkuStorageDetails;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +49,22 @@ public class InventoryEndpoint extends BaseController {
 
     @Resource
     QueryInventoryDao queryInventoryDao;
+
+
+    @GetMapping("/skus/{id}")
+    @ApiOperation(value = "获取库存盘点详细")
+    @BusinessLog(name = "skuStorageDetails", value = "view skuStorageDetails")
+    public Tip skuStorageDetails(Page<SkuStorageDetails> page,
+                                 @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                                 @PathVariable Long id) {
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        page.setRecords(queryInventoryDao.skuStorageDetails(page, id));
+        return SuccessTip.create(page);
+    }
+
+
 
     @BusinessLog(name = "Inventory", value = "create Inventory")
     @PostMapping

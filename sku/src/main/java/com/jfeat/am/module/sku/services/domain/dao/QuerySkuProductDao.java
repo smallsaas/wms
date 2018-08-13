@@ -4,7 +4,6 @@ import com.jfeat.am.module.sku.services.domain.model.SkuProductRecord;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.jfeat.am.module.sku.services.domain.model.SkuStorageDetails;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -22,5 +21,4 @@ public interface QuerySkuProductDao extends BaseMapper<SkuProductRecord> {
                                               @Param("warehouseName") String warehouseName,
                                               @Param("warehouseId")  Long warehouseId);
 
-    List<SkuStorageDetails> skuStorageDetails(Page<SkuStorageDetails> page,@Param("skuId")Long skuId);
 }

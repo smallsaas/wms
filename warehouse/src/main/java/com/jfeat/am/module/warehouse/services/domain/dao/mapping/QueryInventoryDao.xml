@@ -77,78 +77,69 @@
     </select>
 
 
+    <!-- 出入库记录 -->
 
-    <!--
+    <select id="skuStorageDetails" resultType="com.jfeat.am.module.warehouse.services.domain.model.SkuStorageDetails"
+            parameterType="long">
 
+        SELECT
+        sin.sku_id AS skuId,
+        sin.type,
+        sin.relation_code as relationCode,
+        sin.transaction_sku_price AS transactionSkuPrice,
+        sin.transaction_quantities AS transactionQuantities,
+        sin.transaction_time AS transactionTime,
+        t_sku_product.sku_name AS skuName,
+        t_sku_product.bar_code AS skuBarcode,
+        t_sku_product.sku_code AS skuCode,
+        t_sku_product.field1 AS skuUnit,
+        wms_warehouse.warehouse_name AS warehouseName,
+        wms_storage_in.transaction_type AS transactionType,
+        wms_storage_in.transaction_code AS transactionCode,
+        wms_inventory.valid_sku AS validValue
+        FROM
+        wms_storage_in_item sin
+        LEFT JOIN wms_storage_in ON sin.storage_in_id = wms_storage_in.id
+        LEFT JOIN t_sku_product ON t_sku_product.id = sin.sku_id
+        LEFT JOIN wms_warehouse ON wms_warehouse.id = wms_storage_in.warehouse_id
+        LEFT JOIN wms_inventory ON (
+        wms_inventory.sku_id = sin.sku_id
+        AND wms_inventory.warehouse_id = wms_storage_in.warehouse_id
+        )
+        WHERE
+        1 = 1
+        AND t_sku_product.id = #{skuId}
+        AND sin.type != 'Procurement'
+        UNION
+        SELECT
+        sout.sku_id AS skuId,
+        NULL AS type,
+        sout.relation_code as relationCode,
+        sout.transaction_sku_price AS transactionSkuPrice,
+        sout.transaction_quantities AS transactionQuantities,
 
-
-
-
-    -->
-
-
-
-
-
-    <!-- 单个商品的出入库明细 -->
-
-
-    <!--
-    SELECT
-    sout.id,
-    sout.transaction_code AS transactionCode,
-    sout.transaction_type as transactionType,
-    sout.transaction_time as transactionTime,
-    sout.batch_no as batchNo,
-    sout.warehouse_id as warehouseId,
-    sout.slot_id as slotId,
-    sout.note as note,
-    sout.status as status,
-    sout.transaction_by as transactionBy,
-    sout.originator_id as originatorId,
-    NULL as readjustCostPrice,
-    NULL as procurementId,
-    sout.field1,
-    sout.field2,
-    t_sku_product.sku_name as skuName,
-    t_sku_product.bar_code as skuBarcode,
-    t_sku_product.sku_code as skuCode,
-    t_sku_product.field1 as skuUnit,
-    wms_warehouse.warehouse_name as warehousName
-    FROM wms_storage_out sout
-    LEFT JOIN wms_storage_out_item on wms_storage_out_item.storage_out_id = sout.id
-    LEFT JOIN t_sku_product on t_sku_product.id = wms_storage_out_item.sku_id
-    LEFT JOIN wms_warehouse on wms_warehouse.id = sout.warehouse_id
-
-
-    UNION
-    SELECT
-    sin.id,
-    sin.transaction_code AS transactionCode,
-    sin.transaction_type as transactionType,
-    sin.transaction_time as transactionTime,
-    sin.batch_no as batchNo,
-    sin.warehouse_id as warehouseId,
-    sin.slot_id as slotId,
-    sin.note as note,
-    sin.status as status,
-    sin.transaction_by as transactionBy,
-    sin.originator_id as originatorId,
-    sin.readjust_cost_price as readjustCostPrice,
-    sin.procurement_id as procurementId,
-    sin.field1,
-    sin.field2,
-    t_sku_product.sku_name as skuName,
-    t_sku_product.bar_code as skuBarcode,
-    t_sku_product.sku_code as skuCode,
-    t_sku_product.field1 as skuUnit,
-    wms_warehouse.warehouse_name as warehousName
-    FROM wms_storage_in sin
-    LEFT JOIN wms_storage_in_item on (wms_storage_in_item.storage_in_id = sin.id AND wms_storage_in_item.type!='Procurement')
-    LEFT JOIN t_sku_product on t_sku_product.id = wms_storage_in_item.sku_id
-    LEFT JOIN wms_warehouse on wms_warehouse.id = sin.warehouse_id
-
-    ORDER BY transactionTime DESC
-    -->
+        sout.transaction_time AS transactionTime,
+        t_sku_product.sku_name AS skuName,
+        t_sku_product.bar_code AS skuBarcode,
+        t_sku_product.sku_code AS skuCode,
+        t_sku_product.field1 AS skuUnit,
+        wms_warehouse.warehouse_name AS warehouseName,
+        wms_storage_out.transaction_type AS transactionType,
+        wms_storage_out.transaction_code AS transactionCode,
+        wms_inventory.valid_sku AS validValue
+        FROM
+        wms_storage_out_item sout
+        LEFT JOIN wms_storage_out ON sout.storage_out_id = wms_storage_out.id
+        LEFT JOIN t_sku_product ON t_sku_product.id = sout.sku_id
+        LEFT JOIN wms_warehouse ON wms_warehouse.id = wms_storage_out.warehouse_id
+        LEFT JOIN wms_inventory ON (
+        wms_inventory.sku_id = sout.sku_id
+        AND wms_inventory.warehouse_id = wms_storage_out.warehouse_id
+        )
+        WHERE
+        1 = 1
+        AND t_sku_product.id = #{skuId}
+        ORDER BY transactionTime DESC
+    </select>
 
 </mapper>
