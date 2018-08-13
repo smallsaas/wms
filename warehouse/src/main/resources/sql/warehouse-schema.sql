@@ -19,8 +19,7 @@ CREATE TABLE `wms_storage_in` (
   `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
   PRIMARY KEY (`id`),
   UNIQUE (`transaction_code`),
-  KEY (`warehouse_id`),
-  CONSTRAINT `warehouseName` FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
+  FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -36,10 +35,8 @@ CREATE TABLE `wms_storage_in_item` (
   `type` varchar(26) DEFAULT 'Others' COMMENT '操作类型',
   `relation_code` varchar(255) NOT NULL COMMENT '关联的操作编号',
   PRIMARY KEY (`id`),
-  KEY (`storage_in_id`),
-  KEY (`sku_id`),
-  CONSTRAINT `pid` FOREIGN KEY (`storage_in_id`) REFERENCES `wms_storage_in` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `skuId` FOREIGN KEY (`sku_id`) REFERENCES `t_sku_product` (`id`)
+  FOREIGN KEY (`storage_in_id`) REFERENCES `wms_storage_in` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`sku_id`) REFERENCES `t_sku_product` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -61,8 +58,7 @@ CREATE TABLE `wms_storage_out` (
   `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
   PRIMARY KEY (`id`),
   UNIQUE (`transaction_code`),
-  KEY (`warehouse_id`),
-  CONSTRAINT `warehouse` FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
+  FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -76,8 +72,7 @@ CREATE TABLE `wms_storage_out_item` (
   `transaction_time` datetime DEFAULT NULL COMMENT '操作时间',
   `relation_code` varchar(255) NOT NULL COMMENT '关联的操作编号',
   PRIMARY KEY (`id`),
-  KEY (`storage_out_id`),
-  CONSTRAINT `outId` FOREIGN KEY (`storage_out_id`) REFERENCES `wms_storage_out` (`id`) ON DELETE CASCADE
+  FOREIGN KEY (`storage_out_id`) REFERENCES `wms_storage_out` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -100,8 +95,7 @@ CREATE TABLE `wms_procurement` (
   `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
   PRIMARY KEY (`id`),
   UNIQUE (`procurement_code`),
-  KEY (`supplier_id`),
-  CONSTRAINT `suppliersName` FOREIGN KEY (`supplier_id`) REFERENCES `wms_suppliers` (`id`) ON DELETE RESTRICT
+  FOREIGN KEY (`supplier_id`) REFERENCES `wms_suppliers` (`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -124,14 +118,10 @@ CREATE TABLE `wms_transfer` (
   `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
   PRIMARY KEY (`id`),
   UNIQUE (`transaction_code`),
-  KEY (`from_warehouse_id`),
-  KEY (`to_warehouse_id`),
-  KEY (`storage_out_id`),
-  KEY (`storage_in_id`),
-  CONSTRAINT `fromWarehouseId` FOREIGN KEY (`from_warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT,
-  CONSTRAINT `inStroageId` FOREIGN KEY (`storage_in_id`) REFERENCES `wms_storage_in` (`id`) ON DELETE RESTRICT,
-  CONSTRAINT `outStroageId` FOREIGN KEY (`storage_out_id`) REFERENCES `wms_storage_out` (`id`) ON DELETE RESTRICT,
-  CONSTRAINT `toWarehouseId` FOREIGN KEY (`to_warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
+  FOREIGN KEY (`from_warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT,
+  FOREIGN KEY (`storage_in_id`) REFERENCES `wms_storage_in` (`id`) ON DELETE RESTRICT,
+  FOREIGN KEY (`storage_out_id`) REFERENCES `wms_storage_out` (`id`) ON DELETE RESTRICT,
+  FOREIGN KEY (`to_warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `wms_suppliers`;
@@ -161,16 +151,6 @@ UNIQUE (`supplier_name`),
 PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---DROP TABLE IF EXISTS `wms_suppliers_product`;
---CREATE TABLE `wms_suppliers_product` (
---`id` bigint(20) NOT NULL  AUTO_INCREMENT,
---`suppliers_id` bigint(20) NOT NULL  COMMENT '供应商ID',
---`product_id` bigint(20) NOT NULL  COMMENT '商品ID',
--- unique(`suppliers_id`,`product_id`),
---PRIMARY KEY (`id`)
---)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
 
 
 DROP TABLE IF EXISTS `wms_refund`;
@@ -191,12 +171,9 @@ CREATE TABLE `wms_refund` (
   `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
   PRIMARY KEY (`id`),
   UNIQUE (`product_refund_code`),
-  KEY (`storage_out_id`),
-  KEY (`product_procurement_id`),
-  KEY (`product_refund_warehouse_id`),
-  CONSTRAINT `outStorageId` FOREIGN KEY (`storage_out_id`) REFERENCES `wms_storage_out` (`id`) ON DELETE RESTRICT,
-  CONSTRAINT `procurementId` FOREIGN KEY (`product_procurement_id`) REFERENCES `wms_procurement` (`id`) ON DELETE RESTRICT,
-  CONSTRAINT `refundWarehouse` FOREIGN KEY (`product_refund_warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
+  FOREIGN KEY (`storage_out_id`) REFERENCES `wms_storage_out` (`id`) ON DELETE RESTRICT,
+  FOREIGN KEY (`product_procurement_id`) REFERENCES `wms_procurement` (`id`) ON DELETE RESTRICT,
+  FOREIGN KEY (`product_refund_warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -213,10 +190,8 @@ CREATE TABLE `wms_inventory` (
   `transmit_quantities` int(11) DEFAULT '0' COMMENT '在途量',
   PRIMARY KEY (`id`),
   UNIQUE(`warehouse_id`,`sku_id`),
-  KEY (`sku_id`),
-  KEY (`warehouse_id`),
-  CONSTRAINT `skuInventoryId` FOREIGN KEY (`sku_id`) REFERENCES `t_sku_product` (`id`) ON DELETE RESTRICT,
-  CONSTRAINT `warehouseConnect` FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
+  FOREIGN KEY (`sku_id`) REFERENCES `t_sku_product` (`id`) ON DELETE RESTRICT,
+  FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -242,18 +217,8 @@ CREATE TABLE `wms_warehouse_slot` (
 `slot_note`  text  DEFAULT NULL COMMENT '储位说明',
 UNIQUE(`slot_code`,`slot_name`),
 PRIMARY KEY (`id`),
-KEY (`warehouse_id`),
-CONSTRAINT `warehouseId` FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE CASCADE
+FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---DROP TABLE IF EXISTS `wms_warehouse_store`;
---CREATE TABLE `wms_warehouse_store` (
---`id` bigint(20) NOT NULL  AUTO_INCREMENT,
---`warehouse_id` bigint(20) NOT NULL COMMENT '产品Id',
---`store_id` bigint(20) NOT NULL COMMENT '标签ID',
---UNIQUE(`warehouse_id`,`store_id`),
---PRIMARY KEY (`id`)
---)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS `wms_check`;
@@ -271,8 +236,7 @@ CREATE TABLE `wms_check` (
   `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
   PRIMARY KEY (`id`),
   UNIQUE(`check_code`),
-  KEY (`warehouse_id`),
-  CONSTRAINT `warehouseId` FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
+  FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -291,10 +255,8 @@ CREATE TABLE `wms_check_sku` (
   `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
   PRIMARY KEY (`id`),
   UNIQUE (`check_id`,`sku_id`),
-  KEY (`sku_id`),
-  KEY (`check_id`),
-  CONSTRAINT `checkSkuId` FOREIGN KEY (`sku_id`) REFERENCES `t_sku_product` (`id`) ON DELETE RESTRICT,
-  CONSTRAINT `pCheckId` FOREIGN KEY (`check_id`) REFERENCES `wms_check` (`id`) ON DELETE RESTRICT
+  FOREIGN KEY (`sku_id`) REFERENCES `t_sku_product` (`id`) ON DELETE RESTRICT,
+  FOREIGN KEY (`check_id`) REFERENCES `wms_check` (`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
