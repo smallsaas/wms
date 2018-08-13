@@ -2,114 +2,137 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS `wms_storage_in`;
 CREATE TABLE `wms_storage_in` (
-`id` bigint(20) NOT NULL  AUTO_INCREMENT,
-`transaction_code` varchar(255) NOT NULL COMMENT '操作编号',
-`transaction_type` varchar(26) NOT NULL COMMENT '操作类型',
-`transaction_time` datetime NOT NULL COMMENT '操作时间',
-`batch_no` varchar(255) DEFAULT NULL COMMENT '批次',
-`warehouse_id` bigint(20) NOT NULL COMMENT '仓库',
-`slot_id` bigint(20) DEFAULT NULL COMMENT '储位',
-`note`  text  DEFAULT NULL COMMENT '备注',
-`status` varchar(26) DEFAULT NULL COMMENT '状态',
-`transaction_by` varchar(100) default NULL COMMENT '操作人',
-`originator_id` bigint(20) not NULL COMMENT '制单人',
-`readjust_cost_price` decimal(12,4) DEFAULT NULL COMMENT '入库成本调整',
-`procurement_id` bigint(20) DEFAULT NULL COMMENT '采购订单信息，采购与入库是一对多的关系，非采购入库时，采购的ID为null',
-`field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
-`field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
-UNIQUE(`transaction_code`),
-PRIMARY KEY (`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `transaction_code` varchar(255) NOT NULL COMMENT '操作编号',
+  `transaction_type` varchar(26) NOT NULL COMMENT '操作类型',
+  `transaction_time` datetime NOT NULL COMMENT '操作时间',
+  `batch_no` varchar(255) DEFAULT NULL COMMENT '批次',
+  `warehouse_id` bigint(20) NOT NULL COMMENT '仓库',
+  `slot_id` bigint(20) DEFAULT NULL COMMENT '储位',
+  `note` text COMMENT '备注',
+  `status` varchar(26) DEFAULT NULL COMMENT '状态',
+  `transaction_by` varchar(100) DEFAULT NULL COMMENT '操作人',
+  `originator_id` bigint(20) NOT NULL COMMENT '制单人',
+  `readjust_cost_price` decimal(12,4) DEFAULT NULL COMMENT '入库成本调整',
+  `procurement_id` bigint(20) DEFAULT NULL COMMENT '采购订单信息，采购与入库是一对多的关系，非采购入库时，采购的ID为null',
+  `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  PRIMARY KEY (`id`),
+  UNIQUE (`transaction_code`),
+  KEY (`warehouse_id`),
+  CONSTRAINT `warehouseName` FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
 DROP TABLE IF EXISTS `wms_storage_in_item`;
 CREATE TABLE `wms_storage_in_item` (
-`id` bigint(20) NOT NULL  AUTO_INCREMENT,
-`storage_in_id` bigint(20) NOT NULL COMMENT '入库ID',
-`sku_id` bigint(20) NOT NULL COMMENT 'SKUID',
-`transaction_sku_price` decimal(12,4) default NULL COMMENT '出\入库价格',
-`transaction_quantities`  int(11)  NOT NULL COMMENT '操作数量',
-`transaction_time` datetime default NULL COMMENT '操作时间',
-`type` varchar(26) DEFAULT 'Others' COMMENT '操作类型',
-`relation_code` varchar(255) NOT NULL COMMENT '关联的操作编号',
-PRIMARY KEY (`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `storage_in_id` bigint(20) NOT NULL COMMENT '入库ID',
+  `sku_id` bigint(20) NOT NULL COMMENT 'SKUID',
+  `transaction_sku_price` decimal(12,4) DEFAULT NULL COMMENT '出入库价格',
+  `transaction_quantities` int(11) NOT NULL COMMENT '操作数量',
+  `transaction_time` datetime DEFAULT NULL COMMENT '操作时间',
+  `type` varchar(26) DEFAULT 'Others' COMMENT '操作类型',
+  `relation_code` varchar(255) NOT NULL COMMENT '关联的操作编号',
+  PRIMARY KEY (`id`),
+  KEY (`storage_in_id`),
+  KEY (`sku_id`),
+  CONSTRAINT `pid` FOREIGN KEY (`storage_in_id`) REFERENCES `wms_storage_in` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `skuId` FOREIGN KEY (`sku_id`) REFERENCES `t_sku_product` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
 DROP TABLE IF EXISTS `wms_storage_out`;
 CREATE TABLE `wms_storage_out` (
-`id` bigint(20) NOT NULL  AUTO_INCREMENT,
-`transaction_code` varchar(255) NOT NULL COMMENT '操作编号',
-`transaction_type` varchar(26) NOT NULL COMMENT '操作类型',
-`transaction_time` datetime NOT NULL COMMENT '操作时间',
-`batch_no` varchar(255) DEFAULT NULL COMMENT '批次',
-`note`  text  DEFAULT NULL COMMENT '备注',
-`status` varchar(26) DEFAULT NULL COMMENT '状态',
-`transaction_by` varchar(100) default NULL COMMENT '操作人',
-`originator_id` bigint(20) NOT NULL COMMENT '制单人',
-`warehouse_id` bigint(20) NOT NULL COMMENT '仓库',
-`slot_id` bigint(20) DEFAULT NULL COMMENT '储位',
-`field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
-`field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
-UNIQUE(`transaction_code`),
-PRIMARY KEY (`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `transaction_code` varchar(255) NOT NULL COMMENT '操作编号',
+  `transaction_type` varchar(26) NOT NULL COMMENT '操作类型',
+  `transaction_time` datetime NOT NULL COMMENT '操作时间',
+  `batch_no` varchar(255) DEFAULT NULL COMMENT '批次',
+  `note` text COMMENT '备注',
+  `status` varchar(26) DEFAULT NULL COMMENT '状态',
+  `transaction_by` varchar(100) DEFAULT NULL COMMENT '操作人',
+  `originator_id` bigint(20) NOT NULL COMMENT '制单人',
+  `warehouse_id` bigint(20) NOT NULL COMMENT '仓库',
+  `slot_id` bigint(20) DEFAULT NULL COMMENT '储位',
+  `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  PRIMARY KEY (`id`),
+  UNIQUE (`transaction_code`),
+  KEY (`warehouse_id`),
+  CONSTRAINT `warehouse` FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS `wms_storage_out_item`;
 CREATE TABLE `wms_storage_out_item` (
-`id` bigint(20) NOT NULL  AUTO_INCREMENT,
-`storage_out_id` bigint(20) NOT NULL COMMENT '入库ID',
-`sku_id` bigint(20) NOT NULL COMMENT 'SKUID',
-`transaction_sku_price` decimal(12,4) DEFAULT NULL COMMENT '出\入库价格',
-`transaction_quantities`  int(11)  NOT NULL COMMENT '操作数量',
-`transaction_time` datetime DEFAULT NULL COMMENT '操作时间',
-`relation_code` varchar(255) NOT NULL COMMENT '关联的操作编号',
-PRIMARY KEY (`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `storage_out_id` bigint(20) NOT NULL COMMENT '入库ID',
+  `sku_id` bigint(20) NOT NULL COMMENT 'SKUID',
+  `transaction_sku_price` decimal(12,4) DEFAULT NULL COMMENT '出入库价格',
+  `transaction_quantities` int(11) NOT NULL COMMENT '操作数量',
+  `transaction_time` datetime DEFAULT NULL COMMENT '操作时间',
+  `relation_code` varchar(255) NOT NULL COMMENT '关联的操作编号',
+  PRIMARY KEY (`id`),
+  KEY (`storage_out_id`),
+  CONSTRAINT `outId` FOREIGN KEY (`storage_out_id`) REFERENCES `wms_storage_out` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 DROP TABLE IF EXISTS `wms_procurement`;
 CREATE TABLE `wms_procurement` (
-`id` bigint(20) NOT NULL  AUTO_INCREMENT,
-`procurement_code` varchar(255) NOT NULL COMMENT '采购表编号',
-`supplier_id` bigint(20) NOT NULL COMMENT '供应商ID',
-`procurement_others_payment` decimal(12,4) DEFAULT NULL COMMENT '采购其他支出',
-`procurement_discount`  int  DEFAULT NULL COMMENT '采购折扣',
-`procurement_total` decimal(12,4) NOT NULL COMMENT '总花费',
-`procurement_time` datetime NOT NULL COMMENT '采购时间',
-`procurement_note`  text  DEFAULT NULL COMMENT '采购备注',
-`procure_status` varchar(26) DEFAULT NULL COMMENT '状态',
-`transaction_by` varchar(100) default NULL COMMENT '操作人',
-`originator_id` bigint(20) NOT NULL COMMENT '制单人',
-`buyer` varchar(255) default null comment '采购员',
-`transaction_time` datetime NOT NULL COMMENT '操作时间',
-`field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
-`field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
-UNIQUE(`procurement_code`),
-PRIMARY KEY (`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `procurement_code` varchar(255) NOT NULL COMMENT '采购表编号',
+  `supplier_id` bigint(20) NOT NULL COMMENT '供应商ID',
+  `procurement_others_payment` decimal(12,4) DEFAULT NULL COMMENT '采购其他支出',
+  `procurement_discount` int(11) DEFAULT NULL COMMENT '采购折扣',
+  `procurement_total` decimal(12,4) NOT NULL COMMENT '总花费',
+  `procurement_time` datetime NOT NULL COMMENT '采购时间',
+  `procurement_note` text COMMENT '采购备注',
+  `procure_status` varchar(26) DEFAULT NULL COMMENT '状态',
+  `transaction_by` varchar(100) DEFAULT NULL COMMENT '操作人',
+  `originator_id` bigint(20) NOT NULL COMMENT '制单人',
+  `buyer` varchar(255) DEFAULT NULL COMMENT '采购员',
+  `transaction_time` datetime NOT NULL COMMENT '操作时间',
+  `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  PRIMARY KEY (`id`),
+  UNIQUE (`procurement_code`),
+  KEY (`supplier_id`),
+  CONSTRAINT `suppliersName` FOREIGN KEY (`supplier_id`) REFERENCES `wms_suppliers` (`id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
 DROP TABLE IF EXISTS `wms_transfer`;
 CREATE TABLE `wms_transfer` (
-`id` bigint(20) NOT NULL  AUTO_INCREMENT,
-`transaction_code` varchar(255) NOT NULL COMMENT '操作编号',
-`from_warehouse_id` bigint(20) NOT NULL COMMENT '调出仓库ID',
-`to_warehouse_id` bigint(20) NOT NULL COMMENT '调入仓库ID',
-`transaction_time` datetime NOT NULL COMMENT '操作时间',
-`finish_time` datetime DEFAULT NULL COMMENT '操作时间',
-`storage_in_id` bigint(20) DEFAULT NULL COMMENT '入库ID',
-`storage_out_id` bigint(20) NOT NULL COMMENT '出库ID',
-`note`  text  DEFAULT NULL COMMENT '备注',
-`status` varchar(26) DEFAULT NULL COMMENT '状态',
-`transaction_by` varchar(100) NULL COMMENT '操作人',
-`originator_id` bigint(20) NOT NULL COMMENT '制单人',
-`field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
-`field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
-UNIQUE(`transaction_code`),
-PRIMARY KEY (`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `transaction_code` varchar(255) NOT NULL COMMENT '操作编号',
+  `from_warehouse_id` bigint(20) NOT NULL COMMENT '调出仓库ID',
+  `to_warehouse_id` bigint(20) NOT NULL COMMENT '调入仓库ID',
+  `transaction_time` datetime NOT NULL COMMENT '操作时间',
+  `finish_time` datetime DEFAULT NULL COMMENT '操作时间',
+  `storage_in_id` bigint(20) DEFAULT NULL COMMENT '入库ID',
+  `storage_out_id` bigint(20) NOT NULL COMMENT '出库ID',
+  `note` text COMMENT '备注',
+  `status` varchar(26) DEFAULT NULL COMMENT '状态',
+  `transaction_by` varchar(100) DEFAULT NULL COMMENT '操作人',
+  `originator_id` bigint(20) NOT NULL COMMENT '制单人',
+  `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  PRIMARY KEY (`id`),
+  UNIQUE (`transaction_code`),
+  KEY (`from_warehouse_id`),
+  KEY (`to_warehouse_id`),
+  KEY (`storage_out_id`),
+  KEY (`storage_in_id`),
+  CONSTRAINT `fromWarehouseId` FOREIGN KEY (`from_warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT,
+  CONSTRAINT `inStroageId` FOREIGN KEY (`storage_in_id`) REFERENCES `wms_storage_in` (`id`) ON DELETE RESTRICT,
+  CONSTRAINT `outStroageId` FOREIGN KEY (`storage_out_id`) REFERENCES `wms_storage_out` (`id`) ON DELETE RESTRICT,
+  CONSTRAINT `toWarehouseId` FOREIGN KEY (`to_warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `wms_suppliers`;
 CREATE TABLE `wms_suppliers` (
@@ -134,58 +157,67 @@ CREATE TABLE `wms_suppliers` (
 `supplier_register_time` datetime DEFAULT NULL COMMENT '供应商注册时间',
 `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
 `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
-UNIQUE(`supplier_name`),
+UNIQUE (`supplier_name`),
 PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `wms_suppliers_product`;
-CREATE TABLE `wms_suppliers_product` (
-`id` bigint(20) NOT NULL  AUTO_INCREMENT,
-`suppliers_id` bigint(20) NOT NULL  COMMENT '供应商ID',
-`product_id` bigint(20) NOT NULL  COMMENT '商品ID',
- unique(`suppliers_id`,`product_id`),
-PRIMARY KEY (`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+--DROP TABLE IF EXISTS `wms_suppliers_product`;
+--CREATE TABLE `wms_suppliers_product` (
+--`id` bigint(20) NOT NULL  AUTO_INCREMENT,
+--`suppliers_id` bigint(20) NOT NULL  COMMENT '供应商ID',
+--`product_id` bigint(20) NOT NULL  COMMENT '商品ID',
+-- unique(`suppliers_id`,`product_id`),
+--PRIMARY KEY (`id`)
+--)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
 
 DROP TABLE IF EXISTS `wms_refund`;
 CREATE TABLE `wms_refund` (
-`id` bigint(20) NOT NULL  AUTO_INCREMENT,
-`product_refund_code` varchar(255) NOT NULL COMMENT '退货编号',
-`product_procurement_id` bigint(20) NOT NULL COMMENT '采购订单ID',
-`storage_out_id` bigint(20) NOT NULL COMMENT '入库ID',
-`product_refund_warehouse_id` bigint(20) NOT NULL COMMENT '退货仓库',
-`product_refund_quantities`  int(11)  NOT NULL COMMENT '可退数量',
-`product_refund_time` datetime NOT NULL COMMENT '退货时间',
-`product_refund_status` varchar(26) DEFAULT NULL COMMENT '状态',
-`product_refund_note`  text  DEFAULT NULL COMMENT '备注',
-`originator_id` bigint(20) NOT NULL COMMENT '制单人',
-`transaction_by` varchar(100) default NULL COMMENT '操作人',
-`transaction_time` datetime NOT NULL COMMENT '操作时间',
-`field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
-`field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
-UNIQUE(`product_refund_code`),
-PRIMARY KEY (`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `product_refund_code` varchar(255) NOT NULL COMMENT '退货编号',
+  `product_procurement_id` bigint(20) NOT NULL COMMENT '采购订单ID',
+  `storage_out_id` bigint(20) NOT NULL COMMENT '入库ID',
+  `product_refund_warehouse_id` bigint(20) NOT NULL COMMENT '退货仓库',
+  `product_refund_quantities` int(11) NOT NULL COMMENT '可退数量',
+  `product_refund_time` datetime NOT NULL COMMENT '退货时间',
+  `product_refund_status` varchar(26) DEFAULT NULL COMMENT '状态',
+  `product_refund_note` text COMMENT '备注',
+  `originator_id` bigint(20) NOT NULL COMMENT '制单人',
+  `transaction_by` varchar(100) DEFAULT NULL COMMENT '操作人',
+  `transaction_time` datetime NOT NULL COMMENT '操作时间',
+  `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  PRIMARY KEY (`id`),
+  UNIQUE (`product_refund_code`),
+  KEY (`storage_out_id`),
+  KEY (`product_procurement_id`),
+  KEY (`product_refund_warehouse_id`),
+  CONSTRAINT `outStorageId` FOREIGN KEY (`storage_out_id`) REFERENCES `wms_storage_out` (`id`) ON DELETE RESTRICT,
+  CONSTRAINT `procurementId` FOREIGN KEY (`product_procurement_id`) REFERENCES `wms_procurement` (`id`) ON DELETE RESTRICT,
+  CONSTRAINT `refundWarehouse` FOREIGN KEY (`product_refund_warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS `wms_inventory`;
 CREATE TABLE `wms_inventory` (
-`id` bigint(20) NOT NULL  AUTO_INCREMENT,
-`warehouse_id` bigint(20) NOT NULL COMMENT '仓库ID',
-`slot_id` bigint(20) DEFAULT NULL COMMENT '储位ID',
-`max_inventory`  int(11)  DEFAULT NULL COMMENT '库存上限',
-`min_inventory`  int(11)  DEFAULT 0 COMMENT '库存下限',
-`sku_id` bigint(20) NOT NULL COMMENT '库存量ID',
-`valid_sku`  int(11)  DEFAULT 0 COMMENT '可用库存量',
-`advance_quantities`  int(11)  DEFAULT 0 COMMENT '预购量',
-`transmit_quantities`  int(11)  DEFAULT 0 COMMENT '在途量',
-PRIMARY KEY (`id`),
-unique(`warehouse_id`,`sku_id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `warehouse_id` bigint(20) NOT NULL COMMENT '仓库ID',
+  `slot_id` bigint(20) DEFAULT NULL COMMENT '储位ID',
+  `max_inventory` int(11) DEFAULT NULL COMMENT '库存上限',
+  `min_inventory` int(11) DEFAULT '0' COMMENT '库存下限',
+  `sku_id` bigint(20) NOT NULL COMMENT '库存量ID',
+  `valid_sku` int(11) DEFAULT '0' COMMENT '可用库存量',
+  `advance_quantities` int(11) DEFAULT '0' COMMENT '预购量',
+  `transmit_quantities` int(11) DEFAULT '0' COMMENT '在途量',
+  PRIMARY KEY (`id`),
+  UNIQUE(`warehouse_id`,`sku_id`),
+  KEY (`sku_id`),
+  KEY (`warehouse_id`),
+  CONSTRAINT `skuInventoryId` FOREIGN KEY (`sku_id`) REFERENCES `t_sku_product` (`id`) ON DELETE RESTRICT,
+  CONSTRAINT `warehouseConnect` FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS `wms_warehouse`;
@@ -209,53 +241,61 @@ CREATE TABLE `wms_warehouse_slot` (
 `warehouse_id` bigint(20) NOT NULL COMMENT '仓库ID',
 `slot_note`  text  DEFAULT NULL COMMENT '储位说明',
 UNIQUE(`slot_code`,`slot_name`),
-PRIMARY KEY (`id`)
+PRIMARY KEY (`id`),
+KEY (`warehouse_id`),
+CONSTRAINT `warehouseId` FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-DROP TABLE IF EXISTS `wms_warehouse_store`;
-CREATE TABLE `wms_warehouse_store` (
-`id` bigint(20) NOT NULL  AUTO_INCREMENT,
-`warehouse_id` bigint(20) NOT NULL COMMENT '产品Id',
-`store_id` bigint(20) NOT NULL COMMENT '标签ID',
-UNIQUE(`warehouse_id`,`store_id`),
-PRIMARY KEY (`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+--DROP TABLE IF EXISTS `wms_warehouse_store`;
+--CREATE TABLE `wms_warehouse_store` (
+--`id` bigint(20) NOT NULL  AUTO_INCREMENT,
+--`warehouse_id` bigint(20) NOT NULL COMMENT '产品Id',
+--`store_id` bigint(20) NOT NULL COMMENT '标签ID',
+--UNIQUE(`warehouse_id`,`store_id`),
+--PRIMARY KEY (`id`)
+--)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS `wms_check`;
 CREATE TABLE `wms_check` (
-`id` bigint(20) NOT NULL  AUTO_INCREMENT,
-`check_code` varchar(255) NOT NULL COMMENT '盘点编号',
-`check_time` datetime default NULL COMMENT '盘点时间',
-`warehouse_id` bigint(20) NOT NULL COMMENT '盘点仓库ID',
-`profit_lost`  int(11)  NOT NULL COMMENT '盈亏(缺失值)',
-`check_note`  text  DEFAULT NULL COMMENT '盘点备注',
-`transaction_by` varchar(100) default NULL COMMENT '经手人',
-`originator_id` bigint(20) NOT NULL COMMENT '制单人',
-`status` varchar(20) not null comment 'check status',
-`field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
-`field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
-UNIQUE(`check_code`),
-PRIMARY KEY (`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `check_code` varchar(255) NOT NULL COMMENT '盘点编号',
+  `check_time` datetime DEFAULT NULL COMMENT '盘点时间',
+  `warehouse_id` bigint(20) NOT NULL COMMENT '盘点仓库ID',
+  `profit_lost` int(11) NOT NULL COMMENT '盈亏(缺失值)',
+  `check_note` text COMMENT '盘点备注',
+  `transaction_by` varchar(100) DEFAULT NULL COMMENT '经手人',
+  `originator_id` bigint(20) NOT NULL COMMENT '制单人',
+  `status` varchar(20) NOT NULL COMMENT 'check status',
+  `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  PRIMARY KEY (`id`),
+  UNIQUE(`check_code`),
+  KEY (`warehouse_id`),
+  CONSTRAINT `warehouseId` FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
 DROP TABLE IF EXISTS `wms_check_sku`;
 CREATE TABLE `wms_check_sku` (
-`id` bigint(20) NOT NULL  AUTO_INCREMENT,
-`check_id` bigint(20) NOT NULL COMMENT '盘点编号',
-`sku_id` bigint(20) NOT NULL COMMENT '盘点SKUID',
-`warehouse_id` bigint(20) NOT NULL COMMENT '仓库ID',
-`fact_quantities`  int(11)  default NULL COMMENT '实际存量',
-`before_proof_quantities`  int(11)  default NULL COMMENT '校对钱的数量，如果缺失值为0的话，该值同应有量相同',
-`deserved_quantities`  int(11)  NOT NULL COMMENT '应有存量',
-`profit_lost`  int(11)  default NULL COMMENT '盈亏(缺失值)',
-`field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
-`field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
-UNIQUE(`check_id`,`sku_id`),
-PRIMARY KEY (`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `check_id` bigint(20) NOT NULL COMMENT '盘点编号',
+  `sku_id` bigint(20) NOT NULL COMMENT '盘点SKUID',
+  `warehouse_id` bigint(20) NOT NULL COMMENT '仓库ID',
+  `fact_quantities` int(11) DEFAULT NULL COMMENT '实际存量',
+  `before_proof_quantities` int(11) DEFAULT NULL COMMENT '校对钱的数量，如果缺失值为0的话，该值同应有量相同',
+  `deserved_quantities` int(11) NOT NULL COMMENT '应有存量',
+  `profit_lost` int(11) DEFAULT NULL COMMENT '盈亏(缺失值)',
+  `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  PRIMARY KEY (`id`),
+  UNIQUE (`check_id`,`sku_id`),
+  KEY (`sku_id`),
+  KEY (`check_id`),
+  CONSTRAINT `checkSkuId` FOREIGN KEY (`sku_id`) REFERENCES `t_sku_product` (`id`) ON DELETE RESTRICT,
+  CONSTRAINT `pCheckId` FOREIGN KEY (`check_id`) REFERENCES `wms_check` (`id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
