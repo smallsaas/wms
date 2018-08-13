@@ -77,6 +77,12 @@ public class Procurement extends Model<Procurement> {
      */
     @TableField("originator_id")
     private Long originatorId;
+
+    /**
+     * 制单人
+     */
+    @TableField("originator_name")
+    private String originatorName;
     /**
      * 操作时间
      */
@@ -106,6 +112,7 @@ public class Procurement extends Model<Procurement> {
         this.id = id;
         return this;
     }
+
 
     public String getProcurementCode() {
         return procurementCode;
@@ -150,6 +157,14 @@ public class Procurement extends Model<Procurement> {
     public Procurement setProcurementTotal(BigDecimal procurementTotal) {
         this.procurementTotal = procurementTotal;
         return this;
+    }
+
+    public String getOriginatorName() {
+        return originatorName;
+    }
+
+    public void setOriginatorName(String originatorName) {
+        this.originatorName = originatorName;
     }
 
     public Date getProcurementTime() {

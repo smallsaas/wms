@@ -71,6 +71,13 @@ public class Refund extends Model<Refund> {
      */
     @TableField("originator_id")
     private Long originatorId;
+
+    /**
+     * 制单人
+     */
+    @TableField("originator_name")
+    private String originatorName;
+    /**
     /**
      * 操作人
      */
@@ -107,6 +114,14 @@ public class Refund extends Model<Refund> {
     public Refund setProductRefundCode(String productRefundCode) {
         this.productRefundCode = productRefundCode;
         return this;
+    }
+
+    public String getOriginatorName() {
+        return originatorName;
+    }
+
+    public void setOriginatorName(String originatorName) {
+        this.originatorName = originatorName;
     }
 
     public Long getProductProcurementId() {

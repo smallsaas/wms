@@ -15,6 +15,7 @@
 		<result column="procure_status" property="procureStatus" />
 		<result column="transaction_by" property="transactionBy" />
 		<result column="originator_id" property="originatorId" />
+		<result column="originator_name" property="originatorName" />
 		<result column="transaction_time" property="transactionTime" />
 		<result column="field1" property="field1" />
 		<result column="field2" property="field2" />
@@ -23,7 +24,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, procurement_code AS procurementCode, transaction_by as transactionBy,buyer,supplier_id AS supplierId,procurement_others_payment AS procurementOthersPayment, procurement_discount AS procurementDiscount, procurement_total AS procurementTotal, procurement_time AS procurementTime, procurement_note AS procurementNote, procure_status AS procureStatus, originator_id AS originatorId, transaction_time AS transactionTime, field1, field2
+        id, procurement_code AS procurementCode, originator_name as originatorName,transaction_by as transactionBy,buyer,supplier_id AS supplierId,procurement_others_payment AS procurementOthersPayment, procurement_discount AS procurementDiscount, procurement_total AS procurementTotal, procurement_time AS procurementTime, procurement_note AS procurementNote, procure_status AS procureStatus, originator_id AS originatorId, transaction_time AS transactionTime, field1, field2
     </sql>
 
 </mapper>

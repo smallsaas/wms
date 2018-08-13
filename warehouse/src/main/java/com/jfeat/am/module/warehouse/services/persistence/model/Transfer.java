@@ -82,6 +82,13 @@ public class Transfer extends Model<Transfer> {
     @TableField("originator_id")
     private Long originatorId;
     /**
+     * 制单人
+     */
+    @TableField("originator_name")
+    private String originatorName;
+
+
+    /**
      * 保留字段
      */
     private String field1;
@@ -116,6 +123,14 @@ public class Transfer extends Model<Transfer> {
     public Transfer setFromWarehouseId(Long fromWarehouseId) {
         this.fromWarehouseId = fromWarehouseId;
         return this;
+    }
+
+    public String getOriginatorName() {
+        return originatorName;
+    }
+
+    public void setOriginatorName(String originatorName) {
+        this.originatorName = originatorName;
     }
 
     public Long getToWarehouseId() {

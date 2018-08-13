@@ -78,6 +78,11 @@ public class StorageIn extends Model<StorageIn> {
     @TableField("originator_id")
     private Long originatorId;
     /**
+     * 制单人
+     */
+    @TableField("originator_name")
+    private String originatorName;
+    /**
      * 入库成本调整
      */
     @TableField("readjust_cost_price")
@@ -123,6 +128,14 @@ public class StorageIn extends Model<StorageIn> {
     public StorageIn setTransactionType(String transactionType) {
         this.transactionType = transactionType;
         return this;
+    }
+
+    public String getOriginatorName() {
+        return originatorName;
+    }
+
+    public void setOriginatorName(String originatorName) {
+        this.originatorName = originatorName;
     }
 
     public Date getTransactionTime() {

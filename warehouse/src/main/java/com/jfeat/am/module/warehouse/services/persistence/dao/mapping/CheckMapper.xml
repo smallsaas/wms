@@ -11,6 +11,7 @@
 		<result column="check_note" property="checkNote" />
 		<result column="transaction_by" property="transactionBy" />
 		<result column="originator_id" property="originatorId" />
+		<result column="originator_name" property="originatorName" />
 		<result column="warehouse_id" property="warehouseId" />
 		<result column="field1" property="field1" />
 		<result column="status" property="status" />
@@ -19,7 +20,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, check_code AS checkCode, warehouse_id AS warehouseId,transaction_by as transactionBy,status,check_time AS checkTime, profit_lost AS profitLost, check_note AS checkNote,originator_id AS originatorId, field1, field2
+        id, check_code AS checkCode,originator_name as originatorName, warehouse_id AS warehouseId,transaction_by as transactionBy,status,check_time AS checkTime, profit_lost AS profitLost, check_note AS checkNote,originator_id AS originatorId, field1, field2
     </sql>
 
 </mapper>

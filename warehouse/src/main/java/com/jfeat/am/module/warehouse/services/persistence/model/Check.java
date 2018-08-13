@@ -65,6 +65,11 @@ public class Check extends Model<Check> {
     @TableField("originator_id")
     private Long originatorId;
     /**
+     * 制单人
+     */
+    @TableField("originator_name")
+    private String originatorName;
+    /**
      * status
      */
     private String status;
@@ -164,6 +169,14 @@ public class Check extends Model<Check> {
     public Check setField1(String field1) {
         this.field1 = field1;
         return this;
+    }
+
+    public String getOriginatorName() {
+        return originatorName;
+    }
+
+    public void setOriginatorName(String originatorName) {
+        this.originatorName = originatorName;
     }
 
     public String getField2() {

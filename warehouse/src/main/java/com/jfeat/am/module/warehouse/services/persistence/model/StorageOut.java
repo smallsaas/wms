@@ -76,6 +76,13 @@ public class StorageOut extends Model<StorageOut> {
      */
     @TableField("originator_id")
     private Long originatorId;
+
+    /**
+     * 制单人
+     */
+    @TableField("originator_name")
+    private String originatorName;
+
     /**
      * 保留字段
      */
@@ -111,6 +118,14 @@ public class StorageOut extends Model<StorageOut> {
     public StorageOut setTransactionType(String transactionType) {
         this.transactionType = transactionType;
         return this;
+    }
+
+    public String getOriginatorName() {
+        return originatorName;
+    }
+
+    public void setOriginatorName(String originatorName) {
+        this.originatorName = originatorName;
     }
 
     public Date getTransactionTime() {
