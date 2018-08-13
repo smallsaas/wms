@@ -43,7 +43,7 @@ public class StorageOutItemRecord extends StorageOutItem {
         return skuUnit;
     }
 
-    public void setSkuUnit(String skuSpec) {
+    public void setSkuUnit(String skuUnit) {
         this.skuUnit = skuUnit;
     }
 
