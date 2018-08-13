@@ -55,6 +55,7 @@ CREATE TABLE `t_sku_product` (
   `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
   `field3` varchar(255) DEFAULT NULL COMMENT '保留字段',
   UNIQUE(`sku_code`),
+  UNIQUE(`bar_code`),
   PRIMARY KEY (`id`),
   KEY (`product_id`),
   CONSTRAINT `productName` FOREIGN KEY (`product_id`) REFERENCES `t_product` (`id`) ON DELETE CASCADE
