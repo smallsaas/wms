@@ -154,6 +154,8 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
         List<CheckSkuRecord> records = queryCheckDao.skuRecords(checkId);
         checkObj.put("warehouseName", queryWarehouseDao.warehouseName(check.getWarehouseId()));
         checkObj.put("skuRecords", records);
+        String originatorName = queryCheckDao.originatorName(check.getOriginatorId());
+        checkObj.put("originatorName", originatorName);
         CheckRecord record = JSON.parseObject(JSON.toJSONString(checkObj), CheckRecord.class);
         return record;
     }
