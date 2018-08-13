@@ -12,7 +12,11 @@ import java.util.List;
  * Created by Code Generator on 2018-06-23
  */
 public interface QueryInventoryDao extends BaseMapper<InventoryRecord> {
-    List<InventoryRecord> findInventoryPage(Page<InventoryRecord> page, @Param("record") InventoryRecord record, @Param("orderBy") String orderBy);
+    List<InventoryRecord> findInventoryPage(Page<InventoryRecord> page,
+                                            @Param("warehouseName")String warehouseName,
+                                            @Param("skuName")String skuName,
+                                            @Param("record") InventoryRecord record,
+                                            @Param("orderBy") String orderBy);
 
 
     List<SkuStorageDetails> skuStorageDetails(Page<SkuStorageDetails> page, @Param("skuId")Long skuId);

@@ -65,7 +65,6 @@ public class InventoryEndpoint extends BaseController {
     }
 
 
-
     @BusinessLog(name = "Inventory", value = "create Inventory")
     @PostMapping
     @ApiOperation(value = "新建库存盘点")
@@ -107,21 +106,23 @@ public class InventoryEndpoint extends BaseController {
     }
 
     @GetMapping
-    @ApiOperation(value = "库存信息列表",response = InventoryModel.class)
+    @ApiOperation(value = "库存信息列表", response = InventoryModel.class)
     public Tip queryInventories(Page<InventoryRecord> page,
-                                 @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-                                 @RequestParam(name = "id", required = false) Long id,
-                                 @RequestParam(name = "warehouseId", required = false) Long warehouseId,
-                                 @RequestParam(name = "slotId", required = false) Long slotId,
-                                 @RequestParam(name = "maxInventory", required = false) Integer maxInventory,
-                                 @RequestParam(name = "minInventory", required = false) Integer minInventory,
-                                 @RequestParam(name = "skuId", required = false) Long skuId,
-                                 @RequestParam(name = "validSku", required = false) Integer validSku,
-                                 @RequestParam(name = "advanceQuantities", required = false) Integer advanceQuantities,
-                                 @RequestParam(name = "transmitQuantities", required = false) Integer transmitQuantities,
-                                 @RequestParam(name = "orderBy", required = false) String orderBy,
-                                 @RequestParam(name = "sort", required = false) String sort) {
+                                @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                                @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                                @RequestParam(name = "id", required = false) Long id,
+                                @RequestParam(name = "warehouseId", required = false) Long warehouseId,
+                                @RequestParam(name = "slotId", required = false) Long slotId,
+                                @RequestParam(name = "maxInventory", required = false) Integer maxInventory,
+                                @RequestParam(name = "minInventory", required = false) Integer minInventory,
+                                @RequestParam(name = "skuId", required = false) Long skuId,
+                                @RequestParam(name = "validSku", required = false) Integer validSku,
+                                @RequestParam(name = "advanceQuantities", required = false) Integer advanceQuantities,
+                                @RequestParam(name = "transmitQuantities", required = false) Integer transmitQuantities,
+                                @RequestParam(name = "warehouseName", required = false) String warehouseName,
+                                @RequestParam(name = "skuName", required = false) String skuName,
+                                @RequestParam(name = "orderBy", required = false) String orderBy,
+                                @RequestParam(name = "sort", required = false) String sort) {
         if (orderBy != null && orderBy.length() > 0) {
             if (sort != null && sort.length() > 0) {
                 String pattern = "(ASC|DESC|asc|desc)";
@@ -147,7 +148,7 @@ public class InventoryEndpoint extends BaseController {
         record.setAdvanceQuantities(advanceQuantities);
         record.setTransmitQuantities(transmitQuantities);
 
-        page.setRecords(queryInventoryDao.findInventoryPage(page, record, orderBy));
+        page.setRecords(queryInventoryDao.findInventoryPage(page,warehouseName,skuName,record, orderBy));
 
         return SuccessTip.create(page);
     }

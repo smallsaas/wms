@@ -43,6 +43,14 @@
             AND wms_inventory.id LIKE CONCAT('%',#{record.id},'%')
         </if>
 
+        <if test="warehouseName != null and warehouseName!= ''">
+            AND wms_warehouse.warehouse_name = #{warehouseName}
+        </if>
+
+        <if test="skuName != null and skuName!= '' ">
+            AND t_sku_product.sku_name LIKE CONCAT('%',#{skuName},'%')
+        </if>
+
         <if test="record.warehouseId != null and record.warehouseId>0 ">
             AND wms_inventory.warehouse_id LIKE CONCAT('%',#{record.warehouseId},'%')
         </if>
