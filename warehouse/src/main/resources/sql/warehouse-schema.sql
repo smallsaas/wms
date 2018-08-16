@@ -36,7 +36,6 @@ CREATE TABLE `wms_storage_in_item` (
   `type` varchar(26) DEFAULT 'Others' COMMENT '操作类型',
   `relation_code` varchar(255) NOT NULL COMMENT '关联的操作编号',
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`storage_in_id`) REFERENCES `wms_storage_in` (`id`) ON DELETE CASCADE,
   FOREIGN KEY (`sku_id`) REFERENCES `t_sku_product` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
