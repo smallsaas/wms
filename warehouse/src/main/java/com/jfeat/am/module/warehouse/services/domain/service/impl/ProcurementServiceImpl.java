@@ -129,7 +129,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 }
                 model.setProcurementTotal(totalSpend);
                 for (StorageInItem item : model.getItems()) {
-
+                    item.setRelationCode(procurement.getProcurementCode());
                     item.setStorageInId(procurementId);
                     item.setType(TransactionType.Procurement.toString());
                     affected += storageInItemMapper.insert(item);
