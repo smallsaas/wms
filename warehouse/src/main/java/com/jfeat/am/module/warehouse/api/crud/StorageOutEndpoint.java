@@ -56,6 +56,9 @@ public class StorageOutEndpoint extends BaseController {
     public Tip createStorageOut(@RequestBody StorageOutModel entity) {
         String userName = JWTKit.getAccount(getHttpServletRequest());
         entity.setOriginatorName(userName);
+        if (entity.getWarehouseId()==null){
+            entity.setWarehouseId(1L);
+        }
         return SuccessTip.create(storageOutService.createStorageOut(JWTKit.getUserId(getHttpServletRequest()),entity));
     }
 

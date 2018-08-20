@@ -82,8 +82,10 @@ public class WarehouseEndpoint extends BaseController {
     @BusinessLog(name = "Warehouse", value = "delete Warehouse")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除仓库", response = WarehouseModel.class)
-
     public Tip deleteWarehouse(@PathVariable Long id) {
+        if(id.equals(1)){
+            throw new BusinessException(5100,"无法删除\"默认仓库\"");
+        }
         return SuccessTip.create(warehouseService.deleteMaster(id));
     }
 

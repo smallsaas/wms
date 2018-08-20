@@ -59,6 +59,9 @@ public class StorageInEndpoint extends BaseController {
     public Tip createStorageIn(@RequestBody StorageInModel entity) {
         String userName = JWTKit.getAccount(getHttpServletRequest());
         entity.setOriginatorName(userName);
+        if (entity.getWarehouseId()==null){
+            entity.setWarehouseId(1L);
+        }
         return SuccessTip.create(storageInService.createStorageIn(JWTKit.getUserId(getHttpServletRequest()),entity));
     }
 
