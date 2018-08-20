@@ -259,7 +259,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 inventory.setSkuId(outItem.getSkuId());
                 inventory.setWarehouseId(transfer.getToWarehouseId());
                 Inventory toInventory = inventoryMapper.selectOne(inventory);
-                toInventory.setTransmitQuantities(0);
+                toInventory.setTransmitQuantities(inventory.getTransmitQuantities()-outItem.getTransactionQuantities());
                 affected += inventoryMapper.updateById(toInventory);
 
                 inItem.setSkuId(outItem.getSkuId());
