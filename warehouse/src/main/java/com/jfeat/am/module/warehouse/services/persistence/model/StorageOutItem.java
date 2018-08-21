@@ -48,6 +48,11 @@ public class StorageOutItem extends Model<StorageOutItem> {
     @TableField("transaction_quantities")
     private Integer transactionQuantities;
     /**
+     * 操作后数量
+     */
+    @TableField("after_transaction_quantities")
+    private Integer afterTransactionQuantities;
+    /**
      * 操作时间
      */
     @TableField("transaction_time")
@@ -100,6 +105,14 @@ public class StorageOutItem extends Model<StorageOutItem> {
         this.transactionQuantities = transactionQuantities;
     }
 
+    public Integer getAfterTransactionQuantities() {
+        return afterTransactionQuantities;
+    }
+
+    public void setAfterTransactionQuantities(Integer afterTransactionQuantities) {
+        this.afterTransactionQuantities = afterTransactionQuantities;
+    }
+
     public Date getTransactionTime() {
         return transactionTime;
     }
@@ -126,6 +139,8 @@ public class StorageOutItem extends Model<StorageOutItem> {
 
     public static final String TRANSACTION_QUANTITIES = "transaction_quantities";
 
+    public static final String AFTER_TRANSACTION_QUANTITIES = "after_transaction_quantities";
+
     public static final String TRANSACTION_TIME = "transaction_time";
 
     public static final String RELATION_CODE = "relation_code";
@@ -144,6 +159,7 @@ public class StorageOutItem extends Model<StorageOutItem> {
                 ", skuId=" + skuId +
                 ", transactionSkuPrice=" + transactionSkuPrice +
                 ", transactionQuantities=" + transactionQuantities +
+                ", afterTransactionQuantities=" + afterTransactionQuantities +
                 ", transactionTime=" + transactionTime +
                 ", relationCode=" + relationCode +
                 "}";
