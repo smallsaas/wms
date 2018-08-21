@@ -22,10 +22,8 @@
 
 
     <select id="findWarehousePage" resultMap="BaseResultMap" parameterType="WarehouseRecord">
-        SELECT  wms_warehouse.*,
-                user.name as chargerName
+        SELECT  wms_warehouse.*
         FROM wms_warehouse
-        left join user on wms_warehouse.warehouse_charger = user.id
         WHERE 1=1
         <if test="record.id != null and record.id >0 ">
             AND wms_warehouse.id LIKE CONCAT('%',#{record.id},'%')
