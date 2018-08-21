@@ -17,6 +17,7 @@ import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutService
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDTransferService;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.definition.TransferStatus;
+import com.jfeat.am.module.warehouse.services.domain.dao.QueryInventoryDao;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryTransferDao;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryWarehouseDao;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageInModel;
@@ -71,6 +72,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
     QueryWarehouseDao queryWarehouseDao;
     @Resource
     SkuProductMapper skuProductMapper;
+    @Resource
+    QueryInventoryDao queryInventoryDao;
 
     @Transactional
     public Integer createTransfer(TransferModel model, Long userId) {
@@ -132,6 +135,10 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 } else {
                     throw new BusinessException(BusinessCode.NotImplement);
                 }
+                Integer nowSkuCount = queryInventoryDao.nowInventoryCount(outItem.getSkuId(),model.getFromWarehouseId());
+                Integer afterSkuCount = nowSkuCount - outItem.getTransactionQuantities();
+                outItem.setAfterTransactionQuantities(afterSkuCount);
+
                 items.add(outItem);
             }
         }else {
@@ -197,6 +204,10 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 inItem.setTransactionQuantities(outItem.getTransactionQuantities());
                 inItem.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
                 inItem.setTransactionTime(new Date());
+
+                Integer nowSkuCount = queryInventoryDao.nowInventoryCount(inItem.getSkuId(),transfer.getToWarehouseId());
+                Integer afterSkuCount = nowSkuCount + inItem.getTransactionQuantities();
+                inItem.setAfterTransactionQuantities(afterSkuCount);
 
                 items.add(inItem);
             }
@@ -269,6 +280,10 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 inItem.setTransactionQuantities(outItem.getTransactionQuantities());
                 inItem.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
                 inItem.setTransactionTime(new Date());
+
+                Integer nowSkuCount = queryInventoryDao.nowInventoryCount(inItem.getSkuId(),transfer.getFromWarehouseId());
+                Integer afterSkuCount = nowSkuCount + inItem.getTransactionQuantities();
+                inItem.setAfterTransactionQuantities(afterSkuCount);
 
                 items.add(inItem);
             }

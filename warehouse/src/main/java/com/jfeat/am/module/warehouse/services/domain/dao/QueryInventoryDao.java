@@ -6,6 +6,7 @@ import com.jfeat.am.module.warehouse.services.domain.model.InventoryRecord;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -23,4 +24,12 @@ public interface QueryInventoryDao extends BaseMapper<InventoryRecord> {
     List<SkuStorageDetails> skuStorageDetails(Page<SkuStorageDetails> page,
                                               @Param("skuId") Long skuId,
                                               @Param("warehouseName") String warehouseName);
+
+    /**
+     * 获取当前某仓库某sku的库存量
+     * */
+    @Select("select wms_inventory.valid_sku from wms_inventory where wms_inventory.sku_id = #{skuId} and wms_inventory.warehouse_id =# {warehouseId}")
+    Integer nowInventoryCount(@Param("skuId")Long skuId,
+                              @Param("warehouseId")Long warehouseId);
+
 }

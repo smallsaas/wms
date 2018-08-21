@@ -4,6 +4,7 @@ import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
+import com.jfeat.am.module.warehouse.services.domain.dao.QueryInventoryDao;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageInModel;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageModel;
 import com.jfeat.am.module.warehouse.services.domain.service.InventoryService;
@@ -37,6 +38,8 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
     CRUDStorageInService crudStorageInService;
     @Resource
     InventoryMapper inventoryMapper;
+    @Resource
+    QueryInventoryDao queryInventoryDao;
 
 
     /**
@@ -52,6 +55,9 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         if (entity.getStorageInItems() != null && entity.getStorageInItems().size() > 0) {
             for (StorageInItem inItem : entity.getStorageInItems()) {
                 inItem.setRelationCode(entity.getTransactionCode());
+                Integer nowSkuCount = queryInventoryDao.nowInventoryCount(inItem.getSkuId(),entity.getWarehouseId());
+                Integer afterSkuCount = nowSkuCount + inItem.getTransactionQuantities();
+                inItem.setAfterTransactionQuantities(afterSkuCount);
                 storageInItems.add(inItem);
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(inItem.getSkuId());

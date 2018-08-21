@@ -3,6 +3,7 @@ package com.jfeat.am.module.warehouse.services.domain.service.impl;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutService;
+import com.jfeat.am.module.warehouse.services.domain.dao.QueryInventoryDao;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageOutModel;
 import com.jfeat.am.module.warehouse.services.domain.service.StorageOutService;
 
@@ -35,6 +36,8 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     CRUDStorageOutService crudStorageOutService;
     @Resource
     InventoryMapper inventoryMapper;
+    @Resource
+    QueryInventoryDao queryInventoryDao;
 
     /**
      * SKU 肯定 存在  需要 判断 他的 可用量 是否 大于 出库的数量
@@ -48,6 +51,9 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
             for (StorageOutItem outItem : entity.getStorageOutItems()) {
                 outItem.setRelationCode(entity.getTransactionCode());
+                Integer nowSkuCount = queryInventoryDao.nowInventoryCount(outItem.getSkuId(),entity.getWarehouseId());
+                Integer afterSkuCount = nowSkuCount - outItem.getTransactionQuantities();
+                outItem.setAfterTransactionQuantities(afterSkuCount);
                 storageOutItems.add(outItem);
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());

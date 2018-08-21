@@ -15,6 +15,7 @@ import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
 import com.jfeat.am.module.warehouse.services.definition.ProcurementStatus;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryCheckDao;
+import com.jfeat.am.module.warehouse.services.domain.dao.QueryInventoryDao;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryProcurementDao;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryRefundDao;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementItemRecord;
@@ -71,6 +72,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     SkuPriceHistoryMapper skuPriceHistoryMapper;
     @Resource
     QueryRefundDao queryRefundDao;
+    @Resource
+    QueryInventoryDao queryInventoryDao;
 
     /**
      * 重构 procurement 问题
@@ -177,6 +180,11 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 if (item.getTransactionQuantities() > 0) {
                     SkuProduct skuProduct = skuProductMapper.selectById(item.getSkuId());
                     item.setRelationCode(procurement.getProcurementCode());
+
+                    Integer nowSkuCount = queryInventoryDao.nowInventoryCount(item.getSkuId(),in.getWarehouseId());
+                    Integer afterSkuCount = nowSkuCount + item.getTransactionQuantities();
+                    item.setAfterTransactionQuantities(afterSkuCount);
+
                     storageInItems.add(item);
                     // 某个 sku 的采购的数量
                     Integer skuProcurementCount = queryProcurementDao.skuProcurementCount(procurementId, item.getSkuId());
@@ -204,7 +212,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
 
                     if (originInventory != null) {
-                        originInventory.setValidSku(originInventory.getValidSku() + item.getTransactionQuantities());
+                        Integer validSku = originInventory.getValidSku() + item.getTransactionQuantities();
+                        originInventory.setValidSku(validSku);
                         affected += inventoryMapper.updateById(originInventory);
 
                     } else {

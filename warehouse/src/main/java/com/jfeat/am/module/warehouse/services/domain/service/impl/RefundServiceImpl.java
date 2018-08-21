@@ -16,6 +16,7 @@ import com.jfeat.am.module.warehouse.services.crud.service.CRUDRefundService;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
 import com.jfeat.am.module.warehouse.services.definition.RefundStatus;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
+import com.jfeat.am.module.warehouse.services.domain.dao.QueryInventoryDao;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryRefundDao;
 import com.jfeat.am.module.warehouse.services.domain.model.*;
 import com.jfeat.am.module.warehouse.services.domain.service.RefundService;
@@ -68,6 +69,8 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     InventoryMapper inventoryMapper;
     @Resource
     QueryRefundDao queryRefundDao;
+    @Resource
+    QueryInventoryDao queryInventoryDao;
 
     /**
      * 重构 Refund 问题
@@ -113,6 +116,10 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                 } else {
                     throw new BusinessException(4060,"该仓库不存在\""+sku.getSkuName()+"\"商品");
                 }
+
+                Integer nowSkuCount = queryInventoryDao.nowInventoryCount(outItem.getSkuId(),model.getProductRefundWarehouseId());
+                Integer afterSkuCount = nowSkuCount - outItem.getTransactionQuantities();
+                outItem.setAfterTransactionQuantities(afterSkuCount);
                 storageOutItems.add(outItem);
             }
         }
@@ -172,17 +179,18 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
             validSku+=outItem.getTransactionQuantities();
             originInventory.setValidSku(validSku);
             affected += inventoryMapper.updateAllColumnById(originInventory);
+
             StorageInItem item = new StorageInItem();
             item.setRelationCode(refund.getProductRefundCode());
             item.setTransactionQuantities(outItem.getTransactionQuantities());
             item.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
             item.setSkuId(outItem.getSkuId());
             item.setType("Others");
+            Integer nowSkuCount = queryInventoryDao.nowInventoryCount(outItem.getSkuId(),refund.getProductRefundWarehouseId());
+            Integer afterSkuCount = nowSkuCount + outItem.getTransactionQuantities();
+            item.setAfterTransactionQuantities(afterSkuCount);
             item.setTransactionTime(new Date());
             storageInItems.add(item);
-
-
-
         }
         StorageInModel storageIn = new StorageInModel();
         storageIn.setTransactionType(TransactionType.OthersStorageIn.toString());
