@@ -87,8 +87,7 @@
 
     <!-- 出入库记录 -->
 
-    <select id="skuStorageDetails" resultType="com.jfeat.am.module.warehouse.services.domain.model.SkuStorageDetails"
-            parameterType="long">
+    <select id="skuStorageDetails" resultType="com.jfeat.am.module.warehouse.services.domain.model.SkuStorageDetails">
 
         SELECT
         sin.sku_id AS skuId,
@@ -117,9 +116,12 @@
         WHERE
         1 = 1
         AND t_sku_product.id = #{skuId}
+        AND wms_warehouse.warehouse_name = #{warehouseName}
         AND sin.type != 'Procurement'
+
         UNION
         SELECT
+
         sout.sku_id AS skuId,
         NULL AS type,
         sout.relation_code as relationCode,
@@ -147,6 +149,8 @@
         WHERE
         1 = 1
         AND t_sku_product.id = #{skuId}
+        AND wms_warehouse.warehouse_name = #{warehouseName}
+
         ORDER BY transactionTime DESC
     </select>
 

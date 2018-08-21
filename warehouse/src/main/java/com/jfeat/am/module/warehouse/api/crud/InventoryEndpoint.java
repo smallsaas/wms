@@ -57,10 +57,11 @@ public class InventoryEndpoint extends BaseController {
     public Tip skuStorageDetails(Page<SkuStorageDetails> page,
                                  @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                  @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                                 @RequestParam(name = "warehouseName", required = false) String warehouseName,
                                  @PathVariable Long id) {
         page.setCurrent(pageNum);
         page.setSize(pageSize);
-        page.setRecords(queryInventoryDao.skuStorageDetails(page, id));
+        page.setRecords(queryInventoryDao.skuStorageDetails(page, id, warehouseName));
         return SuccessTip.create(page);
     }
 
@@ -72,7 +73,7 @@ public class InventoryEndpoint extends BaseController {
 
         Integer affected = 0;
         try {
-            affected = inventoryService.createMaster(entity);
+            affected += inventoryService.createMaster(entity);
 
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
@@ -148,7 +149,7 @@ public class InventoryEndpoint extends BaseController {
         record.setAdvanceQuantities(advanceQuantities);
         record.setTransmitQuantities(transmitQuantities);
 
-        page.setRecords(queryInventoryDao.findInventoryPage(page,warehouseName,skuName,record, orderBy));
+        page.setRecords(queryInventoryDao.findInventoryPage(page, warehouseName, skuName, record, orderBy));
 
         return SuccessTip.create(page);
     }
