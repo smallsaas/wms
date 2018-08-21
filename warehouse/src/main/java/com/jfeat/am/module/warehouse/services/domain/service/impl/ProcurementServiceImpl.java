@@ -164,13 +164,10 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             in.setOriginatorId(userId);
             in.setTransactionTime(new Date());
             in.setOriginatorName(model.getOriginatorName());
-
             // 使用field1去接收 warehouseId 字段
             in.setWarehouseId(Long.valueOf(model.getField1()));
-
             //使用 field 去接收 入库 code
             in.setTransactionCode(model.getField2());
-
             in.setProcurementId(procurementId);
             in.setTransactionType(TransactionType.Procurement.toString());
             StorageInFilter storageInFilter = new StorageInFilter();
@@ -180,15 +177,6 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 if (item.getTransactionQuantities() > 0) {
                     SkuProduct skuProduct = skuProductMapper.selectById(item.getSkuId());
                     item.setRelationCode(procurement.getProcurementCode());
-
-                    Integer nowSkuCount = queryInventoryDao.nowInventoryCount(item.getSkuId(),in.getWarehouseId());
-                    if (nowSkuCount==null){
-                        nowSkuCount=0;
-                    }
-                    Integer afterSkuCount = nowSkuCount + item.getTransactionQuantities();
-                    item.setAfterTransactionQuantities(afterSkuCount);
-
-                    storageInItems.add(item);
                     // 某个 sku 的采购的数量
                     Integer skuProcurementCount = queryProcurementDao.skuProcurementCount(procurementId, item.getSkuId());
                     //某次采购 某个 sku 入库历史数量
@@ -199,27 +187,21 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     if (item.getTransactionQuantities() > (skuProcurementCount - storageInCount)) {
                         throw new BusinessException(4500, "\""+skuProduct.getSkuName()+"\""+"入库数不能大于采购数，请先核对入库数！");
                     }
-/*                // 历史价格 信息
-                SkuPriceHistory history = new SkuPriceHistory();
-                history.setSkuId(item.getSkuId());
-                SkuPriceHistory originHistory = skuPriceHistoryMapper.selectOne(history);
-                if (originHistory.getAfterPrice().compareTo(item.getTransactionSkuPrice()) != 0){
-                    originHistory.setAfterPrice(originHistory.getOriginPrice());
-                    originHistory.setAfterPrice(item.getTransactionSkuPrice());
-                    skuPriceHistoryMapper.insert(originHistory);
-                }*/
 
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(item.getSkuId());
                     isExistInventory.setWarehouseId(Long.valueOf(model.getField1()));
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
-
                     if (originInventory != null) {
                         Integer validSku = originInventory.getValidSku() + item.getTransactionQuantities();
+                        // 操作后的 数量
+                        item.setAfterTransactionQuantities(validSku);
                         originInventory.setValidSku(validSku);
                         affected += inventoryMapper.updateById(originInventory);
 
                     } else {
+                        // 操作后的 数量
+                        item.setAfterTransactionQuantities(item.getTransactionQuantities());
                         isExistInventory.setTransmitQuantities(0);
                         isExistInventory.setAdvanceQuantities(0);
                         isExistInventory.setMinInventory(0);
@@ -228,7 +210,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                         affected += inventoryMapper.insert(isExistInventory);
                     }
                 }
-
+                storageInItems.add(item);
             }
             in.setStorageInItems(storageInItems);
             inSuccess = crudStorageInService.createMaster(in, storageInFilter, null, null);
@@ -244,6 +226,17 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         }
         affected += procurementMapper.updateById(model);
         return affected;
+
+        /*                // 历史价格 信息
+                SkuPriceHistory history = new SkuPriceHistory();
+                history.setSkuId(item.getSkuId());
+                SkuPriceHistory originHistory = skuPriceHistoryMapper.selectOne(history);
+                if (originHistory.getAfterPrice().compareTo(item.getTransactionSkuPrice()) != 0){
+                    originHistory.setAfterPrice(originHistory.getOriginPrice());
+                    originHistory.setAfterPrice(item.getTransactionSkuPrice());
+                    skuPriceHistoryMapper.insert(originHistory);
+                }*/
+
     }
 
     /**

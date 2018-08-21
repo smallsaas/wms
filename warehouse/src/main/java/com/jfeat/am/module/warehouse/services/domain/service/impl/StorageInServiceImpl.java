@@ -55,25 +55,27 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         if (entity.getStorageInItems() != null && entity.getStorageInItems().size() > 0) {
             for (StorageInItem inItem : entity.getStorageInItems()) {
                 inItem.setRelationCode(entity.getTransactionCode());
-                Integer nowSkuCount = queryInventoryDao.nowInventoryCount(inItem.getSkuId(),entity.getWarehouseId());
-                if (nowSkuCount==null){
-                    nowSkuCount=0;
-                }
-                Integer afterSkuCount = nowSkuCount + inItem.getTransactionQuantities();
-                inItem.setAfterTransactionQuantities(afterSkuCount);
-                storageInItems.add(inItem);
+
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(inItem.getSkuId());
                 isExistInventory.setWarehouseId(entity.getWarehouseId());
                 Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                 if (originInventory != null) {
-                    originInventory.setValidSku(originInventory.getValidSku() + inItem.getTransactionQuantities());
+                    //插入操作后的库存数量 原来数量+准备入库数量
+                    Integer afterSkuCount = originInventory.getValidSku() + inItem.getTransactionQuantities();
+                    inItem.setAfterTransactionQuantities(afterSkuCount);
+
+                    originInventory.setValidSku(afterSkuCount);
                     affected += inventoryMapper.updateById(originInventory);
                 } else {
+                    //插入操作后的库存数量 == 准备入库的数量 原来的不存在
+                    inItem.setAfterTransactionQuantities(inItem.getTransactionQuantities());
+
                     isExistInventory.setWarehouseId(entity.getWarehouseId());
                     isExistInventory.setValidSku(inItem.getTransactionQuantities());
                     affected += inventoryMapper.insert(isExistInventory);
                 }
+                storageInItems.add(inItem);
             }
         }else {
             throw new BusinessException(4050,"商品不能为空，请先选择商品！");

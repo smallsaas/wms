@@ -109,9 +109,11 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                     if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
                         throw new BusinessException(4050, "\""+skuProduct.getSkuName()+"\""+"库存不足,"+ "现有库存"+ originInventory.getValidSku() +"小于出库量"+outItem.getTransactionQuantities());
                     } else {
-                        originInventory.setValidSku(originInventory.getValidSku() - outItem.getTransactionQuantities());
+                        Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
+                        originInventory.setValidSku(afterCount);
+                        outItem.setAfterTransactionQuantities(afterCount);
+                        // 操作后的数量
                         affected += inventoryMapper.updateById(originInventory);
-
                         // 接收方为在途数
                         Inventory inventory = new Inventory();
                         inventory.setSkuId(outItem.getSkuId());
@@ -133,15 +135,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                         }
                     }
                 } else {
-                    throw new BusinessException(BusinessCode.NotImplement);
+                    throw new BusinessException(4055,"商品不存在，请重新核对!");
                 }
-                Integer nowSkuCount = queryInventoryDao.nowInventoryCount(outItem.getSkuId(),model.getFromWarehouseId());
-                if (nowSkuCount==null){
-                    nowSkuCount=0;
-                }
-                Integer afterSkuCount = nowSkuCount - outItem.getTransactionQuantities();
-                outItem.setAfterTransactionQuantities(afterSkuCount);
-
                 items.add(outItem);
             }
         }else {
@@ -175,7 +170,6 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         StorageOut storageOut = storageOutMapper.selectById(transfer.getStorageOutId());
         List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,storageOut.getId()));
 
-
         List<StorageInItem> items = new ArrayList<>();
 
         if (storageOutItems != null && storageOutItems.size() > 0) {
@@ -189,11 +183,17 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
 
                 if (originInventory != null) {
-                    originInventory.setValidSku(originInventory.getValidSku() + outItem.getTransactionQuantities());
+                    Integer afterCount = originInventory.getValidSku() + outItem.getTransactionQuantities();
+                    // 操作后的数量
+                    inItem.setAfterTransactionQuantities(afterCount);
+
+                    originInventory.setValidSku(afterCount);
                     Integer transmitCount = originInventory.getTransmitQuantities()-outItem.getTransactionQuantities();
                     originInventory.setTransmitQuantities(transmitCount);
                     affected += inventoryMapper.updateById(originInventory);
                 } else {
+                    // 操作后的数量
+                    inItem.setAfterTransactionQuantities(outItem.getTransactionQuantities());
                     isExistInventory.setMaxInventory(outItem.getTransactionQuantities());
                     isExistInventory.setAdvanceQuantities(0);
                     isExistInventory.setMinInventory(0);
@@ -202,18 +202,10 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                     isExistInventory.setSkuId(outItem.getSkuId());
                     affected += inventoryMapper.insert(isExistInventory);
                 }
-
                 inItem.setSkuId(outItem.getSkuId());
                 inItem.setTransactionQuantities(outItem.getTransactionQuantities());
                 inItem.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
                 inItem.setTransactionTime(new Date());
-
-                Integer nowSkuCount = queryInventoryDao.nowInventoryCount(inItem.getSkuId(),transfer.getToWarehouseId());
-                if (nowSkuCount==null){
-                    nowSkuCount=0;
-                }
-                Integer afterSkuCount = nowSkuCount + inItem.getTransactionQuantities();
-                inItem.setAfterTransactionQuantities(afterSkuCount);
 
                 items.add(inItem);
             }
@@ -264,15 +256,21 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 // come back to from warehouse
                 StorageInItem inItem = new StorageInItem();
                 inItem.setRelationCode(transfer.getTransactionCode());
+
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());
                 isExistInventory.setWarehouseId(transfer.getFromWarehouseId());
                 Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                if (originInventory == null ){
+                    throw new BusinessException(4060,"服务异常，请稍后尝试!");
+                }
+                Integer afterCount = originInventory.getValidSku() + outItem.getTransactionQuantities();
+                originInventory.setValidSku(afterCount);
+                // 操作后的数量
+                inItem.setAfterTransactionQuantities(afterCount);
 
-                originInventory.setValidSku(originInventory.getValidSku() + outItem.getTransactionQuantities());
                 affected += inventoryMapper.updateById(originInventory);
-
-                // 接收方 在途数 == 0
+                // 接收方 在途数 - 调拨数
                 Inventory inventory = new Inventory();
                 inventory.setSkuId(outItem.getSkuId());
                 inventory.setWarehouseId(transfer.getToWarehouseId());
@@ -286,13 +284,6 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 inItem.setTransactionQuantities(outItem.getTransactionQuantities());
                 inItem.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
                 inItem.setTransactionTime(new Date());
-
-                Integer nowSkuCount = queryInventoryDao.nowInventoryCount(inItem.getSkuId(),transfer.getFromWarehouseId());
-                if (nowSkuCount==null){
-                    nowSkuCount=0;
-                }
-                Integer afterSkuCount = nowSkuCount + inItem.getTransactionQuantities();
-                inItem.setAfterTransactionQuantities(afterSkuCount);
 
                 items.add(inItem);
             }

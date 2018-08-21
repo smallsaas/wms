@@ -84,8 +84,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
          * */
         int affected = 0;
         int refundTotal = 0;
-
-        List<StorageOutItem> storageOutItems =new ArrayList<>();
+        List<StorageOutItem> storageOutItems = new ArrayList<>();
         if (model.getItems() != null && model.getItems().size() > 0) {
             for (StorageOutItem outItem : model.getItems()) {
                 outItem.setRelationCode(model.getProductRefundCode());
@@ -97,37 +96,29 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                 Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                 if (originInventory != null) {
                     // 退货数量不能大于库存量
-                    if(originInventory.getValidSku()==null){
+                    if (originInventory.getValidSku() == null) {
                         originInventory.setValidSku(0);
                     }
-
                     /*if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
                         throw new BusinessException(4050, "\""+sku.getSkuName()+"\"库存不足");
                     } else*/
+                    if (outItem.getTransactionQuantities() > queryRefundDao.skuStorageInCount(model.getProductProcurementId(), outItem.getSkuId())) {
+                        throw new BusinessException(4050, "\"" + sku.getSkuName() + "\"退货数量不能大于入库的数量");
+                    } else {
+                        //操作后的数量
+                        Integer afterSkuCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
+                        outItem.setAfterTransactionQuantities(afterSkuCount);
 
-                    if (outItem.getTransactionQuantities() > queryRefundDao.skuStorageInCount(model.getProductProcurementId(),outItem.getSkuId())){
-                        throw new BusinessException(4050, "\""+sku.getSkuName()+"\"退货数量不能大于入库的数量");
-                    }
-
-                    else {
-                        originInventory.setValidSku(originInventory.getValidSku() - outItem.getTransactionQuantities());
+                        originInventory.setValidSku(afterSkuCount);
                         affected += inventoryMapper.updateById(originInventory);
                     }
                 } else {
-                    throw new BusinessException(4060,"该仓库不存在\""+sku.getSkuName()+"\"商品");
+                    throw new BusinessException(4060, "该仓库不存在\"" + sku.getSkuName() + "\"商品");
                 }
-
-                Integer nowSkuCount = queryInventoryDao.nowInventoryCount(outItem.getSkuId(),model.getProductRefundWarehouseId());
-                if (nowSkuCount==null){
-                    nowSkuCount=0;
-                }
-                Integer afterSkuCount = nowSkuCount - outItem.getTransactionQuantities();
-                outItem.setAfterTransactionQuantities(afterSkuCount);
                 storageOutItems.add(outItem);
             }
-        }
-        else {
-            throw new BusinessException(4055,"请先选择需要退货的商品！");
+        } else {
+            throw new BusinessException(4055, "请先选择需要退货的商品！");
         }
 
         StorageOutModel storageOutModel = new StorageOutModel();
@@ -156,32 +147,31 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
 
     /**
      * @Param Long refundId
-     *  退货作废
-     * */
+     * 退货作废
+     */
     @Transactional
-    public Integer cancelRefund(Long userId,Long refundId){
+    public Integer cancelRefund(Long userId, Long refundId) {
         int affected = 0;
         Refund refund = refundService.retrieveMaster(refundId);
         StorageOut out = storageOutMapper.selectById(refund.getStorageOutId());
         List<StorageInItem> storageInItems = new ArrayList<>();
         List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
-                .eq(StorageOutItem.STORAGE_OUT_ID,out.getId()).eq(StorageOutItem.RELATION_CODE,refund.getProductRefundCode()));
-        if (storageOutItems ==null&&storageOutItems.size()==0){
-            throw new BusinessException(5000,"未知错误");
+                .eq(StorageOutItem.STORAGE_OUT_ID, out.getId()).eq(StorageOutItem.RELATION_CODE, refund.getProductRefundCode()));
+        if (storageOutItems == null && storageOutItems.size() == 0) {
+            throw new BusinessException(5000, "未知错误");
         }
-        for (StorageOutItem outItem : storageOutItems){
+        for (StorageOutItem outItem : storageOutItems) {
             Inventory isExistInventory = new Inventory();
             isExistInventory.setSkuId(outItem.getSkuId());
             isExistInventory.setWarehouseId(refund.getProductRefundWarehouseId());
             Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
-            if (originInventory==null){
+            if (originInventory == null) {
                 // 应该不会出现吧 出现就是数据库异常吧
                 throw new BusinessException(BusinessCode.DatabaseConnectFailure);
             }
             Integer validSku = originInventory.getValidSku();
-            validSku+=outItem.getTransactionQuantities();
+            validSku += outItem.getTransactionQuantities();
             originInventory.setValidSku(validSku);
-            affected += inventoryMapper.updateAllColumnById(originInventory);
 
             StorageInItem item = new StorageInItem();
             item.setRelationCode(refund.getProductRefundCode());
@@ -189,21 +179,19 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
             item.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
             item.setSkuId(outItem.getSkuId());
             item.setType("Others");
-            Integer nowSkuCount = queryInventoryDao.nowInventoryCount(outItem.getSkuId(),refund.getProductRefundWarehouseId());
-            if (nowSkuCount==null){
-                nowSkuCount=0;
-            }
-            Integer afterSkuCount = nowSkuCount + outItem.getTransactionQuantities();
-            item.setAfterTransactionQuantities(afterSkuCount);
+            // 操作后的数量
+            item.setAfterTransactionQuantities(validSku);
             item.setTransactionTime(new Date());
             storageInItems.add(item);
+
+            affected += inventoryMapper.updateAllColumnById(originInventory);
         }
         StorageInModel storageIn = new StorageInModel();
         storageIn.setTransactionType(TransactionType.OthersStorageIn.toString());
         storageIn.setWarehouseId(refund.getProductRefundWarehouseId());
         storageIn.setOriginatorId(userId);
         // needs code ?
-        storageIn.setTransactionCode(refund.getField1().replace("OUT","IN"));
+        storageIn.setTransactionCode(refund.getField1().replace("OUT", "IN"));
         storageIn.setTransactionTime(new Date());
         StorageInFilter storageInFilter = new StorageInFilter();
         storageIn.setStorageInItems(storageInItems);
@@ -222,16 +210,16 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         Procurement procurement = procurementMapper.selectById(refund.getProductProcurementId());
         refundObj.put("procurementCode", procurement.getProcurementCode());
 
-        List<StorageOut> storageOuts = storageOutMapper.selectList(new EntityWrapper<StorageOut>().eq(StorageOut.ID,refund.getStorageOutId()).like(StorageOut.TRANSACTION_TYPE,TransactionType.Refund.toString()));
+        List<StorageOut> storageOuts = storageOutMapper.selectList(new EntityWrapper<StorageOut>().eq(StorageOut.ID, refund.getStorageOutId()).like(StorageOut.TRANSACTION_TYPE, TransactionType.Refund.toString()));
 //        List<StorageOutRecord> outRecords = new ArrayList<>();
 
         List<StorageOutItemRecord> outItemRecords = new ArrayList<>();
-        if (storageOuts!=null&&storageOuts.size()>0){
-            for (StorageOut out : storageOuts){
+        if (storageOuts != null && storageOuts.size() > 0) {
+            for (StorageOut out : storageOuts) {
                 StorageOutRecord record = queryRefundDao.outRecord(out.getId());//  关联上级出库单的信息
                 List<StorageOutItem> outItems = queryRefundDao.outItems(out.getId());
-                if (outItems!=null&&outItems.size()>0){
-                    for (StorageOutItem item : outItems){
+                if (outItems != null && outItems.size() > 0) {
+                    for (StorageOutItem item : outItems) {
                         // 出库 商品详情
                         StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
                         itemRecord.setOperator(record.getOperatorName());

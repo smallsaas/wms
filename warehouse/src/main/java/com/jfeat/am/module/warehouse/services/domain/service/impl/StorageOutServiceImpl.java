@@ -51,13 +51,14 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
             for (StorageOutItem outItem : entity.getStorageOutItems()) {
                 outItem.setRelationCode(entity.getTransactionCode());
-                Integer nowSkuCount = queryInventoryDao.nowInventoryCount(outItem.getSkuId(),entity.getWarehouseId());
+
+                /*Integer nowSkuCount = queryInventoryDao.nowInventoryCount(outItem.getSkuId(),entity.getWarehouseId());
                 if (nowSkuCount==null){
                     nowSkuCount=0;
                 }
                 Integer afterSkuCount = nowSkuCount - outItem.getTransactionQuantities();
-                outItem.setAfterTransactionQuantities(afterSkuCount);
-                storageOutItems.add(outItem);
+                outItem.setAfterTransactionQuantities(afterSkuCount);*/
+
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());
                 isExistInventory.setWarehouseId(entity.getWarehouseId());
@@ -66,12 +67,18 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                     if(outItem.getTransactionQuantities() > originInventory.getValidSku()){
                         throw new BusinessException(4050,"库存不足,"+ "现有库存"+ originInventory.getValidSku() +"小于出库量"+outItem.getTransactionQuantities());
                     }else {
-                        originInventory.setValidSku(originInventory.getValidSku() - outItem.getTransactionQuantities());
+
+                        Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
+                        outItem.setAfterTransactionQuantities(afterCount);
+                        originInventory.setValidSku(afterCount);
                         affected += inventoryMapper.updateById(originInventory);
                     }
                 } else {
                     throw new BusinessException(4051,"产品不存在，请核对！");
                 }
+
+                storageOutItems.add(outItem);
+
             }
         }else {
             throw new BusinessException(4050,"商品不能为空，请先选择商品！");
