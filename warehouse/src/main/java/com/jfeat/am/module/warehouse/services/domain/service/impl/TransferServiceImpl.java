@@ -180,7 +180,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
                 if (originInventory != null) {
                     originInventory.setValidSku(originInventory.getValidSku() + outItem.getTransactionQuantities());
-                    originInventory.setTransmitQuantities(0);
+                    Integer transmitCount = originInventory.getTransmitQuantities()-outItem.getTransactionQuantities();
+                    originInventory.setTransmitQuantities(transmitCount);
                     affected += inventoryMapper.updateById(originInventory);
                 } else {
                     isExistInventory.setMaxInventory(outItem.getTransactionQuantities());
@@ -259,7 +260,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 inventory.setSkuId(outItem.getSkuId());
                 inventory.setWarehouseId(transfer.getToWarehouseId());
                 Inventory toInventory = inventoryMapper.selectOne(inventory);
-                toInventory.setTransmitQuantities(inventory.getTransmitQuantities()-outItem.getTransactionQuantities());
+                Integer transmitCount = toInventory.getTransmitQuantities()-outItem.getTransactionQuantities();
+                toInventory.setTransmitQuantities(transmitCount);
                 affected += inventoryMapper.updateById(toInventory);
 
                 inItem.setSkuId(outItem.getSkuId());
