@@ -136,6 +136,9 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                     throw new BusinessException(BusinessCode.NotImplement);
                 }
                 Integer nowSkuCount = queryInventoryDao.nowInventoryCount(outItem.getSkuId(),model.getFromWarehouseId());
+                if (nowSkuCount==null){
+                    nowSkuCount=0;
+                }
                 Integer afterSkuCount = nowSkuCount - outItem.getTransactionQuantities();
                 outItem.setAfterTransactionQuantities(afterSkuCount);
 
@@ -206,6 +209,9 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 inItem.setTransactionTime(new Date());
 
                 Integer nowSkuCount = queryInventoryDao.nowInventoryCount(inItem.getSkuId(),transfer.getToWarehouseId());
+                if (nowSkuCount==null){
+                    nowSkuCount=0;
+                }
                 Integer afterSkuCount = nowSkuCount + inItem.getTransactionQuantities();
                 inItem.setAfterTransactionQuantities(afterSkuCount);
 
@@ -282,6 +288,9 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 inItem.setTransactionTime(new Date());
 
                 Integer nowSkuCount = queryInventoryDao.nowInventoryCount(inItem.getSkuId(),transfer.getFromWarehouseId());
+                if (nowSkuCount==null){
+                    nowSkuCount=0;
+                }
                 Integer afterSkuCount = nowSkuCount + inItem.getTransactionQuantities();
                 inItem.setAfterTransactionQuantities(afterSkuCount);
 

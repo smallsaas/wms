@@ -118,6 +118,9 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                 }
 
                 Integer nowSkuCount = queryInventoryDao.nowInventoryCount(outItem.getSkuId(),model.getProductRefundWarehouseId());
+                if (nowSkuCount==null){
+                    nowSkuCount=0;
+                }
                 Integer afterSkuCount = nowSkuCount - outItem.getTransactionQuantities();
                 outItem.setAfterTransactionQuantities(afterSkuCount);
                 storageOutItems.add(outItem);
@@ -187,6 +190,9 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
             item.setSkuId(outItem.getSkuId());
             item.setType("Others");
             Integer nowSkuCount = queryInventoryDao.nowInventoryCount(outItem.getSkuId(),refund.getProductRefundWarehouseId());
+            if (nowSkuCount==null){
+                nowSkuCount=0;
+            }
             Integer afterSkuCount = nowSkuCount + outItem.getTransactionQuantities();
             item.setAfterTransactionQuantities(afterSkuCount);
             item.setTransactionTime(new Date());

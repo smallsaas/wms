@@ -52,6 +52,9 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             for (StorageOutItem outItem : entity.getStorageOutItems()) {
                 outItem.setRelationCode(entity.getTransactionCode());
                 Integer nowSkuCount = queryInventoryDao.nowInventoryCount(outItem.getSkuId(),entity.getWarehouseId());
+                if (nowSkuCount==null){
+                    nowSkuCount=0;
+                }
                 Integer afterSkuCount = nowSkuCount - outItem.getTransactionQuantities();
                 outItem.setAfterTransactionQuantities(afterSkuCount);
                 storageOutItems.add(outItem);

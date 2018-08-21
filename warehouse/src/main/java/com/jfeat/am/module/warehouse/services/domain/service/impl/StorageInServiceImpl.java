@@ -56,6 +56,9 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
             for (StorageInItem inItem : entity.getStorageInItems()) {
                 inItem.setRelationCode(entity.getTransactionCode());
                 Integer nowSkuCount = queryInventoryDao.nowInventoryCount(inItem.getSkuId(),entity.getWarehouseId());
+                if (nowSkuCount==null){
+                    nowSkuCount=0;
+                }
                 Integer afterSkuCount = nowSkuCount + inItem.getTransactionQuantities();
                 inItem.setAfterTransactionQuantities(afterSkuCount);
                 storageInItems.add(inItem);

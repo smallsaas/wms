@@ -182,6 +182,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     item.setRelationCode(procurement.getProcurementCode());
 
                     Integer nowSkuCount = queryInventoryDao.nowInventoryCount(item.getSkuId(),in.getWarehouseId());
+                    if (nowSkuCount==null){
+                        nowSkuCount=0;
+                    }
                     Integer afterSkuCount = nowSkuCount + item.getTransactionQuantities();
                     item.setAfterTransactionQuantities(afterSkuCount);
 
