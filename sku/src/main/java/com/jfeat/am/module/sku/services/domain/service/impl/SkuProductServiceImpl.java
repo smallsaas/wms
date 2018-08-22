@@ -150,7 +150,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         int affect = 0;
         SkuProduct originSkuProduct = crudSkuProductService.retrieveMaster(skuId);
 
-//        model.setId(originSkuProduct.getProductId());
+        model.setId(originSkuProduct.getProductId());
         affect += productMapper.updateById(model);
 
 
@@ -201,7 +201,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
             }
 
             originSkuProduct.setCostPrice(model.getCostPrice());
-            crudSkuProductService.updateMaster(originSkuProduct);
+            affect += crudSkuProductService.updateMaster(originSkuProduct);
         }
         return affect;
     }
