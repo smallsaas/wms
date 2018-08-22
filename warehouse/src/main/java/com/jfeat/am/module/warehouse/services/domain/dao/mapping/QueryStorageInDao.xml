@@ -159,5 +159,8 @@
         <if test="record.field2 != null and record.field2!= ''">
             AND wms_storage_in.field2 LIKE CONCAT('%',#{record.field2},'%')
         </if>
+
+        GROUP BY wms_storage_in.id
+        order by wms_storage_in.transaction_time DESC
     </select>
 </mapper>
