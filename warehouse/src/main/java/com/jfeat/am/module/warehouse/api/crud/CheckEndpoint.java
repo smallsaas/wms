@@ -86,7 +86,7 @@ public class CheckEndpoint extends BaseController {
     }
 
     @BusinessLog(name = "Check", value = "update Check")
-    @PutMapping("/{id}/done")
+    @PostMapping("/{id}/done")
     @ApiOperation(value = "完成盘点", response = CheckModel.class)
     public Tip doneCheck(@PathVariable Long id) {
         return SuccessTip.create(checkService.checkedCheck(id));
