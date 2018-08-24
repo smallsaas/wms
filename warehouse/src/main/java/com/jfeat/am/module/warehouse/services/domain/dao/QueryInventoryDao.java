@@ -21,7 +21,24 @@ public interface QueryInventoryDao extends BaseMapper<InventoryRecord> {
                                             @Param("orderBy") String orderBy);
 
 
+    /**
+     * 某个商品对应的仓库的出入库详情
+     * */
     List<SkuStorageDetails> skuStorageDetails(Page<SkuStorageDetails> page,
+                                              @Param("skuId") Long skuId,
+                                              @Param("warehouseName") String warehouseName);
+
+    /**
+     * 某个商品对应的仓库的出库详情
+     * */
+    List<SkuStorageDetails> skuStorageOutDetails(Page<SkuStorageDetails> page,
+                                              @Param("skuId") Long skuId,
+                                              @Param("warehouseName") String warehouseName);
+
+    /**
+     * 某个商品对应的仓库的入库详情
+     * */
+    List<SkuStorageDetails> skuStorageInDetails(Page<SkuStorageDetails> page,
                                               @Param("skuId") Long skuId,
                                               @Param("warehouseName") String warehouseName);
 

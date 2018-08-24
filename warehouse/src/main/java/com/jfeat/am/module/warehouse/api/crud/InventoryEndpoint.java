@@ -52,7 +52,7 @@ public class InventoryEndpoint extends BaseController {
 
 
     @GetMapping("/skus/{id}")
-    @ApiOperation(value = "获取库存盘点详细")
+    @ApiOperation(value = "某个商品对应的仓库的出入库详情")
     @BusinessLog(name = "skuStorageDetails", value = "view skuStorageDetails")
     public Tip skuStorageDetails(Page<SkuStorageDetails> page,
                                  @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
@@ -62,6 +62,33 @@ public class InventoryEndpoint extends BaseController {
         page.setCurrent(pageNum);
         page.setSize(pageSize);
         page.setRecords(queryInventoryDao.skuStorageDetails(page, id, warehouseName));
+        return SuccessTip.create(page);
+    }
+    @GetMapping("/skus/in{id}")
+    @ApiOperation(value = "某个商品对应的仓库的入库详情")
+    @BusinessLog(name = "skuStorageDetails", value = "view skuStorageDetails")
+    public Tip skuStorageInDetails(Page<SkuStorageDetails> page,
+                                 @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                                 @RequestParam(name = "warehouseName", required = false) String warehouseName,
+                                 @PathVariable Long id) {
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        page.setRecords(queryInventoryDao.skuStorageInDetails(page, id, warehouseName));
+        return SuccessTip.create(page);
+    }
+
+    @GetMapping("/skus/out{id}")
+    @ApiOperation(value = "某个商品对应的仓库的出库详情")
+    @BusinessLog(name = "skuStorageDetails", value = "view skuStorageDetails")
+    public Tip skuStorageOutDetails(Page<SkuStorageDetails> page,
+                                 @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                                 @RequestParam(name = "warehouseName", required = false) String warehouseName,
+                                 @PathVariable Long id) {
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        page.setRecords(queryInventoryDao.skuStorageOutDetails(page, id, warehouseName));
         return SuccessTip.create(page);
     }
 
