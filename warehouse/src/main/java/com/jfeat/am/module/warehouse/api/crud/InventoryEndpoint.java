@@ -64,7 +64,7 @@ public class InventoryEndpoint extends BaseController {
         page.setRecords(queryInventoryDao.skuStorageDetails(page, id, warehouseName));
         return SuccessTip.create(page);
     }
-    @GetMapping("/skus/in{id}")
+    @GetMapping("/skus/in/{id}")
     @ApiOperation(value = "某个商品对应的仓库的入库详情")
     @BusinessLog(name = "skuStorageDetails", value = "view skuStorageDetails")
     public Tip skuStorageInDetails(Page<SkuStorageDetails> page,
@@ -78,7 +78,7 @@ public class InventoryEndpoint extends BaseController {
         return SuccessTip.create(page);
     }
 
-    @GetMapping("/skus/out{id}")
+    @GetMapping("/skus/out/{id}")
     @ApiOperation(value = "某个商品对应的仓库的出库详情")
     @BusinessLog(name = "skuStorageDetails", value = "view skuStorageDetails")
     public Tip skuStorageOutDetails(Page<SkuStorageDetails> page,
