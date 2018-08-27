@@ -103,7 +103,9 @@
         t_sku_product.field1 AS skuUnit,
         wms_warehouse.warehouse_name AS warehouseName,
         wms_storage_in.transaction_type AS transactionType,
-        wms_storage_in.transaction_code AS transactionCode
+        wms_storage_in.transaction_code AS transactionCode,
+        'sin' recordType
+
 
         FROM
         wms_storage_in_item sin
@@ -133,7 +135,8 @@
         t_sku_product.field1 AS skuUnit,
         wms_warehouse.warehouse_name AS warehouseName,
         wms_storage_out.transaction_type AS transactionType,
-        wms_storage_out.transaction_code AS transactionCode
+        wms_storage_out.transaction_code AS transactionCode,
+        'sout' recordType
         FROM
         wms_storage_out_item sout
         LEFT JOIN wms_storage_out ON sout.storage_out_id = wms_storage_out.id
