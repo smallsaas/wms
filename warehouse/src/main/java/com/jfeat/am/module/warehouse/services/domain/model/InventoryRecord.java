@@ -15,6 +15,15 @@ public class InventoryRecord extends Inventory{
     String skuUnit;
     Integer originCount;   // backup
     Integer transmitCount;
+    String recordType;
+
+    public String getRecordType() {
+        return recordType;
+    }
+
+    public void setRecordType(String recordType) {
+        this.recordType = recordType;
+    }
 
     public String getSkuName() {
         return skuName;

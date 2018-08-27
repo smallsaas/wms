@@ -21,7 +21,7 @@
         <result column="skuCode" property="skuCode" />
         <result column="skuUnit" property="skuUnit" />
         <result column="warehouseName" property="warehouseName" />
-
+        <result column="recordType" property="recordType"/>
 
     </resultMap>
 
