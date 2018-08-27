@@ -19,7 +19,15 @@ public class SkuStorageDetails {
     String transactionCode;
     Integer validValue;
     String relationCode;
+    String recordType;
 
+    public String getRecordType() {
+        return recordType;
+    }
+
+    public void setRecordType(String recordType) {
+        this.recordType = recordType;
+    }
 
     public Long getSkuId() {
         return skuId;
