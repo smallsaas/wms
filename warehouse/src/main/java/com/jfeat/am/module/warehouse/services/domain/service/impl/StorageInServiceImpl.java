@@ -56,6 +56,9 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
             for (StorageInItem inItem : entity.getStorageInItems()) {
                 inItem.setRelationCode(entity.getTransactionCode());
 
+                // 设置产品的入库时间
+                inItem.setTransactionTime(entity.getTransactionTime());
+
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(inItem.getSkuId());
                 isExistInventory.setWarehouseId(entity.getWarehouseId());
