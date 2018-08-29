@@ -3,7 +3,7 @@
 <mapper namespace="com.jfeat.am.module.warehouse.services.persistence.dao.StorageOutItemMapper">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.StorageInItem">
+	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem">
 		<id column="id" property="id" />
 		<result column="storage_out_id" property="storageOutId" />
 		<result column="sku_id" property="skuId" />
@@ -16,6 +16,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, storage_out_id AS storageOutId,  after_transaction_quantities as afterTransactionQuantities,relation_code as relationCode,sku_id AS skuId,transaction_sku_price AS transactionSkuPrice, transaction_quantities AS transactionQuantities, transaction_time AS transactionTime</sql>
+        id, storage_out_id AS storageOutId, sku_id AS skuId, transaction_sku_price AS transactionSkuPrice, transaction_quantities AS transactionQuantities, after_transaction_quantities AS afterTransactionQuantities, transaction_time AS transactionTime, relation_code AS relationCode
+    </sql>
 
 </mapper>

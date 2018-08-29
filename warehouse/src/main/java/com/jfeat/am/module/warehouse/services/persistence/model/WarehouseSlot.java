@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author Code Generator
- * @since 2018-06-22
+ * @since 2018-08-29
  */
 @TableName("wms_warehouse_slot")
 public class WarehouseSlot extends Model<WarehouseSlot> {

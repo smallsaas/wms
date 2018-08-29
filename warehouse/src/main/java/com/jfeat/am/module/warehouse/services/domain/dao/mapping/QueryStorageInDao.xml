@@ -10,6 +10,7 @@
         <id column="id" property="id" />
         <result column="transaction_code" property="transactionCode" />
         <result column="transaction_type" property="transactionType" />
+        <result column="storage_in_time" property="storageInTime" />
         <result column="transaction_time" property="transactionTime" />
         <result column="batch_no" property="batchNo" />
         <result column="warehouse_id" property="warehouseId" />
@@ -18,7 +19,9 @@
         <result column="status" property="status" />
         <result column="transaction_by" property="transactionBy" />
         <result column="originator_id" property="originatorId" />
+        <result column="originator_name" property="originatorName" />
         <result column="readjust_cost_price" property="readjustCostPrice" />
+        <result column="procurement_id" property="procurementId" />
         <result column="field1" property="field1" />
         <result column="field2" property="field2" />
         <result column="warehouseName" property="warehouseName" />
@@ -83,6 +86,7 @@
         <id column="id" property="id" />
         <result column="transaction_code" property="transactionCode" />
         <result column="transaction_type" property="transactionType" />
+        <result column="storage_in_time" property="storageInTime" />
         <result column="transaction_time" property="transactionTime" />
         <result column="batch_no" property="batchNo" />
         <result column="warehouse_id" property="warehouseId" />
@@ -91,7 +95,9 @@
         <result column="status" property="status" />
         <result column="transaction_by" property="transactionBy" />
         <result column="originator_id" property="originatorId" />
+        <result column="originator_name" property="originatorName" />
         <result column="readjust_cost_price" property="readjustCostPrice" />
+        <result column="procurement_id" property="procurementId" />
         <result column="field1" property="field1" />
         <result column="field2" property="field2" />
         <result column="warehouseName" property="warehouseName" />

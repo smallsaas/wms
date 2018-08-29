@@ -84,10 +84,14 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
          * */
         int affected = 0;
         int refundTotal = 0;
+        StorageOutModel storageOutModel = new StorageOutModel();
+        storageOutModel.setStorageOutTime(new Date());
+
         List<StorageOutItem> storageOutItems = new ArrayList<>();
         if (model.getItems() != null && model.getItems().size() > 0) {
             for (StorageOutItem outItem : model.getItems()) {
                 outItem.setRelationCode(model.getProductRefundCode());
+                outItem.setTransactionTime(storageOutModel.getStorageOutTime());
                 refundTotal += outItem.getTransactionQuantities();
                 SkuProduct sku = skuProductMapper.selectById(outItem.getSkuId());
                 Inventory isExistInventory = new Inventory();
@@ -121,7 +125,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
             throw new BusinessException(4055, "请先选择需要退货的商品！");
         }
 
-        StorageOutModel storageOutModel = new StorageOutModel();
+
         storageOutModel.setTransactionType(TransactionType.Refund.toString());
         storageOutModel.setStorageOutItems(storageOutItems);
         storageOutModel.setWarehouseId(model.getProductRefundWarehouseId());
@@ -153,6 +157,9 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     public Integer cancelRefund(Long userId, Long refundId) {
         int affected = 0;
         Refund refund = refundService.retrieveMaster(refundId);
+        StorageInModel storageIn = new StorageInModel();
+        storageIn.setStorageInTime(new Date());
+
         StorageOut out = storageOutMapper.selectById(refund.getStorageOutId());
         List<StorageInItem> storageInItems = new ArrayList<>();
         List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
@@ -175,6 +182,8 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
 
             StorageInItem item = new StorageInItem();
             item.setRelationCode(refund.getProductRefundCode());
+            item.setTransactionTime(storageIn.getStorageInTime());
+
             item.setTransactionQuantities(outItem.getTransactionQuantities());
             item.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
             item.setSkuId(outItem.getSkuId());
@@ -186,7 +195,6 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
 
             affected += inventoryMapper.updateAllColumnById(originInventory);
         }
-        StorageInModel storageIn = new StorageInModel();
         storageIn.setTransactionType(TransactionType.OthersStorageIn.toString());
         storageIn.setWarehouseId(refund.getProductRefundWarehouseId());
         storageIn.setOriginatorId(userId);
@@ -206,12 +214,10 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         Refund refund = refundService.retrieveMaster(id);
         JSONObject refundObj = JSON.parseObject(JSONObject.toJSONString(refund));
 
-        // todo 明天处理一下
         Procurement procurement = procurementMapper.selectById(refund.getProductProcurementId());
         refundObj.put("procurementCode", procurement.getProcurementCode());
 
         List<StorageOut> storageOuts = storageOutMapper.selectList(new EntityWrapper<StorageOut>().eq(StorageOut.ID, refund.getStorageOutId()).like(StorageOut.TRANSACTION_TYPE, TransactionType.Refund.toString()));
-//        List<StorageOutRecord> outRecords = new ArrayList<>();
 
         List<StorageOutItemRecord> outItemRecords = new ArrayList<>();
         if (storageOuts != null && storageOuts.size() > 0) {

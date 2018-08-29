@@ -7,20 +7,22 @@
 		<id column="id" property="id" />
 		<result column="check_code" property="checkCode" />
 		<result column="check_time" property="checkTime" />
+		<result column="finish_time" property="finishTime" />
+		<result column="begin_time" property="beginTime" />
+		<result column="warehouse_id" property="warehouseId" />
 		<result column="profit_lost" property="profitLost" />
 		<result column="check_note" property="checkNote" />
 		<result column="transaction_by" property="transactionBy" />
 		<result column="originator_id" property="originatorId" />
 		<result column="originator_name" property="originatorName" />
-		<result column="warehouse_id" property="warehouseId" />
-		<result column="field1" property="field1" />
 		<result column="status" property="status" />
+		<result column="field1" property="field1" />
 		<result column="field2" property="field2" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, check_code AS checkCode,originator_name as originatorName, warehouse_id AS warehouseId,transaction_by as transactionBy,status,check_time AS checkTime, profit_lost AS profitLost, check_note AS checkNote,originator_id AS originatorId, field1, field2
+        id, check_code AS checkCode, check_time AS checkTime, finish_time AS finishTime, begin_time AS beginTime, warehouse_id AS warehouseId, profit_lost AS profitLost, check_note AS checkNote, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, status, field1, field2
     </sql>
 
 </mapper>

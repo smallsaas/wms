@@ -162,6 +162,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             // 判断所有的商品是否都已经入库
             StorageInModel in = new StorageInModel();
             in.setOriginatorId(userId);
+            in.setStorageInTime(new Date());
             in.setTransactionTime(new Date());
             in.setOriginatorName(model.getOriginatorName());
             // 使用field1去接收 warehouseId 字段
@@ -210,6 +211,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                         affected += inventoryMapper.insert(isExistInventory);
                     }
                 }
+                item.setTransactionTime(in.getStorageInTime());
                 storageInItems.add(item);
             }
             in.setStorageInItems(storageInItems);

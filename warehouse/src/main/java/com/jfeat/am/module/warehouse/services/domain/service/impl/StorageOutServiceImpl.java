@@ -47,11 +47,14 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         Integer affected = 0;
         entity.setOriginatorId(userId);
         entity.setTransactionTime(new Date());
+        if (entity.getStorageOutTime()==null){
+            entity.setStorageOutTime(new Date());
+        }
         List<StorageOutItem> storageOutItems = new ArrayList<>();
         if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
             for (StorageOutItem outItem : entity.getStorageOutItems()) {
                 outItem.setRelationCode(entity.getTransactionCode());
-
+                outItem.setTransactionTime(entity.getStorageOutTime());
                 /*Integer nowSkuCount = queryInventoryDao.nowInventoryCount(outItem.getSkuId(),entity.getWarehouseId());
                 if (nowSkuCount==null){
                     nowSkuCount=0;

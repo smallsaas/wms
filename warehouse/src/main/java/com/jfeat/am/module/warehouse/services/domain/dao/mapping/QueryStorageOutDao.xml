@@ -11,16 +11,17 @@
         <result column="transaction_code" property="transactionCode" />
         <result column="transaction_type" property="transactionType" />
         <result column="transaction_time" property="transactionTime" />
+        <result column="storage_out_time" property="storageOutTime" />
         <result column="batch_no" property="batchNo" />
         <result column="note" property="note" />
         <result column="status" property="status" />
         <result column="transaction_by" property="transactionBy" />
         <result column="originator_id" property="originatorId" />
+        <result column="originator_name" property="originatorName" />
         <result column="warehouse_id" property="warehouseId" />
         <result column="slot_id" property="slotId" />
         <result column="field1" property="field1" />
         <result column="field2" property="field2" />
-        <result column="originator_name" property="originatorName" />
 
         <result column="warehouseName" property="warehouseName" />
         <result column="operatorName" property="operatorName" />
@@ -92,15 +93,17 @@
         <result column="transaction_code" property="transactionCode" />
         <result column="transaction_type" property="transactionType" />
         <result column="transaction_time" property="transactionTime" />
+        <result column="storage_out_time" property="storageOutTime" />
         <result column="batch_no" property="batchNo" />
         <result column="note" property="note" />
         <result column="status" property="status" />
         <result column="transaction_by" property="transactionBy" />
         <result column="originator_id" property="originatorId" />
+        <result column="originator_name" property="originatorName" />
         <result column="warehouse_id" property="warehouseId" />
+        <result column="slot_id" property="slotId" />
         <result column="field1" property="field1" />
         <result column="field2" property="field2" />
-        <result column="originator_name" property="originatorName" />
 
         <result column="warehouseName" property="warehouseName" />
 

@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author Code Generator
- * @since 2018-06-22
+ * @since 2018-08-29
  */
 @TableName("wms_warehouse")
 public class Warehouse extends Model<Warehouse> {
@@ -48,7 +48,7 @@ public class Warehouse extends Model<Warehouse> {
      * 仓库负责人
      */
 	@TableField("warehouse_charger")
-	private String warehouseCharger;
+	private Long warehouseCharger;
 
 
 	public Long getId() {
@@ -96,11 +96,11 @@ public class Warehouse extends Model<Warehouse> {
 		return this;
 	}
 
-	public String getWarehouseCharger() {
+	public Long getWarehouseCharger() {
 		return warehouseCharger;
 	}
 
-	public Warehouse setWarehouseCharger(String warehouseCharger) {
+	public Warehouse setWarehouseCharger(Long warehouseCharger) {
 		this.warehouseCharger = warehouseCharger;
 		return this;
 	}

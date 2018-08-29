@@ -13,20 +13,20 @@
         <result column="to_warehouse_id" property="toWarehouseId" />
         <result column="transaction_time" property="transactionTime" />
         <result column="finish_time" property="finishTime" />
-        <result column="storage_in_id" property="storageOutId" />
+        <result column="storage_in_id" property="storageInId" />
         <result column="storage_out_id" property="storageOutId" />
         <result column="note" property="note" />
         <result column="status" property="status" />
         <result column="transaction_by" property="transactionBy" />
         <result column="originator_id" property="originatorId" />
+        <result column="originator_name" property="originatorName" />
+        <result column="transfer_time" property="transferTime" />
         <result column="field1" property="field1" />
         <result column="field2" property="field2" />
-        <result column="originator_name" property="originatorName" />
 
 
 
         <result column="fromWarehouseName" property="fromWarehouseName" />
-        <result column="originatorName" property="originatorName" />
         <result column="toWarehouseName" property="toWarehouseName" />
 
 

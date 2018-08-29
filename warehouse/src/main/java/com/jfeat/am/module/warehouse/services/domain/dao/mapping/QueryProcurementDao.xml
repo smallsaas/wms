@@ -18,13 +18,13 @@
         <result column="transaction_by" property="transactionBy" />
         <result column="originator_id" property="originatorId" />
         <result column="originator_name" property="originatorName" />
+        <result column="buyer" property="buyer" />
         <result column="transaction_time" property="transactionTime" />
         <result column="field1" property="field1" />
         <result column="field2" property="field2" />
 
         <result column="supplierName" property="supplierName" />
         <result column="warehouseName" property="warehouseName" />
-        <result column="buyer" property="buyer" />
 
     </resultMap>
 

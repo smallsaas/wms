@@ -93,6 +93,7 @@
         <result column="transaction_code" property="transactionCode" />
         <result column="transaction_type" property="transactionType" />
         <result column="transaction_time" property="transactionTime" />
+        <result column="storage_out_time" property="storageOutTime" />
         <result column="batch_no" property="batchNo" />
         <result column="note" property="note" />
         <result column="status" property="status" />

@@ -50,12 +50,15 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         Integer affected = 0;
         entity.setOriginatorId(userId);
         entity.setTransactionTime(new Date());
+        if (entity.getStorageInTime()==null){
+            entity.setStorageInTime(new Date());
+        }
         StorageInFilter storageInFilter = new StorageInFilter();
         List<StorageInItem> storageInItems = new ArrayList<>();
         if (entity.getStorageInItems() != null && entity.getStorageInItems().size() > 0) {
             for (StorageInItem inItem : entity.getStorageInItems()) {
                 inItem.setRelationCode(entity.getTransactionCode());
-
+                inItem.setTransactionTime(entity.getStorageInTime());
                 // 设置产品的入库时间
                 inItem.setTransactionTime(entity.getTransactionTime());
 

@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * </p>
  *
  * @author Code Generator
- * @since 2018-06-23
+ * @since 2018-08-29
  */
 public interface CheckSkuMapper extends BaseMapper<CheckSku> {
 

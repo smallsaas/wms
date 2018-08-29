@@ -10,20 +10,21 @@
 		<result column="to_warehouse_id" property="toWarehouseId" />
 		<result column="transaction_time" property="transactionTime" />
 		<result column="finish_time" property="finishTime" />
-		<result column="storage_in_id" property="storageOutId" />
+		<result column="storage_in_id" property="storageInId" />
 		<result column="storage_out_id" property="storageOutId" />
 		<result column="note" property="note" />
 		<result column="status" property="status" />
 		<result column="transaction_by" property="transactionBy" />
 		<result column="originator_id" property="originatorId" />
 		<result column="originator_name" property="originatorName" />
+		<result column="transfer_time" property="transferTime" />
 		<result column="field1" property="field1" />
 		<result column="field2" property="field2" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, transaction_code AS transactionCode, originator_name as originatorName,transaction_by as transactionBy,from_warehouse_id AS fromWarehouseId, to_warehouse_id AS toWarehouseId, transaction_time AS transactionTime,finish_time AS finishTime, storage_in_id AS storageOutId, storage_out_id AS storageOutId, note, status,originator_id AS originatorId, field1, field2
+        id, transaction_code AS transactionCode, from_warehouse_id AS fromWarehouseId, to_warehouse_id AS toWarehouseId, transaction_time AS transactionTime, finish_time AS finishTime, storage_in_id AS storageInId, storage_out_id AS storageOutId, note, status, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, transfer_time AS transferTime, field1, field2
     </sql>
 
 </mapper>

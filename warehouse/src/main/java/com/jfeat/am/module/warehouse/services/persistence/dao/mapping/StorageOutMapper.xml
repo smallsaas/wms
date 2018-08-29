@@ -8,6 +8,7 @@
 		<result column="transaction_code" property="transactionCode" />
 		<result column="transaction_type" property="transactionType" />
 		<result column="transaction_time" property="transactionTime" />
+		<result column="storage_out_time" property="storageOutTime" />
 		<result column="batch_no" property="batchNo" />
 		<result column="note" property="note" />
 		<result column="status" property="status" />
@@ -22,7 +23,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, transaction_code AS transactionCode,originator_name as originatorName,warehouse_id AS warehouseId,slot_id AS slotId, transaction_type AS transactionType, transaction_time AS transactionTime, batch_no AS batchNo, note, status, transaction_by AS transactionBy, originator_id AS originatorId, field1, field2
+        id, transaction_code AS transactionCode, transaction_type AS transactionType, transaction_time AS transactionTime, storage_out_time AS storageOutTime, batch_no AS batchNo, note, status, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, warehouse_id AS warehouseId, slot_id AS slotId, field1, field2
     </sql>
 
 </mapper>

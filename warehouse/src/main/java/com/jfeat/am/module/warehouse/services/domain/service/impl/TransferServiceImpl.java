@@ -84,9 +84,13 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
          * 4.插入 Transfer
          * */
         int affected = 0;
-
+        if (model.getTransferTime()==null){
+            model.setTransferTime(new Date());
+        }
         StorageOutModel storageOut = new StorageOutModel();
         storageOut.setStorageOutItems(model.getOutItems());
+        storageOut.setStorageOutTime(model.getTransferTime());
+
         storageOut.setTransactionType(TransactionType.TransferOut.toString());
         storageOut.setWarehouseId(model.getFromWarehouseId());
         storageOut.setOriginatorId(userId);
@@ -100,6 +104,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         if (model.getOutItems() != null && model.getOutItems().size() > 0) {
             for (StorageOutItem outItem : model.getOutItems()) {
                 outItem.setRelationCode(model.getTransactionCode());// 插入最上级的 编号
+                outItem.setTransactionTime(storageOut.getStorageOutTime());
                 SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());
@@ -167,6 +172,10 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
         int affected = 0;
         Transfer transfer = crudTransferService.retrieveMaster(id);
+        transfer.setFinishTime(new Date());
+        StorageInModel storageIn = new StorageInModel();
+        storageIn.setStorageInTime(transfer.getFinishTime());
+
         StorageOut storageOut = storageOutMapper.selectById(transfer.getStorageOutId());
         List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,storageOut.getId()));
 
@@ -177,6 +186,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
                 StorageInItem inItem = new StorageInItem();
                 inItem.setRelationCode(transfer.getTransactionCode());// 插入最上级的 code
+                inItem.setTransactionTime(storageIn.getStorageInTime());
+
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());
                 isExistInventory.setWarehouseId(transfer.getToWarehouseId());
@@ -211,7 +222,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
             }
         }
 
-        StorageInModel storageIn = new StorageInModel();
+
         storageIn.setTransactionType(TransactionType.TransferIn.toString());
         storageIn.setWarehouseId(transfer.getToWarehouseId());
         storageIn.setOriginatorId(userId);
@@ -226,7 +237,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
 
         transfer.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
-        transfer.setFinishTime(new Date());
+
         transfer.setStatus(TransferStatus.Done.toString());
         affected += crudTransferService.updateMaster(transfer);
         return affected;
@@ -245,6 +256,11 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         int affected = 0;
 
         Transfer transfer = crudTransferService.retrieveMaster(id);
+        transfer.setFinishTime(new Date());
+
+        StorageInModel storageIn = new StorageInModel();
+        storageIn.setStorageInTime(transfer.getFinishTime());
+
         StorageOut storageOut = storageOutMapper.selectById(transfer.getStorageOutId());
         List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,storageOut.getId()));
 
@@ -256,6 +272,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 // come back to from warehouse
                 StorageInItem inItem = new StorageInItem();
                 inItem.setRelationCode(transfer.getTransactionCode());
+                inItem.setTransactionTime(storageIn.getStorageInTime());
 
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());
@@ -289,7 +306,6 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
             }
         }
 
-        StorageInModel storageIn = new StorageInModel();
         storageIn.setTransactionType(TransactionType.OthersStorageIn.toString());
         storageIn.setWarehouseId(transfer.getFromWarehouseId());
         storageIn.setOriginatorId(userId);
@@ -303,7 +319,6 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
         transfer.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
         transfer.setStatus(TransferStatus.Cancel.toString());
-        transfer.setFinishTime(new Date());
         affected += crudTransferService.updateMaster(transfer);
         return affected;
     }

@@ -61,6 +61,7 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
         model.setOriginatorId(userId);
         model.setProfitLost(0); //新建默认缺失值为0
         model.setStatus(CheckStatus.WaitForCheck.toString());
+        model.setCheckTime(new Date());
         affected += checkMapper.insert(model);
         if (model.getCheckSkus() == null && model.getCheckSkus().size() <= 0) {
             throw new BusinessException(5000, "请选择需要盘点的商品");
@@ -86,7 +87,7 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
         int totalProfitLostValue = 0;
         model.setId(checkId);
         model.setStatus(CheckStatus.Checking.toString());
-        model.setCheckTime(new Date());
+        model.setBeginTime(new Date());
 
         for (CheckSku sku : model.getCheckSkus()) {
             if (sku.getFactQuantities() != null && sku.getDeservedQuantities() != null) {
@@ -141,7 +142,7 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
 
         check.setId(checkId);
         check.setStatus(CheckStatus.CheckOut.toString());
-        check.setCheckTime(new Date());
+        check.setFinishTime(new Date());
         check.setProfitLost(totalProfitLostValue);
 
         affected += checkMapper.updateById(check);
