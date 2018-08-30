@@ -181,7 +181,7 @@
 
         WHERE
         1 = 1
-        AND csku.profit_lost <> 0
+        AND csku.profit_lost != 0
         AND t_sku_product.id = #{skuId}
         AND wms_warehouse.warehouse_name = #{warehouseName}
 
