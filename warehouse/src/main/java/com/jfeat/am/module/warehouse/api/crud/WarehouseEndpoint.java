@@ -103,7 +103,7 @@ public class WarehouseEndpoint extends BaseController {
                                @RequestParam(name = "warehouseName", required = false) String warehouseName,
                                @RequestParam(name = "warehousePCD", required = false) String warehousePCD,
                                @RequestParam(name = "warehouseAddress", required = false) String warehouseAddress,
-                               @RequestParam(name = "warehouseCharger", required = false) String warehouseCharger,
+                               @RequestParam(name = "warehouseCharger", required = false) Long warehouseCharger,
                                @RequestParam(name = "orderBy", required = false) String orderBy,
                                @RequestParam(name = "sort", required = false) String sort) {
         if (orderBy != null && orderBy.length() > 0) {

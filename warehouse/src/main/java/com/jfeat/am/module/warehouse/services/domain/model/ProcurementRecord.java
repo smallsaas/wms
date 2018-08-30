@@ -8,8 +8,6 @@ import com.jfeat.am.module.warehouse.services.persistence.model.Procurement;
 public class ProcurementRecord extends Procurement{
     String supplierName;
     String warehouseName;
-    String buyer;
-
 
     public String getSupplierName() {
         return supplierName;
@@ -27,12 +25,5 @@ public class ProcurementRecord extends Procurement{
         this.warehouseName = warehouseName;
     }
 
-    public String getBuyer() {
-        return buyer;
-    }
-
-    public void setBuyer(String buyer) {
-        this.buyer = buyer;
-    }
 
 }
