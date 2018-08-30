@@ -20,7 +20,7 @@ jwt:
 
 ###################  项目启动端口  ###################
 server:
-  port: 8081
+  port: 8085
 
 ###################  beetl配置  ###################
 beetl:
@@ -96,7 +96,7 @@ spring:
       username: root
       password: root
       filters: log4j,wall,mergeStat
-      initialize: true
+      initialize: false
       schema: classpath*:sql/*-schema.sql
       data: classpath*:sql/*-data.sql
 
