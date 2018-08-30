@@ -4,7 +4,8 @@ public enum TransactionType {
 
     Procurement,
     Refund,
-    Sales,
+    SalesIn,
+    SalesOut,
     TransferIn,
     TransferOut,
     StorageIn,
