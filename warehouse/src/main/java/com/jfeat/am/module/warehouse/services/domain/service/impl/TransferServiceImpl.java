@@ -177,7 +177,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         storageIn.setStorageInTime(transfer.getFinishTime());
 
         StorageOut storageOut = storageOutMapper.selectById(transfer.getStorageOutId());
-        List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,storageOut.getId()));
+        List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
+                .eq(StorageOutItem.STORAGE_OUT_ID,storageOut.getId()));
 
         List<StorageInItem> items = new ArrayList<>();
 
@@ -239,6 +240,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         transfer.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
 
         transfer.setStatus(TransferStatus.Done.toString());
+        transfer.setId(id);
         affected += crudTransferService.updateMaster(transfer);
         return affected;
     }
@@ -319,6 +321,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
         transfer.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
         transfer.setStatus(TransferStatus.Cancel.toString());
+        transfer.setId(id);
         affected += crudTransferService.updateMaster(transfer);
         return affected;
     }
