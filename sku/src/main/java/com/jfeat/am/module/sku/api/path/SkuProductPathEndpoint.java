@@ -118,8 +118,6 @@ public class SkuProductPathEndpoint extends BaseController {
         record.setUpdateTime(updateTime);
         record.setDescription(description);
         record.setField1(field1);
-        record.setField2(field2);
-        record.setField3(field3);
         record.setField4(field4);
         record.setField5(field5);
 
