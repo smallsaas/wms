@@ -51,6 +51,9 @@ CREATE TABLE `t_sku_product` (
 
   `create_time`  timestamp not null default current_timestamp COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `weight` varchar(255) DEFAULT NULL COMMENT '质量',
+  `volume` varchar(255) DEFAULT NULL COMMENT '体积',
+  `spec` varchar(255) DEFAULT NULL COMMENT '规格',
   `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
   `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
   `field3` varchar(255) DEFAULT NULL COMMENT '保留字段',

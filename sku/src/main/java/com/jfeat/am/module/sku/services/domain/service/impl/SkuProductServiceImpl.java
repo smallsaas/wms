@@ -72,7 +72,11 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                 entity.setSkuName(product.getName());
                 entity.setBarCode(product.getBarCode());
                 entity.setProductId(product.getId());
+                // 使用field1 去接收单位
                 entity.setField1(product.getField1());
+                entity.setWeight(product.getWeight());
+                entity.setVolume(product.getVolume);
+                entity.setSpec(product.getSpec);
                 entity.setCostPrice(product.getCostPrice() == null ? null : product.getCostPrice());
                 SkuProductFilter skuProductFilter = new SkuProductFilter();
                 affect += crudSkuProductService.createMaster(entity, skuProductFilter, null, null);
@@ -114,6 +118,10 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
             entity.setBarCode(product.getBarCode());
             // field 去接收单位
             entity.setField1(product.getField1());
+            entity.setWeight(product.getWeight());
+            entity.setVolume(product.getVolume);
+            entity.setSpec(product.getSpec);
+
             entity.setSkuName(product.getName());
             entity.setProductId(product.getId());
             SkuProductFilter skuProductFilter = new SkuProductFilter();
@@ -170,6 +178,11 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
             model.getSkus().get(0).setBarCode(model.getBarCode());
             model.getSkus().get(0).setSkuName(model.getName());
             model.getSkus().get(0).setSkuPrice(model.getCostPrice());
+            model.getSkus().get(0).setField1(model.getField1());
+
+            model.getSkus().get(0).setWeight(model.getWeight());
+            model.getSkus().get(0).setVolume(model.getVolume);
+            model.getSkus().get(0).setSpec(model.getSpec);
             affect += crudSkuProductService.updateMaster(model.getSkus().get(0), null, null, null);
 
 
@@ -189,6 +202,9 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
             originSkuProduct.setSkuName(model.getName());
             // field1 接收 单位字段
             originSkuProduct.setField1(model.getField1());
+            originSkuProduct.setVolume(model.getVolume);
+            originSkuProduct.setWeight(model.getWeight());
+            originSkuProduct.setSpec(model.getSpec);
             originSkuProduct.setProductId(model.getId());
 
             if (model.getCostPrice() != null && model.getCostPrice().compareTo(originSkuProduct.getCostPrice()) != 0) {

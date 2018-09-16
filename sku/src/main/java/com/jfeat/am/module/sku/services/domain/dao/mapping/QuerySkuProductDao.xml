@@ -22,6 +22,9 @@
         <result column="stock_cost" property="stockCost"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
+        <result column="weight" property="weight" />
+        <result column="volume" property="volume" />
+        <result column="spec" property="spec" />
         <result column="field1" property="field1"/>
         <result column="field2" property="field2"/>
         <result column="field3" property="field3"/>

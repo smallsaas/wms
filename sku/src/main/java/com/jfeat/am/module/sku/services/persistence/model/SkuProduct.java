@@ -99,6 +99,21 @@ public class SkuProduct extends Model<SkuProduct> {
      */
 	@TableField("update_time")
 	private Date updateTime;
+	/**
+	 * 质量
+	 */
+	@TableField("weight")
+	private String weight;
+	/**
+	 * 体积
+	 */
+	@TableField("volume")
+	private String volume;
+	/**
+	 * 规格
+	 */
+	@TableField("spec")
+	private String spec;
     /**
      * 保留字段
      */
@@ -257,6 +272,30 @@ public class SkuProduct extends Model<SkuProduct> {
 		return this;
 	}
 
+	public String getWeight() {
+		return weight;
+	}
+
+	public void setWeight(String weight) {
+		this.weight = weight;
+	}
+
+	public String getVolume() {
+		return volume;
+	}
+
+	public void setVolume(String volume) {
+		this.volume = volume;
+	}
+
+	public String getSpec() {
+		return spec;
+	}
+
+	public void setSpec(String spec) {
+		this.spec = spec;
+	}
+
 	public String getField1() {
 		return field1;
 	}
@@ -316,6 +355,12 @@ public class SkuProduct extends Model<SkuProduct> {
 
 	public static final String UPDATE_TIME = "update_time";
 
+	public static final String SPEC = "spec";
+
+	public static final String WEIGHT = "weight";
+
+	public static final String VOLUME = "volume";
+
 	public static final String FIELD1 = "field1";
 
 	public static final String FIELD2 = "field2";
@@ -346,6 +391,9 @@ public class SkuProduct extends Model<SkuProduct> {
 			", stockCost=" + stockCost +
 			", createTime=" + createTime +
 			", updateTime=" + updateTime +
+				", weight=" + weight +
+				", volume=" + volume +
+				", spec=" + spec +
 			", field1=" + field1 +
 			", field2=" + field2 +
 			", field3=" + field3 +

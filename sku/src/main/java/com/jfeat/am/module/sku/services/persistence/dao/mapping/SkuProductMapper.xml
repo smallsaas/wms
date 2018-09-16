@@ -20,6 +20,10 @@
 		<result column="stock_cost" property="stockCost" />
 		<result column="create_time" property="createTime" />
 		<result column="update_time" property="updateTime" />
+		<result column="weight" property="weight" />
+		<result column="volume" property="volume" />
+		<result column="spec" property="spec" />
+
 		<result column="field1" property="field1" />
 		<result column="field2" property="field2" />
 		<result column="field3" property="field3" />
@@ -27,7 +31,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, product_id AS productId, sku_code AS skuCode, sku_name AS skuName, status, sort_value AS sortValue, search_key_word AS searchKeyWord, bar_code AS barCode, description, sku_price AS skuPrice, readjust_cost_price AS readjustCostPrice, suggested_price AS suggestedPrice, cost_price AS costPrice, stock_cost AS stockCost, create_time AS createTime, update_time AS updateTime, field1, field2, field3
+        id, product_id AS productId, sku_code AS skuCode,weight,volume,spec, sku_name AS skuName, status, sort_value AS sortValue, search_key_word AS searchKeyWord, bar_code AS barCode, description, sku_price AS skuPrice, readjust_cost_price AS readjustCostPrice, suggested_price AS suggestedPrice, cost_price AS costPrice, stock_cost AS stockCost, create_time AS createTime, update_time AS updateTime, field1, field2, field3
     </sql>
 
 </mapper>
