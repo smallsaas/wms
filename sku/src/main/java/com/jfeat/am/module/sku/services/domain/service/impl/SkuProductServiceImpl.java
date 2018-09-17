@@ -183,7 +183,8 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
             model.getSkus().get(0).setWeight(model.getWeight());
             model.getSkus().get(0).setVolume(model.getVolume());
             model.getSkus().get(0).setSpec(model.getSpec());
-            affect += crudSkuProductService.updateMaster(model.getSkus().get(0), null, null, null);
+
+            affect += crudSkuProductService.updateMaster(model.getSkus().get(0));
 
 
             if (model.getSkus().get(0).getSpecId() == null || model.getSkus().get(0).getSpecId().size() == 0) {
