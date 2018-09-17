@@ -311,7 +311,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         List<SkuUnit> units = skuUnitMapper.selectList(new EntityWrapper<SkuUnit>().eq("sku_id", id));
         object.put("skuUnits", units);
 
-        List<SkuSpecification> specifications = skuSpecificationMapper.selectList((new EntityWrapper<SkuSpecification>().eq("sku_id", id)));
+        /*List<SkuSpecification> specifications = skuSpecificationMapper.selectList((new EntityWrapper<SkuSpecification>().eq("sku_id", id)));
         List<SkuSpecificationGroupModel> groups = new ArrayList<>();
         for (SkuSpecification skuSpecification : specifications) {
             SkuSpecificationGroup group = skuSpecificationGroupMapper.selectById(skuSpecification.getGroupId());
@@ -335,7 +335,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                 groups.add(fixed);
             }
         }
-        object.put("items", groups == null ? null : groups);
+        object.put("items", groups == null ? null : groups);*/
 
         SkuProductModel skuProductModel = JSONObject.parseObject(JSONObject.toJSONString(object), SkuProductModel.class);
 
