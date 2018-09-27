@@ -70,6 +70,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
             for (SkuProductModel entity : model.getSkus()) {
 
                 entity.setSkuName(product.getName());
+                entity.setSkuCode(product.getProductCode());
                 entity.setBarCode(product.getBarCode());
                 entity.setProductId(product.getId());
                 // 使用field1 去接收单位
@@ -183,6 +184,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
             model.getSkus().get(0).setWeight(model.getWeight());
             model.getSkus().get(0).setVolume(model.getVolume());
             model.getSkus().get(0).setSpec(model.getSpec());
+            model.getSkus().get(0).setSkuCode(model.getProductCode());
 
             affect += crudSkuProductService.updateMaster(model.getSkus().get(0));
 
@@ -201,6 +203,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         } else {
             originSkuProduct.setBarCode(model.getBarCode());
             originSkuProduct.setSkuName(model.getName());
+            originSkuProduct.setSkuCode(model.getProductCode());
             // field1 接收 单位字段
             originSkuProduct.setField1(model.getField1());
             originSkuProduct.setVolume(model.getVolume());
