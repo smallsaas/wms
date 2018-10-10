@@ -51,7 +51,7 @@
         </if>
 
         <if test="record.warehouseId != null and record.warehouseId>0 ">
-            AND wms_inventory.warehouse_id LIKE CONCAT('%',#{record.warehouseId},'%')
+            AND wms_inventory.warehouse_id = #{record.warehouseId}
         </if>
 
         <if test="record.slotId != null and record.slotId>0 ">
@@ -67,7 +67,7 @@
         </if>
 
         <if test="record.skuId != null and record.skuId>0 ">
-            AND wms_inventory.sku_id LIKE CONCAT('%',#{record.skuId},'%')
+            AND wms_inventory.sku_id = #{record.skuId}
         </if>
 
         <if test="record.validSku != null and record.validSku>0 ">
