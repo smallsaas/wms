@@ -149,6 +149,7 @@ public class InventoryEndpoint extends BaseController {
                                 @RequestParam(name = "transmitQuantities", required = false) Integer transmitQuantities,
                                 @RequestParam(name = "warehouseName", required = false) String warehouseName,
                                 @RequestParam(name = "skuName", required = false) String skuName,
+                                @RequestParam(name = "search", required = false) String search,
                                 @RequestParam(name = "orderBy", required = false) String orderBy,
                                 @RequestParam(name = "sort", required = false) String sort) {
         if (orderBy != null && orderBy.length() > 0) {
@@ -176,7 +177,7 @@ public class InventoryEndpoint extends BaseController {
         record.setAdvanceQuantities(advanceQuantities);
         record.setTransmitQuantities(transmitQuantities);
 
-        page.setRecords(queryInventoryDao.findInventoryPage(page, warehouseName, skuName, record, orderBy));
+        page.setRecords(queryInventoryDao.findInventoryPage(page, warehouseName, skuName,search, record, orderBy));
 
         return SuccessTip.create(page);
     }

@@ -17,6 +17,7 @@ public interface QueryInventoryDao extends BaseMapper<InventoryRecord> {
     List<InventoryRecord> findInventoryPage(Page<InventoryRecord> page,
                                             @Param("warehouseName") String warehouseName,
                                             @Param("skuName") String skuName,
+                                            @Param("search") String search,
                                             @Param("record") InventoryRecord record,
                                             @Param("orderBy") String orderBy);
 

@@ -50,6 +50,11 @@
             AND t_sku_product.sku_name LIKE CONCAT('%',#{skuName},'%')
         </if>
 
+        <if test="search != null and search!= '' ">
+            AND t_sku_product.sku_name LIKE CONCAT('%',#{search},'%')
+            or t_sku_product.bar_code LIKE CONCAT('%',#{search},'%')
+        </if>
+
         <if test="record.warehouseId != null and record.warehouseId>0 ">
             AND wms_inventory.warehouse_id = #{record.warehouseId}
         </if>
