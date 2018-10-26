@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Code Generator on 2018-06-23
  */
 public interface QueryCheckDao extends BaseMapper<CheckRecord> {
-    List<CheckRecord> findCheckPage(Page<CheckRecord> page, @Param("record") CheckRecord record, @Param("orderBy") String orderBy);
+    List<CheckRecord> findCheckPage(Page<CheckRecord> page,@Param("warehouseId") Long warehouseId, @Param("record") CheckRecord record, @Param("orderBy") String orderBy);
 
 
     List<CheckSkuRecord> skuRecords(@Param("checkId")Long checkId);

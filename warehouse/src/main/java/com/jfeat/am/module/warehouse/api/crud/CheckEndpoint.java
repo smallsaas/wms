@@ -107,6 +107,7 @@ public class CheckEndpoint extends BaseController {
                            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                            @RequestParam(name = "id", required = false) Long id,
                            @RequestParam(name = "checkCode", required = false) String checkCode,
+                           @RequestParam(name = "warehouseId", required = false) Long warehouseId,
                            @RequestParam(name = "checkTime", required = false) Date checkTime,
                            @RequestParam(name = "profitLost", required = false) Integer profitLost,
                            @RequestParam(name = "checkNote", required = false) String checkNote,
@@ -141,7 +142,7 @@ public class CheckEndpoint extends BaseController {
         record.setField1(field1);
         record.setField2(field2);
 
-        page.setRecords(queryCheckDao.findCheckPage(page, record, orderBy));
+        page.setRecords(queryCheckDao.findCheckPage(page, warehouseId,record, orderBy));
 
         return SuccessTip.create(page);
     }
