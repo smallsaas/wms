@@ -13,7 +13,7 @@ import java.util.List;
  * Created by Code Generator on 2018-06-22
  */
 public interface QueryWarehouseDao extends BaseMapper<WarehouseRecord> {
-    List<WarehouseRecord> findWarehousePage(Page<WarehouseRecord> page, @Param("record") WarehouseRecord record, @Param("orderBy") String orderBy);
+    List<WarehouseRecord> findWarehousePage(Page<WarehouseRecord> page, @Param("warehouseId")Long warehouseId,@Param("record") WarehouseRecord record, @Param("orderBy") String orderBy);
 
 
     @Select("select wms_warehouse.warehouse_name as warehouseName from wms_warehouse where wms_warehouse.id = #{warehouseId}")

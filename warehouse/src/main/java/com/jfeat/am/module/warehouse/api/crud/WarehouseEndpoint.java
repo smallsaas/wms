@@ -99,6 +99,7 @@ public class WarehouseEndpoint extends BaseController {
                                @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                                @RequestParam(name = "id", required = false) Long id,
+                               @RequestParam(name = "warehouseId", required = false) Long warehouseId,
                                @RequestParam(name = "warehouseCode", required = false) String warehouseCode,
                                @RequestParam(name = "warehouseName", required = false) String warehouseName,
                                @RequestParam(name = "warehousePCD", required = false) String warehousePCD,
@@ -128,7 +129,7 @@ public class WarehouseEndpoint extends BaseController {
         record.setWarehouseAddress(warehouseAddress);
         record.setWarehouseCharger(warehouseCharger);
 
-        page.setRecords(queryWarehouseDao.findWarehousePage(page, record, orderBy));
+        page.setRecords(queryWarehouseDao.findWarehousePage(page, warehouseId,record, orderBy));
 
         return SuccessTip.create(page);
     }

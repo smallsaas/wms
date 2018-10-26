@@ -29,6 +29,10 @@
             AND wms_warehouse.id LIKE CONCAT('%',#{record.id},'%')
         </if>
 
+        <if test="warehouseId != null and warehouseId >0 ">
+            AND wms_warehouse.id != #{warehouseId}
+        </if>
+
         <if test="record.warehouseCode != null and record.warehouseCode!= ''">
             AND wms_warehouse.warehouse_code LIKE CONCAT('%',#{record.warehouseCode},'%')
         </if>

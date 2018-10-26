@@ -87,6 +87,12 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         if (model.getTransferTime()==null){
             model.setTransferTime(new Date());
         }
+
+        if (model.getFromWarehouseId().compareTo(model.getToWarehouseId()) == 0){
+
+            throw new BusinessException(4100,"ERROR DATA"+"\"数据错误，调入|调出仓库不能相同\"");
+        }
+
         StorageOutModel storageOut = new StorageOutModel();
         storageOut.setStorageOutItems(model.getOutItems());
         storageOut.setStorageOutTime(model.getTransferTime());
