@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Code Generator on 2018-06-22
  */
 public interface QueryTransferDao extends BaseMapper<TransferRecord> {
-    List<TransferRecord> findTransferPage(Page<TransferRecord> page, @Param("record") TransferRecord record, @Param("orderBy") String orderBy);
+    List<TransferRecord> findTransferPage(Page<TransferRecord> page, @Param("warehouseId")Long warehouseId,@Param("record") TransferRecord record, @Param("orderBy") String orderBy);
 
 
     // 调拨 详情

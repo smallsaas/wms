@@ -49,6 +49,11 @@
             AND wms_transfer.id LIKE CONCAT('%',#{record.id},'%')
         </if>
 
+        <if test="warehouseId != null and warehouseId >0 ">
+            AND fwarehouse.id = #{warehouseId}
+            or twarehouse.id = #{warehouseId}
+        </if>
+
         <if test="record.transactionCode != null and record.transactionCode!= ''">
             AND wms_transfer.transaction_code LIKE CONCAT('%',#{record.transactionCode},'%')
         </if>

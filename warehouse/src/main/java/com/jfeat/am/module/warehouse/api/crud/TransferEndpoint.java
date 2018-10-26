@@ -104,6 +104,7 @@ public class TransferEndpoint extends BaseController {
                               @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                               @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                               @RequestParam(name = "id", required = false) Long id,
+                              @RequestParam(name = "warehouseId", required = false) Long warehouseId,
                               @RequestParam(name = "transactionCode", required = false) String transactionCode,
                               @RequestParam(name = "fromWarehouseId", required = false) Long fromWarehouseId,
                               @RequestParam(name = "toWarehouseId", required = false) Long toWarehouseId,
@@ -147,7 +148,7 @@ public class TransferEndpoint extends BaseController {
         record.setField1(field1);
         record.setField2(field2);
 
-        page.setRecords(queryTransferDao.findTransferPage(page, record, orderBy));
+        page.setRecords(queryTransferDao.findTransferPage(page, warehouseId,record, orderBy));
 
         return SuccessTip.create(page);
     }
