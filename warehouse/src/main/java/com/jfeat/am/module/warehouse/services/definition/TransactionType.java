@@ -11,5 +11,7 @@ public enum TransactionType {
     StorageIn,
     StorageOut,
     OthersStorageOut,
-    OthersStorageIn
+    OthersStorageIn,
+    CustomerStorageIn,
+    CustomerStorageOut
 }
