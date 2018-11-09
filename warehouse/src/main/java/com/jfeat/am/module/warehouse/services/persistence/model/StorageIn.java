@@ -103,6 +103,12 @@ public class StorageIn extends Model<StorageIn> {
      */
 	private String field2;
 
+	/**
+	 * 订单号信息
+	 */
+	@TableField("distributor_customer")
+	private String distributorCustomer;
+
 
 	public Long getId() {
 		return id;
@@ -257,6 +263,14 @@ public class StorageIn extends Model<StorageIn> {
 		return this;
 	}
 
+	public String getDistributorCustomer() {
+		return distributorCustomer;
+	}
+
+	public void setDistributorCustomer(String distributorCustomer) {
+		this.distributorCustomer = distributorCustomer;
+	}
+
 	public static final String ID = "id";
 
 	public static final String TRANSACTION_CODE = "transaction_code";
@@ -291,6 +305,8 @@ public class StorageIn extends Model<StorageIn> {
 
 	public static final String FIELD2 = "field2";
 
+	public static final String DISTRIBUTOR_CUSTOMER = "distributor_customer";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -316,6 +332,7 @@ public class StorageIn extends Model<StorageIn> {
 			", procurementId=" + procurementId +
 			", field1=" + field1 +
 			", field2=" + field2 +
+				", distributorCustomer=" + distributorCustomer +
 			"}";
 	}
 }

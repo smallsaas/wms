@@ -28,6 +28,7 @@
         <result column="originator_name" property="originatorName" />
         <result column="operatorName" property="operatorName" />
         <result column="slotName" property="slotName" />
+        <result column="distributor_customer" property="distributorCustomer" />
 
         <collection property="storageInItemRecords"
                     column="id"
@@ -104,6 +105,7 @@
         <result column="originator_name" property="originatorName" />
         <result column="operatorName" property="operatorName" />
         <result column="slotName" property="slotName" />
+        <result column="distributor_customer" property="distributorCustomer" />
     </resultMap>
     <select id="findStorageInPage" resultMap="BaseResultMap" parameterType="StorageInRecord">
         SELECT wms_storage_in.*,

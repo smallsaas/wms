@@ -19,11 +19,13 @@
 		<result column="slot_id" property="slotId" />
 		<result column="field1" property="field1" />
 		<result column="field2" property="field2" />
+		<result column="out_order_num" property="outOrderNum" />
+		<result column="distributor_customer" property="distributorCustomer" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, transaction_code AS transactionCode, transaction_type AS transactionType, transaction_time AS transactionTime, storage_out_time AS storageOutTime, batch_no AS batchNo, note, status, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, warehouse_id AS warehouseId, slot_id AS slotId, field1, field2
+        id, transaction_code AS transactionCode, out_order_num as outOrderNum, distributor_customer as distributorCustomer,transaction_type AS transactionType, transaction_time AS transactionTime, storage_out_time AS storageOutTime, batch_no AS batchNo, note, status, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, warehouse_id AS warehouseId, slot_id AS slotId, field1, field2
     </sql>
 
 </mapper>

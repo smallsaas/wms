@@ -19,6 +19,7 @@ CREATE TABLE `wms_storage_in` (
   `procurement_id` bigint(20) DEFAULT NULL COMMENT '采购订单信息，采购与入库是一对多的关系，非采购入库时，采购的ID为null',
   `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
   `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  `distributor_customer` varchar(100) DEFAULT null COMMENT '分销商客户',
   PRIMARY KEY (`id`),
   UNIQUE (`transaction_code`),
   FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
@@ -60,6 +61,8 @@ CREATE TABLE `wms_storage_out` (
   `slot_id` bigint(20) DEFAULT NULL COMMENT '储位',
   `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
   `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  `out_order_num` varchar(32) DEFAULT null COMMENT '订单号信息',
+  `distributor_customer` varchar(100) DEFAULT null COMMENT '分销商客户',
   PRIMARY KEY (`id`),
   UNIQUE (`transaction_code`),
   FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
