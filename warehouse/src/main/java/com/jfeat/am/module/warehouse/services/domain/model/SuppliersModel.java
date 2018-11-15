@@ -1,7 +1,9 @@
 package com.jfeat.am.module.warehouse.services.domain.model;
 
 import com.jfeat.am.module.product.services.persistence.model.Product;
+import com.jfeat.am.module.warehouse.services.persistence.model.Sales;
 import com.jfeat.am.module.warehouse.services.persistence.model.Suppliers;
+import com.jfeat.am.module.warehouse.services.persistence.model.Trader;
 
 import java.util.List;
 
@@ -18,4 +20,5 @@ public class SuppliersModel extends Suppliers{
     public void setSupplierProducts(List<Product> supplierProducts) {
         this.supplierProducts = supplierProducts;
     }
+
 }

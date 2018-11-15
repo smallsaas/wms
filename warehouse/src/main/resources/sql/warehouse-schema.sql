@@ -138,29 +138,29 @@ CREATE TABLE `wms_transfer` (
 
 DROP TABLE IF EXISTS `wms_suppliers`;
 CREATE TABLE `wms_suppliers` (
-`id` bigint(20) NOT NULL  AUTO_INCREMENT,
-`supplier_name` varchar(255) NOT NULL COMMENT '供名称应商',
-`supplier_code` varchar(255) NOT NULL COMMENT '供应商编号',
-`supplier_PCD` varchar(255) NOT NULL COMMENT '供应商区域',
-`supplier_address` varchar(255) NOT NULL COMMENT '供应商详细地址',
-`supplier_postcode` varchar(255) DEFAULT NULL COMMENT '供应商邮编',
-`supplier_contact_name` varchar(255) NOT NULL COMMENT '供应商联系人姓名',
-`supplier_contact_phone` varchar(26) DEFAULT NULL COMMENT '供应商联系人电话(座机)',
-`supplier_contact_fax` varchar(50) DEFAULT NULL COMMENT '供应商联系人传真',
-`supplier_contact_email` varchar(50) DEFAULT NULL COMMENT '供应商联系人邮箱',
-`supplier_contact_position` varchar(26) DEFAULT NULL COMMENT '供应商联系人职位',
-`supplier_contact_cell_phone` varchar(26) DEFAULT NULL COMMENT '供应商联系人手机',
-`supplier_account_name` varchar(50) DEFAULT NULL COMMENT '供应商开户名称',
-`supplier_account_bank` varchar(50) DEFAULT NULL COMMENT '供应商开户银行',
-`supplier_account_bank_no` bigint(20) DEFAULT NULL COMMENT '供应商银行账号',
-`supplier_invoice_title` varchar(50) DEFAULT NULL COMMENT '供应商发票抬头',
-`supplier_status` varchar(26) DEFAULT NULL COMMENT '供应商状态',
-`supplier_note`  text  DEFAULT NULL COMMENT '供应商备注',
-`supplier_register_time` datetime DEFAULT NULL COMMENT '供应商注册时间',
-`field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
-`field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
-UNIQUE (`supplier_name`),
-PRIMARY KEY (`id`)
+ `id` bigint(20) NOT NULL  AUTO_INCREMENT,
+ `supplier_name` varchar(255) NOT NULL COMMENT '供名称应商',
+ `supplier_code` varchar(255) NOT NULL COMMENT '供应商编号',
+ `supplier_PCD` varchar(255) NOT NULL COMMENT '供应商区域',
+ `supplier_address` varchar(255) NOT NULL COMMENT '供应商详细地址',
+ `supplier_postcode` varchar(255) DEFAULT NULL COMMENT '供应商邮编',
+ `supplier_contact_name` varchar(255) NOT NULL COMMENT '供应商联系人姓名',
+ `supplier_contact_phone` varchar(26) DEFAULT NULL COMMENT '供应商联系人电话(座机)',
+ `supplier_contact_fax` varchar(50) DEFAULT NULL COMMENT '供应商联系人传真',
+ `supplier_contact_email` varchar(50) DEFAULT NULL COMMENT '供应商联系人邮箱',
+ `supplier_contact_position` varchar(26) DEFAULT NULL COMMENT '供应商联系人职位',
+ `supplier_contact_cell_phone` varchar(26) DEFAULT NULL COMMENT '供应商联系人手机',
+ `supplier_account_name` varchar(50) DEFAULT NULL COMMENT '供应商开户名称',
+ `supplier_account_bank` varchar(50) DEFAULT NULL COMMENT '供应商开户银行',
+ `supplier_account_bank_no` bigint(20) DEFAULT NULL COMMENT '供应商银行账号',
+ `supplier_invoice_title` varchar(50) DEFAULT NULL COMMENT '供应商发票抬头',
+ `supplier_status` varchar(26) DEFAULT NULL COMMENT '供应商状态',
+ `supplier_note`  text  DEFAULT NULL COMMENT '供应商备注',
+ `supplier_register_time` datetime DEFAULT NULL COMMENT '供应商注册时间',
+ `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
+ `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
+ UNIQUE (`supplier_name`),
+ PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -275,6 +275,55 @@ CREATE TABLE `wms_check_sku` (
   FOREIGN KEY (`check_id`) REFERENCES `wms_check` (`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+DROP TABLE IF EXISTS `wms_trader`;
+CREATE TABLE `wms_trader` (
+ `id` bigint(20) NOT NULL  AUTO_INCREMENT,
+ `trader_name` varchar(255) NOT NULL COMMENT '分销商名称',
+ `trader_code` varchar(255) NOT NULL COMMENT '分销商编号',
+ `trader_PCD` varchar(255) NOT NULL COMMENT '分销商区域',
+ `trader_address` varchar(255) NOT NULL COMMENT '分销商详细地址',
+ `trader_postcode` varchar(255) DEFAULT NULL COMMENT '分销商邮编',
+ `trader_contact_name` varchar(255) NOT NULL COMMENT '分销商联系人姓名',
+ `trader_contact_phone` varchar(26) DEFAULT NULL COMMENT '分销商联系人电话(座机)',
+ `trader_contact_fax` varchar(50) DEFAULT NULL COMMENT '分销商联系人传真',
+ `trader_contact_email` varchar(50) DEFAULT NULL COMMENT '分销商联系人邮箱',
+ `trader_contact_position` varchar(26) DEFAULT NULL COMMENT '分销商联系人职位',
+ `trader_contact_cell_phone` varchar(26) DEFAULT NULL COMMENT '分销商联系人手机',
+ `trader_account_name` varchar(50) DEFAULT NULL COMMENT '分销商开户名称',
+ `trader_account_bank` varchar(50) DEFAULT NULL COMMENT '分销商开户银行',
+ `trader_account_bank_no` bigint(20) DEFAULT NULL COMMENT '分销商银行账号',
+ `trader_invoice_title` varchar(50) DEFAULT NULL COMMENT '分销商发票抬头',
+ `trader_status` varchar(26) DEFAULT NULL COMMENT '分销商状态',
+ `trader_note`  text  DEFAULT NULL COMMENT '分销商备注',
+ `trader_register_time` timestamp not null default current_timestamp COMMENT '分销商注册时间',
+ `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
+ `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
+ UNIQUE (`trader_name`),
+ PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `wms_sales`;
+CREATE TABLE `wms_sales` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `sales_code` varchar(255) NOT NULL COMMENT '销售订单',
+  `trader_id` bigint(20) NOT NULL COMMENT '分销商ID',
+  `sales_others_payment` decimal(12,4) DEFAULT NULL COMMENT '销售订单其他支出',
+  `sales_discount` int(11) DEFAULT NULL COMMENT '销售订单折扣',
+  `sales_total` decimal(12,4) NOT NULL COMMENT '销售订单花费',
+  `sales_time` datetime NOT NULL COMMENT '销售订单时间',
+  `sales_note` text COMMENT '销售订单备注',
+  `sales_status` varchar(26) DEFAULT NULL COMMENT '销售订单状态',
+  `transaction_by` varchar(100) DEFAULT NULL COMMENT '销售订单操作人',
+  `originator_id` bigint(20) NOT NULL COMMENT '销售订单制单人ID',
+  `originator_name` varchar(255) NOT NULL COMMENT '销售订单制单人',
+  `transaction_time` timestamp not null default current_timestamp COMMENT '操作时间',
+  `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  PRIMARY KEY (`id`),
+  UNIQUE (`sales_code`),
+  FOREIGN KEY (`trader_id`) REFERENCES `wms_trader` (`id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 

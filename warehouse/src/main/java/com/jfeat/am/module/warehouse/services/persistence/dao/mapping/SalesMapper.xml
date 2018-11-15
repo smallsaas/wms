@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.persistence.dao.SalesMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Sales">
+        <id column="id" property="id"/>
+        <result column="sales_code" property="salesCode"/>
+        <result column="trader_id" property="traderId"/>
+        <result column="sales_others_payment" property="salesOthersPayment"/>
+        <result column="sales_discount" property="salesDiscount"/>
+        <result column="sales_total" property="salesTotal"/>
+        <result column="sales_time" property="salesTime"/>
+        <result column="sales_note" property="salesNote"/>
+        <result column="sales_status" property="salesStatus"/>
+        <result column="transaction_by" property="transactionBy"/>
+        <result column="originator_id" property="originatorId"/>
+        <result column="originator_name" property="originatorName"/>
+        <result column="transaction_time" property="transactionTime"/>
+        <result column="field1" property="field1"/>
+        <result column="field2" property="field2"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, sales_code AS salesCode, trader_id AS traderId, sales_others_payment AS salesOthersPayment, sales_discount
+        AS salesDiscount, sales_total AS salesTotal, sales_time AS salesTime, sales_note AS salesNote, sales_status AS
+        salesStatus, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName,
+        transaction_time AS transactionTime, field1, field2
+    </sql>
+
+</mapper>

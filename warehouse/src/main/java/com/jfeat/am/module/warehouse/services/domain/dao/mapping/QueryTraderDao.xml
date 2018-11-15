@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.domain.dao.QueryTraderDao">
+    <sql id="Base_Column_List">
+        wms_trader.*
+    </sql>
+    <select id="findTraderPage" resultType="TraderRecord" parameterType="com.jfeat.am.module.warehouse.services.domain.model.TraderRecord">
+        SELECT wms_trader.*
+        FROM wms_trader
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND wms_trader.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+        <if test="record.traderName != null and record.traderName!= ''">
+            AND wms_trader.trader_name LIKE CONCAT('%',#{record.traderName},'%')
+        </if>
+        <if test="record.traderCode != null and record.traderCode!= ''">
+            AND wms_trader.trader_code LIKE CONCAT('%',#{record.traderCode},'%')
+        </if>
+        <if test="record.traderPCD != null and record.traderPCD!= ''">
+            AND wms_trader.trader_PCD LIKE CONCAT('%',#{record.traderPCD},'%')
+        </if>
+        <if test="record.traderAddress != null and record.traderAddress!= ''">
+            AND wms_trader.trader_address LIKE CONCAT('%',#{record.traderAddress},'%')
+        </if>
+        <if test="record.traderPostcode != null and record.traderPostcode!= ''">
+            AND wms_trader.trader_postcode LIKE CONCAT('%',#{record.traderPostcode},'%')
+        </if>
+        <if test="record.traderContactName != null and record.traderContactName!= ''">
+            AND wms_trader.trader_contact_name LIKE CONCAT('%',#{record.traderContactName},'%')
+        </if>
+        <if test="record.traderContactPhone != null and record.traderContactPhone!= ''">
+            AND wms_trader.trader_contact_phone LIKE CONCAT('%',#{record.traderContactPhone},'%')
+        </if>
+        <if test="record.traderContactFax != null and record.traderContactFax!= ''">
+            AND wms_trader.trader_contact_fax LIKE CONCAT('%',#{record.traderContactFax},'%')
+        </if>
+        <if test="record.traderContactEmail != null and record.traderContactEmail!= ''">
+            AND wms_trader.trader_contact_email LIKE CONCAT('%',#{record.traderContactEmail},'%')
+        </if>
+        <if test="record.traderContactPosition != null and record.traderContactPosition!= ''">
+            AND wms_trader.trader_contact_position LIKE CONCAT('%',#{record.traderContactPosition},'%')
+        </if>
+        <if test="record.traderContactCellPhone != null and record.traderContactCellPhone!= ''">
+            AND wms_trader.trader_contact_cell_phone LIKE CONCAT('%',#{record.traderContactCellPhone},'%')
+        </if>
+        <if test="record.traderAccountName != null and record.traderAccountName!= ''">
+            AND wms_trader.trader_account_name LIKE CONCAT('%',#{record.traderAccountName},'%')
+        </if>
+        <if test="record.traderAccountBank != null and record.traderAccountBank!= ''">
+            AND wms_trader.trader_account_bank LIKE CONCAT('%',#{record.traderAccountBank},'%')
+        </if>
+        <if test="record.traderAccountBankNo != null and record.traderAccountBankNo>0 ">
+            AND wms_trader.trader_account_bank_no LIKE CONCAT('%',#{record.traderAccountBankNo},'%')
+        </if>
+        <if test="record.traderInvoiceTitle != null and record.traderInvoiceTitle!= ''">
+            AND wms_trader.trader_invoice_title LIKE CONCAT('%',#{record.traderInvoiceTitle},'%')
+        </if>
+        <if test="record.traderStatus != null and record.traderStatus!= ''">
+            AND wms_trader.trader_status LIKE CONCAT('%',#{record.traderStatus},'%')
+        </if>
+        <if test="record.traderNote != null and record.traderNote!= ''">
+            AND wms_trader.trader_note LIKE CONCAT('%',#{record.traderNote},'%')
+        </if>
+        <if test="record.traderRegisterTime != null and record.traderRegisterTime>0 ">
+            AND wms_trader.trader_register_time LIKE CONCAT('%',#{record.traderRegisterTime},'%')
+        </if>
+        <if test="record.field1 != null and record.field1!= ''">
+            AND wms_trader.field1 LIKE CONCAT('%',#{record.field1},'%')
+        </if>
+        <if test="record.field2 != null and record.field2!= ''">
+            AND wms_trader.field2 LIKE CONCAT('%',#{record.field2},'%')
+        </if>
+    </select>
+</mapper>

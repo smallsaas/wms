@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.persistence.dao.TraderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Trader">
+        <id column="id" property="id"/>
+        <result column="trader_name" property="traderName"/>
+        <result column="trader_code" property="traderCode"/>
+        <result column="trader_PCD" property="traderPCD"/>
+        <result column="trader_address" property="traderAddress"/>
+        <result column="trader_postcode" property="traderPostcode"/>
+        <result column="trader_contact_name" property="traderContactName"/>
+        <result column="trader_contact_phone" property="traderContactPhone"/>
+        <result column="trader_contact_fax" property="traderContactFax"/>
+        <result column="trader_contact_email" property="traderContactEmail"/>
+        <result column="trader_contact_position" property="traderContactPosition"/>
+        <result column="trader_contact_cell_phone" property="traderContactCellPhone"/>
+        <result column="trader_account_name" property="traderAccountName"/>
+        <result column="trader_account_bank" property="traderAccountBank"/>
+        <result column="trader_account_bank_no" property="traderAccountBankNo"/>
+        <result column="trader_invoice_title" property="traderInvoiceTitle"/>
+        <result column="trader_status" property="traderStatus"/>
+        <result column="trader_note" property="traderNote"/>
+        <result column="trader_register_time" property="traderRegisterTime"/>
+        <result column="field1" property="field1"/>
+        <result column="field2" property="field2"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, trader_name AS traderName, trader_code AS traderCode, trader_PCD AS traderPCD, trader_address AS
+        traderAddress, trader_postcode AS traderPostcode, trader_contact_name AS traderContactName, trader_contact_phone
+        AS traderContactPhone, trader_contact_fax AS traderContactFax, trader_contact_email AS traderContactEmail,
+        trader_contact_position AS traderContactPosition, trader_contact_cell_phone AS traderContactCellPhone,
+        trader_account_name AS traderAccountName, trader_account_bank AS traderAccountBank, trader_account_bank_no AS
+        traderAccountBankNo, trader_invoice_title AS traderInvoiceTitle, trader_status AS traderStatus, trader_note AS
+        traderNote, trader_register_time AS traderRegisterTime, field1, field2
+    </sql>
+
+</mapper>

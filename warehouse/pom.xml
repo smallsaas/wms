@@ -267,15 +267,16 @@
                 <configuration>
                     <!-- change to your module name -->
                     <moduleName>warehouse</moduleName>
-                    <dbUrl>jdbc:mysql://127.0.0.1:3306/softto</dbUrl>
+                    <dbUrl>jdbc:mysql://120.79.77.207:3306/mall</dbUrl>
                     <username>root</username>
                     <password>root</password>
                     <tables>
 
-                        <table>wms_sku_price_history</table>
+                        <table>wms_trader</table>
+                        <table>wms_sales</table>
                     </tables>
 
-                    <outputDir>C:\Users\AsDeI\Desktop\Projects-kqd\soffto\repo\wms\src\main\java</outputDir>
+                    <outputDir>/root/Desktop/project/repo/wms/warehouse/src/main/java</outputDir>
                     <parentPackage>com.jfeat.am.module</parentPackage>
                 </configuration>
             </plugin>

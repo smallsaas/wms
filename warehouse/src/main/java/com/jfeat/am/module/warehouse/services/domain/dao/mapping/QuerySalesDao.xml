@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.warehouse.services.domain.dao.QuerySalesDao">
+    <sql id="Base_Column_List">
+        wms_sales.*
+    </sql>
+    <select id="findSalesPage" resultType="SalesRecord" parameterType="com.jfeat.am.module.warehouse.services.domain.model.SalesRecord">
+        SELECT wms_sales.*
+        FROM wms_sales
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND wms_sales.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+        <if test="record.salesCode != null and record.salesCode!= ''">
+            AND wms_sales.sales_code LIKE CONCAT('%',#{record.salesCode},'%')
+        </if>
+        <if test="record.traderId != null and record.traderId>0 ">
+            AND wms_sales.trader_id LIKE CONCAT('%',#{record.traderId},'%')
+        </if>
+        <if test="record.salesOthersPayment != null and record.salesOthersPayment>0 ">
+            AND wms_sales.sales_others_payment LIKE CONCAT('%',#{record.salesOthersPayment},'%')
+        </if>
+        <if test="record.salesDiscount != null and record.salesDiscount>0 ">
+            AND wms_sales.sales_discount LIKE CONCAT('%',#{record.salesDiscount},'%')
+        </if>
+        <if test="record.salesTotal != null and record.salesTotal>0 ">
+            AND wms_sales.sales_total LIKE CONCAT('%',#{record.salesTotal},'%')
+        </if>
+        <if test="record.salesTime != null and record.salesTime>0 ">
+            AND wms_sales.sales_time LIKE CONCAT('%',#{record.salesTime},'%')
+        </if>
+        <if test="record.salesNote != null and record.salesNote!= ''">
+            AND wms_sales.sales_note LIKE CONCAT('%',#{record.salesNote},'%')
+        </if>
+        <if test="record.salesStatus != null and record.salesStatus!= ''">
+            AND wms_sales.sales_status LIKE CONCAT('%',#{record.salesStatus},'%')
+        </if>
+        <if test="record.transactionBy != null and record.transactionBy!= ''">
+            AND wms_sales.transaction_by LIKE CONCAT('%',#{record.transactionBy},'%')
+        </if>
+        <if test="record.originatorId != null and record.originatorId>0 ">
+            AND wms_sales.originator_id LIKE CONCAT('%',#{record.originatorId},'%')
+        </if>
+        <if test="record.originatorName != null and record.originatorName!= ''">
+            AND wms_sales.originator_name LIKE CONCAT('%',#{record.originatorName},'%')
+        </if>
+        <if test="record.transactionTime != null and record.transactionTime>0 ">
+            AND wms_sales.transaction_time LIKE CONCAT('%',#{record.transactionTime},'%')
+        </if>
+        <if test="record.field1 != null and record.field1!= ''">
+            AND wms_sales.field1 LIKE CONCAT('%',#{record.field1},'%')
+        </if>
+        <if test="record.field2 != null and record.field2!= ''">
+            AND wms_sales.field2 LIKE CONCAT('%',#{record.field2},'%')
+        </if>
+    </select>
+</mapper>
