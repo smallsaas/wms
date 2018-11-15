@@ -108,6 +108,12 @@ public class StorageOut extends Model<StorageOut> {
     @TableField("distributor_customer")
     private String distributorCustomer;
 
+    /**
+     * 储位
+     */
+    @TableField("sales_id")
+    private Long salesId;
+
     public Long getId() {
         return id;
     }
@@ -257,6 +263,14 @@ public class StorageOut extends Model<StorageOut> {
 
     public void setDistributorCustomer(String distributorCustomer) {
         this.distributorCustomer = distributorCustomer;
+    }
+
+    public Long getSalesId() {
+        return salesId;
+    }
+
+    public void setSalesId(Long salesId) {
+        this.salesId = salesId;
     }
 
     public static final String ID = "id";

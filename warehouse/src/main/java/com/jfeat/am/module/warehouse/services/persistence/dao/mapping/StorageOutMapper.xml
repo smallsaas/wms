@@ -17,6 +17,7 @@
 		<result column="originator_name" property="originatorName" />
 		<result column="warehouse_id" property="warehouseId" />
 		<result column="slot_id" property="slotId" />
+		<result column="sales_id" property="salesId" />
 		<result column="field1" property="field1" />
 		<result column="field2" property="field2" />
 		<result column="out_order_num" property="outOrderNum" />
@@ -25,7 +26,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, transaction_code AS transactionCode, out_order_num as outOrderNum, distributor_customer as distributorCustomer,transaction_type AS transactionType, transaction_time AS transactionTime, storage_out_time AS storageOutTime, batch_no AS batchNo, note, status, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, warehouse_id AS warehouseId, slot_id AS slotId, field1, field2
+        id, transaction_code AS transactionCode, sales_id as salesId,out_order_num as outOrderNum, distributor_customer as distributorCustomer,transaction_type AS transactionType, transaction_time AS transactionTime, storage_out_time AS storageOutTime, batch_no AS batchNo, note, status, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, warehouse_id AS warehouseId, slot_id AS slotId, field1, field2
     </sql>
 
 </mapper>

@@ -62,6 +62,11 @@ public class StorageOutItem extends Model<StorageOutItem> {
 	@TableField("relation_code")
 	private String relationCode;
 
+	/**
+	 * 操作类型
+	 */
+	private String type;
+
 
 	public Long getId() {
 		return id;
@@ -135,6 +140,14 @@ public class StorageOutItem extends Model<StorageOutItem> {
 		return this;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public static final String ID = "id";
 
 	public static final String STORAGE_OUT_ID = "storage_out_id";
@@ -150,6 +163,8 @@ public class StorageOutItem extends Model<StorageOutItem> {
 	public static final String TRANSACTION_TIME = "transaction_time";
 
 	public static final String RELATION_CODE = "relation_code";
+
+	public static final String TYPE = "type";
 
 	@Override
 	protected Serializable pkVal() {
@@ -167,6 +182,7 @@ public class StorageOutItem extends Model<StorageOutItem> {
 			", afterTransactionQuantities=" + afterTransactionQuantities +
 			", transactionTime=" + transactionTime +
 			", relationCode=" + relationCode +
+				", type=" + type +
 			"}";
 	}
 }

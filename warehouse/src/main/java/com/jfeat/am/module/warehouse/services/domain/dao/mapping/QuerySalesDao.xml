@@ -4,6 +4,87 @@
     <sql id="Base_Column_List">
         wms_sales.*
     </sql>
+
+
+    <!--has been not storageOut yet-->
+    <select id="skuSalesCount" resultType="int">
+        SELECT wms_storage_out_item.transaction_quantities AS outCount
+        FROM wms_storage_out_item
+            LEFT JOIN wms_sales on
+                    (wms_sales.id=wms_storage_out_item.storage_out_id
+                    AND wms_storage_out_item.type='SalesOut')
+        WHERE wms_sales.id=#{salesId}
+        AND wms_storage_out_item.sku_id=#{skuId}
+    </select>
+
+
+    <!--has been storageOut-->
+    <select id="skuSalesOutCount" resultType="int">
+        SELECT
+        SUM(wms_storage_out_item.transaction_quantities) AS storageOutCount
+        FROM
+        wms_storage_out_item
+        LEFT JOIN wms_storage_out on
+        (wms_storage_out.id = wms_storage_out_item.storage_out_id
+        AND wms_storage_out_item.type != 'SalesOut')
+        LEFT JOIN wms_sales ON (
+        wms_sales.id = wms_storage_out.sales_id
+        AND wms_storage_out.transaction_type = 'SalesOut'
+        )
+        WHERE wms_sales.id = #{salesId}
+        AND wms_storage_out_item.sku_id = #{skuId}
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <select id="findSalesPage" resultType="SalesRecord" parameterType="com.jfeat.am.module.warehouse.services.domain.model.SalesRecord">
         SELECT wms_sales.*
         FROM wms_sales

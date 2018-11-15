@@ -71,3 +71,4 @@ public interface QueryProcurementDao extends BaseMapper<ProcurementRecord> {
                                 @Param("skuId")Long skuId);
 
 }
+

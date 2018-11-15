@@ -62,6 +62,7 @@ CREATE TABLE `wms_storage_out` (
   `slot_id` bigint(20) DEFAULT NULL COMMENT '储位',
   `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
   `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
+  `sales_id` bigint(20) DEFAULT NULL COMMENT 'sales订单信息，非sales out库时，sales的ID为null',
   `out_order_num` varchar(32) DEFAULT null COMMENT '订单号信息',
   `distributor_customer` varchar(100) DEFAULT null COMMENT '分销商客户',
   PRIMARY KEY (`id`),
@@ -80,6 +81,7 @@ CREATE TABLE `wms_storage_out_item` (
   `after_transaction_quantities` int(11) NOT NULL default 0 COMMENT '操作后数量',
   `transaction_time` datetime DEFAULT NULL COMMENT '操作时间',
   `relation_code` varchar(255) NOT NULL COMMENT '关联的操作编号',
+  `type` varchar(26) DEFAULT 'Others' COMMENT '操作类型',
   PRIMARY KEY (`id`),
   FOREIGN KEY (`storage_out_id`) REFERENCES `wms_storage_out` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -311,6 +313,7 @@ CREATE TABLE `wms_sales` (
   `sales_others_payment` decimal(12,4) DEFAULT NULL COMMENT '销售订单其他支出',
   `sales_discount` int(11) DEFAULT NULL COMMENT '销售订单折扣',
   `sales_total` decimal(12,4) NOT NULL COMMENT '销售订单花费',
+  `total_count` int NOT NULL COMMENT 'product count',
   `sales_time` datetime NOT NULL COMMENT '销售订单时间',
   `sales_note` text COMMENT '销售订单备注',
   `sales_status` varchar(26) DEFAULT NULL COMMENT '销售订单状态',
@@ -318,6 +321,7 @@ CREATE TABLE `wms_sales` (
   `originator_id` bigint(20) NOT NULL COMMENT '销售订单制单人ID',
   `originator_name` varchar(255) NOT NULL COMMENT '销售订单制单人',
   `transaction_time` timestamp not null default current_timestamp COMMENT '操作时间',
+  `delivered_address` varchar(255) not null  COMMENT '收货地址',
   `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
   `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
   PRIMARY KEY (`id`),

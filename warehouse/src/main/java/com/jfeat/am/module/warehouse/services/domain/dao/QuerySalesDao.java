@@ -14,4 +14,11 @@ import java.util.List;
  */
 public interface QuerySalesDao extends BaseMapper<SalesRecord> {
     List<SalesRecord> findSalesPage(Page<SalesRecord> page, @Param("record") SalesRecord record, @Param("orderBy") String orderBy);
+
+    Integer skuSalesCount(@Param("salesId") Long salesId,
+                          @Param("skuId") Long skuId);
+
+    Integer skuSalesOutCount(@Param("salesId") Long salesId,
+                             @Param("skuId") Long skuId);
+
 }

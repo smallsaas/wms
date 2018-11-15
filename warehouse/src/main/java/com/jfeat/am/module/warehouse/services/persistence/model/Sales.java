@@ -95,6 +95,17 @@ public class Sales extends Model<Sales> {
      */
 	private String field2;
 
+	/**
+	 * product count
+	 */
+	private Integer totalCount;
+
+
+	/**
+	 * 收货地址
+	 */
+	private String deliveredAddress;
+
 
 	public Long getId() {
 		return id;
@@ -229,6 +240,22 @@ public class Sales extends Model<Sales> {
 	public Sales setField2(String field2) {
 		this.field2 = field2;
 		return this;
+	}
+
+	public Integer getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(Integer totalCount) {
+		this.totalCount = totalCount;
+	}
+
+	public String getDeliveredAddress() {
+		return deliveredAddress;
+	}
+
+	public void setDeliveredAddress(String deliveredAddress) {
+		this.deliveredAddress = deliveredAddress;
 	}
 
 	public static final String ID = "id";

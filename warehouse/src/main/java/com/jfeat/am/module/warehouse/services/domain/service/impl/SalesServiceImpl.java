@@ -1,14 +1,38 @@
 package com.jfeat.am.module.warehouse.services.domain.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.jfeat.am.common.exception.BusinessCode;
+import com.jfeat.am.common.exception.BusinessException;
+import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
+import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
+import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
+import com.jfeat.am.module.warehouse.services.crud.filter.StorageOutFilter;
+import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutService;
+import com.jfeat.am.module.warehouse.services.definition.SalesStatus;
+import com.jfeat.am.module.warehouse.services.definition.TransactionType;
+import com.jfeat.am.module.warehouse.services.domain.dao.QuerySalesDao;
+import com.jfeat.am.module.warehouse.services.domain.model.SalesModel;
+import com.jfeat.am.module.warehouse.services.domain.model.StorageOutModel;
 import com.jfeat.am.module.warehouse.services.domain.service.SalesService;
 
 import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDSalesServiceImpl;
+import com.jfeat.am.module.warehouse.services.persistence.dao.InventoryMapper;
+import com.jfeat.am.module.warehouse.services.persistence.dao.StorageOutItemMapper;
+import com.jfeat.am.module.warehouse.services.persistence.model.Inventory;
+import com.jfeat.am.module.warehouse.services.persistence.model.Sales;
+import com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem;
 import org.springframework.stereotype.Service;
 import com.jfeat.am.common.constant.tips.Ids;
 
 import javax.annotation.Resource;
 
 import com.jfeat.am.module.warehouse.services.persistence.dao.SalesMapper;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -22,6 +46,177 @@ import com.jfeat.am.module.warehouse.services.persistence.dao.SalesMapper;
 public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesService {
     @Resource
     private SalesMapper salesMapper;
+
+
+    @Resource
+    StorageOutItemMapper outItemMapper;
+    @Resource
+    SkuProductMapper skuProductMapper;
+    @Resource
+    QuerySalesDao querySalesDao;
+    @Resource
+    InventoryMapper inventoryMapper;
+    @Resource
+    CRUDStorageOutService crudStorageOutService;
+
+    @Transactional
+    public Integer createSales(Long userId, SalesModel model){
+
+        int affected = 0 ;
+
+        if (model.getOutItems()==null||model.getOutItems().size()<=0){
+            throw new BusinessException(5000, "请先选择需要出库的商品！");
+        }
+        BigDecimal totalSpend = BigDecimal.valueOf(0);
+        model.setOriginatorId(userId);
+        model.setTransactionTime(new Date());
+        model.setSalesStatus(SalesStatus.WaitForStorageIn.toString());
+
+        int totalCount =0;
+        for (StorageOutItem item : model.getOutItems()) {
+            BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
+            sum = sum.multiply(item.getTransactionSkuPrice());
+            totalSpend = totalSpend.add(sum);
+
+            totalCount += item.getTransactionQuantities();
+        }
+        model.setSalesTotal(totalSpend);
+        model.setTotalCount(totalCount);
+        affected += salesMapper.insert(model);
+
+
+        for (StorageOutItem item : model.getOutItems()) {
+            if (item.getTransactionQuantities() == 0) {
+                throw new BusinessException(4501, "出库数量不能为0，请重新输入！");
+            }
+            item.setRelationCode(model.getSalesCode());
+            item.setStorageOutId(model.getId());
+            item.setType(TransactionType.SalesOut.toString());
+            affected += outItemMapper.insert(item);
+        }
+        return affected;
+
+    }
+
+
+    @Transactional
+    public Integer updateProcurement(Long userId, Long salesId, SalesModel model) {
+        int affected = 0;
+
+        Sales sales = salesMapper.selectById(salesId);
+        // 等待入库的情况下才能执行更新的操作
+        if (sales.getSalesStatus().compareTo(SalesStatus.WaitForStorageIn.toString()) == 0) {
+            model.setId(salesId);
+            model.setTransactionTime(new Date());
+            if (model.getOutItems() == null || model.getOutItems().size() == 0) {
+                throw new BusinessException(5002,"请至少选择一种需要出库的商品");
+            } else {
+                outItemMapper.delete(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,salesId).eq(StorageOutItem.TYPE,TransactionType.SalesOut.toString()));
+
+                int totalCount = 0 ;
+                BigDecimal totalSpend = BigDecimal.valueOf(0);
+                for (StorageOutItem item : model.getOutItems()) {
+                    BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
+                    sum = sum.multiply(item.getTransactionSkuPrice());
+                    totalSpend = totalSpend.add(sum);
+                    totalCount += item.getTransactionQuantities();
+                }
+                model.setTotalCount(totalCount);
+                model.setSalesTotal(totalSpend);
+                for (StorageOutItem item : model.getOutItems()) {
+                    item.setRelationCode(sales.getSalesCode());
+                    item.setStorageOutId(salesId);
+                    item.setType(TransactionType.SalesOut.toString());
+                    affected += outItemMapper.insert(item);
+                }
+                affected += salesMapper.updateById(model);
+            }
+            return affected;
+        }
+        throw new BusinessException(BusinessCode.ErrorStatus);
+    }
+
+
+    @Transactional
+    public Integer executionStorageIn(Long userId, Long salesId, SalesModel model) {
+
+        int affected = 0;
+        int inSuccess = 0;
+        int outCount=0;
+        // 总需要入库的商品的数量
+
+        Sales sales = salesMapper.selectById(salesId);
+        model.setId(salesId);
+
+        if (model.getOutItems() != null && model.getOutItems().size() > 0) {
+            // 判断所有的商品是否都已经入库
+            StorageOutModel out = new StorageOutModel();
+            out.setOriginatorId(userId);
+            out.setStorageOutTime(new Date());
+            out.setTransactionTime(new Date());
+            out.setOriginatorName(model.getOriginatorName());
+            // 使用field1去接收 warehouseId 字段
+            out.setWarehouseId(Long.valueOf(model.getField1()));
+            //使用 field 去接收 入库 code
+            out.setTransactionCode(model.getField2());
+            out.setSalesId(salesId);
+            out.setTransactionType(TransactionType.SalesOut.toString());
+            StorageOutFilter storageOutFilter = new StorageOutFilter();
+
+            List<StorageOutItem> storageOutItems = new ArrayList<>();
+            for (StorageOutItem item : model.getOutItems()) {
+                if (item.getTransactionQuantities() > 0) {
+                    SkuProduct skuProduct = skuProductMapper.selectById(item.getSkuId());
+                    item.setRelationCode(sales.getSalesCode());
+                    // 某个 sku 的 sales 的数量
+                    Integer skuSalesCount = querySalesDao.skuSalesCount(salesId, item.getSkuId());
+                    //某个 sku 入库历史数量
+                    Integer skuSalesOutCount = querySalesDao.skuSalesOutCount(salesId, item.getSkuId());
+                    if (skuSalesOutCount == null) {
+                        skuSalesOutCount = 0;
+                    }
+
+                    if (item.getTransactionQuantities() > (skuSalesCount - skuSalesOutCount)) {
+                        throw new BusinessException(4500, "\""+skuProduct.getSkuName()+"\""+"出库数不能大于订单数，请先核对出库数！");
+                    }
+
+                    outCount += item.getTransactionQuantities() + skuSalesOutCount;
+
+                    Inventory isExistInventory = new Inventory();
+                    isExistInventory.setSkuId(item.getSkuId());
+                    isExistInventory.setWarehouseId(Long.valueOf(model.getField1()));
+                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    if (originInventory != null) {
+                        Integer validSku = originInventory.getValidSku() - item.getTransactionQuantities();
+                        // 操作后的 数量
+                        item.setAfterTransactionQuantities(validSku);
+                        originInventory.setValidSku(validSku);
+                        affected += inventoryMapper.updateById(originInventory);
+
+                    } else {
+                        throw new BusinessException(BusinessCode.OutOfRange);
+                    }
+                }
+                item.setTransactionTime(out.getStorageOutTime());
+                storageOutItems.add(item);
+            }
+            out.setStorageOutItems(storageOutItems);
+            inSuccess = crudStorageOutService.createMaster(out, storageOutFilter, null, null);
+
+            if (outCount == sales.getTotalCount()){
+                model.setSalesStatus(SalesStatus.TotalStorageIn.toString());
+            }else {
+                model.setSalesStatus(SalesStatus.SectionStorageIn.toString());
+
+            }
+        }
+        affected += salesMapper.updateById(model);
+        return affected;
+
+    }
+
+
+
 
     @Override
     public Integer bulkDelete(Ids ids) {
