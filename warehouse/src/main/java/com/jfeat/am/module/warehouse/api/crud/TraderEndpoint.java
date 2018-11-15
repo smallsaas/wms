@@ -1,6 +1,10 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
+import com.jfeat.am.common.persistence.model.User;
+import com.jfeat.am.core.jwt.JWTKit;
+import com.jfeat.am.module.warehouse.services.domain.model.TraderModel;
 import com.jfeat.am.module.warehouse.services.domain.model.TraderRecord;
+import com.jfeat.am.module.warehouse.services.persistence.model.Suppliers;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,7 +57,7 @@ public class TraderEndpoint extends BaseController {
     @BusinessLog(name = "Trader", value = "create Trader")
     @PostMapping
     @ApiOperation("create 分销商")
-    public Tip createTrader(@RequestBody Trader entity) {
+    public Tip createTrader(@RequestBody TraderModel entity) {
 
         Integer affected = 0;
         try {
@@ -85,6 +89,13 @@ public class TraderEndpoint extends BaseController {
     @ApiOperation("delete useless 分销商 details")
     public Tip deleteTrader(@PathVariable Long id) {
         return SuccessTip.create(traderService.deleteMaster(id));
+    }
+
+    @BusinessLog(name = "Suppliers", value = "update Suppliers")
+    @PutMapping("/{id}/status")
+    @ApiOperation(value = "设为禁用/正常",response = Trader.class)
+    public Tip forbiddenTrader(@PathVariable Long id) {
+        return SuccessTip.create(traderService.changeTraderStatus(id));
     }
 
     @GetMapping
