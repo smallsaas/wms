@@ -77,7 +77,8 @@
             t_sku_product.field1 as skuUnit
         FROM wms_storage_out_item
 
-        left join wms_storage_out on wms_storage_out_item.storage_out_id = wms_storage_out.id
+        left join wms_storage_out on (wms_storage_out_item.storage_out_id = wms_storage_out.id
+                                        and wms_storage_out_item.type!='CustomerStorageOut')
 
         LEFT JOIN t_sku_product ON wms_storage_out_item.sku_id = t_sku_product.id
 

@@ -1,6 +1,10 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
+import com.jfeat.am.core.jwt.JWTKit;
+import com.jfeat.am.module.warehouse.services.domain.model.SalesModel;
 import com.jfeat.am.module.warehouse.services.domain.model.SalesRecord;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +42,7 @@ import java.util.Date;
  * @since 2018-11-14
  */
 @RestController
-
+@Api("分销商出库")
 @RequestMapping("/api/warehouse/sales")
 public class SalesEndpoint extends BaseController {
 
@@ -51,11 +55,15 @@ public class SalesEndpoint extends BaseController {
 
     @BusinessLog(name = "Sales", value = "create Sales")
     @PostMapping
-    public Tip createSales(@RequestBody Sales entity) {
+    @ApiOperation("Create table record")
+    public Tip createSales(@RequestBody SalesModel entity) {
 
         Integer affected = 0;
+        String userName = JWTKit.getAccount(getHttpServletRequest());
+        entity.setOriginatorName(userName);
+        Long userId = JWTKit.getUserId(getHttpServletRequest());
         try {
-            affected = salesService.createMaster(entity);
+            affected = salesService.createSales(userId,entity);
 
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
@@ -65,24 +73,29 @@ public class SalesEndpoint extends BaseController {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation("get more details")
     public Tip getSales(@PathVariable Long id) {
-        return SuccessTip.create(salesService.retrieveMaster(id));
+        return SuccessTip.create(salesService.salesDetails(id));
     }
 
     @BusinessLog(name = "Sales", value = "update Sales")
     @PutMapping("/{id}")
-    public Tip updateSales(@PathVariable Long id, @RequestBody Sales entity) {
+    @ApiOperation("update record while record status is Wait for storage out")
+    public Tip updateSales(@PathVariable Long id, @RequestBody SalesModel entity) {
         entity.setId(id);
-        return SuccessTip.create(salesService.updateMaster(entity));
+        Long userId = JWTKit.getUserId(getHttpServletRequest());
+        return SuccessTip.create(salesService.updateSales(userId,id,entity));
     }
 
     @BusinessLog(name = "Sales", value = "delete Sales")
     @DeleteMapping("/{id}")
+    @ApiOperation("delete one record")
     public Tip deleteSales(@PathVariable Long id) {
         return SuccessTip.create(salesService.deleteMaster(id));
     }
 
     @GetMapping
+    @ApiOperation("record list")
     public Tip querySaleses(Page<SalesRecord> page,
                             @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
@@ -101,6 +114,7 @@ public class SalesEndpoint extends BaseController {
                             @RequestParam(name = "transactionTime", required = false) Date transactionTime,
                             @RequestParam(name = "field1", required = false) String field1,
                             @RequestParam(name = "field2", required = false) String field2,
+                            @RequestParam(name = "traderName", required = false) String traderName,
                             @RequestParam(name = "orderBy", required = false) String orderBy,
                             @RequestParam(name = "sort", required = false) String sort) {
         if (orderBy != null && orderBy.length() > 0) {
@@ -135,7 +149,7 @@ public class SalesEndpoint extends BaseController {
         record.setField1(field1);
         record.setField2(field2);
 
-        page.setRecords(querySalesDao.findSalesPage(page, record, orderBy));
+        page.setRecords(querySalesDao.findSalesPage(page, traderName,record, orderBy));
 
         return SuccessTip.create(page);
     }

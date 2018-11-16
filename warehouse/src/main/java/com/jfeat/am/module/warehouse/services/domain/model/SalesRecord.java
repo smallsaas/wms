@@ -7,4 +7,14 @@ import com.jfeat.am.module.warehouse.services.persistence.model.Sales;
  */
 public  class SalesRecord extends Sales {
 
+
+    String traderName;
+
+    public String getTraderName() {
+        return traderName;
+    }
+
+    public void setTraderName(String traderName) {
+        this.traderName = traderName;
+    }
 }

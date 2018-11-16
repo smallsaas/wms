@@ -14,6 +14,7 @@ public class StorageOutItemRecord extends StorageOutItem {
     String skuUnit;
     String warehouseName;
     String operator;
+    Integer finishedCount;
 
     public String getSkuName() {
         return skuName;
@@ -61,5 +62,13 @@ public class StorageOutItemRecord extends StorageOutItem {
 
     public void setOperator(String operator) {
         this.operator = operator;
+    }
+
+    public Integer getFinishedCount() {
+        return finishedCount;
+    }
+
+    public void setFinishedCount(Integer finishedCount) {
+        this.finishedCount = finishedCount;
     }
 }

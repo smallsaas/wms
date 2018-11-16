@@ -1,5 +1,7 @@
 package com.jfeat.am.module.warehouse.services.domain.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
@@ -11,6 +13,7 @@ import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutService
 import com.jfeat.am.module.warehouse.services.definition.SalesStatus;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QuerySalesDao;
+import com.jfeat.am.module.warehouse.services.domain.model.SalesDetails;
 import com.jfeat.am.module.warehouse.services.domain.model.SalesModel;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageOutModel;
 import com.jfeat.am.module.warehouse.services.domain.service.SalesService;
@@ -20,6 +23,7 @@ import com.jfeat.am.module.warehouse.services.persistence.dao.InventoryMapper;
 import com.jfeat.am.module.warehouse.services.persistence.dao.StorageOutItemMapper;
 import com.jfeat.am.module.warehouse.services.persistence.model.Inventory;
 import com.jfeat.am.module.warehouse.services.persistence.model.Sales;
+import com.jfeat.am.module.warehouse.services.persistence.model.StorageOut;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem;
 import org.springframework.stereotype.Service;
 import com.jfeat.am.common.constant.tips.Ids;
@@ -91,7 +95,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             }
             item.setRelationCode(model.getSalesCode());
             item.setStorageOutId(model.getId());
-            item.setType(TransactionType.SalesOut.toString());
+            item.setType(TransactionType.CustomerStorageOut.toString());
             affected += outItemMapper.insert(item);
         }
         return affected;
@@ -100,7 +104,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
 
 
     @Transactional
-    public Integer updateProcurement(Long userId, Long salesId, SalesModel model) {
+    public Integer updateSales(Long userId, Long salesId, SalesModel model) {
         int affected = 0;
 
         Sales sales = salesMapper.selectById(salesId);
@@ -126,7 +130,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                 for (StorageOutItem item : model.getOutItems()) {
                     item.setRelationCode(sales.getSalesCode());
                     item.setStorageOutId(salesId);
-                    item.setType(TransactionType.SalesOut.toString());
+                    item.setType(TransactionType.CustomerStorageOut.toString());
                     affected += outItemMapper.insert(item);
                 }
                 affected += salesMapper.updateById(model);
@@ -138,7 +142,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
 
 
     @Transactional
-    public Integer executionStorageIn(Long userId, Long salesId, SalesModel model) {
+    public Integer executionStorageOut(Long userId, Long salesId, SalesModel model) {
 
         int affected = 0;
         int inSuccess = 0;
@@ -216,6 +220,11 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
     }
 
 
+    public SalesDetails salesDetails(Long salesId){
+
+        SalesDetails salesDetails = querySalesDao.details(salesId);
+        return salesDetails;
+    }
 
 
     @Override

@@ -118,7 +118,8 @@
         t_sku_product.field1 as skuUnit
         FROM wms_storage_out_item
         left join t_sku_product on t_sku_product.id = wms_storage_out_item.sku_id
-        left join wms_storage_out on wms_storage_out.id = wms_storage_out_item.storage_out_id
+        left join wms_storage_out on (wms_storage_out.id = wms_storage_out_item.storage_out_id
+                                        and wms_storage_out_item.type!='CustomerStorageOut')
         WHERE 1=1
         and wms_storage_out.id = #{outId}
     </select>
