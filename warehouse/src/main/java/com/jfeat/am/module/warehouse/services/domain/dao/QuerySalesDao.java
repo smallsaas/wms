@@ -1,9 +1,6 @@
 package com.jfeat.am.module.warehouse.services.domain.dao;
 
-import com.jfeat.am.module.warehouse.services.domain.model.SalesDetails;
-import com.jfeat.am.module.warehouse.services.domain.model.SalesRecord;
-import com.jfeat.am.module.warehouse.services.domain.model.StorageOutRecord;
-import com.jfeat.am.module.warehouse.services.domain.model.SuppliersModel;
+import com.jfeat.am.module.warehouse.services.domain.model.*;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
@@ -27,9 +24,9 @@ public interface QuerySalesDao extends BaseMapper<SalesRecord> {
                              @Param("skuId") Long skuId);
 
 
-    SalesDetails details(@Param("salesId")Long salesId);
+    SalesDetails salesDetails(@Param("id")Long id);
 
-    StorageOutRecord outRecords(@Param("id")Long id);
+    StorageOutItemRecord itemRecords(@Param("id")Long id);
 
-
+    StorageOutRecord storagesOutDetails(@Param("id")Long id);
 }

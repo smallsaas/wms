@@ -156,6 +156,7 @@
         1 = 1
         AND t_sku_product.id = #{skuId}
         AND wms_warehouse.warehouse_name = #{warehouseName}
+        and sout.type!='CustomerStorageOut'
 
         UNION
         SELECT
@@ -227,6 +228,7 @@
         1 = 1
         AND t_sku_product.id = #{skuId}
         AND wms_warehouse.warehouse_name = #{warehouseName}
+        and sout.type!='CustomerStorageOut'
 
         ORDER BY transactionTime DESC
 

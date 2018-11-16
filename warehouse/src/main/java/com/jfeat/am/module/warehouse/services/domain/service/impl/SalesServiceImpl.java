@@ -7,20 +7,18 @@ import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
-import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageOutFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutService;
 import com.jfeat.am.module.warehouse.services.definition.SalesStatus;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QuerySalesDao;
-import com.jfeat.am.module.warehouse.services.domain.model.SalesDetails;
-import com.jfeat.am.module.warehouse.services.domain.model.SalesModel;
-import com.jfeat.am.module.warehouse.services.domain.model.StorageOutModel;
+import com.jfeat.am.module.warehouse.services.domain.model.*;
 import com.jfeat.am.module.warehouse.services.domain.service.SalesService;
 
 import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDSalesServiceImpl;
 import com.jfeat.am.module.warehouse.services.persistence.dao.InventoryMapper;
 import com.jfeat.am.module.warehouse.services.persistence.dao.StorageOutItemMapper;
+import com.jfeat.am.module.warehouse.services.persistence.dao.StorageOutMapper;
 import com.jfeat.am.module.warehouse.services.persistence.model.Inventory;
 import com.jfeat.am.module.warehouse.services.persistence.model.Sales;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOut;
@@ -62,13 +60,15 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
     InventoryMapper inventoryMapper;
     @Resource
     CRUDStorageOutService crudStorageOutService;
+    @Resource
+    StorageOutMapper outMapper;
 
     @Transactional
-    public Integer createSales(Long userId, SalesModel model){
+    public Integer createSales(Long userId, SalesModel model) {
 
-        int affected = 0 ;
+        int affected = 0;
 
-        if (model.getOutItems()==null||model.getOutItems().size()<=0){
+        if (model.getOutItems() == null || model.getOutItems().size() <= 0) {
             throw new BusinessException(5000, "请先选择需要出库的商品！");
         }
         BigDecimal totalSpend = BigDecimal.valueOf(0);
@@ -76,7 +76,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         model.setTransactionTime(new Date());
         model.setSalesStatus(SalesStatus.WaitForStorageIn.toString());
 
-        int totalCount =0;
+        int totalCount = 0;
         for (StorageOutItem item : model.getOutItems()) {
             BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
             sum = sum.multiply(item.getTransactionSkuPrice());
@@ -113,11 +113,11 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             model.setId(salesId);
             model.setTransactionTime(new Date());
             if (model.getOutItems() == null || model.getOutItems().size() == 0) {
-                throw new BusinessException(5002,"请至少选择一种需要出库的商品");
+                throw new BusinessException(5002, "请至少选择一种需要出库的商品");
             } else {
-                outItemMapper.delete(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,salesId).eq(StorageOutItem.TYPE,TransactionType.SalesOut.toString()));
+                outItemMapper.delete(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID, salesId).eq(StorageOutItem.TYPE, TransactionType.SalesOut.toString()));
 
-                int totalCount = 0 ;
+                int totalCount = 0;
                 BigDecimal totalSpend = BigDecimal.valueOf(0);
                 for (StorageOutItem item : model.getOutItems()) {
                     BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
@@ -146,7 +146,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
 
         int affected = 0;
         int inSuccess = 0;
-        int outCount=0;
+        int outCount = 0;
         // 总需要入库的商品的数量
 
         Sales sales = salesMapper.selectById(salesId);
@@ -164,7 +164,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             //使用 field 去接收 入库 code
             out.setTransactionCode(model.getField2());
             out.setSalesId(salesId);
-            out.setTransactionType(TransactionType.SalesOut.toString());
+            out.setTransactionType(TransactionType.CustomerStorageOut.toString());
             StorageOutFilter storageOutFilter = new StorageOutFilter();
 
             List<StorageOutItem> storageOutItems = new ArrayList<>();
@@ -181,7 +181,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                     }
 
                     if (item.getTransactionQuantities() > (skuSalesCount - skuSalesOutCount)) {
-                        throw new BusinessException(4500, "\""+skuProduct.getSkuName()+"\""+"出库数不能大于订单数，请先核对出库数！");
+                        throw new BusinessException(4500, "\"" + skuProduct.getSkuName() + "\"" + "出库数不能大于订单数，请先核对出库数！");
                     }
 
                     outCount += item.getTransactionQuantities() + skuSalesOutCount;
@@ -207,9 +207,9 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             out.setStorageOutItems(storageOutItems);
             inSuccess = crudStorageOutService.createMaster(out, storageOutFilter, null, null);
 
-            if (outCount == sales.getTotalCount()){
+            if (outCount == sales.getTotalCount()) {
                 model.setSalesStatus(SalesStatus.TotalStorageIn.toString());
-            }else {
+            } else {
                 model.setSalesStatus(SalesStatus.SectionStorageIn.toString());
 
             }
@@ -220,10 +220,33 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
     }
 
 
-    public SalesDetails salesDetails(Long salesId){
+    public SalesDetails salesDetails(Long salesId) {
 
-        SalesDetails salesDetails = querySalesDao.details(salesId);
-        return salesDetails;
+        SalesDetails salesDetails = querySalesDao.salesDetails(salesId);
+        JSONObject details = JSON.parseObject(JSON.toJSONString(salesDetails));
+
+
+        /*StorageOutItemRecord itemRecords = querySalesDao.itemRecords(salesDetails.getId());
+        details.put("itemRecords", itemRecords);*/
+
+        List<StorageOut> outs = outMapper.selectList(new EntityWrapper<StorageOut>().eq("sales_id", salesDetails.getId()));
+
+        List<StorageOutRecord> records = new ArrayList<>();
+
+        if (outs != null || outs.size() > 0) {
+            for (StorageOut out : outs){
+
+                StorageOutRecord searchRecords = querySalesDao.storagesOutDetails(out.getId());
+                records.add(searchRecords);
+            }
+
+        }
+
+        details.put("storageOutItemRecords",records);
+
+        SalesDetails result = JSON.parseObject(JSON.toJSONString(details),SalesDetails.class);
+
+        return result;
     }
 
 

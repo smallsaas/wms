@@ -12,7 +12,7 @@ public class StorageInItemRecord extends StorageInItem{
     String skuBarcode;
     String skuCode;
 
-    // TODO skuSpec need more details
+    // TODO skuSpec need more salesDetails
     String skuSpec;
 
     String skuUnit;

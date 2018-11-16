@@ -10,9 +10,9 @@
     <select id="skuSalesCount" resultType="int">
         SELECT wms_storage_out_item.transaction_quantities AS outCount
         FROM wms_storage_out_item
-            LEFT JOIN wms_sales on
-                    (wms_sales.id=wms_storage_out_item.storage_out_id
-                    AND wms_storage_out_item.type='SalesOut')
+        LEFT JOIN wms_sales on
+        (wms_sales.id=wms_storage_out_item.storage_out_id
+        AND wms_storage_out_item.type='SalesOut')
         WHERE wms_sales.id=#{salesId}
         AND wms_storage_out_item.sku_id=#{skuId}
     </select>
@@ -55,15 +55,26 @@
         <result column="field2" property="field2"/>
         <result column="traderName" property="traderName"/>
 
-        <collection property="storageOutItemRecords"
+
+        <collection property="itemRecords"
+                    column="id"
+                    select="itemRecords"
+                    ofType="com.jfeat.am.module.warehouse.services.domain.model.StorageOutItemRecord">
+
+        </collection>
+
+        <!--<collection property="storageOutItemRecords"
                     column="id"
                     select="storagesOutDetails"
                     ofType="com.jfeat.am.module.warehouse.services.domain.model.StorageOutRecord">
 
-        </collection>
+        </collection>-->
+
     </resultMap>
+
+
     <select id="salesDetails" resultMap="SalesDetails">
-        SELECT  wms_sales.sales_code,
+        SELECT wms_sales.id,wms_sales.sales_code,
         wms_sales.sales_total,
         wms_sales.total_count,
         wms_sales.transaction_time,
@@ -72,31 +83,68 @@
         FROM wms_sales
         left JOIN wms_trader on wms_trader.id = wms_sales.trader_id
         WHERE 1=1
-        and wms_sales.id = #{salesId}
+        and wms_sales.id = #{id}
+    </select>
+
+    <resultMap id="ItemRecord" type="com.jfeat.am.module.warehouse.services.domain.model.StorageOutItemRecord">
+        <id column="id" property="id"/>
+        <result column="storage_out_id" property="storageOutId"/>
+        <result column="sku_id" property="skuId"/>
+        <result column="transaction_sku_price" property="transactionSkuPrice"/>
+        <result column="transaction_quantities" property="transactionQuantities"/>
+        <result column="transaction_time" property="transactionTime"/>
+        <result column="warehouse_id" property="warehouseId"/>
+        <result column="slot_id" property="slotId"/>
+
+        <result column="skuName" property="skuName"/>
+        <result column="skuBarcode" property="skuBarcode"/>
+        <result column="skuCode" property="skuCode"/>
+        <result column="skuUnit" property="skuUnit"/>
+        <result column="finishedCount" property="finishedCount"/>
+
+    </resultMap>
+    <select id="itemRecords" resultMap="ItemRecord" parameterType="long">
+        SELECT wms_storage_out_item.*,
+        t_sku_product.sku_code as skuCode,
+        t_sku_product.bar_code as skuBarcode,
+        t_sku_product.sku_name as skuName,
+        t_sku_product.field1 as skuUnit
+        FROM wms_storage_out_item
+
+        left join wms_sales on
+        (wms_storage_out_item.storage_out_id = wms_sales.id
+        and wms_storage_out_item.type='CustomerStorageOut')
+
+        LEFT JOIN t_sku_product ON wms_storage_out_item.sku_id = t_sku_product.id
+
+
+        WHERE
+        wms_sales.id = #{id}
+
     </select>
 
     <resultMap id="BaseStorageOutRecord" type="com.jfeat.am.module.warehouse.services.domain.model.StorageOutRecord">
-        <id column="id" property="id" />
-        <result column="transaction_code" property="transactionCode" />
-        <result column="transaction_type" property="transactionType" />
-        <result column="transaction_time" property="transactionTime" />
-        <result column="storage_out_time" property="storageOutTime" />
-        <result column="batch_no" property="batchNo" />
-        <result column="note" property="note" />
-        <result column="status" property="status" />
-        <result column="transaction_by" property="transactionBy" />
-        <result column="originator_id" property="originatorId" />
-        <result column="originator_name" property="originatorName" />
-        <result column="warehouse_id" property="warehouseId" />
-        <result column="slot_id" property="slotId" />
-        <result column="field1" property="field1" />
-        <result column="field2" property="field2" />
-        <result column="out_order_num" property="outOrderNum" />
-        <result column="distributor_customer" property="distributorCustomer" />
+        <id column="id" property="id"/>
+        <result column="transaction_code" property="transactionCode"/>
+        <result column="transaction_type" property="transactionType"/>
+        <result column="transaction_time" property="transactionTime"/>
+        <result column="storage_out_time" property="storageOutTime"/>
+        <result column="batch_no" property="batchNo"/>
+        <result column="note" property="note"/>
+        <result column="status" property="status"/>
+        <result column="transaction_by" property="transactionBy"/>
+        <result column="originator_id" property="originatorId"/>
+        <result column="originator_name" property="originatorName"/>
+        <result column="warehouse_id" property="warehouseId"/>
+        <result column="slot_id" property="slotId"/>
+        <result column="field1" property="field1"/>
+        <result column="field2" property="field2"/>
+        <result column="out_order_num" property="outOrderNum"/>
+        <result column="distributor_customer" property="distributorCustomer"/>
 
-        <result column="warehouseName" property="warehouseName" />
-        <result column="operatorName" property="operatorName" />
-        <result column="slotName" property="slotName" />
+        <result column="warehouseName" property="warehouseName"/>
+        <result column="operatorName" property="operatorName"/>
+        <result column="slotName" property="slotName"/>
 
         <collection property="storageOutItemRecords"
                     column="id"
@@ -114,34 +162,33 @@
         FROM wms_storage_out
         left join wms_warehouse on wms_warehouse.id = wms_storage_out.warehouse_id
         left join wms_warehouse_slot on wms_warehouse_slot.id = wms_storage_out.slot_id
-        left
         WHERE 1=1
         AND wms_storage_out.id = #{id}
     </select>
 
-    <resultMap id="BaseStorageOutItemRecord" type="com.jfeat.am.module.warehouse.services.domain.model.StorageOutItemRecord">
-        <id column="id" property="id" />
-        <result column="storage_out_id" property="storageOutId" />
-        <result column="sku_id" property="skuId" />
-        <result column="transaction_sku_price" property="transactionSkuPrice" />
-        <result column="transaction_quantities" property="transactionQuantities" />
-        <result column="transaction_time" property="transactionTime" />
-        <result column="warehouse_id" property="warehouseId" />
-        <result column="slot_id" property="slotId" />
+    <resultMap id="BaseStorageOutItemRecord"
+               type="com.jfeat.am.module.warehouse.services.domain.model.StorageOutItemRecord">
+        <id column="id" property="id"/>
+        <result column="storage_out_id" property="storageOutId"/>
+        <result column="sku_id" property="skuId"/>
+        <result column="transaction_sku_price" property="transactionSkuPrice"/>
+        <result column="transaction_quantities" property="transactionQuantities"/>
+        <result column="transaction_time" property="transactionTime"/>
+        <result column="warehouse_id" property="warehouseId"/>
+        <result column="slot_id" property="slotId"/>
 
 
-        <result column="skuName" property="skuName" />
-        <result column="skuBarcode" property="skuBarcode" />
-        <result column="skuCode" property="skuCode" />
-        <result column="skuUnit" property="skuUnit" />
-        <result column="finishedCount" property="finishedCount" />
-
+        <result column="skuName" property="skuName"/>
+        <result column="skuBarcode" property="skuBarcode"/>
+        <result column="skuCode" property="skuCode"/>
+        <result column="skuUnit" property="skuUnit"/>
+        <result column="finishedCount" property="finishedCount"/>
 
 
     </resultMap>
 
     <select id="storageOutItems" parameterType="long" resultMap="BaseStorageOutItemRecord">
-        SELECT wms_storage_out_item.*,SUM(wms_storage_out_item.transaction_quantities) as finishedCount,
+        SELECT wms_storage_out_item.*,
         t_sku_product.sku_code as skuCode,
         t_sku_product.bar_code as skuBarcode,
         t_sku_product.sku_name as skuName,
@@ -149,8 +196,8 @@
         FROM wms_storage_out_item
 
         left join wms_storage_out on
-                                    (wms_storage_out_item.storage_out_id = wms_storage_out.id
-                                     and wms_storage_out_item.type='CustomerStorageOut')
+        (wms_storage_out_item.storage_out_id = wms_storage_out.id
+        and wms_storage_out_item.type!='CustomerStorageOut')
 
         LEFT JOIN t_sku_product ON wms_storage_out_item.sku_id = t_sku_product.id
 
@@ -180,13 +227,14 @@
         <result column="traderName" property="traderName"/>
     </resultMap>
 
-    <select id="findSalesPage" resultMap="BaseResultSalesMap" parameterType="com.jfeat.am.module.warehouse.services.domain.model.SalesRecord">
-        SELECT  wms_sales.sales_code,
-                wms_sales.sales_total,
-                wms_sales.total_count,
-                wms_sales.transaction_time,
-                wms_sales.sales_status,
-                wms_trader.trader_name as traderName
+    <select id="findSalesPage" resultMap="BaseResultSalesMap"
+            parameterType="com.jfeat.am.module.warehouse.services.domain.model.SalesRecord">
+        SELECT wms_sales.sales_code,
+        wms_sales.sales_total,
+        wms_sales.total_count,
+        wms_sales.transaction_time,
+        wms_sales.sales_status,
+        wms_trader.trader_name as traderName
         FROM wms_sales
         left JOIN wms_trader on wms_trader.id = wms_sales.trader_id
         WHERE 1=1

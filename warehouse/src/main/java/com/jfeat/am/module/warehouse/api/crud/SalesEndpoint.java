@@ -73,7 +73,7 @@ public class SalesEndpoint extends BaseController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation("get more details")
+    @ApiOperation("get more salesDetails")
     public Tip getSales(@PathVariable Long id) {
         return SuccessTip.create(salesService.salesDetails(id));
     }

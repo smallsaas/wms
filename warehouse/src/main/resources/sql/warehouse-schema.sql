@@ -314,7 +314,7 @@ CREATE TABLE `wms_sales` (
   `sales_discount` int(11) DEFAULT NULL COMMENT '销售订单折扣',
   `sales_total` decimal(12,4) NOT NULL COMMENT '销售订单花费',
   `total_count` int NOT NULL COMMENT 'product count',
-  `sales_time` datetime NOT NULL COMMENT '销售订单时间',
+  `sales_time` datetime NOT NULL default current_timestamp COMMENT '销售订单时间',
   `sales_note` text COMMENT '销售订单备注',
   `sales_status` varchar(26) DEFAULT NULL COMMENT '销售订单状态',
   `transaction_by` varchar(100) DEFAULT NULL COMMENT '销售订单操作人',

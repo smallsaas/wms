@@ -78,7 +78,7 @@ public class TraderEndpoint extends BaseController {
 
     @BusinessLog(name = "Trader", value = "update Trader")
     @PutMapping("/{id}")
-    @ApiOperation("modified 分销商 details")
+    @ApiOperation("modified 分销商 salesDetails")
     public Tip updateTrader(@PathVariable Long id, @RequestBody Trader entity) {
         entity.setId(id);
         return SuccessTip.create(traderService.updateMaster(entity));
@@ -86,7 +86,7 @@ public class TraderEndpoint extends BaseController {
 
     @BusinessLog(name = "Trader", value = "delete Trader")
     @DeleteMapping("/{id}")
-    @ApiOperation("delete useless 分销商 details")
+    @ApiOperation("delete useless 分销商 salesDetails")
     public Tip deleteTrader(@PathVariable Long id) {
         return SuccessTip.create(traderService.deleteMaster(id));
     }
