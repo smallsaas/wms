@@ -21,5 +21,7 @@ public interface SalesService extends CRUDSalesService {
 
     SalesDetails salesDetails(Long salesId);
 
+    Integer deleteSales(Long id);
+
 
 }

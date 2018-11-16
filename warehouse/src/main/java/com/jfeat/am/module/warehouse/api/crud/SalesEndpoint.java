@@ -91,7 +91,7 @@ public class SalesEndpoint extends BaseController {
     @DeleteMapping("/{id}")
     @ApiOperation("delete one record")
     public Tip deleteSales(@PathVariable Long id) {
-        return SuccessTip.create(salesService.deleteMaster(id));
+        return SuccessTip.create(salesService.deleteSales(id));
     }
 
     @GetMapping

@@ -249,6 +249,21 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         return result;
     }
 
+    @Transactional
+    public Integer deleteSales(Long id){
+
+        Integer result = 0;
+        result += outItemMapper.delete(new EntityWrapper<StorageOutItem>().eq("storage_out_id",id).eq("type","CustomerStorageOut"));
+        List<StorageOut> outs = outMapper.selectList(new EntityWrapper<StorageOut>().eq("sales_id", id));
+        for (StorageOut out : outs){
+            result += outItemMapper.delete(new EntityWrapper<StorageOutItem>().eq("storage_out_id",out.getId()).eq("type","Others"));
+            result += outMapper.deleteById(out.getId());
+        }
+
+        return result;
+
+    }
+
 
     @Override
     public Integer bulkDelete(Ids ids) {
