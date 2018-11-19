@@ -230,6 +230,7 @@
     <select id="findSalesPage" resultMap="BaseResultSalesMap"
             parameterType="com.jfeat.am.module.warehouse.services.domain.model.SalesRecord">
         SELECT wms_sales.sales_code,
+        wms_sales.id,
         wms_sales.sales_total,
         wms_sales.total_count,
         wms_sales.transaction_time,
