@@ -208,7 +208,7 @@
     </select>
 
 
-    <resultMap id="BaseResultSalesMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Sales">
+    <resultMap id="BaseResultSalesMap" type="com.jfeat.am.module.warehouse.services.domain.model.SalesRecord">
         <id column="id" property="id"/>
         <result column="sales_code" property="salesCode"/>
         <result column="trader_id" property="traderId"/>
