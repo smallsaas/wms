@@ -74,7 +74,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         BigDecimal totalSpend = BigDecimal.valueOf(0);
         model.setOriginatorId(userId);
         model.setTransactionTime(new Date());
-        model.setSalesStatus(SalesStatus.WaitForStorageIn.toString());
+        model.setSalesStatus(SalesStatus.WaitForStorageOut.toString());
 
         int totalCount = 0;
         for (StorageOutItem item : model.getOutItems()) {
@@ -109,7 +109,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
 
         Sales sales = salesMapper.selectById(salesId);
         // 等待入库的情况下才能执行更新的操作
-        if (sales.getSalesStatus().compareTo(SalesStatus.WaitForStorageIn.toString()) == 0) {
+        if (sales.getSalesStatus().compareTo(SalesStatus.WaitForStorageOut.toString()) == 0) {
             model.setId(salesId);
             model.setTransactionTime(new Date());
             if (model.getOutItems() == null || model.getOutItems().size() == 0) {
@@ -208,9 +208,9 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             inSuccess = crudStorageOutService.createMaster(out, storageOutFilter, null, null);
 
             if (outCount == sales.getTotalCount()) {
-                model.setSalesStatus(SalesStatus.TotalStorageIn.toString());
+                model.setSalesStatus(SalesStatus.TotalStorageOut.toString());
             } else {
-                model.setSalesStatus(SalesStatus.SectionStorageIn.toString());
+                model.setSalesStatus(SalesStatus.SectionStorageOut.toString());
 
             }
         }
