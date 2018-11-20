@@ -173,9 +173,9 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                     SkuProduct skuProduct = skuProductMapper.selectById(item.getSkuId());
                     item.setRelationCode(sales.getSalesCode());
                     // 某个 sku 的 sales 的数量
-                    Integer skuSalesCount = querySalesDao.skuSalesCount(salesId, item.getSkuId());
+                    Integer skuSalesCount = querySalesDao.totalCount(salesId, item.getSkuId());
                     //某个 sku 入库历史数量
-                    Integer skuSalesOutCount = querySalesDao.skuSalesOutCount(salesId, item.getSkuId());
+                    Integer skuSalesOutCount = querySalesDao.finishedCount(salesId, item.getSkuId());
                     if (skuSalesOutCount == null) {
                         skuSalesOutCount = 0;
                     }
@@ -198,7 +198,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                         affected += inventoryMapper.updateById(originInventory);
 
                     } else {
-                        throw new BusinessException(BusinessCode.OutOfRange);
+                        throw new BusinessException(BusinessCode.DatabaseUpdateError);
                     }
                 }
                 item.setTransactionTime(out.getStorageOutTime());
@@ -223,11 +223,18 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
     public SalesDetails salesDetails(Long salesId) {
 
         SalesDetails salesDetails = querySalesDao.salesDetails(salesId);
+
+        List<StorageOutItemRecord> itemRecords = new ArrayList<>();
+        for (StorageOutItemRecord record : salesDetails.getItemRecords()){
+            Integer totalCount = querySalesDao.totalCount(salesId,record.getSkuId());
+            Integer finishedCount= querySalesDao.finishedCount(salesId,record.getSkuId());
+            record.setTotalCount(totalCount);
+            record.setFinishedCount(finishedCount);
+            itemRecords.add(record);
+        }
+
+        salesDetails.setItemRecords(itemRecords);
         JSONObject details = JSON.parseObject(JSON.toJSONString(salesDetails));
-
-
-        /*StorageOutItemRecord itemRecords = querySalesDao.itemRecords(salesDetails.getId());
-        details.put("itemRecords", itemRecords);*/
 
         List<StorageOut> outs = outMapper.selectList(new EntityWrapper<StorageOut>().eq("sales_id", salesDetails.getId()));
 

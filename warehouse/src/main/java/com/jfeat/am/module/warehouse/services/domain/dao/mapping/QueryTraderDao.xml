@@ -7,7 +7,7 @@
 
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Trader">
+    <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.domain.model.TraderRecord">
         <id column="id" property="id"/>
         <result column="trader_name" property="traderName"/>
         <result column="trader_code" property="traderCode"/>

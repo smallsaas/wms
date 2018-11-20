@@ -29,4 +29,15 @@ public interface QuerySalesDao extends BaseMapper<SalesRecord> {
     StorageOutItemRecord itemRecords(@Param("id")Long id);
 
     StorageOutRecord storagesOutDetails(@Param("id")Long id);
+
+    /**
+     *  total count
+     * */
+    Integer totalCount(@Param("salesId")Long salesId,
+                       @Param("skuId")Long skuId);
+    /**
+     * finishedCount
+     * */
+    Integer finishedCount(@Param("salesId")Long salesId,
+                          @Param("skuId")Long skuId);
 }
