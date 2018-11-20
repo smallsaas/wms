@@ -98,12 +98,14 @@ public class Sales extends Model<Sales> {
 	/**
 	 * product count
 	 */
+	@TableField("total_count")
 	private Integer totalCount;
 
 
 	/**
 	 * 收货地址
 	 */
+	@TableField("delivered_address")
 	private String deliveredAddress;
 
 

@@ -76,7 +76,9 @@
         <result column="transaction_time" property="transactionTime"/>
         <result column="field1" property="field1"/>
         <result column="field2" property="field2"/>
+        <result column="delivered_address" property="deliveredAddress"/>
         <result column="traderName" property="traderName"/>
+        <result column="traderContactPhone" property="traderContactPhone"/>
 
 
         <collection property="itemRecords"
@@ -97,7 +99,8 @@
         wms_sales.total_count,
         wms_sales.transaction_time,
         wms_sales.sales_status,
-        wms_trader.trader_name as traderName
+        wms_trader.trader_name as traderName,
+        wms_trader.trader_contact_phone as traderContactPhone
         FROM wms_sales
         left JOIN wms_trader on wms_trader.id = wms_sales.trader_id
         WHERE 1=1

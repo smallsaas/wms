@@ -19,6 +19,8 @@
         <result column="transaction_time" property="transactionTime"/>
         <result column="field1" property="field1"/>
         <result column="field2" property="field2"/>
+        <result column="delivered_address" property="deliveredAddress"/>
+
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -26,7 +28,7 @@
         id, sales_code AS salesCode, trader_id AS traderId, sales_others_payment AS salesOthersPayment, sales_discount
         AS salesDiscount, sales_total AS salesTotal, sales_time AS salesTime, sales_note AS salesNote, sales_status AS
         salesStatus, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName,
-        transaction_time AS transactionTime, field1, field2
+        transaction_time AS transactionTime, field1, field2,delivered_address as deliveredAddress
     </sql>
 
 </mapper>
