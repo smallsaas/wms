@@ -87,6 +87,15 @@ public class SalesEndpoint extends BaseController {
         return SuccessTip.create(salesService.updateSales(userId,id,entity));
     }
 
+    @BusinessLog(name = "SalesModel", value = "update SalesModel")
+    @PutMapping("/{id}/excution")
+    @ApiOperation(value = "入库",response = SalesModel.class)
+    public Tip excutionProcurement(@PathVariable Long id, @RequestBody SalesModel entity) {
+        entity.setId(id);
+        return SuccessTip.create(salesService.executionStorageOut(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+    }
+
+
     @BusinessLog(name = "Sales", value = "delete Sales")
     @DeleteMapping("/{id}")
     @ApiOperation("delete one record")
