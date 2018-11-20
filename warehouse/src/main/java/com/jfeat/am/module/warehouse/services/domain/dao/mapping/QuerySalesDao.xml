@@ -5,6 +5,29 @@
         wms_sales.*
     </sql>
 
+    <!-- total count-->
+    <select id="totalCount" resultType="int">
+        SELECT
+        wms_storage_out_item.transaction_quantities AS totalCount
+        FROM
+        wms_storage_out_item
+        WHERE wms_storage_out_item.storage_out_id=#{salesId}
+        AND wms_storage_out_item.sku_id =#{skuId}
+        AND wms_storage_out_item.type='CustomerStorageOut'
+    </select>
+
+    <!-- finished count-->
+    <select id="finishedCount" resultType="int">
+        SELECT
+        SUM(wms_storage_out_item.transaction_quantities) AS finishedCount
+        FROM
+        wms_storage_out_item
+        LEFT JOIN wms_storage_out on (wms_storage_out.id = wms_storage_out_item.storage_out_id AND wms_storage_out_item.type!='CustomerStorageOut')
+        LEFT JOIN wms_sales ON wms_storage_out.sales_id = wms_sales.id
+        WHERE wms_sales.id=#{salesId}
+        AND wms_storage_out_item.sku_id=#{skuId}
+    </select>
+
 
     <!--has been not storageOut yet-->
     <select id="skuSalesCount" resultType="int">
@@ -12,7 +35,7 @@
         FROM wms_storage_out_item
         LEFT JOIN wms_sales on
         (wms_sales.id=wms_storage_out_item.storage_out_id
-        AND wms_storage_out_item.type='SalesOut')
+        AND wms_storage_out_item.type='CustomerStorageOut')
         WHERE wms_sales.id=#{salesId}
         AND wms_storage_out_item.sku_id=#{skuId}
     </select>
@@ -26,10 +49,10 @@
         wms_storage_out_item
         LEFT JOIN wms_storage_out on
         (wms_storage_out.id = wms_storage_out_item.storage_out_id
-        AND wms_storage_out_item.type != 'SalesOut')
+        AND wms_storage_out_item.type != 'CustomerStorageOut')
         LEFT JOIN wms_sales ON (
         wms_sales.id = wms_storage_out.sales_id
-        AND wms_storage_out.transaction_type = 'SalesOut'
+        AND wms_storage_out.transaction_type = 'CustomerStorageOut'
         )
         WHERE wms_sales.id = #{salesId}
         AND wms_storage_out_item.sku_id = #{skuId}
