@@ -228,7 +228,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     for (StorageOutItem item : outItems) {
                         // 出库 商品详情
                         StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
-                        itemRecord.setOperator(record.getOperatorName());
+                        itemRecord.setOperator(record.getOperatorName()==null?null:record.getOperatorName());
                         itemRecord.setWarehouseName(record.getWarehouseName());
                         outItemRecords.add(itemRecord);
                     }
