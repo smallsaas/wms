@@ -8,4 +8,13 @@ import com.jfeat.am.module.warehouse.services.persistence.model.Trader;
  */
 public  class TraderRecord extends Trader {
 
+    String deliveredAddress;
+
+    public String getDeliveredAddress() {
+        return deliveredAddress;
+    }
+
+    public void setDeliveredAddress(String deliveredAddress) {
+        this.deliveredAddress = deliveredAddress;
+    }
 }

@@ -73,7 +73,7 @@ public class TraderEndpoint extends BaseController {
     @GetMapping("/{id}")
     @ApiOperation("分销商details")
     public Tip getTrader(@PathVariable Long id) {
-        return SuccessTip.create(traderService.retrieveMaster(id));
+        return SuccessTip.create(queryTraderDao.traderDetails(id));
     }
 
     @BusinessLog(name = "Trader", value = "update Trader")

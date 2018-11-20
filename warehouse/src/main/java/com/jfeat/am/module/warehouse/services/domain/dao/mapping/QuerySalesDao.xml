@@ -63,12 +63,7 @@
 
         </collection>
 
-        <!--<collection property="storageOutItemRecords"
-                    column="id"
-                    select="storagesOutDetails"
-                    ofType="com.jfeat.am.module.warehouse.services.domain.model.StorageOutRecord">
 
-        </collection>-->
 
     </resultMap>
 
