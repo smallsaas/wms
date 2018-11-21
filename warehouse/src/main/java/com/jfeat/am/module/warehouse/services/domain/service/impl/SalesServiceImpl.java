@@ -210,7 +210,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                     }
                 }
             }
-            if (noInventory!=null||noInventory.size()>0){
+            if (noInventory.size()>0){
                 throw new BusinessException(4501, "已选中的仓库中无以下商品"+"\"" + noInventory + "\"" );
             }
             if (outCount == sales.getTotalCount()) {
