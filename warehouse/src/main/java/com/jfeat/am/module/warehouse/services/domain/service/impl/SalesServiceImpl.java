@@ -228,6 +228,10 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         for (StorageOutItemRecord record : salesDetails.getItemRecords()){
             Integer totalCount = querySalesDao.totalCount(salesId,record.getSkuId());
             Integer finishedCount= querySalesDao.finishedCount(salesId,record.getSkuId());
+            if (finishedCount==null){
+                finishedCount = 0;
+
+            }
             record.setTotalCount(totalCount);
             record.setFinishedCount(finishedCount);
             itemRecords.add(record);
