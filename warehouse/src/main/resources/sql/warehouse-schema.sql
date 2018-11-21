@@ -161,7 +161,7 @@ CREATE TABLE `wms_suppliers` (
  `supplier_register_time` datetime DEFAULT NULL COMMENT '供应商注册时间',
  `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
  `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
- UNIQUE (`supplier_name`),
+ UNIQUE (`supplier_code`),
  PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -218,7 +218,7 @@ CREATE TABLE `wms_warehouse` (
 `warehouse_PCD` varchar(255) NOT NULL COMMENT '仓库所在地区',
 `warehouse_address` varchar(255) NOT NULL COMMENT '仓库详细地址',
 `warehouse_charger` bigint(20) DEFAULT NULL COMMENT '仓库负责人',
-UNIQUE(`warehouse_code`,`warehouse_name`),
+UNIQUE(`warehouse_code`),
 PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -301,7 +301,7 @@ CREATE TABLE `wms_trader` (
  `trader_register_time` timestamp not null default current_timestamp COMMENT '分销商注册时间',
  `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
  `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
- UNIQUE (`trader_name`),
+ UNIQUE (`trader_code`),
  PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
