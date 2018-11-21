@@ -93,6 +93,14 @@ public class ProcurementEndpoint extends BaseController {
         return SuccessTip.create(procurementService.executionStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
     }
 
+    @BusinessLog(name = "Procurement", value = "update Procurement")
+    @PutMapping("/{id}/closed")
+    @ApiOperation(value = "closed",response = ProcurementModel.class)
+    public Tip excutionProcurement(@PathVariable Long id) {
+        return SuccessTip.create(procurementService.closedProcurment(id));
+    }
+
+
     @BusinessLog(name = "Procurement", value = "delete Procurement")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除采购表单",response = ProcurementModel.class)

@@ -157,6 +157,12 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         int totalCount = queryProcurementDao.totalCount(procurementId);
 
         Procurement procurement = procurementMapper.selectById(procurementId);
+        if (procurement.getProcureStatus().compareTo(ProcurementStatus.TotalStorageIn.toString())==0
+            || procurement.getProcureStatus().compareTo(ProcurementStatus.Closed.toString())==0){
+
+            throw new BusinessException(BusinessCode.ErrorStatus);
+        }
+
         model.setId(procurementId);
         if (model.getItems() != null && model.getItems().size() > 0) {
             // 判断所有的商品是否都已经入库
@@ -306,6 +312,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
                                 // 入库历史记录
                                 StorageInItemRecord procurementItem = new StorageInItemRecord();
+                                procurementItem.setTransactionName(in.getOriginatorName());
                                 procurementItem.setSkuCode(sku.getSkuCode());
                                 procurementItem.setSkuName(sku.getSkuName());
                                 procurementItem.setSkuBarcode(sku.getBarCode());
@@ -385,6 +392,17 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
         }
         return procurementService.deleteMaster(id);
+    }
+
+    /**
+     *  closed procurement
+     * */
+    public Integer closedProcurment(Long id){
+
+        Procurement procurement = procurementMapper.selectById(id);
+        procurement.setProcureStatus(ProcurementStatus.Closed.toString());
+        procurement.setId(id);
+        return procurementMapper.updateById(procurement);
     }
 
 }

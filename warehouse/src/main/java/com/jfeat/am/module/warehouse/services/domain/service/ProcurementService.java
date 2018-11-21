@@ -25,4 +25,9 @@ public interface ProcurementService extends CRUDProcurementService{
 
     @Transactional
     Integer deleteProcurement(Long id);
+
+    /**
+     *  closed procurement
+     * */
+    Integer closedProcurment(Long id);
 }
