@@ -10,13 +10,19 @@ import com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Code Generator on 2018-06-22
  */
 public interface QueryRefundDao extends BaseMapper<RefundRecord> {
-    List<RefundRecord> findRefundPage(Page<RefundRecord> page, @Param("record") RefundRecord record, @Param("orderBy") String orderBy);
+    List<RefundRecord> findRefundPage(Page<RefundRecord> page,
+                                      @Param("record") RefundRecord record,
+                                      @Param("orderBy") String orderBy,
+                                      @Param("search")String search,
+                                      @Param("startTime") Date startTime,
+                                      @Param("endTime") Date endTime);
 
 
 

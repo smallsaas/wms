@@ -3,6 +3,7 @@ package com.jfeat.am.module.warehouse.api.crud;
 import com.jfeat.am.core.jwt.JWTKit;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -113,7 +114,9 @@ public class RefundEndpoint extends BaseController {
                             @RequestParam(name = "field1", required = false) String field1,
                             @RequestParam(name = "field2", required = false) String field2,
                             @RequestParam(name = "orderBy", required = false) String orderBy,
-                            @RequestParam(name = "sort", required = false) String sort) {
+                            @RequestParam(name = "sort", required = false) String sort,
+                            @RequestParam(name = "search", required = false) String search,
+                            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd")Date[]createTime) {
         if (orderBy != null && orderBy.length() > 0) {
             if (sort != null && sort.length() > 0) {
                 String pattern = "(ASC|DESC|asc|desc)";
@@ -125,6 +128,10 @@ public class RefundEndpoint extends BaseController {
             }
             orderBy = "`" + orderBy + "`" + " " + sort;
         }
+
+        Date startTime = (createTime!=null && createTime.length == 2)? createTime [0] : null;
+        Date endTime = (createTime!=null && createTime.length == 2)? createTime [1] : null;
+
         page.setCurrent(pageNum);
         page.setSize(pageSize);
 
@@ -144,7 +151,7 @@ public class RefundEndpoint extends BaseController {
         record.setField1(field1);
         record.setField2(field2);
 
-        page.setRecords(queryRefundDao.findRefundPage(page, record, orderBy));
+        page.setRecords(queryRefundDao.findRefundPage(page, record, orderBy,search,startTime, endTime));
 
         return SuccessTip.create(page);
     }

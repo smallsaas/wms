@@ -7,7 +7,16 @@
     <select id="findRefundPage" resultType="RefundRecord" parameterType="RefundRecord">
         SELECT wms_refund.*
         FROM wms_refund
-        WHERE 1=1
+        LEFT JOIN wms_procurement on wms_procurement.id = wms_refund.product_procurement_id
+        LEFT JOIN wms_suppliers on wms_procurement.supplier_id = wms_suppliers.id
+        where 1=1
+
+        <if test="search != null and search!= ''">
+            AND (wms_suppliers.supplier_name LIKE CONCAT('%',#{search},'%')
+            wms_refund.product_refund_code LIKE CONCAT('%',#{search},'%')
+            )
+        </if>
+
         <if test="record.id != null and record.id>0 ">
             AND wms_refund.id LIKE CONCAT('%',#{record.id},'%')
         </if>
@@ -36,6 +45,13 @@
             AND wms_refund.product_refund_time LIKE CONCAT('%',#{record.productRefundTime},'%')
         </if>
 
+        <if test="startTime != null and endTime != null">
+            <![CDATA[
+                AND wms_refund.product_refund_time >= date(#{startTime) AND
+                wms_refund.product_refund_time < DATE_ADD(date(#{endTime}),INTERVAL 1 DAY)
+            ]]>
+        </if>
+
         <if test="record.productRefundStatus != null and record.productRefundStatus!= ''">
             AND wms_refund.product_refund_status LIKE CONCAT('%',#{record.productRefundStatus},'%')
         </if>
@@ -60,6 +76,8 @@
         <if test="record.field2 != null and record.field2!= ''">
             AND wms_refund.field2 LIKE CONCAT('%',#{record.field2},'%')
         </if>
+        
+        order by wms_refund.product_refund_time DESC
     </select>
 
 
