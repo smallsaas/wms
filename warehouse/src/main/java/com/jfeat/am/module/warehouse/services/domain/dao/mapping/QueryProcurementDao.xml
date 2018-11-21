@@ -6,34 +6,45 @@
     </sql>
 
     <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.domain.model.ProcurementRecord">
-        <id column="id" property="id" />
-        <result column="procurement_code" property="procurementCode" />
-        <result column="supplier_id" property="supplierId" />
-        <result column="procurement_others_payment" property="procurementOthersPayment" />
-        <result column="procurement_discount" property="procurementDiscount" />
-        <result column="procurement_total" property="procurementTotal" />
-        <result column="procurement_time" property="procurementTime" />
-        <result column="procurement_note" property="procurementNote" />
-        <result column="procure_status" property="procureStatus" />
-        <result column="transaction_by" property="transactionBy" />
-        <result column="originator_id" property="originatorId" />
-        <result column="originator_name" property="originatorName" />
-        <result column="buyer" property="buyer" />
-        <result column="transaction_time" property="transactionTime" />
-        <result column="field1" property="field1" />
-        <result column="field2" property="field2" />
+        <id column="id" property="id"/>
+        <result column="procurement_code" property="procurementCode"/>
+        <result column="supplier_id" property="supplierId"/>
+        <result column="procurement_others_payment" property="procurementOthersPayment"/>
+        <result column="procurement_discount" property="procurementDiscount"/>
+        <result column="procurement_total" property="procurementTotal"/>
+        <result column="procurement_time" property="procurementTime"/>
+        <result column="procurement_note" property="procurementNote"/>
+        <result column="procure_status" property="procureStatus"/>
+        <result column="transaction_by" property="transactionBy"/>
+        <result column="originator_id" property="originatorId"/>
+        <result column="originator_name" property="originatorName"/>
+        <result column="buyer" property="buyer"/>
+        <result column="transaction_time" property="transactionTime"/>
+        <result column="field1" property="field1"/>
+        <result column="field2" property="field2"/>
 
-        <result column="supplierName" property="supplierName" />
-        <result column="warehouseName" property="warehouseName" />
+        <result column="supplierName" property="supplierName"/>
+        <result column="warehouseName" property="warehouseName"/>
 
     </resultMap>
 
     <select id="findProcurementPage" resultMap="BaseResultMap" parameterType="ProcurementRecord">
-        SELECT  wms_procurement.*,
-                 wms_suppliers.supplier_name as supplierName
+        SELECT wms_procurement.*,
+        wms_suppliers.supplier_name as supplierName
         FROM wms_procurement
         left join wms_suppliers on wms_suppliers.id = wms_procurement.supplier_id
         WHERE 1=1
+
+        <if test="search != null and search!= ''">
+            AND (wms_suppliers.supplier_name LIKE CONCAT('%',#{search},'%')
+            wms_procurement.procurement_code LIKE CONCAT('%',#{search},'%')
+            )
+        </if>
+
+        <if test="status != null and status != ''">
+            AND wms_procurement.procure_status = #{status}
+        </if>
+
         <if test="waitForStorageIn != null and waitForStorageIn != ''">
             AND wms_procurement.procure_status != #{waitForStorageIn}
         </if>
@@ -66,6 +77,14 @@
             AND wms_procurement.procurement_time LIKE CONCAT('%',#{record.procurementTime},'%')
         </if>
 
+        <if test="startTime != null and endTime != null">
+            <![CDATA[
+       AND wms_procurement.procurement_time >= date(#{startTime) AND
+           wms_procurement.procurement_time < DATE_ADD(date(#{endTime}),INTERVAL 1 DAY)
+            ]]>
+        </if>
+
+
         <if test="record.procurementNote != null and record.procurementNote!= ''">
             AND wms_procurement.procurement_note LIKE CONCAT('%',#{record.procurementNote},'%')
         </if>
@@ -96,39 +115,39 @@
 
 
     <resultMap id="ProcurementRecord" type="com.jfeat.am.module.warehouse.services.domain.model.ProcurementItemRecord">
-        <id column="id" property="id" />
-        <result column="storage_in_id" property="storageOutId" />
-        <result column="sku_id" property="skuId" />
-        <result column="transaction_sku_price" property="transactionSkuPrice" />
-        <result column="transaction_quantities" property="transactionQuantities" />
-        <result column="transaction_time" property="transactionTime" />
-        <result column="type" property="type" />
+        <id column="id" property="id"/>
+        <result column="storage_in_id" property="storageOutId"/>
+        <result column="sku_id" property="skuId"/>
+        <result column="transaction_sku_price" property="transactionSkuPrice"/>
+        <result column="transaction_quantities" property="transactionQuantities"/>
+        <result column="transaction_time" property="transactionTime"/>
+        <result column="type" property="type"/>
 
-        <result column="skuName" property="skuName" />
-        <result column="skuCode" property="skuCode" />
-        <result column="skuBarcode" property="skuBarcode" />
-        <result column="skuUnit" property="skuUnit" />
+        <result column="skuName" property="skuName"/>
+        <result column="skuCode" property="skuCode"/>
+        <result column="skuBarcode" property="skuBarcode"/>
+        <result column="skuUnit" property="skuUnit"/>
 
     </resultMap>
 
 
     <select id="storageInHistories" resultMap="ProcurementRecord" parameterType="long">
         SELECT
-            wms_storage_in_item.*,
-            t_sku_product.sku_code AS skuCode,
-            t_sku_product.sku_name as skuName,
-            t_sku_product.bar_code as skuBarcode,
-            t_sku_product.field1 AS skuUnit
+        wms_storage_in_item.*,
+        t_sku_product.sku_code AS skuCode,
+        t_sku_product.sku_name as skuName,
+        t_sku_product.bar_code as skuBarcode,
+        t_sku_product.field1 AS skuUnit
         FROM
-            wms_storage_in_item
-            LEFT JOIN t_sku_product on t_sku_product.id = wms_storage_in_item.sku_id
-            LEFT JOIN wms_storage_in ON wms_storage_in.id = wms_storage_in_item.storage_in_id
-            LEFT JOIN wms_procurement ON (
-            wms_procurement.id = wms_storage_in.procurement_id
-            AND wms_storage_in.transaction_type = 'Procurement'
-            )
+        wms_storage_in_item
+        LEFT JOIN t_sku_product on t_sku_product.id = wms_storage_in_item.sku_id
+        LEFT JOIN wms_storage_in ON wms_storage_in.id = wms_storage_in_item.storage_in_id
+        LEFT JOIN wms_procurement ON (
+        wms_procurement.id = wms_storage_in.procurement_id
+        AND wms_storage_in.transaction_type = 'Procurement'
+        )
         WHERE 1=1
-            and wms_procurement.id = #{procurement}
+        and wms_procurement.id = #{procurement}
     </select>
 
 

@@ -9,13 +9,22 @@ import com.jfeat.am.module.warehouse.services.persistence.model.StorageInItem;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Code Generator on 2018-06-22
  */
 public interface QueryProcurementDao extends BaseMapper<ProcurementRecord> {
-    List<ProcurementRecord> findProcurementPage(Page<ProcurementRecord> page, @Param("record") ProcurementRecord record, @Param("orderBy") String orderBy,@Param("waitForStorageIn")String waitForStorageIn);
+    List<ProcurementRecord> findProcurementPage(Page<ProcurementRecord> page,
+                                                @Param("record") ProcurementRecord record,
+                                                @Param("orderBy") String orderBy,
+                                                @Param("waitForStorageIn")String waitForStorageIn,
+                                                @Param("search")String search,
+                                                @Param("status")String status,
+                                                @Param("startTime") Date startTime,
+                                                @Param("endTime") Date endTime
+    );
 
 
     // 入库总数目 ，原入库总数目
