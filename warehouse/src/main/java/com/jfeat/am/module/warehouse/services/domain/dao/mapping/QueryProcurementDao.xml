@@ -90,6 +90,8 @@
         <if test="record.field2 != null and record.field2!= ''">
             AND wms_procurement.field2 LIKE CONCAT('%',#{record.field2},'%')
         </if>
+
+        ORDER BY wms_procurement.transaction_time DESC
     </select>
 
 
