@@ -169,11 +169,13 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             outMapper.insert(out);
 
 
-            List<StorageOutItem> storageOutItems = new ArrayList<>();
+            List<String> noInventory = new ArrayList<>();
+
             for (StorageOutItem item : model.getOutItems()) {
                 if (item.getTransactionQuantities() > 0) {
                     item.setStorageOutId(out.getId());
                     item.setType("Others");
+                    item.setTransactionTime(out.getStorageOutTime());
 
                     SkuProduct skuProduct = skuProductMapper.selectById(item.getSkuId());
                     item.setRelationCode(sales.getSalesCode());
@@ -201,15 +203,16 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                         item.setAfterTransactionQuantities(validSku);
                         originInventory.setValidSku(validSku);
                         affected += inventoryMapper.updateById(originInventory);
+                        outItemMapper.insert(item);
 
                     } else {
-                        throw new BusinessException(4501, "已选中的仓库中无该商品"+"\"" + skuProduct.getSkuName() + "\"" );
+                        noInventory.add(skuProduct.getSkuName());
                     }
                 }
-                item.setTransactionTime(out.getStorageOutTime());
-                outItemMapper.insert(item);
             }
-
+            if (noInventory!=null||noInventory.size()>0){
+                throw new BusinessException(4501, "已选中的仓库中无以下商品"+"\"" + noInventory + "\"" );
+            }
             if (outCount == sales.getTotalCount()) {
                 model.setSalesStatus(SalesStatus.TotalStorageOut.toString());
             } else {
