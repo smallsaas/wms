@@ -203,7 +203,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                         affected += inventoryMapper.updateById(originInventory);
 
                     } else {
-                        throw new BusinessException(BusinessCode.DatabaseUpdateError);
+                        throw new BusinessException(4501, "已选中的仓库中无该商品"+"\"" + skuProduct.getSkuName() + "\"" );
                     }
                 }
                 item.setTransactionTime(out.getStorageOutTime());
