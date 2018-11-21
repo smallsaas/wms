@@ -154,7 +154,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
 
         if (model.getOutItems() != null && model.getOutItems().size() > 0) {
             // 判断所有的商品是否都已经入库
-            StorageOutModel out = new StorageOutModel();
+            StorageOut out = new StorageOut();
             out.setOriginatorId(userId);
             out.setStorageOutTime(new Date());
             out.setTransactionTime(new Date());
@@ -165,11 +165,16 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             out.setTransactionCode(model.getField2());
             out.setSalesId(salesId);
             out.setTransactionType(TransactionType.CustomerStorageOut.toString());
-            StorageOutFilter storageOutFilter = new StorageOutFilter();
+
+            outMapper.insert(out);
+
 
             List<StorageOutItem> storageOutItems = new ArrayList<>();
             for (StorageOutItem item : model.getOutItems()) {
                 if (item.getTransactionQuantities() > 0) {
+                    item.setStorageOutId(out.getId());
+                    item.setType("Others");
+
                     SkuProduct skuProduct = skuProductMapper.selectById(item.getSkuId());
                     item.setRelationCode(sales.getSalesCode());
                     // 某个 sku 的 sales 的数量
@@ -202,10 +207,8 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                     }
                 }
                 item.setTransactionTime(out.getStorageOutTime());
-                storageOutItems.add(item);
+                outItemMapper.insert(item);
             }
-            out.setStorageOutItems(storageOutItems);
-            inSuccess = crudStorageOutService.createMaster(out, storageOutFilter, null, null);
 
             if (outCount == sales.getTotalCount()) {
                 model.setSalesStatus(SalesStatus.TotalStorageOut.toString());
