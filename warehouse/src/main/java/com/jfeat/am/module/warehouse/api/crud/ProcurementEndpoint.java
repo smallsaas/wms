@@ -65,7 +65,7 @@ public class ProcurementEndpoint extends BaseController {
             affected = procurementService.addProcurement(JWTKit.getUserId(getHttpServletRequest()),entity);
 
         } catch (DuplicateKeyException e) {
-            throw new BusinessException(5000,"采购单编号");
+            throw new BusinessException(5000,"采购单编号重复");
         }
 
         return SuccessTip.create(affected);

@@ -60,7 +60,7 @@ public class WarehouseEndpoint extends BaseController {
             affected = warehouseService.createMaster(entity, null, null, null);
 
         } catch (DuplicateKeyException e) {
-            throw new BusinessException(BusinessCode.DuplicateKey);
+            throw new BusinessException(5000,"仓库编号重复");
         }
 
         return SuccessTip.create(affected);
@@ -86,8 +86,8 @@ public class WarehouseEndpoint extends BaseController {
     @ApiOperation(value = "删除仓库", response = WarehouseModel.class)
     public Tip deleteWarehouse(@PathVariable Long id) {
 
-        if(id.equals(DEFAULT_WAREHOUSE_ID)){
-            throw new BusinessException(5100,"无法删除\"默认仓库\"");
+        if (id.equals(DEFAULT_WAREHOUSE_ID)) {
+            throw new BusinessException(5100, "无法删除\"默认仓库\"");
         }
         return SuccessTip.create(warehouseService.deleteMaster(id));
     }
@@ -129,7 +129,7 @@ public class WarehouseEndpoint extends BaseController {
         record.setWarehouseAddress(warehouseAddress);
         record.setWarehouseCharger(warehouseCharger);
 
-        page.setRecords(queryWarehouseDao.findWarehousePage(page, warehouseId,record, orderBy));
+        page.setRecords(queryWarehouseDao.findWarehousePage(page, warehouseId, record, orderBy));
 
         return SuccessTip.create(page);
     }
