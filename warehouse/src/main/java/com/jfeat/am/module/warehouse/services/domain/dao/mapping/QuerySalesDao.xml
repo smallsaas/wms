@@ -94,11 +94,7 @@
 
 
     <select id="salesDetails" resultMap="SalesDetails">
-        SELECT wms_sales.id,wms_sales.sales_code,
-        wms_sales.sales_total,
-        wms_sales.total_count,
-        wms_sales.transaction_time,
-        wms_sales.sales_status,
+        SELECT wms_sales.*,
         wms_trader.trader_name as traderName,
         wms_trader.trader_contact_phone as traderContactPhone
         FROM wms_sales
