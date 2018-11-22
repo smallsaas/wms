@@ -23,10 +23,7 @@ import com.jfeat.am.module.warehouse.services.domain.service.RefundService;
 
 import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDRefundServiceImpl;
 import com.jfeat.am.module.warehouse.services.domain.service.StorageOutService;
-import com.jfeat.am.module.warehouse.services.persistence.dao.InventoryMapper;
-import com.jfeat.am.module.warehouse.services.persistence.dao.ProcurementMapper;
-import com.jfeat.am.module.warehouse.services.persistence.dao.StorageOutItemMapper;
-import com.jfeat.am.module.warehouse.services.persistence.dao.StorageOutMapper;
+import com.jfeat.am.module.warehouse.services.persistence.dao.*;
 import com.jfeat.am.module.warehouse.services.persistence.model.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,6 +68,8 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     QueryRefundDao queryRefundDao;
     @Resource
     QueryInventoryDao queryInventoryDao;
+    @Resource
+    SuppliersMapper suppliersMapper;
 
     /**
      * 重构 Refund 问题
@@ -106,7 +105,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     /*if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
                         throw new BusinessException(4050, "\""+sku.getSkuName()+"\"库存不足");
                     } else*/
-                    if (model.getProductProcurementId() == null){
+                    if (model.getProductProcurementId() == null) {
                         //操作后的数量
                         Integer afterSkuCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
                         outItem.setAfterTransactionQuantities(afterSkuCount);
@@ -114,7 +113,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                         originInventory.setValidSku(afterSkuCount);
                         affected += inventoryMapper.updateById(originInventory);
 
-                    }else {
+                    } else {
                         if (outItem.getTransactionQuantities() > queryRefundDao.skuStorageInCount(model.getProductProcurementId(), outItem.getSkuId())) {
                             throw new BusinessException(4050, "\"" + sku.getSkuName() + "\"退货数量不能大于入库的数量");
                         } else {
@@ -225,8 +224,17 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         Refund refund = refundService.retrieveMaster(id);
         JSONObject refundObj = JSON.parseObject(JSONObject.toJSONString(refund));
 
-        Procurement procurement = procurementMapper.selectById(refund.getProductProcurementId());
-        refundObj.put("procurementCode", procurement.getProcurementCode());
+        if (refund.getProductProcurementId() != null) {
+            Procurement procurement = procurementMapper.selectById(refund.getProductProcurementId());
+            refundObj.put("procurementCode", procurement.getProcurementCode());
+            Suppliers suppliers = suppliersMapper.selectById(procurement.getSupplierId());
+            refundObj.put("supplierName", suppliers.getSupplierName());
+        } else {
+            if (refund.getSupplierId() != null) {
+                Suppliers suppliers = suppliersMapper.selectById(refund.getSupplierId());
+                refundObj.put("supplierName", suppliers.getSupplierName());
+            }
+        }
 
         List<StorageOut> storageOuts = storageOutMapper.selectList(new EntityWrapper<StorageOut>().eq(StorageOut.ID, refund.getStorageOutId()).like(StorageOut.TRANSACTION_TYPE, TransactionType.Refund.toString()));
 
@@ -239,7 +247,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     for (StorageOutItem item : outItems) {
                         // 出库 商品详情
                         StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
-                        itemRecord.setOperator(record.getOperatorName()==null?null:record.getOperatorName());
+                        itemRecord.setOperator(record.getOperatorName() == null ? null : record.getOperatorName());
                         itemRecord.setWarehouseName(record.getWarehouseName());
                         outItemRecords.add(itemRecord);
                     }

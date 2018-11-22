@@ -12,6 +12,7 @@ public class RefundModel extends Refund{
     List<StorageOutItem> items;
     String operatorName;
     String procurementCode;
+    String supplierName;
 //    List<StorageOutRecord> outRecords;
 
     List<StorageOutItemRecord> itemRecords;
@@ -55,5 +56,13 @@ public class RefundModel extends Refund{
 
     public void setItemRecords(List<StorageOutItemRecord> itemRecords) {
         this.itemRecords = itemRecords;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
     }
 }
