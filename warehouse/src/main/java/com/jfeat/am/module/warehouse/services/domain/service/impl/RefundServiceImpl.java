@@ -106,16 +106,27 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     /*if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
                         throw new BusinessException(4050, "\""+sku.getSkuName()+"\"库存不足");
                     } else*/
-                    if (outItem.getTransactionQuantities() > queryRefundDao.skuStorageInCount(model.getProductProcurementId(), outItem.getSkuId())) {
-                        throw new BusinessException(4050, "\"" + sku.getSkuName() + "\"退货数量不能大于入库的数量");
-                    } else {
+                    if (model.getProductProcurementId() == null){
                         //操作后的数量
                         Integer afterSkuCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
                         outItem.setAfterTransactionQuantities(afterSkuCount);
 
                         originInventory.setValidSku(afterSkuCount);
                         affected += inventoryMapper.updateById(originInventory);
+
+                    }else {
+                        if (outItem.getTransactionQuantities() > queryRefundDao.skuStorageInCount(model.getProductProcurementId(), outItem.getSkuId())) {
+                            throw new BusinessException(4050, "\"" + sku.getSkuName() + "\"退货数量不能大于入库的数量");
+                        } else {
+                            //操作后的数量
+                            Integer afterSkuCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
+                            outItem.setAfterTransactionQuantities(afterSkuCount);
+
+                            originInventory.setValidSku(afterSkuCount);
+                            affected += inventoryMapper.updateById(originInventory);
+                        }
                     }
+
                 } else {
                     throw new BusinessException(4060, "该仓库不存在\"" + sku.getSkuName() + "\"商品");
                 }
