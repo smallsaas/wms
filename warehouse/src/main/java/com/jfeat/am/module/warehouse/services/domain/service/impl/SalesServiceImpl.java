@@ -206,7 +206,8 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                         outItemMapper.insert(item);
 
                     } else {
-                        noInventory.add(skuProduct.getSkuName()+":"+skuProduct.getBarCode()+"\n");
+                        noInventory.add(skuProduct.getSkuName()+":"+skuProduct.getBarCode()+"\n"
+                        );
                     }
                 }
             }

@@ -110,7 +110,7 @@
             AND wms_procurement.field2 LIKE CONCAT('%',#{record.field2},'%')
         </if>
 
-        ORDER BY wms_procurement.transaction_time DESC
+        ORDER BY wms_procurement.procurement_time DESC
     </select>
 
 
