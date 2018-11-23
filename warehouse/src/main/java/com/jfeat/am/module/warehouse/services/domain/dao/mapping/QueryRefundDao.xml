@@ -13,6 +13,7 @@
 
         <if test="search != null and search!= ''">
             AND (wms_suppliers.supplier_name LIKE CONCAT('%',#{search},'%')
+            OR
             wms_refund.product_refund_code LIKE CONCAT('%',#{search},'%')
             )
         </if>
