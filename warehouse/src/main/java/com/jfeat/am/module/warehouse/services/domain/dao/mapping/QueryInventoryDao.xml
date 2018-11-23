@@ -54,6 +54,7 @@
             AND(
                 t_sku_product.sku_name LIKE CONCAT('%',#{search},'%')
                 or t_sku_product.bar_code LIKE CONCAT('%',#{search},'%')
+                OR t_sku_product.sku_code LIKE CONCAT('%',#{search},'%')
             )
         </if>
 
