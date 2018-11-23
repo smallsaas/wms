@@ -37,6 +37,7 @@
 
         <if test="search != null and search!= ''">
             AND (wms_suppliers.supplier_name LIKE CONCAT('%',#{search},'%')
+            OR
             wms_procurement.procurement_code LIKE CONCAT('%',#{search},'%')
             )
         </if>
