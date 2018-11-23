@@ -122,7 +122,6 @@ public class ProcurementEndpoint extends BaseController {
                                  @RequestParam(name = "procurementOthersPayment", required = false) BigDecimal procurementOthersPayment,
                                  @RequestParam(name = "procurementDiscount", required = false) Integer procurementDiscount,
                                  @RequestParam(name = "procurementTotal", required = false) BigDecimal procurementTotal,
-                                 @RequestParam(name = "procurementTime", required = false) Date procurementTime,
                                  @RequestParam(name = "procurementNote", required = false) String procurementNote,
                                  @RequestParam(name = "procureStatus", required = false) String procureStatus,
                                  @RequestParam(name = "transactionBy", required = false) String transactionBy,
@@ -135,7 +134,7 @@ public class ProcurementEndpoint extends BaseController {
                                  @RequestParam(name = "field2", required = false) String field2,
                                  @RequestParam(name = "orderBy", required = false) String orderBy,
                                  @RequestParam(name = "sort", required = false) String sort,
-                                 @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd")Date[]createTime) {
+                                 @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd")Date[]procurementTime) {
         if (orderBy != null && orderBy.length() > 0) {
             if (sort != null && sort.length() > 0) {
                 String pattern = "(ASC|DESC|asc|desc)";
@@ -148,8 +147,8 @@ public class ProcurementEndpoint extends BaseController {
             orderBy = "`" + orderBy + "`" + " " + sort;
         }
 
-        Date startTime = (createTime!=null && createTime.length == 2)? createTime [0] : null;
-        Date endTime = (createTime!=null && createTime.length == 2)? createTime [1] : null;
+        Date startTime = (procurementTime!=null && procurementTime.length == 2)? procurementTime [0] : null;
+        Date endTime = (procurementTime!=null && procurementTime.length == 2)? procurementTime [1] : null;
 
 
         page.setCurrent(pageNum);
@@ -162,7 +161,6 @@ public class ProcurementEndpoint extends BaseController {
         record.setProcurementOthersPayment(procurementOthersPayment);
         record.setProcurementTotal(procurementTotal);
         record.setProcurementDiscount(procurementDiscount);
-        record.setProcurementTime(procurementTime);
         record.setProcurementNote(procurementNote);
         record.setProcureStatus(procureStatus);
         record.setTransactionBy(transactionBy);
