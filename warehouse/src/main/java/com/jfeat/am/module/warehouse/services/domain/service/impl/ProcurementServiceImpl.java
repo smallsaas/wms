@@ -216,9 +216,12 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                         isExistInventory.setMaxInventory(item.getTransactionQuantities());
                         affected += inventoryMapper.insert(isExistInventory);
                     }
+                    item.setTransactionTime(in.getStorageInTime());
+                    storageInItems.add(item);
+                }else {
+                    //while transaction quantities = 0 ,do nothing
                 }
-                item.setTransactionTime(in.getStorageInTime());
-                storageInItems.add(item);
+
             }
             in.setStorageInItems(storageInItems);
             inSuccess = crudStorageInService.createMaster(in, storageInFilter, null, null);
@@ -234,17 +237,6 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         }
         affected += procurementMapper.updateById(model);
         return affected;
-
-        /*                // 历史价格 信息
-                SkuPriceHistory history = new SkuPriceHistory();
-                history.setSkuId(item.getSkuId());
-                SkuPriceHistory originHistory = skuPriceHistoryMapper.selectOne(history);
-                if (originHistory.getAfterPrice().compareTo(item.getTransactionSkuPrice()) != 0){
-                    originHistory.setAfterPrice(originHistory.getOriginPrice());
-                    originHistory.setAfterPrice(item.getTransactionSkuPrice());
-                    skuPriceHistoryMapper.insert(originHistory);
-                }*/
-
     }
 
     /**

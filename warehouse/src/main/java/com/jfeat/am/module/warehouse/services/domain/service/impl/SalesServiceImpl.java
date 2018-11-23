@@ -209,6 +209,9 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                         noInventory.add(skuProduct.getSkuName()+":"+skuProduct.getBarCode()+"\n"
                         );
                     }
+                }else {
+
+                    //while transaction quantities = 0 ,do nothing
                 }
             }
             if (noInventory.size()>0){

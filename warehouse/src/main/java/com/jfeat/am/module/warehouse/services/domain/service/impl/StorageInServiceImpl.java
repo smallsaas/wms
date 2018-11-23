@@ -50,41 +50,46 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         Integer affected = 0;
         entity.setOriginatorId(userId);
         entity.setTransactionTime(new Date());
-        if (entity.getStorageInTime()==null){
+        if (entity.getStorageInTime() == null) {
             entity.setStorageInTime(new Date());
         }
         StorageInFilter storageInFilter = new StorageInFilter();
         List<StorageInItem> storageInItems = new ArrayList<>();
         if (entity.getStorageInItems() != null && entity.getStorageInItems().size() > 0) {
             for (StorageInItem inItem : entity.getStorageInItems()) {
-                inItem.setRelationCode(entity.getTransactionCode());
-                inItem.setTransactionTime(entity.getStorageInTime());
-                // 设置产品的入库时间
-                inItem.setTransactionTime(entity.getTransactionTime());
+                if (inItem.getTransactionQuantities() > 0) {
+                    inItem.setRelationCode(entity.getTransactionCode());
+                    inItem.setTransactionTime(entity.getStorageInTime());
+                    // 设置产品的入库时间
+                    inItem.setTransactionTime(entity.getTransactionTime());
 
-                Inventory isExistInventory = new Inventory();
-                isExistInventory.setSkuId(inItem.getSkuId());
-                isExistInventory.setWarehouseId(entity.getWarehouseId());
-                Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
-                if (originInventory != null) {
-                    //插入操作后的库存数量 原来数量+准备入库数量
-                    Integer afterSkuCount = originInventory.getValidSku() + inItem.getTransactionQuantities();
-                    inItem.setAfterTransactionQuantities(afterSkuCount);
-
-                    originInventory.setValidSku(afterSkuCount);
-                    affected += inventoryMapper.updateById(originInventory);
-                } else {
-                    //插入操作后的库存数量 == 准备入库的数量 原来的不存在
-                    inItem.setAfterTransactionQuantities(inItem.getTransactionQuantities());
-
+                    Inventory isExistInventory = new Inventory();
+                    isExistInventory.setSkuId(inItem.getSkuId());
                     isExistInventory.setWarehouseId(entity.getWarehouseId());
-                    isExistInventory.setValidSku(inItem.getTransactionQuantities());
-                    affected += inventoryMapper.insert(isExistInventory);
+                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    if (originInventory != null) {
+                        //插入操作后的库存数量 原来数量+准备入库数量
+                        Integer afterSkuCount = originInventory.getValidSku() + inItem.getTransactionQuantities();
+                        inItem.setAfterTransactionQuantities(afterSkuCount);
+
+                        originInventory.setValidSku(afterSkuCount);
+                        affected += inventoryMapper.updateById(originInventory);
+                    } else {
+                        //插入操作后的库存数量 == 准备入库的数量 原来的不存在
+                        inItem.setAfterTransactionQuantities(inItem.getTransactionQuantities());
+
+                        isExistInventory.setWarehouseId(entity.getWarehouseId());
+                        isExistInventory.setValidSku(inItem.getTransactionQuantities());
+                        affected += inventoryMapper.insert(isExistInventory);
+                    }
+                    storageInItems.add(inItem);
+                } else {
+
+                    //while transaction quantities = 0 ,do nothing
                 }
-                storageInItems.add(inItem);
             }
-        }else {
-            throw new BusinessException(4050,"商品不能为空，请先选择商品！");
+        } else {
+            throw new BusinessException(4050, "商品不能为空，请先选择商品！");
         }
         entity.setStorageInItems(storageInItems);
         affected = crudStorageInService.createMaster(entity, storageInFilter, null, null);

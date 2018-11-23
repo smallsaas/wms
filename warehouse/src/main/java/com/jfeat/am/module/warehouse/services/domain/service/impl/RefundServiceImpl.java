@@ -89,47 +89,52 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         List<StorageOutItem> storageOutItems = new ArrayList<>();
         if (model.getItems() != null && model.getItems().size() > 0) {
             for (StorageOutItem outItem : model.getItems()) {
-                outItem.setRelationCode(model.getProductRefundCode());
-                outItem.setTransactionTime(storageOutModel.getStorageOutTime());
-                refundTotal += outItem.getTransactionQuantities();
-                SkuProduct sku = skuProductMapper.selectById(outItem.getSkuId());
-                Inventory isExistInventory = new Inventory();
-                isExistInventory.setSkuId(outItem.getSkuId());
-                isExistInventory.setWarehouseId(model.getProductRefundWarehouseId());
-                Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
-                if (originInventory != null) {
-                    // 退货数量不能大于库存量
-                    if (originInventory.getValidSku() == null) {
-                        originInventory.setValidSku(0);
-                    }
+
+                if (outItem.getTransactionQuantities() > 0) {
+                    outItem.setRelationCode(model.getProductRefundCode());
+                    outItem.setTransactionTime(storageOutModel.getStorageOutTime());
+                    refundTotal += outItem.getTransactionQuantities();
+                    SkuProduct sku = skuProductMapper.selectById(outItem.getSkuId());
+                    Inventory isExistInventory = new Inventory();
+                    isExistInventory.setSkuId(outItem.getSkuId());
+                    isExistInventory.setWarehouseId(model.getProductRefundWarehouseId());
+                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    if (originInventory != null) {
+                        // 退货数量不能大于库存量
+                        if (originInventory.getValidSku() == null) {
+                            originInventory.setValidSku(0);
+                        }
                     /*if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
                         throw new BusinessException(4050, "\""+sku.getSkuName()+"\"库存不足");
                     } else*/
-                    if (model.getProductProcurementId() == null) {
-                        //操作后的数量
-                        Integer afterSkuCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
-                        outItem.setAfterTransactionQuantities(afterSkuCount);
-
-                        originInventory.setValidSku(afterSkuCount);
-                        affected += inventoryMapper.updateById(originInventory);
-
-                    } else {
-                        if (outItem.getTransactionQuantities() > queryRefundDao.skuStorageInCount(model.getProductProcurementId(), outItem.getSkuId())) {
-                            throw new BusinessException(4050, "\"" + sku.getSkuName() + "\"退货数量不能大于入库的数量");
-                        } else {
+                        if (model.getProductProcurementId() == null) {
                             //操作后的数量
                             Integer afterSkuCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
                             outItem.setAfterTransactionQuantities(afterSkuCount);
 
                             originInventory.setValidSku(afterSkuCount);
                             affected += inventoryMapper.updateById(originInventory);
-                        }
-                    }
 
+                        } else {
+                            if (outItem.getTransactionQuantities() > queryRefundDao.skuStorageInCount(model.getProductProcurementId(), outItem.getSkuId())) {
+                                throw new BusinessException(4050, "\"" + sku.getSkuName() + "\"退货数量不能大于入库的数量");
+                            } else {
+                                //操作后的数量
+                                Integer afterSkuCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
+                                outItem.setAfterTransactionQuantities(afterSkuCount);
+
+                                originInventory.setValidSku(afterSkuCount);
+                                affected += inventoryMapper.updateById(originInventory);
+                            }
+                        }
+
+                    } else {
+                        throw new BusinessException(4060, "该仓库不存在\"" + sku.getSkuName() + "\"商品");
+                    }
+                    storageOutItems.add(outItem);
                 } else {
-                    throw new BusinessException(4060, "该仓库不存在\"" + sku.getSkuName() + "\"商品");
+                        //while transaction quantities = 0 ,do nothing
                 }
-                storageOutItems.add(outItem);
             }
         } else {
             throw new BusinessException(4055, "请先选择需要退货的商品！");
