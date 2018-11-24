@@ -352,7 +352,7 @@
             ELSE 'sout' END
             AS recordType,
 
-            wms_check_sku.check_id as parentId
+            csku.check_id as parentId
 
             FROM
             wms_check_sku csku
@@ -379,7 +379,7 @@
                 AND wms_check.check_code LIKE CONCAT('%',#{transactionCode},'%')
             </if>
 
-            
+
         </if>
         ORDER BY transactionTime DESC
     </select>
