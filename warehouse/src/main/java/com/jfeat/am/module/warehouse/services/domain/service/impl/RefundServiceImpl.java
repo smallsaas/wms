@@ -135,7 +135,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     }
                     storageOutItems.add(outItem);
                 } else {
-                        throw new BusinessException(5000,"提交失败，"+"\""+sku.getSkuName()+"\""+"商品调拨数量不能为0");
+                        throw new BusinessException(5000,"提交失败，"+"\""+sku.getSkuName()+"\""+"商品退货数量不能为0");
                 }
             }
         } else {
@@ -250,9 +250,11 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
             }
         }
 
+        List<StorageOutItemRecord> outItemRecords = new ArrayList<>();
+
         List<StorageOut> storageOuts = storageOutMapper.selectList(new EntityWrapper<StorageOut>().eq(StorageOut.ID, refund.getStorageOutId()).like(StorageOut.TRANSACTION_TYPE, TransactionType.Refund.toString()));
 
-        List<StorageOutItemRecord> outItemRecords = new ArrayList<>();
+
         if (storageOuts != null && storageOuts.size() > 0) {
             for (StorageOut out : storageOuts) {
                 StorageOutRecord record = queryRefundDao.outRecord(out.getId());//  关联上级出库单的信息
