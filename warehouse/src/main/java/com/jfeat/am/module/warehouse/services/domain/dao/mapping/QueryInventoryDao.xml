@@ -116,8 +116,9 @@
             wms_warehouse.warehouse_name AS warehouseName,
             wms_storage_in.transaction_type AS transactionType,
             wms_storage_in.transaction_code AS transactionCode,
-            'sin' recordType
+            'sin' recordType,
 
+            wms_storage_in.field1 as parentId
 
             FROM
             wms_storage_in_item sin
@@ -139,7 +140,9 @@
             <if test="transactionCode != null and transactionCode!= ''">
                 AND wms_storage_in.transaction_code LIKE CONCAT('%',#{transactionCode},'%')
             </if>
+
             UNION
+
             SELECT
             sout.sku_id AS skuId,
             NULL AS type,
@@ -155,7 +158,10 @@
             wms_warehouse.warehouse_name AS warehouseName,
             wms_storage_out.transaction_type AS transactionType,
             wms_storage_out.transaction_code AS transactionCode,
-            'sout' recordType
+            'sout' recordType,
+
+            wms_storage_out.field1 as parentId
+
             FROM
             wms_storage_out_item sout
             LEFT JOIN wms_storage_out ON sout.storage_out_id = wms_storage_out.id
@@ -169,13 +175,17 @@
             and sout.type!='CustomerStorageOut'
             <if test="startTime != null and endTime != null">
                 <![CDATA[
-       AND sout.transaction_time >= date(#{startTime}) AND
-           sout.transaction_time < DATE_ADD(date(#{endTime}),INTERVAL 1 DAY)
+                AND sout.transaction_time >= date(#{startTime}) AND
+                sout.transaction_time < DATE_ADD(date(#{endTime}),INTERVAL 1 DAY)
             ]]>
             </if>
+
+
             <if test="transactionCode != null and transactionCode!= ''">
                 AND wms_storage_out.transaction_code LIKE CONCAT('%',#{transactionCode},'%')
             </if>
+
+
         </if>
         <if test="transactionType != null and transactionType!= '' and transactionType = 'checkUpdate'">
             SELECT
@@ -200,7 +210,10 @@
             WHEN csku.profit_lost>0
             THEN 'sin'
             ELSE 'sout' END
-            AS recordType
+            AS recordType,
+
+            wms_check_sku.check_id as parentId
+
 
             FROM
             wms_check_sku csku
@@ -214,21 +227,22 @@
             AND csku.profit_lost != 0
             AND t_sku_product.id = #{skuId}
             AND wms_warehouse.warehouse_name = #{warehouseName}
+
             <if test="startTime != null and endTime != null">
                 <![CDATA[
                    AND wms_check.finish_time >= date(#{startTime}) AND
                    wms_check.finish_time < DATE_ADD(date(#{endTime}),INTERVAL 1 DAY)
                 ]]>
             </if>
+
+
             <if test="transactionCode != null and transactionCode!= ''">
                 AND wms_check.check_code LIKE CONCAT('%',#{transactionCode},'%')
             </if>
 
-        <if test="transactionType != null and transactionType!= '' and transactionType != 'checkUpdate'">
 
-            </if>
         </if>
-        <if test="transactionType != null and transactionType!= '' and transactionType = 'checkUpdate'">
+        <if test="transactionType = null">
             SELECT
             sin.sku_id AS skuId,
             sin.type,
@@ -244,7 +258,9 @@
             wms_warehouse.warehouse_name AS warehouseName,
             wms_storage_in.transaction_type AS transactionType,
             wms_storage_in.transaction_code AS transactionCode,
-            'sin' recordType
+            'sin' recordType,
+
+            wms_storage_in.field1 as parentId
 
 
             FROM
@@ -285,7 +301,10 @@
             wms_warehouse.warehouse_name AS warehouseName,
             wms_storage_out.transaction_type AS transactionType,
             wms_storage_out.transaction_code AS transactionCode,
-            'sout' recordType
+            'sout' recordType,
+
+            wms_storage_out.field1 as parentId
+
             FROM
             wms_storage_out_item sout
             LEFT JOIN wms_storage_out ON sout.storage_out_id = wms_storage_out.id
@@ -331,7 +350,9 @@
             WHEN csku.profit_lost>0
             THEN 'sin'
             ELSE 'sout' END
-            AS recordType
+            AS recordType,
+
+            wms_check_sku.check_id as parentId
 
             FROM
             wms_check_sku csku
@@ -345,6 +366,7 @@
             AND csku.profit_lost != 0
             AND t_sku_product.id = #{skuId}
             AND wms_warehouse.warehouse_name = #{warehouseName}
+
             <if test="startTime != null and endTime != null">
                 <![CDATA[
                        AND wms_check.finish_time >= date(#{startTime}) AND
@@ -352,9 +374,12 @@
                     ]]>
 
             </if>
+
             <if test="transactionCode != null and transactionCode!= ''">
                 AND wms_check.check_code LIKE CONCAT('%',#{transactionCode},'%')
             </if>
+
+            
         </if>
         ORDER BY transactionTime DESC
     </select>

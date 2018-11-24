@@ -20,6 +20,7 @@ public class SkuStorageDetails {
     Integer validValue;
     String relationCode;
     String recordType;
+    String parentId;
 
     public String getRecordType() {
         return recordType;
@@ -139,5 +140,14 @@ public class SkuStorageDetails {
 
     public void setRelationCode(String relationCode) {
         this.relationCode = relationCode;
+    }
+
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 }
