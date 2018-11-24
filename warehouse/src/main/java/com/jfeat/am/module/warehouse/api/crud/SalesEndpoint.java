@@ -120,7 +120,7 @@ public class SalesEndpoint extends BaseController {
                             @RequestParam(name = "transactionBy", required = false) String transactionBy,
                             @RequestParam(name = "originatorId", required = false) Long originatorId,
                             @RequestParam(name = "originatorName", required = false) String originatorName,
-                            @RequestParam(name = "transactionTime", required = false) Date transactionTime,
+                            @RequestParam(name = "transactionTime", required = false) Date[] transactionTime,
                             @RequestParam(name = "field1", required = false) String field1,
                             @RequestParam(name = "field2", required = false) String field2,
                             @RequestParam(name = "traderName", required = false) String traderName,
@@ -137,6 +137,12 @@ public class SalesEndpoint extends BaseController {
             }
             orderBy = "`" + orderBy + "`" + " " + sort;
         }
+
+
+        Date startTime = (transactionTime!=null && transactionTime.length == 2)? transactionTime [0] : null;
+        Date endTime = (transactionTime!=null && transactionTime.length == 2)? transactionTime [1] : null;
+
+
         page.setCurrent(pageNum);
         page.setSize(pageSize);
 
@@ -154,11 +160,10 @@ public class SalesEndpoint extends BaseController {
         record.setTransactionBy(transactionBy);
         record.setOriginatorId(originatorId);
         record.setOriginatorName(originatorName);
-        record.setTransactionTime(transactionTime);
         record.setField1(field1);
         record.setField2(field2);
 
-        page.setRecords(querySalesDao.findSalesPage(page, traderName,record, orderBy));
+        page.setRecords(querySalesDao.findSalesPage(page, traderName,record, orderBy,startTime,endTime));
 
         return SuccessTip.create(page);
     }

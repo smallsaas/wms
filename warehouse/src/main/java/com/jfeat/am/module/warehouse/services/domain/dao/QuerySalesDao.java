@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,7 +16,9 @@ public interface QuerySalesDao extends BaseMapper<SalesRecord> {
     List<SalesRecord> findSalesPage(Page<SalesRecord> page,
                                     @Param("traderName")String traderName,
                                     @Param("record") SalesRecord record,
-                                    @Param("orderBy") String orderBy);
+                                    @Param("orderBy") String orderBy,
+                                    @Param("startTime") Date startTime,
+                                    @Param("endTime") Date endTime);
 
     Integer skuSalesCount(@Param("salesId") Long salesId,
                           @Param("skuId") Long skuId);

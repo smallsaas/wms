@@ -166,7 +166,6 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         // field1 去接收最上层的ID  作跳转使用
         storageOutModel.setField1(model.getId().toString());
 
-
         storageOutModel.setId(model.getStorageOutId());
         storageOutMapper.updateById(storageOutModel);
 

@@ -294,9 +294,16 @@
         <if test="record.originatorName != null and record.originatorName!= ''">
             AND wms_sales.originator_name LIKE CONCAT('%',#{record.originatorName},'%')
         </if>
-        <if test="record.transactionTime != null and record.transactionTime>0 ">
-            AND wms_sales.transaction_time LIKE CONCAT('%',#{record.transactionTime},'%')
+
+
+        <if test="startTime != null and endTime != null">
+            <![CDATA[
+                AND wms_sales.transaction_time >= date(#{startTime}) AND
+                wms_sales.transaction_time < DATE_ADD(date(#{endTime}),INTERVAL 1 DAY)
+            ]]>
         </if>
+
+
         <if test="record.field1 != null and record.field1!= ''">
             AND wms_sales.field1 LIKE CONCAT('%',#{record.field1},'%')
         </if>
