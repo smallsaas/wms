@@ -90,11 +90,13 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         if (model.getItems() != null && model.getItems().size() > 0) {
             for (StorageOutItem outItem : model.getItems()) {
 
+
+                SkuProduct sku = skuProductMapper.selectById(outItem.getSkuId());
                 if (outItem.getTransactionQuantities() > 0) {
                     outItem.setRelationCode(model.getProductRefundCode());
                     outItem.setTransactionTime(storageOutModel.getStorageOutTime());
                     refundTotal += outItem.getTransactionQuantities();
-                    SkuProduct sku = skuProductMapper.selectById(outItem.getSkuId());
+
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(outItem.getSkuId());
                     isExistInventory.setWarehouseId(model.getProductRefundWarehouseId());
@@ -133,7 +135,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     }
                     storageOutItems.add(outItem);
                 } else {
-                        //while transaction quantities = 0 ,do nothing
+                        throw new BusinessException(5000,"提交失败，"+"\""+sku.getSkuName()+"\""+"商品调拨数量不能为0");
                 }
             }
         } else {
