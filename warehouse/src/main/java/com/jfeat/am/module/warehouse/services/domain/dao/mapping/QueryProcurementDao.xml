@@ -80,7 +80,7 @@
 
         <if test="startTime != null and endTime != null">
             <![CDATA[
-       AND wms_procurement.procurement_time >= date(#{startTime) AND
+       AND wms_procurement.procurement_time >= date(#{startTime}) AND
            wms_procurement.procurement_time < DATE_ADD(date(#{endTime}),INTERVAL 1 DAY)
             ]]>
         </if>

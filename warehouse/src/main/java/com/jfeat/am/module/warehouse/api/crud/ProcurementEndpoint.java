@@ -134,7 +134,7 @@ public class ProcurementEndpoint extends BaseController {
                                  @RequestParam(name = "field2", required = false) String field2,
                                  @RequestParam(name = "orderBy", required = false) String orderBy,
                                  @RequestParam(name = "sort", required = false) String sort,
-                                 @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd")Date[]procurementTime) {
+                                 @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd")Date[] procurementTime) {
         if (orderBy != null && orderBy.length() > 0) {
             if (sort != null && sort.length() > 0) {
                 String pattern = "(ASC|DESC|asc|desc)";
