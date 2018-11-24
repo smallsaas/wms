@@ -96,6 +96,7 @@
         <if test="record.field2 != null and record.field2!= ''">
             AND wms_transfer.field2 LIKE CONCAT('%',#{record.field2},'%')
         </if>
+        ORDER BY wms_transfer.transaction_time
     </select>
 
 
