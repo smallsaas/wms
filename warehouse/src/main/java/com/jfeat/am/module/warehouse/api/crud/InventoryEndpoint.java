@@ -3,6 +3,7 @@ package com.jfeat.am.module.warehouse.api.crud;
 import com.jfeat.am.module.warehouse.services.domain.model.SkuStorageDetails;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jfeat.am.common.controller.BaseController;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 
 /**
@@ -58,10 +60,17 @@ public class InventoryEndpoint extends BaseController {
                                  @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                  @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                                  @RequestParam(name = "warehouseName", required = false) String warehouseName,
-                                 @PathVariable Long id) {
+                                 @PathVariable Long id,
+                                 @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date[] transactionTime,
+                                 @RequestParam(name = "transactionType", required = false) String transactionType,
+                                 @RequestParam(name = "transactionCode", required = false) String transactionCode) {
+
+        Date startTime = (transactionTime!=null && transactionTime.length == 2)? transactionTime [0] : null;
+        Date endTime = (transactionTime!=null && transactionTime.length == 2)? transactionTime [1] : null;
+
         page.setCurrent(pageNum);
         page.setSize(pageSize);
-        page.setRecords(queryInventoryDao.skuStorageDetails(page, id, warehouseName));
+        page.setRecords(queryInventoryDao.skuStorageDetails(page, id, warehouseName,transactionType,startTime,endTime,transactionCode));
         return SuccessTip.create(page);
     }
     @GetMapping("/skus/in/{id}")

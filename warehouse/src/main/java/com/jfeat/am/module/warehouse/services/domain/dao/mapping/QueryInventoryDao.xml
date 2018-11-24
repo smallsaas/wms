@@ -99,105 +99,263 @@
 
     <select id="skuStorageDetails" resultType="com.jfeat.am.module.warehouse.services.domain.model.SkuStorageDetails">
 
-        SELECT
-        sin.sku_id AS skuId,
-        sin.type,
-        sin.relation_code as relationCode,
-        sin.transaction_sku_price AS transactionSkuPrice,
-        sin.transaction_quantities AS transactionQuantities,
-        sin.transaction_time AS transactionTime,
-        sin.after_transaction_quantities AS validValue,
-        t_sku_product.sku_name AS skuName,
-        t_sku_product.bar_code AS skuBarcode,
-        t_sku_product.sku_code AS skuCode,
-        t_sku_product.field1 AS skuUnit,
-        wms_warehouse.warehouse_name AS warehouseName,
-        wms_storage_in.transaction_type AS transactionType,
-        wms_storage_in.transaction_code AS transactionCode,
-        'sin' recordType
+
+        <if test="transactionType != null and transactionType!= '' and transactionType != 'checkUpdate'">
+            SELECT
+            sin.sku_id AS skuId,
+            sin.type,
+            sin.relation_code as relationCode,
+            sin.transaction_sku_price AS transactionSkuPrice,
+            sin.transaction_quantities AS transactionQuantities,
+            sin.transaction_time AS transactionTime,
+            sin.after_transaction_quantities AS validValue,
+            t_sku_product.sku_name AS skuName,
+            t_sku_product.bar_code AS skuBarcode,
+            t_sku_product.sku_code AS skuCode,
+            t_sku_product.field1 AS skuUnit,
+            wms_warehouse.warehouse_name AS warehouseName,
+            wms_storage_in.transaction_type AS transactionType,
+            wms_storage_in.transaction_code AS transactionCode,
+            'sin' recordType
 
 
-        FROM
-        wms_storage_in_item sin
-        LEFT JOIN wms_storage_in ON sin.storage_in_id = wms_storage_in.id
-        LEFT JOIN t_sku_product ON t_sku_product.id = sin.sku_id
-        LEFT JOIN wms_warehouse ON wms_warehouse.id = wms_storage_in.warehouse_id
+            FROM
+            wms_storage_in_item sin
+            LEFT JOIN wms_storage_in ON sin.storage_in_id = wms_storage_in.id
+            LEFT JOIN t_sku_product ON t_sku_product.id = sin.sku_id
+            LEFT JOIN wms_warehouse ON wms_warehouse.id = wms_storage_in.warehouse_id
 
-        WHERE
-        1 = 1
-        AND t_sku_product.id = #{skuId}
-        AND wms_warehouse.warehouse_name = #{warehouseName}
-        AND sin.type != 'Procurement'
+            WHERE
+            1 = 1
+            AND t_sku_product.id = #{skuId}
+            AND wms_warehouse.warehouse_name = #{warehouseName}
+            AND sin.type != 'Procurement'
+            <if test="startTime != null and endTime != null">
+                <![CDATA[
+                AND sin.transaction_time >= date(#{startTime}) AND
+                sin.transaction_time < DATE_ADD(date(#{endTime}),INTERVAL 1 DAY)
+            ]]>
+            </if>
+            <if test="transactionCode != null and transactionCode!= ''">
+                AND wms_storage_in.transaction_code LIKE CONCAT('%',#{transactionCode},'%')
+            </if>
+            UNION
+            SELECT
+            sout.sku_id AS skuId,
+            NULL AS type,
+            sout.relation_code as relationCode,
+            sout.transaction_sku_price AS transactionSkuPrice,
+            sout.transaction_quantities AS transactionQuantities,
+            sout.transaction_time AS transactionTime,
+            sout.after_transaction_quantities AS validValue,
+            t_sku_product.sku_name AS skuName,
+            t_sku_product.bar_code AS skuBarcode,
+            t_sku_product.sku_code AS skuCode,
+            t_sku_product.field1 AS skuUnit,
+            wms_warehouse.warehouse_name AS warehouseName,
+            wms_storage_out.transaction_type AS transactionType,
+            wms_storage_out.transaction_code AS transactionCode,
+            'sout' recordType
+            FROM
+            wms_storage_out_item sout
+            LEFT JOIN wms_storage_out ON sout.storage_out_id = wms_storage_out.id
+            LEFT JOIN t_sku_product ON t_sku_product.id = sout.sku_id
+            LEFT JOIN wms_warehouse ON wms_warehouse.id = wms_storage_out.warehouse_id
 
-        UNION
-        SELECT
+            WHERE
+            1 = 1
+            AND t_sku_product.id = #{skuId}
+            AND wms_warehouse.warehouse_name = #{warehouseName}
+            and sout.type!='CustomerStorageOut'
+            <if test="startTime != null and endTime != null">
+                <![CDATA[
+       AND sout.transaction_time >= date(#{startTime}) AND
+           sout.transaction_time < DATE_ADD(date(#{endTime}),INTERVAL 1 DAY)
+            ]]>
+            </if>
+            <if test="transactionCode != null and transactionCode!= ''">
+                AND wms_storage_out.transaction_code LIKE CONCAT('%',#{transactionCode},'%')
+            </if>
+        </if>
+        <if test="transactionType != null and transactionType!= '' and transactionType = 'checkUpdate'">
+            SELECT
+            csku.sku_id AS skuId,
+            NULL AS type,
+            wms_check.check_code as relationCode,
+            NULL AS transactionSkuPrice,
+            csku.profit_lost AS transactionQuantities,
+            wms_check.finish_time AS transactionTime,
 
-        sout.sku_id AS skuId,
-        NULL AS type,
-        sout.relation_code as relationCode,
-        sout.transaction_sku_price AS transactionSkuPrice,
-        sout.transaction_quantities AS transactionQuantities,
-        sout.transaction_time AS transactionTime,
-        sout.after_transaction_quantities AS validValue,
-        t_sku_product.sku_name AS skuName,
-        t_sku_product.bar_code AS skuBarcode,
-        t_sku_product.sku_code AS skuCode,
-        t_sku_product.field1 AS skuUnit,
-        wms_warehouse.warehouse_name AS warehouseName,
-        wms_storage_out.transaction_type AS transactionType,
-        wms_storage_out.transaction_code AS transactionCode,
-        'sout' recordType
-        FROM
-        wms_storage_out_item sout
-        LEFT JOIN wms_storage_out ON sout.storage_out_id = wms_storage_out.id
-        LEFT JOIN t_sku_product ON t_sku_product.id = sout.sku_id
-        LEFT JOIN wms_warehouse ON wms_warehouse.id = wms_storage_out.warehouse_id
+            csku.fact_quantities AS validValue,
+            t_sku_product.sku_name AS skuName,
+            t_sku_product.bar_code AS skuBarcode,
+            t_sku_product.sku_code AS skuCode,
+            t_sku_product.field1 AS skuUnit,
+            wms_warehouse.warehouse_name AS warehouseName,
+            'checkUpdate' transactionType,
+            NULL AS transactionCode,
 
-        WHERE
-        1 = 1
-        AND t_sku_product.id = #{skuId}
-        AND wms_warehouse.warehouse_name = #{warehouseName}
-        and sout.type!='CustomerStorageOut'
+            CASE
 
-        UNION
-        SELECT
+            WHEN csku.profit_lost>0
+            THEN 'sin'
+            ELSE 'sout' END
+            AS recordType
 
-        csku.sku_id AS skuId,
-        NULL AS type,
-        wms_check.check_code as relationCode,
-        NULL AS transactionSkuPrice,
-        csku.profit_lost AS transactionQuantities,
-        wms_check.finish_time AS transactionTime,
+            FROM
+            wms_check_sku csku
+            LEFT JOIN wms_check ON csku.check_id = wms_check.id
+            LEFT JOIN wms_warehouse ON csku.warehouse_id = wms_warehouse.id
+            LEFT JOIN t_sku_product ON t_sku_product.id = csku.sku_id
 
-        csku.fact_quantities AS validValue,
-        t_sku_product.sku_name AS skuName,
-        t_sku_product.bar_code AS skuBarcode,
-        t_sku_product.sku_code AS skuCode,
-        t_sku_product.field1 AS skuUnit,
-        wms_warehouse.warehouse_name AS warehouseName,
-        'checkUpdate' transactionType,
-        NULL AS transactionCode,
+            WHERE
+            1 = 1
 
-        CASE
+            AND csku.profit_lost != 0
+            AND t_sku_product.id = #{skuId}
+            AND wms_warehouse.warehouse_name = #{warehouseName}
+            <if test="startTime != null and endTime != null">
+                <![CDATA[
+                   AND wms_check.finish_time >= date(#{startTime}) AND
+                   wms_check.finish_time < DATE_ADD(date(#{endTime}),INTERVAL 1 DAY)
+                ]]>
+            </if>
+            <if test="transactionCode != null and transactionCode!= ''">
+                AND wms_check.check_code LIKE CONCAT('%',#{transactionCode},'%')
+            </if>
 
-        WHEN csku.profit_lost>0
-        THEN 'sin'
-        ELSE 'sout' END
-        AS recordType
+        <if test="transactionType != null and transactionType!= '' and transactionType != 'checkUpdate'">
 
-        FROM
-        wms_check_sku csku
-        LEFT JOIN wms_check ON csku.check_id = wms_check.id
-        LEFT JOIN wms_warehouse ON csku.warehouse_id = wms_warehouse.id
-        LEFT JOIN t_sku_product ON t_sku_product.id = csku.sku_id
-
-        WHERE
-        1 = 1
-        AND csku.profit_lost != 0
-        AND t_sku_product.id = #{skuId}
-        AND wms_warehouse.warehouse_name = #{warehouseName}
+            </if>
+        </if>
+        <if test="transactionType != null and transactionType!= '' and transactionType = 'checkUpdate'">
+            SELECT
+            sin.sku_id AS skuId,
+            sin.type,
+            sin.relation_code as relationCode,
+            sin.transaction_sku_price AS transactionSkuPrice,
+            sin.transaction_quantities AS transactionQuantities,
+            sin.transaction_time AS transactionTime,
+            sin.after_transaction_quantities AS validValue,
+            t_sku_product.sku_name AS skuName,
+            t_sku_product.bar_code AS skuBarcode,
+            t_sku_product.sku_code AS skuCode,
+            t_sku_product.field1 AS skuUnit,
+            wms_warehouse.warehouse_name AS warehouseName,
+            wms_storage_in.transaction_type AS transactionType,
+            wms_storage_in.transaction_code AS transactionCode,
+            'sin' recordType
 
 
+            FROM
+            wms_storage_in_item sin
+            LEFT JOIN wms_storage_in ON sin.storage_in_id = wms_storage_in.id
+            LEFT JOIN t_sku_product ON t_sku_product.id = sin.sku_id
+            LEFT JOIN wms_warehouse ON wms_warehouse.id = wms_storage_in.warehouse_id
+
+            WHERE
+            1 = 1
+            AND t_sku_product.id = #{skuId}
+            AND wms_warehouse.warehouse_name = #{warehouseName}
+            AND sin.type != 'Procurement'
+            <if test="startTime != null and endTime != null">
+                <![CDATA[
+                AND sin.transaction_time >= date(#{startTime}) AND
+                sin.transaction_time < DATE_ADD(date(#{endTime}),INTERVAL 1 DAY)
+            ]]>
+            </if>
+            <if test="transactionCode != null and transactionCode!= ''">
+                AND wms_storage_in.transaction_code LIKE CONCAT('%',#{transactionCode},'%')
+            </if>
+
+            UNION
+
+            SELECT
+            sout.sku_id AS skuId,
+            NULL AS type,
+            sout.relation_code as relationCode,
+            sout.transaction_sku_price AS transactionSkuPrice,
+            sout.transaction_quantities AS transactionQuantities,
+            sout.transaction_time AS transactionTime,
+            sout.after_transaction_quantities AS validValue,
+            t_sku_product.sku_name AS skuName,
+            t_sku_product.bar_code AS skuBarcode,
+            t_sku_product.sku_code AS skuCode,
+            t_sku_product.field1 AS skuUnit,
+            wms_warehouse.warehouse_name AS warehouseName,
+            wms_storage_out.transaction_type AS transactionType,
+            wms_storage_out.transaction_code AS transactionCode,
+            'sout' recordType
+            FROM
+            wms_storage_out_item sout
+            LEFT JOIN wms_storage_out ON sout.storage_out_id = wms_storage_out.id
+            LEFT JOIN t_sku_product ON t_sku_product.id = sout.sku_id
+            LEFT JOIN wms_warehouse ON wms_warehouse.id = wms_storage_out.warehouse_id
+
+            WHERE
+            1 = 1
+            AND t_sku_product.id = #{skuId}
+            AND wms_warehouse.warehouse_name = #{warehouseName}
+            and sout.type!='CustomerStorageOut'
+            <if test="startTime != null and endTime != null">
+                <![CDATA[
+                AND sout.transaction_time >= date(#{startTime}) AND
+                sout.transaction_time < DATE_ADD(date(#{endTime}),INTERVAL 1 DAY)
+            ]]>
+            </if>
+            <if test="transactionCode != null and transactionCode!= ''">
+                AND wms_storage_out.transaction_code LIKE CONCAT('%',#{transactionCode},'%')
+            </if>
+
+            UNION
+
+            SELECT
+            csku.sku_id AS skuId,
+            NULL AS type,
+            wms_check.check_code as relationCode,
+            NULL AS transactionSkuPrice,
+            csku.profit_lost AS transactionQuantities,
+            wms_check.finish_time AS transactionTime,
+
+            csku.fact_quantities AS validValue,
+            t_sku_product.sku_name AS skuName,
+            t_sku_product.bar_code AS skuBarcode,
+            t_sku_product.sku_code AS skuCode,
+            t_sku_product.field1 AS skuUnit,
+            wms_warehouse.warehouse_name AS warehouseName,
+            'checkUpdate' transactionType,
+            NULL AS transactionCode,
+
+            CASE
+
+            WHEN csku.profit_lost>0
+            THEN 'sin'
+            ELSE 'sout' END
+            AS recordType
+
+            FROM
+            wms_check_sku csku
+            LEFT JOIN wms_check ON csku.check_id = wms_check.id
+            LEFT JOIN wms_warehouse ON csku.warehouse_id = wms_warehouse.id
+            LEFT JOIN t_sku_product ON t_sku_product.id = csku.sku_id
+
+            WHERE
+            1 = 1
+
+            AND csku.profit_lost != 0
+            AND t_sku_product.id = #{skuId}
+            AND wms_warehouse.warehouse_name = #{warehouseName}
+            <if test="startTime != null and endTime != null">
+                <![CDATA[
+                       AND wms_check.finish_time >= date(#{startTime}) AND
+                       wms_check.finish_time < DATE_ADD(date(#{endTime}),INTERVAL 1 DAY)
+                    ]]>
+
+            </if>
+            <if test="transactionCode != null and transactionCode!= ''">
+                AND wms_check.check_code LIKE CONCAT('%',#{transactionCode},'%')
+            </if>
+        </if>
         ORDER BY transactionTime DESC
     </select>
 

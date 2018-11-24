@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,7 +28,11 @@ public interface QueryInventoryDao extends BaseMapper<InventoryRecord> {
      * */
     List<SkuStorageDetails> skuStorageDetails(Page<SkuStorageDetails> page,
                                               @Param("skuId") Long skuId,
-                                              @Param("warehouseName") String warehouseName);
+                                              @Param("warehouseName") String warehouseName,
+                                              @Param("transactionType")String transactionType,
+                                              @Param("startTime") Date startTime,
+                                              @Param("endTime") Date endTime,
+                                              @Param("transactionCode")String transactionCode);
 
     /**
      * 某个商品对应的仓库的出库详情
