@@ -8,13 +8,19 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Code Generator on 2018-06-22
  */
 public interface QueryTransferDao extends BaseMapper<TransferRecord> {
-    List<TransferRecord> findTransferPage(Page<TransferRecord> page, @Param("warehouseId")Long warehouseId,@Param("record") TransferRecord record, @Param("orderBy") String orderBy);
+    List<TransferRecord> findTransferPage(Page<TransferRecord> page,
+                                          @Param("warehouseId")Long warehouseId,
+                                          @Param("record") TransferRecord record,
+                                          @Param("orderBy") String orderBy,
+                                          @Param("startTime") Date startTime,
+                                          @Param("endTime") Date endTime);
 
 
     // 调拨 详情

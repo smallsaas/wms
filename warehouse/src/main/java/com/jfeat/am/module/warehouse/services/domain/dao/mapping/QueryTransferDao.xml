@@ -50,8 +50,8 @@
         </if>
 
         <if test="warehouseId != null and warehouseId >0 ">
-            AND fwarehouse.id = #{warehouseId}
-            or twarehouse.id = #{warehouseId}
+            AND (fwarehouse.id = #{warehouseId}
+            or twarehouse.id = #{warehouseId})
         </if>
 
         <if test="record.transactionCode != null and record.transactionCode!= ''">
@@ -66,8 +66,11 @@
             AND wms_transfer.to_warehouse_id LIKE CONCAT('%',#{record.toWarehouseId},'%')
         </if>
 
-        <if test="record.transactionTime != null and record.transactionTime>0 ">
-            AND wms_transfer.transaction_time LIKE CONCAT('%',#{record.transactionTime},'%')
+        <if test="startTime != null and endTime != null">
+            <![CDATA[
+                AND wms_transfer.transaction_time >= date(#{startTime}) AND
+                wms_transfer.transaction_time < DATE_ADD(date(#{endTime}),INTERVAL 1 DAY)
+            ]]>
         </if>
 
         <if test="record.storageOutId != null and record.storageOutId>0 ">

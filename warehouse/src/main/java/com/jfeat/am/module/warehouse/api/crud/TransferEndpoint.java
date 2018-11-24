@@ -108,7 +108,7 @@ public class TransferEndpoint extends BaseController {
                               @RequestParam(name = "transactionCode", required = false) String transactionCode,
                               @RequestParam(name = "fromWarehouseId", required = false) Long fromWarehouseId,
                               @RequestParam(name = "toWarehouseId", required = false) Long toWarehouseId,
-                              @RequestParam(name = "transactionTime", required = false) Date transactionTime,
+                              @RequestParam(name = "transactionTime", required = false) Date[] transactionTime,
                               @RequestParam(name = "storageInId", required = false) Long storageInId,
                               @RequestParam(name = "storageOutId", required = false) Long storageOutId,
                               @RequestParam(name = "note", required = false) String note,
@@ -130,6 +130,10 @@ public class TransferEndpoint extends BaseController {
             }
             orderBy = "`" + orderBy + "`" + " " + sort;
         }
+
+        Date startTime = (transactionTime!=null && transactionTime.length == 2)? transactionTime [0] : null;
+        Date endTime = (transactionTime!=null && transactionTime.length == 2)? transactionTime [1] : null;
+
         page.setCurrent(pageNum);
         page.setSize(pageSize);
 
@@ -138,7 +142,6 @@ public class TransferEndpoint extends BaseController {
         record.setTransactionCode(transactionCode);
         record.setFromWarehouseId(fromWarehouseId);
         record.setToWarehouseId(toWarehouseId);
-        record.setTransactionTime(transactionTime);
         record.setStorageInId(storageInId);
         record.setStorageOutId(storageOutId);
         record.setNote(note);
@@ -148,7 +151,7 @@ public class TransferEndpoint extends BaseController {
         record.setField1(field1);
         record.setField2(field2);
 
-        page.setRecords(queryTransferDao.findTransferPage(page, warehouseId,record, orderBy));
+        page.setRecords(queryTransferDao.findTransferPage(page, warehouseId,record, orderBy,startTime,endTime));
 
         return SuccessTip.create(page);
     }
