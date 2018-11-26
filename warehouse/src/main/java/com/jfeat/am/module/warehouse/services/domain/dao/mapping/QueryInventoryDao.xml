@@ -212,7 +212,7 @@
             ELSE 'sout' END
             AS recordType,
 
-            wms_check_sku.check_id as parentId
+            csku.check_id as parentId
 
 
             FROM
