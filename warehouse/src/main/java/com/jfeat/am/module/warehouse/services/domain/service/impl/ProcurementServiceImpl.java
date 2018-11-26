@@ -185,7 +185,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 if (item.getTransactionQuantities() > 0) {
 
                     // field1 去接收最上层的ID  作跳转使用
-                    in.setField1(item.getStorageInId().toString());
+                    in.setField1(procurement.getId().toString());
 
                     SkuProduct skuProduct = skuProductMapper.selectById(item.getSkuId());
                     item.setRelationCode(procurement.getProcurementCode());

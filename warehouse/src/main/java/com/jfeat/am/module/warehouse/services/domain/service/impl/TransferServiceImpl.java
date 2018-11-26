@@ -84,13 +84,13 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
          * 4.插入 Transfer
          * */
         int affected = 0;
-        if (model.getTransferTime()==null){
+        if (model.getTransferTime() == null) {
             model.setTransferTime(new Date());
         }
 
-        if (model.getFromWarehouseId().compareTo(model.getToWarehouseId()) == 0){
+        if (model.getFromWarehouseId().compareTo(model.getToWarehouseId()) == 0) {
 
-            throw new BusinessException(4100,"ERROR DATA"+"\"数据错误，调入|调出仓库不能相同\"");
+            throw new BusinessException(4100, "ERROR DATA" + "\"数据错误，调入|调出仓库不能相同\"");
         }
 
         StorageOutModel storageOut = new StorageOutModel();
@@ -109,49 +109,57 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         List<StorageOutItem> items = new ArrayList<>();
         if (model.getOutItems() != null && model.getOutItems().size() > 0) {
             for (StorageOutItem outItem : model.getOutItems()) {
-                outItem.setRelationCode(model.getTransactionCode());// 插入最上级的 编号
-                outItem.setTransactionTime(storageOut.getStorageOutTime());
-                SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
-                Inventory isExistInventory = new Inventory();
-                isExistInventory.setSkuId(outItem.getSkuId());
-                isExistInventory.setWarehouseId(model.getFromWarehouseId());
-                Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
-                if (originInventory != null) {
-                    if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
-                        throw new BusinessException(4050, "\""+skuProduct.getSkuName()+"\""+"库存不足,"+ "现有库存"+ originInventory.getValidSku() +"小于出库量"+outItem.getTransactionQuantities());
-                    } else {
-                        Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
-                        originInventory.setValidSku(afterCount);
-                        outItem.setAfterTransactionQuantities(afterCount);
-                        // 操作后的数量
-                        affected += inventoryMapper.updateById(originInventory);
-                        // 接收方为在途数
-                        Inventory inventory = new Inventory();
-                        inventory.setSkuId(outItem.getSkuId());
-                        inventory.setWarehouseId(model.getToWarehouseId());
-                        Inventory toInventory = inventoryMapper.selectOne(inventory);
-                        if (toInventory == null){
-                            inventory.setValidSku(0);
-                            inventory.setMinInventory(0);
-                            inventory.setAdvanceQuantities(0);
-                            inventory.setMaxInventory(outItem.getTransactionQuantities());
-                            inventory.setTransmitQuantities(outItem.getTransactionQuantities());
-                            affected += inventoryMapper.insert(inventory);  //假设 接收方没有 ，则新建
-                        }else {
-                            int originCount = toInventory.getTransmitQuantities();
-                            originCount += outItem.getTransactionQuantities();
-                            toInventory.setTransmitQuantities(originCount);
-                            affected += inventoryMapper.updateAllColumnById(toInventory); //有 则是在途数
 
+                SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
+
+                if (outItem.getTransactionQuantities() > 0) {
+                    outItem.setRelationCode(model.getTransactionCode());// 插入最上级的 编号
+                    outItem.setTransactionTime(storageOut.getStorageOutTime());
+
+                    Inventory isExistInventory = new Inventory();
+                    isExistInventory.setSkuId(outItem.getSkuId());
+                    isExistInventory.setWarehouseId(model.getFromWarehouseId());
+                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    if (originInventory != null) {
+                        if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
+                            throw new BusinessException(4050, "\"" + skuProduct.getSkuName() + "\"" + "库存不足," + "现有库存" + originInventory.getValidSku() + "小于出库量" + outItem.getTransactionQuantities());
+                        } else {
+                            Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
+                            originInventory.setValidSku(afterCount);
+                            outItem.setAfterTransactionQuantities(afterCount);
+                            // 操作后的数量
+                            affected += inventoryMapper.updateById(originInventory);
+                            // 接收方为在途数
+                            Inventory inventory = new Inventory();
+                            inventory.setSkuId(outItem.getSkuId());
+                            inventory.setWarehouseId(model.getToWarehouseId());
+                            Inventory toInventory = inventoryMapper.selectOne(inventory);
+                            if (toInventory == null) {
+                                inventory.setValidSku(0);
+                                inventory.setMinInventory(0);
+                                inventory.setAdvanceQuantities(0);
+                                inventory.setMaxInventory(outItem.getTransactionQuantities());
+                                inventory.setTransmitQuantities(outItem.getTransactionQuantities());
+                                affected += inventoryMapper.insert(inventory);  //假设 接收方没有 ，则新建
+                            } else {
+                                int originCount = toInventory.getTransmitQuantities();
+                                originCount += outItem.getTransactionQuantities();
+                                toInventory.setTransmitQuantities(originCount);
+                                affected += inventoryMapper.updateAllColumnById(toInventory); //有 则是在途数
+
+                            }
                         }
+                    } else {
+                        throw new BusinessException(4055, "商品不存在，请重新核对!");
                     }
+                    items.add(outItem);
+
                 } else {
-                    throw new BusinessException(4055,"商品不存在，请重新核对!");
+                    throw new BusinessException(5000, "提交失败，" + "\"" + skuProduct.getSkuName() + "\"" + "商品调拨数量不能为0");
                 }
-                items.add(outItem);
             }
-        }else {
-            throw new BusinessException(4050,"商品不能为空，请先选择商品！");
+        } else {
+            throw new BusinessException(4050, "商品不能为空，请先选择商品！");
         }
         storageOut.setStorageOutItems(items);
         affected = crudStorageOutService.createMaster(storageOut, storageOutFilter, null, null);
@@ -184,7 +192,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
         StorageOut storageOut = storageOutMapper.selectById(transfer.getStorageOutId());
         List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
-                .eq(StorageOutItem.STORAGE_OUT_ID,storageOut.getId()));
+                .eq(StorageOutItem.STORAGE_OUT_ID, storageOut.getId()));
 
         List<StorageInItem> items = new ArrayList<>();
 
@@ -206,7 +214,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                     inItem.setAfterTransactionQuantities(afterCount);
 
                     originInventory.setValidSku(afterCount);
-                    Integer transmitCount = originInventory.getTransmitQuantities()-outItem.getTransactionQuantities();
+                    Integer transmitCount = originInventory.getTransmitQuantities() - outItem.getTransactionQuantities();
                     originInventory.setTransmitQuantities(transmitCount);
                     affected += inventoryMapper.updateById(originInventory);
                 } else {
@@ -235,7 +243,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         storageIn.setOriginatorId(userId);
         storageIn.setOriginatorName(transfer.getOriginatorName());
         // needs code ?
-        storageIn.setTransactionCode(transfer.getField1().replace("OUT","IN"));
+        storageIn.setTransactionCode(transfer.getField1().replace("OUT", "IN"));
         storageIn.setTransactionTime(new Date());
         StorageInFilter storageInFilter = new StorageInFilter();
         storageIn.setStorageInItems(items);
@@ -255,7 +263,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
      * 接受方拒接 调拨 ，插入 调拨 货物 及 更新 库存 ,接受方拒绝 ，调拨作废，回到 原来的 仓库
      */
     @Transactional
-    public Integer cancelTransfer(Long id,Long userId) {
+    public Integer cancelTransfer(Long id, Long userId) {
         /**
          * 1.调拨包括了两个仓库的出入库 主动为出 被动为入
          *
@@ -270,7 +278,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         storageIn.setStorageInTime(transfer.getFinishTime());
 
         StorageOut storageOut = storageOutMapper.selectById(transfer.getStorageOutId());
-        List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,storageOut.getId()));
+        List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID, storageOut.getId()));
 
 
         List<StorageInItem> items = new ArrayList<>();
@@ -286,8 +294,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 isExistInventory.setSkuId(outItem.getSkuId());
                 isExistInventory.setWarehouseId(transfer.getFromWarehouseId());
                 Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
-                if (originInventory == null ){
-                    throw new BusinessException(4060,"服务异常，请稍后尝试!");
+                if (originInventory == null) {
+                    throw new BusinessException(4060, "服务异常，请稍后尝试!");
                 }
                 Integer afterCount = originInventory.getValidSku() + outItem.getTransactionQuantities();
                 originInventory.setValidSku(afterCount);
@@ -300,7 +308,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 inventory.setSkuId(outItem.getSkuId());
                 inventory.setWarehouseId(transfer.getToWarehouseId());
                 Inventory toInventory = inventoryMapper.selectOne(inventory);
-                Integer transmitCount = toInventory.getTransmitQuantities()-outItem.getTransactionQuantities();
+                Integer transmitCount = toInventory.getTransmitQuantities() - outItem.getTransactionQuantities();
                 toInventory.setTransmitQuantities(transmitCount);
                 affected += inventoryMapper.updateById(toInventory);
 
@@ -319,7 +327,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         storageIn.setOriginatorId(userId);
         storageIn.setOriginatorName(transfer.getOriginatorName());
         // 这个 code 应该怎么去处理呢？
-        storageIn.setTransactionCode(transfer.getField1().replace("OUT","IN"));
+        storageIn.setTransactionCode(transfer.getField1().replace("OUT", "IN"));
         storageIn.setTransactionTime(new Date());
         StorageInFilter storageInFilter = new StorageInFilter();
         storageIn.setStorageInItems(items);
@@ -340,16 +348,16 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
          * 3.tranfer本身的信息
          * */
         Transfer transfer = crudTransferService.retrieveMaster(id);
-        if(transfer == null){
+        if (transfer == null) {
             return null;
         }
         JSONObject transferObj = JSON.parseObject(JSONObject.toJSONString(transfer));
 
 
         List<StorageOutItemRecord> outItemRecords = queryTransferDao.outItemRecords(transfer.getStorageOutId());
-        transferObj.put("outItemRecords",outItemRecords);
-        transferObj.put("fromWarehouseName",queryWarehouseDao.warehouseName(transfer.getFromWarehouseId()));
-        transferObj.put("toWarehouseName",queryWarehouseDao.warehouseName(transfer.getToWarehouseId()));
+        transferObj.put("outItemRecords", outItemRecords);
+        transferObj.put("fromWarehouseName", queryWarehouseDao.warehouseName(transfer.getFromWarehouseId()));
+        transferObj.put("toWarehouseName", queryWarehouseDao.warehouseName(transfer.getToWarehouseId()));
         TransferModel model = JSONObject.parseObject(JSONObject.toJSONString(transferObj), TransferModel.class);
         return model;
     }

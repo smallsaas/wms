@@ -135,7 +135,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     }
                     storageOutItems.add(outItem);
                 } else {
-                        throw new BusinessException(5000,"提交失败，"+"\""+sku.getSkuName()+"\""+"商品退货数量不能为0");
+                    throw new BusinessException(5000, "提交失败，" + "\"" + sku.getSkuName() + "\"" + "商品退货数量不能为0");
                 }
             }
         } else {
@@ -251,8 +251,10 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         }
 
         List<StorageOutItemRecord> outItemRecords = new ArrayList<>();
-
-        List<StorageOut> storageOuts = storageOutMapper.selectList(new EntityWrapper<StorageOut>().eq(StorageOut.ID, refund.getStorageOutId()).like(StorageOut.TRANSACTION_TYPE, TransactionType.Refund.toString()));
+        //searching out records
+        List<StorageOut> storageOuts = storageOutMapper.selectList(new EntityWrapper<StorageOut>()
+                                                       .eq(StorageOut.ID, refund.getStorageOutId())
+                                                       .eq(StorageOut.TRANSACTION_TYPE, TransactionType.Refund.toString()));
 
 
         if (storageOuts != null && storageOuts.size() > 0) {
@@ -263,7 +265,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     for (StorageOutItem item : outItems) {
                         // 出库 商品详情
                         StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
-                        if (record.getOriginatorName() != null){
+                        if (record.getOriginatorName() != null) {
                             itemRecord.setOperator(record.getOriginatorName());
                         }
                         itemRecord.setWarehouseName(record.getWarehouseName());
