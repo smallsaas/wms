@@ -1,29 +1,20 @@
 package com.jfeat.am.module.sku.api.crud;
 
-import com.jfeat.am.module.product.services.domain.service.ProductCategoryService;
-import com.jfeat.am.module.sku.services.crud.model.SkuSpecificationGroupModel;
-import com.jfeat.am.module.sku.services.domain.model.CategorySpecModel;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.dao.DuplicateKeyException;
-import com.jfeat.am.module.sku.services.domain.dao.QuerySkuSpecificationGroupDao;
-import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Ids;
+import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
-import com.jfeat.am.module.log.annotation.BusinessLog;
+import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
+import com.jfeat.am.module.log.annotation.BusinessLog;
+import com.jfeat.am.module.product.services.domain.service.ProductCategoryService;
+import com.jfeat.am.module.sku.services.domain.dao.QuerySkuSpecificationGroupDao;
+import com.jfeat.am.module.sku.services.domain.model.CategorySpecModel;
 import com.jfeat.am.module.sku.services.domain.service.SkuSpecificationGroupService;
-
-import org.springframework.web.bind.annotation.RestController;
-import com.jfeat.am.common.controller.BaseController;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -104,7 +95,7 @@ public class SkuSpecificationGroupEndpoint extends BaseController {
         return SuccessTip.create();
     }
 
-
+    @BusinessLog(name = "ProductCategory", value = "delete Specification Group")
     @PostMapping("/bulk/delete")
     public Tip deleteList(@RequestBody Ids ids) {
         return SuccessTip.create(skuSpecificationGroupService.bulkDelete(ids));
