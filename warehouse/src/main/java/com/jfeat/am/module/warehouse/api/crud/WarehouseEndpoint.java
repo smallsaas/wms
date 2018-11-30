@@ -106,7 +106,8 @@ public class WarehouseEndpoint extends BaseController {
                                @RequestParam(name = "warehouseAddress", required = false) String warehouseAddress,
                                @RequestParam(name = "warehouseCharger", required = false) Long warehouseCharger,
                                @RequestParam(name = "orderBy", required = false) String orderBy,
-                               @RequestParam(name = "sort", required = false) String sort) {
+                               @RequestParam(name = "sort", required = false) String sort,
+                               @RequestParam(name = "all", required = false) boolean all) {
         if (orderBy != null && orderBy.length() > 0) {
             if (sort != null && sort.length() > 0) {
                 String pattern = "(ASC|DESC|asc|desc)";
@@ -129,10 +130,18 @@ public class WarehouseEndpoint extends BaseController {
         record.setWarehouseAddress(warehouseAddress);
         record.setWarehouseCharger(warehouseCharger);
 
+        Tip resultTip;
+        if(all == true) {
+            resultTip = SuccessTip.create(warehouseService.retrieveMasterList());
+        } else {
+            resultTip = SuccessTip.create(page);
+        }
         page.setRecords(queryWarehouseDao.findWarehousePage(page, warehouseId, record, orderBy));
 
-        return SuccessTip.create(page);
+        return resultTip;
     }
+
+
 
 
 }
