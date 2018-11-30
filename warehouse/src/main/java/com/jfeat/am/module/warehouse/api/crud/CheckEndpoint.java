@@ -1,30 +1,26 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
-import com.jfeat.am.core.jwt.JWTKit;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.dao.DuplicateKeyException;
-import com.jfeat.am.module.warehouse.services.domain.dao.QueryCheckDao;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
-import com.jfeat.am.module.log.annotation.BusinessLog;
+import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
-import com.jfeat.am.module.warehouse.services.domain.service.CheckService;
-import com.jfeat.am.module.warehouse.services.domain.model.CheckRecord;
+import com.jfeat.am.core.jwt.JWTKit;
+import com.jfeat.am.module.log.LogManager;
+import com.jfeat.am.module.log.LogTaskFactory;
+import com.jfeat.am.module.log.annotation.BusinessLog;
+import com.jfeat.am.module.warehouse.services.definition.FormType;
+import com.jfeat.am.module.warehouse.services.domain.dao.QueryCheckDao;
 import com.jfeat.am.module.warehouse.services.domain.model.CheckModel;
-
-import org.springframework.web.bind.annotation.RestController;
-import com.jfeat.am.common.controller.BaseController;
+import com.jfeat.am.module.warehouse.services.domain.model.CheckRecord;
+import com.jfeat.am.module.warehouse.services.domain.service.CheckService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -50,7 +46,6 @@ public class CheckEndpoint extends BaseController {
     @Resource
     QueryCheckDao queryCheckDao;
 
-    @BusinessLog(name = "Check", value = "create Check")
     @ApiOperation(value = "新建库存盘点", response = CheckModel.class)
     @PostMapping
     public Tip createCheck(@RequestBody CheckModel entity) {
@@ -66,42 +61,48 @@ public class CheckEndpoint extends BaseController {
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
         }
-
+        createCheckLog(entity.getId(), "createCheck", "对库存盘点进行了新建操作", JSON.toJSONString(entity) + " &");
         return SuccessTip.create(affected);
     }
 
-    @BusinessLog(name = "Check", value = "view Check")
+
     @GetMapping("/{id}")
     @ApiOperation(value = "查看库存盘点", response = CheckModel.class)
     public Tip getCheck(@PathVariable Long id) {
         return SuccessTip.create(checkService.checkDetails(id));
     }
 
-    @BusinessLog(name = "Check", value = "update Check")
     @PutMapping("/{id}/checking")
-    @ApiOperation(value = "执行盘点", response = CheckModel.class)
+    @ApiOperation(value = "update check", response = CheckModel.class)
     public Tip updateCheck(@PathVariable Long id, @RequestBody CheckModel entity) {
         entity.setId(id);
-        return SuccessTip.create(checkService.actionCheck(id,entity));
+        Tip resultTip = SuccessTip.create(checkService.actionCheck(id,entity));
+        createCheckLog(id, "updateCheck", "对库存盘点进行了盘点操作", JSONObject.toJSONString(entity) + " & " + id + " &");
+        return resultTip;
     }
+
 
     @BusinessLog(name = "Check", value = "update Check")
     @PostMapping("/{id}/done")
-    @ApiOperation(value = "完成盘点", response = CheckModel.class)
+    @ApiOperation(value = "doneCheck", response = CheckModel.class)
     public Tip doneCheck(@PathVariable Long id) {
-        return SuccessTip.create(checkService.checkedCheck(id));
+        Tip resultTip = SuccessTip.create(checkService.checkedCheck(id));
+
+        createCheckLog(id,  "doneCheck", "对库存盘点进行了完成盘点操作", id + " &");
+        return resultTip;
     }
 
-    @BusinessLog(name = "Check", value = "delete Check")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除库存盘点 only status WaitForCheck", response = CheckModel.class)
     public Tip deleteCheck(@PathVariable Long id) {
-        return SuccessTip.create(checkService.deleteCheck(id));
+        Tip resultTip =SuccessTip.create(checkService.deleteCheck(id));
+
+        createCheckLog(id,  "deleteCheck", "对库存盘点进行了删除操作", id + " &");
+        return resultTip;
     }
 
     @GetMapping
     @ApiOperation(value = "盘点库存盘点列表", response = CheckModel.class)
-
     public Tip queryChecks(Page<CheckRecord> page,
                            @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
@@ -148,4 +149,17 @@ public class CheckEndpoint extends BaseController {
     }
 
 
+
+    private void createCheckLog(Long targetId, String methodName, String operation,String message) {
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
+                JWTKit.getAccount(getHttpServletRequest()),
+                operation,
+                CheckEndpoint.class.getName(),
+                methodName,
+                message,
+                "成功",
+                targetId,
+                FormType.CHECK.toString()
+        ));
+    }
 }

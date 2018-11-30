@@ -44,7 +44,6 @@ import java.util.Date;
 @RequestMapping("/api/wms/refunds")
 public class RefundEndpoint extends BaseController {
 
-
     @Resource
     RefundService refundService;
 

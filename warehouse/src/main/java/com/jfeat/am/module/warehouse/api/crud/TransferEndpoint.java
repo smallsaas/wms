@@ -1,30 +1,24 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
-import com.jfeat.am.core.jwt.JWTKit;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.dao.DuplicateKeyException;
-import com.jfeat.am.module.warehouse.services.domain.dao.QueryTransferDao;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
-import com.jfeat.am.module.log.annotation.BusinessLog;
+import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
-import com.jfeat.am.module.warehouse.services.domain.service.TransferService;
-import com.jfeat.am.module.warehouse.services.domain.model.TransferRecord;
+import com.jfeat.am.core.jwt.JWTKit;
+import com.jfeat.am.module.log.LogManager;
+import com.jfeat.am.module.log.LogTaskFactory;
+import com.jfeat.am.module.warehouse.services.definition.FormType;
+import com.jfeat.am.module.warehouse.services.domain.dao.QueryTransferDao;
 import com.jfeat.am.module.warehouse.services.domain.model.TransferModel;
-
-import org.springframework.web.bind.annotation.RestController;
-import com.jfeat.am.common.controller.BaseController;
+import com.jfeat.am.module.warehouse.services.domain.model.TransferRecord;
+import com.jfeat.am.module.warehouse.services.domain.service.TransferService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -50,7 +44,6 @@ public class TransferEndpoint extends BaseController {
     @Resource
     QueryTransferDao queryTransferDao;
 
-    @BusinessLog(name = "Transfer", value = "create Transfer")
     @PostMapping
     @ApiOperation(value = "新建 调拨表",response = TransferModel.class)
     public Tip createTransfer(@RequestBody TransferModel entity) {
@@ -64,7 +57,7 @@ public class TransferEndpoint extends BaseController {
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
         }
-
+        createPurchasekLog(entity.getId(), "createTransfer", "对调拨单进行了新建操作",  JSONObject.toJSONString(entity) + " &");
         return SuccessTip.create(affected);
     }
 
@@ -75,26 +68,28 @@ public class TransferEndpoint extends BaseController {
         return SuccessTip.create(transferService.transferDetails(id));
     }
 
-    @BusinessLog(name = "Transfer", value = "update Transfer")
     @PostMapping("/{id}/done")
     @ApiOperation(value = "调拨完成",response = TransferModel.class)
     public Tip doneTransfer(@PathVariable Long id) {
-        return SuccessTip.create(transferService.doneTransfer(id, JWTKit.getUserId(getHttpServletRequest())));
+        Tip resultTip = SuccessTip.create(transferService.doneTransfer(id, JWTKit.getUserId(getHttpServletRequest())));
+        createPurchasekLog(id, "doneTransfer", "对调拨单进行了调拨完成操作",  id + " &");
+        return resultTip;
     }
 
-    @BusinessLog(name = "Transfer", value = "update Transfer")
     @PostMapping("/{id}/cancel")
     @ApiOperation(value = "调拨作废",response = TransferModel.class)
     public Tip cancelTransfer(@PathVariable Long id) {
-        return SuccessTip.create(transferService.cancelTransfer(id,JWTKit.getUserId(getHttpServletRequest())));
+        Tip resultTip = SuccessTip.create(transferService.cancelTransfer(id,JWTKit.getUserId(getHttpServletRequest())));
+        createPurchasekLog(id, "cancelTransfer", "对调拨单进行了调拨作废操作",  id + " &");
+        return resultTip;
     }
 
-    @BusinessLog(name = "Transfer", value = "delete Transfer")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除调拨表",response = TransferModel.class)
-
     public Tip deleteTransfer(@PathVariable Long id) {
-        return SuccessTip.create(transferService.deleteTransfer(id));
+        Tip resultTip = SuccessTip.create(transferService.deleteTransfer(id));
+        createPurchasekLog(id, "deleteTransfer", "对调拨单进行了删除操作",  id + " &");
+        return resultTip;
     }
 
     @GetMapping
@@ -156,5 +151,17 @@ public class TransferEndpoint extends BaseController {
         return SuccessTip.create(page);
     }
 
+    private void createPurchasekLog(Long targetId, String methodName, String operation,String message) {
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
+                JWTKit.getAccount(getHttpServletRequest()),
+                operation,
+                TransferEndpoint.class.getName(),
+                methodName,
+                message,
+                "成功",
+                targetId,
+                FormType.TRANSFER.toString()
+        ));
+    }
 
 }

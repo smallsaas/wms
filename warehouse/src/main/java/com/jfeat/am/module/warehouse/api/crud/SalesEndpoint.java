@@ -1,5 +1,6 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.constant.tips.Ids;
 import com.jfeat.am.common.constant.tips.SuccessTip;
@@ -8,7 +9,10 @@ import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.core.jwt.JWTKit;
+import com.jfeat.am.module.log.LogManager;
+import com.jfeat.am.module.log.LogTaskFactory;
 import com.jfeat.am.module.log.annotation.BusinessLog;
+import com.jfeat.am.module.warehouse.services.definition.FormType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QuerySalesDao;
 import com.jfeat.am.module.warehouse.services.domain.model.SalesModel;
 import com.jfeat.am.module.warehouse.services.domain.model.SalesRecord;
@@ -43,7 +47,6 @@ public class SalesEndpoint extends BaseController {
     @Resource
     QuerySalesDao querySalesDao;
 
-    @BusinessLog(name = "Sales", value = "create Sales")
     @PostMapping
     @ApiOperation("Create table record")
     public Tip createSales(@RequestBody SalesModel entity) {
@@ -58,7 +61,7 @@ public class SalesEndpoint extends BaseController {
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
         }
-
+        createSalesLog(entity.getId(),  "createSales", "对分销商出库进行了新建操作",  JSONObject.toJSONString(entity) + " &");
         return SuccessTip.create(affected);
     }
 
@@ -68,13 +71,15 @@ public class SalesEndpoint extends BaseController {
         return SuccessTip.create(salesService.salesDetails(id));
     }
 
-    @BusinessLog(name = "Sales", value = "update Sales")
     @PutMapping("/{id}")
     @ApiOperation("update record while record status is Wait for storage out")
     public Tip updateSales(@PathVariable Long id, @RequestBody SalesModel entity) {
         entity.setId(id);
         Long userId = JWTKit.getUserId(getHttpServletRequest());
-        return SuccessTip.create(salesService.updateSales(userId,id,entity));
+        Tip resultTip = SuccessTip.create(salesService.updateSales(userId,id,entity));
+
+        createSalesLog(id,  "updateSales", "对分销商出库进行了更新操作",  JSONObject.toJSONString(entity) + " & " + id + " &");
+        return resultTip;
     }
 
     @BusinessLog(name = "SalesModel", value = "update SalesModel")
@@ -82,7 +87,10 @@ public class SalesEndpoint extends BaseController {
     @ApiOperation(value = "入库",response = SalesModel.class)
     public Tip excutionProcurement(@PathVariable Long id, @RequestBody SalesModel entity) {
         entity.setId(id);
-        return SuccessTip.create(salesService.executionStorageOut(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        Tip resultTip = SuccessTip.create(salesService.executionStorageOut(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+
+        createSalesLog(id,  "excutionProcurement", "对分销商出库进行了入库操作",  JSONObject.toJSONString(entity) + " & " + id + " &");
+        return resultTip;
     }
 
 
@@ -90,7 +98,10 @@ public class SalesEndpoint extends BaseController {
     @DeleteMapping("/{id}")
     @ApiOperation("delete one record")
     public Tip deleteSales(@PathVariable Long id) {
-        return SuccessTip.create(salesService.deleteSales(id));
+        Tip resultTip = SuccessTip.create(salesService.deleteSales(id));
+
+        createSalesLog(id,  "deleteSales", "对分销商出库进行了删除操作",  id + " &");
+        return resultTip;
     }
 
     @GetMapping
@@ -161,7 +172,23 @@ public class SalesEndpoint extends BaseController {
     @BusinessLog(name = "Sales", value = "delete Sales")
     @PostMapping("/bulk/delete")
     public Tip deleteList(@RequestBody Ids ids) {
-        return SuccessTip.create(salesService.bulkDelete(ids));
+        Tip resultTip = SuccessTip.create(salesService.bulkDelete(ids));
+        for(Long id : ids.getIds()) {
+            createSalesLog(id,  "deleteList", "对分销商出库进行了批量删除操作",  id + " &");
+        }
+        return resultTip;
     }
 
+    private void createSalesLog(Long targetId, String methodName, String operation,String message) {
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
+                JWTKit.getAccount(getHttpServletRequest()),
+                operation,
+                SalesEndpoint.class.getName(),
+                methodName,
+                message,
+                "成功",
+                targetId,
+                FormType.DISTRIBUTOR_OUT.toString()
+        ));
+    }
 }

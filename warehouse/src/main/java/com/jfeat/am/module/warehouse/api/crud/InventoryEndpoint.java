@@ -73,6 +73,7 @@ public class InventoryEndpoint extends BaseController {
         page.setRecords(queryInventoryDao.skuStorageDetails(page, id, warehouseName,transactionType,startTime,endTime,transactionCode));
         return SuccessTip.create(page);
     }
+
     @GetMapping("/skus/in/{id}")
     @ApiOperation(value = "某个商品对应的仓库的入库详情")
     @BusinessLog(name = "skuStorageDetails", value = "view skuStorageDetails")

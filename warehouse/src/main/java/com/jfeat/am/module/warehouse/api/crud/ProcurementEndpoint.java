@@ -1,36 +1,29 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
-import com.jfeat.am.core.jwt.JWTKit;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.dao.DuplicateKeyException;
-import com.jfeat.am.module.warehouse.services.domain.dao.QueryProcurementDao;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
-import com.jfeat.am.module.log.annotation.BusinessLog;
+import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
-
-import java.math.BigDecimal;
-
-import com.jfeat.am.module.warehouse.services.domain.service.ProcurementService;
-import com.jfeat.am.module.warehouse.services.domain.model.ProcurementRecord;
+import com.jfeat.am.core.jwt.JWTKit;
+import com.jfeat.am.module.log.LogManager;
+import com.jfeat.am.module.log.LogTaskFactory;
+import com.jfeat.am.module.log.annotation.BusinessLog;
+import com.jfeat.am.module.warehouse.services.definition.FormType;
+import com.jfeat.am.module.warehouse.services.domain.dao.QueryProcurementDao;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementModel;
-
-import org.springframework.web.bind.annotation.RestController;
-import com.jfeat.am.common.controller.BaseController;
+import com.jfeat.am.module.warehouse.services.domain.model.ProcurementRecord;
+import com.jfeat.am.module.warehouse.services.domain.service.ProcurementService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -54,7 +47,6 @@ public class ProcurementEndpoint extends BaseController {
     @Resource
     QueryProcurementDao queryProcurementDao;
 
-    @BusinessLog(name = "Procurement", value = "create Procurement")
     @PostMapping
     @ApiOperation(value = "新建采购表单",response = ProcurementModel.class)
     public Tip createProcurement(@RequestBody ProcurementModel entity) {
@@ -63,11 +55,11 @@ public class ProcurementEndpoint extends BaseController {
             String userName = JWTKit.getAccount(getHttpServletRequest());
             entity.setOriginatorName(userName);
             affected = procurementService.addProcurement(JWTKit.getUserId(getHttpServletRequest()),entity);
-
         } catch (DuplicateKeyException e) {
             throw new BusinessException(5000,"采购单编号重复");
         }
-
+        createPurchasekLog(entity.getId(),  "createProcurement", "对采购单进行了新建操作", JSONObject.toJSONString(entity) + " &");
+        // createPurchasekLog
         return SuccessTip.create(affected);
     }
 
@@ -78,36 +70,40 @@ public class ProcurementEndpoint extends BaseController {
         return SuccessTip.create(procurementService.procurementDetails(id));
     }
 
-    @BusinessLog(name = "Procurement", value = "update Procurement")
     @PutMapping("/{id}")
     @ApiOperation(value = "更新采购单",response = ProcurementModel.class)
     public Tip updateProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
         entity.setId(id);
-        return SuccessTip.create(procurementService.updateProcurement(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        Tip resultTip = SuccessTip.create(procurementService.updateProcurement(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        createPurchasekLog(id,  "updateProcurement", "对采购单进行了更新操作", JSONObject.toJSONString(entity) + " & " + id + " &");
+        return resultTip;
     }
 
-    @BusinessLog(name = "Procurement", value = "update Procurement")
     @PutMapping("/{id}/excution")
     @ApiOperation(value = "入库",response = ProcurementModel.class)
     public Tip excutionProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
         entity.setId(id);
-        return SuccessTip.create(procurementService.executionStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        Tip resultTip = SuccessTip.create(procurementService.executionStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        createPurchasekLog(id,  "excutionProcurement", "对采购单进行了入库操作", JSONObject.toJSONString(entity) + " & " + id + " &");
+        return resultTip;
     }
 
     @BusinessLog(name = "Procurement", value = "update Procurement")
     @PutMapping("/{id}/closed")
     @ApiOperation(value = "closed",response = ProcurementModel.class)
     public Tip excutionProcurement(@PathVariable Long id) {
-        return SuccessTip.create(procurementService.closedProcurment(id));
+        Tip resultTip = SuccessTip.create(procurementService.closedProcurment(id));
+        createPurchasekLog(id,  "excutionProcurement", "对采购单进行了关闭操作",  id + " &");
+        return resultTip;
     }
 
 
-    @BusinessLog(name = "Procurement", value = "delete Procurement")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除采购表单",response = ProcurementModel.class)
-
     public Tip deleteProcurement(@PathVariable Long id) {
-        return SuccessTip.create(procurementService.deleteProcurement(id));
+        Tip resultTip = SuccessTip.create(procurementService.deleteProcurement(id));
+        createPurchasekLog(id,  "deleteProcurement", "对采购单进行了删除操作",  id + " &");
+        return resultTip;
     }
 
     @GetMapping
@@ -174,5 +170,16 @@ public class ProcurementEndpoint extends BaseController {
         return SuccessTip.create(page);
     }
 
-
+    private void createPurchasekLog(Long targetId, String methodName, String operation,String message) {
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
+                JWTKit.getAccount(getHttpServletRequest()),
+                operation,
+                ProcurementEndpoint.class.getName(),
+                methodName,
+                message,
+                "成功",
+                targetId,
+                FormType.PURCHASE.toString()
+        ));
+    }
 }
