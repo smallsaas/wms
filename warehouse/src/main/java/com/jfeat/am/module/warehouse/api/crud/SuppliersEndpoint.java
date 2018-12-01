@@ -129,7 +129,7 @@ public class SuppliersEndpoint extends BaseController {
                                 @RequestParam(name = "supplier_contactCellPhone", required = false) String supplier_contactCellPhone,
                                 @RequestParam(name = "supplierAccountName", required = false) String supplierAccountName,
                                 @RequestParam(name = "supplierAccountBank", required = false) String supplierAccountBank,
-                                @RequestParam(name = "supplier_accountBankNo", required = false) Long supplier_accountBankNo,
+                                @RequestParam(name = "supplierAccountBankNo", required = false) Long supplier_accountBankNo,
                                 @RequestParam(name = "supplierInvoiceTitle", required = false) String supplierInvoiceTitle,
                                 @RequestParam(name = "supplierStatus", required = false) String supplierStatus,
                                 @RequestParam(name = "supplierNote", required = false) String supplierNote,

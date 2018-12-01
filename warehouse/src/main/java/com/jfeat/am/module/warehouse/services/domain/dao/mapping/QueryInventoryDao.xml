@@ -132,6 +132,7 @@
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
                 AND sin.type != 'Procurement'
+                and wms_storage_in.transaction_type = #{transactionType}
                 <if test="startTime != null and endTime != null">
                     <![CDATA[
                 AND sin.transaction_time >= date(#{startTime}) AND
@@ -141,6 +142,7 @@
                 <if test="transactionCode != null and transactionCode!= ''">
                     AND wms_storage_in.transaction_code LIKE CONCAT('%',#{transactionCode},'%')
                 </if>
+
 
                 UNION
 
@@ -174,6 +176,7 @@
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
                 and sout.type!='CustomerStorageOut'
+                and wms_storage_out.transaction_type = #{transactionType}
                 <if test="startTime != null and endTime != null">
                     <![CDATA[
                 AND sout.transaction_time >= date(#{startTime}) AND
