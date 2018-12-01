@@ -74,7 +74,6 @@ public class SuppliersEndpoint extends BaseController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "查看供应商",response = SuppliersModel.class)
-
     public Tip getSuppliers(@PathVariable Long id) {
         return SuccessTip.create(suppliersService.retrieveMaster(id));
     }
@@ -102,7 +101,6 @@ public class SuppliersEndpoint extends BaseController {
         return SuccessTip.create(suppliersService.deleteMaster(id));
     }
 
-    @BusinessLog(name = "Suppliers", value = "all Products Suppliers provided")
     @GetMapping("/{id}/products")
     @ApiOperation(value = "供应商提供的货物",response = SuppliersModel.class)
     public Tip allProductsSuppliersProvided(@PathVariable Long id) {
@@ -111,7 +109,6 @@ public class SuppliersEndpoint extends BaseController {
 
     @GetMapping
     @ApiOperation(value = "供应商列表",response = SuppliersModel.class)
-
     public Tip querySupplierses(Page<SuppliersRecord> page,
                                 @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,

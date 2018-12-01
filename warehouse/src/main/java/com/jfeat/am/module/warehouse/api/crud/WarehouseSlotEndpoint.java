@@ -51,7 +51,6 @@ public class WarehouseSlotEndpoint extends BaseController {
     @BusinessLog(name = "WarehouseSlot", value = "create WarehouseSlot")
     @PostMapping("/{warehousesId}/slot")
     @ApiOperation(value = "新建储位")
-
     public Tip createWarehouseSlot(@PathVariable long warehousesId,@RequestBody WarehouseSlotModel entity) {
 
         Integer affected = 0;

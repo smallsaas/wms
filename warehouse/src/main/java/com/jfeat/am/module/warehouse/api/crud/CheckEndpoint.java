@@ -11,7 +11,6 @@ import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.log.LogManager;
 import com.jfeat.am.module.log.LogTaskFactory;
-import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryCheckDao;
 import com.jfeat.am.module.warehouse.services.domain.model.CheckModel;
@@ -82,7 +81,6 @@ public class CheckEndpoint extends BaseController {
     }
 
 
-    @BusinessLog(name = "Check", value = "update Check")
     @PostMapping("/{id}/done")
     @ApiOperation(value = "doneCheck", response = CheckModel.class)
     public Tip doneCheck(@PathVariable Long id) {

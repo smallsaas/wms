@@ -63,7 +63,6 @@ public class TransferEndpoint extends BaseController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "获取调拨表",response = TransferModel.class)
-
     public Tip getTransfer(@PathVariable Long id) {
         return SuccessTip.create(transferService.transferDetails(id));
     }
@@ -94,7 +93,6 @@ public class TransferEndpoint extends BaseController {
 
     @GetMapping
     @ApiOperation(value = "调拨表列表",response = TransferModel.class)
-
     public Tip queryTransfers(Page<TransferRecord> page,
                               @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                               @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,

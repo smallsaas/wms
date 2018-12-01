@@ -63,7 +63,6 @@ public class ProcurementEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
-    @BusinessLog(name = "Procurement", value = "view Procurement")
     @GetMapping("/{id}")
     @ApiOperation(value = "查看采购表单",response = ProcurementModel.class)
     public Tip getProcurement(@PathVariable Long id) {
@@ -108,7 +107,6 @@ public class ProcurementEndpoint extends BaseController {
 
     @GetMapping
     @ApiOperation(value = "采购表单列表",response = ProcurementModel.class)
-
     public Tip queryProcurements(Page<ProcurementRecord> page,
                                  @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                  @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,

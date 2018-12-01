@@ -66,7 +66,6 @@ public class WarehouseEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
-    @BusinessLog(name = "Warehouse", value = "view Warehouse")
     @GetMapping("/{id}")
     @ApiOperation(value = "查看仓库信息", response = WarehouseModel.class)
     public Tip getWarehouse(@PathVariable Long id) {
@@ -94,7 +93,6 @@ public class WarehouseEndpoint extends BaseController {
 
     @GetMapping
     @ApiOperation(value = "仓库列表", response = WarehouseRecord.class)
-
     public Tip queryWarehouses(Page<WarehouseRecord> page,
                                @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,

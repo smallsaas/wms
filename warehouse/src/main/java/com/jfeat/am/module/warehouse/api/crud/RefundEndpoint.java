@@ -94,7 +94,6 @@ public class RefundEndpoint extends BaseController {
 
     @GetMapping
     @ApiOperation(value = "退货表列表",response = RefundModel.class)
-
     public Tip queryRefunds(Page<RefundRecord> page,
                             @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
