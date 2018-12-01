@@ -171,7 +171,7 @@ DROP TABLE IF EXISTS `wms_refund`;
 CREATE TABLE `wms_refund` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `product_refund_code` varchar(255) NOT NULL COMMENT '退货编号',
-  `product_procurement_id` bigint(20) NOT NULL COMMENT '采购订单ID',
+  `product_procurement_id` bigint(20) default NULL COMMENT '采购订单ID',
   `storage_out_id` bigint(20) NOT NULL COMMENT '入库ID',
   `product_refund_warehouse_id` bigint(20) NOT NULL COMMENT '退货仓库',
   `product_refund_quantities` int(11) NOT NULL COMMENT '可退数量',

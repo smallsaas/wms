@@ -66,7 +66,6 @@ public class WarehouseEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
-    @BusinessLog(name = "Warehouse", value = "view Warehouse")
     @GetMapping("/{id}")
     @ApiOperation(value = "查看仓库信息", response = WarehouseModel.class)
     public Tip getWarehouse(@PathVariable Long id) {
@@ -94,7 +93,6 @@ public class WarehouseEndpoint extends BaseController {
 
     @GetMapping
     @ApiOperation(value = "仓库列表", response = WarehouseRecord.class)
-
     public Tip queryWarehouses(Page<WarehouseRecord> page,
                                @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
@@ -106,7 +104,8 @@ public class WarehouseEndpoint extends BaseController {
                                @RequestParam(name = "warehouseAddress", required = false) String warehouseAddress,
                                @RequestParam(name = "warehouseCharger", required = false) Long warehouseCharger,
                                @RequestParam(name = "orderBy", required = false) String orderBy,
-                               @RequestParam(name = "sort", required = false) String sort) {
+                               @RequestParam(name = "sort", required = false) String sort,
+                               @RequestParam(name = "all", required = false) boolean all) {
         if (orderBy != null && orderBy.length() > 0) {
             if (sort != null && sort.length() > 0) {
                 String pattern = "(ASC|DESC|asc|desc)";
@@ -129,10 +128,18 @@ public class WarehouseEndpoint extends BaseController {
         record.setWarehouseAddress(warehouseAddress);
         record.setWarehouseCharger(warehouseCharger);
 
+        Tip resultTip;
+        if(all == true) {
+            resultTip = SuccessTip.create(warehouseService.retrieveMasterList());
+        } else {
+            resultTip = SuccessTip.create(page);
+        }
         page.setRecords(queryWarehouseDao.findWarehousePage(page, warehouseId, record, orderBy));
 
-        return SuccessTip.create(page);
+        return resultTip;
     }
+
+
 
 
 }

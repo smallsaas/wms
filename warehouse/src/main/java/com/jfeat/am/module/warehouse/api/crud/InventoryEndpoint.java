@@ -55,7 +55,6 @@ public class InventoryEndpoint extends BaseController {
 
     @GetMapping("/skus/{id}")
     @ApiOperation(value = "某个商品对应的仓库的出入库详情")
-    @BusinessLog(name = "skuStorageDetails", value = "view skuStorageDetails")
     public Tip skuStorageDetails(Page<SkuStorageDetails> page,
                                  @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                  @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
@@ -73,9 +72,9 @@ public class InventoryEndpoint extends BaseController {
         page.setRecords(queryInventoryDao.skuStorageDetails(page, id, warehouseName,transactionType,startTime,endTime,transactionCode));
         return SuccessTip.create(page);
     }
+
     @GetMapping("/skus/in/{id}")
     @ApiOperation(value = "某个商品对应的仓库的入库详情")
-    @BusinessLog(name = "skuStorageDetails", value = "view skuStorageDetails")
     public Tip skuStorageInDetails(Page<SkuStorageDetails> page,
                                  @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                  @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
@@ -89,7 +88,6 @@ public class InventoryEndpoint extends BaseController {
 
     @GetMapping("/skus/out/{id}")
     @ApiOperation(value = "某个商品对应的仓库的出库详情")
-    @BusinessLog(name = "skuStorageDetails", value = "view skuStorageDetails")
     public Tip skuStorageOutDetails(Page<SkuStorageDetails> page,
                                  @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                  @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
@@ -128,7 +126,6 @@ public class InventoryEndpoint extends BaseController {
     @BusinessLog(name = "Inventory", value = "update Inventory")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改库存盘点")
-
     public Tip updateInventory(@PathVariable Long id, @RequestBody InventoryModel entity) {
         entity.setId(id);
         return SuccessTip.create(inventoryService.updateMaster(entity));
@@ -137,7 +134,6 @@ public class InventoryEndpoint extends BaseController {
     @BusinessLog(name = "Inventory", value = "delete Inventory")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除库存盘点")
-
     public Tip deleteInventory(@PathVariable Long id) {
         return SuccessTip.create(inventoryService.deleteMaster(id));
     }
