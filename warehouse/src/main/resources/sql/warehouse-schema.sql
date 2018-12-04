@@ -121,7 +121,7 @@ CREATE TABLE `wms_transfer` (
   `transaction_time` timestamp not null default current_timestamp comment'操作时间',
   `finish_time` datetime DEFAULT NULL COMMENT '操作时间--finish',
   `storage_in_id` bigint(20) DEFAULT NULL COMMENT '入库ID',
-  `storage_out_id` bigint(20) NOT NULL COMMENT '出库ID',
+  `storage_out_id` bigint(20) DEFAULT NULL COMMENT '出库ID',
   `note` text COMMENT '备注',
   `status` varchar(26) DEFAULT NULL COMMENT '状态',
   `transaction_by` varchar(100) DEFAULT NULL COMMENT '操作人',

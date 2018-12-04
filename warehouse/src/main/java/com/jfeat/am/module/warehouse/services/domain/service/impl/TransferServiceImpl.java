@@ -96,14 +96,16 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
                     if (originInventory != null) {
                         if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
-                            throw new BusinessException(4050, "\"" + skuProduct.getSkuName() + "\"" + "库存不足," + "现有库存" + originInventory.getValidSku() + "小于出库量" + outItem.getTransactionQuantities());
+                            throw new BusinessException(4050, "\"" + skuProduct.getSkuName()+":"+skuProduct.getBarCode() + "\""
+                                    + "库存不足," + "现有库存" + originInventory.getValidSku()
+                                    + "小于出库量" + outItem.getTransactionQuantities());
                         } else {
                             outItem.setStorageOutId(transferId);
                             outItem.setType(TransactionType.TransferOut.toString());
                             affected += storageOutItemMapper.insert(outItem);
                         }
                     } else {
-                        throw new BusinessException(4055, "出库仓库无商品:"+"\""+skuProduct.getSkuName()+"\""+"库存，请重新核对");
+                        throw new BusinessException(4055, "出库仓库无商品:"+"\""+skuProduct.getSkuName()+":"+skuProduct.getBarCode() + "\""+"库存，请重新核对");
                     }
 
                 } else {
@@ -204,7 +206,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                     if (originInventory != null) {
                         if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
-                            throw new BusinessException(4050, "\"" + skuProduct.getSkuName() + "\"" + "库存不足," + "现有库存" + originInventory.getValidSku() + "小于出库量" + outItem.getTransactionQuantities());
+                            throw new BusinessException(4050, "\"" + skuProduct.getSkuName() +":"+skuProduct.getBarCode() + "\""
+                                    + "库存不足," + "现有库存" +  originInventory.getValidSku() + "小于出库量" + outItem.getTransactionQuantities());
                         } else {
                             Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
                             originInventory.setValidSku(afterCount);
