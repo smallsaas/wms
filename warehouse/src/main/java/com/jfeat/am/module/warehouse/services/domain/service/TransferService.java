@@ -22,7 +22,7 @@ public interface TransferService extends CRUDTransferService{
 
 
     @Transactional
-    Integer createTransfer(TransferModel model, Long userId);
+    Integer createTransfer(Long transferId,TransferModel model, Long userId);
 
 
     /**
@@ -30,5 +30,17 @@ public interface TransferService extends CRUDTransferService{
      */
     @Transactional
     Integer cancelTransfer(Long id,Long userId);
+
+
+    /**
+     *   Draft Transfer
+     * */
+    Integer draftTransfer(TransferModel model,Long userId,String userName);
+
+    /**
+     *  update transfer  while transfer status is Draft
+     * */
+    @Transactional
+    Integer updateTransfer(Long transderId,TransferModel model);
 
 }

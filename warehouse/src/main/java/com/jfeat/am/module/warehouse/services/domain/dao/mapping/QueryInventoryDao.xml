@@ -131,7 +131,7 @@
                 1 = 1
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
-                AND sin.type != 'Procurement'
+                AND sin.type = 'Others'
                 and wms_storage_in.transaction_type = #{transactionType}
                 <if test="startTime != null and endTime != null">
                     <![CDATA[
@@ -175,7 +175,7 @@
                 1 = 1
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
-                and sout.type!='CustomerStorageOut'
+                and sout.type='Others'
                 and wms_storage_out.transaction_type = #{transactionType}
                 <if test="startTime != null and endTime != null">
                     <![CDATA[
@@ -276,7 +276,7 @@
                 1 = 1
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
-                AND sin.type != 'Procurement'
+                AND sin.type = 'Others'
                 <if test="startTime != null and endTime != null">
                     <![CDATA[
                 AND sin.transaction_time >= date(#{startTime}) AND
@@ -318,7 +318,7 @@
                 1 = 1
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
-                and sout.type!='CustomerStorageOut'
+                and sout.type='Others'
                 <if test="startTime != null and endTime != null">
                     <![CDATA[
                 AND sout.transaction_time >= date(#{startTime}) AND
@@ -417,7 +417,7 @@
         1 = 1
         AND t_sku_product.id = #{skuId}
         AND wms_warehouse.warehouse_name = #{warehouseName}
-        and sout.type!='CustomerStorageOut'
+        and sout.type='Others'
 
         ORDER BY transactionTime DESC
 
@@ -453,7 +453,7 @@
         1 = 1
         AND t_sku_product.id = #{skuId}
         AND wms_warehouse.warehouse_name = #{warehouseName}
-        AND sin.type != 'Procurement'
+        AND sin.type = 'Others'
 
     </select>
 </mapper>

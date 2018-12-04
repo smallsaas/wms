@@ -148,7 +148,7 @@
         AND wms_storage_in.transaction_type = 'Procurement'
         )
         WHERE 1=1
-        and wms_procurement.id = #{procurement}
+        and wms_procurement.id = #{procurementId}
     </select>
 
 

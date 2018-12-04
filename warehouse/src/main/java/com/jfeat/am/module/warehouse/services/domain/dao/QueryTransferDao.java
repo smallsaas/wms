@@ -25,4 +25,7 @@ public interface QueryTransferDao extends BaseMapper<TransferRecord> {
 
     // 调拨 详情
     List<StorageOutItemRecord> outItemRecords(@Param("outId")Long outId);
+
+    // Draft 调拨 详情
+    List<StorageOutItemRecord> draftOutItemRecords(@Param("outItemId")Long outItemId);
 }

@@ -78,7 +78,7 @@
         LEFT JOIN t_sku_product ON wms_storage_in_item.sku_id = t_sku_product.id
         WHERE
         wms_storage_in.id = #{id}
-        and wms_storage_in_item.type != 'Procurement'
+        and wms_storage_in_item.type = 'Others'
 
     </select>
 

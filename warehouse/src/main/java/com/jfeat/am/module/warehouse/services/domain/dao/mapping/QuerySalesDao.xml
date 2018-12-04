@@ -22,7 +22,7 @@
         SUM(wms_storage_out_item.transaction_quantities) AS finishedCount
         FROM
         wms_storage_out_item
-        LEFT JOIN wms_storage_out on (wms_storage_out.id = wms_storage_out_item.storage_out_id AND wms_storage_out_item.type!='CustomerStorageOut')
+        LEFT JOIN wms_storage_out on (wms_storage_out.id = wms_storage_out_item.storage_out_id AND wms_storage_out_item.type='Others')
         LEFT JOIN wms_sales ON wms_storage_out.sales_id = wms_sales.id
         WHERE wms_sales.id=#{salesId}
         AND wms_storage_out_item.sku_id=#{skuId}
@@ -49,7 +49,7 @@
         wms_storage_out_item
         LEFT JOIN wms_storage_out on
         (wms_storage_out.id = wms_storage_out_item.storage_out_id
-        AND wms_storage_out_item.type != 'CustomerStorageOut')
+        AND wms_storage_out_item.type = 'Others')
         LEFT JOIN wms_sales ON (
         wms_sales.id = wms_storage_out.sales_id
         AND wms_storage_out.transaction_type = 'CustomerStorageOut'
@@ -214,7 +214,7 @@
 
         left join wms_storage_out on
         (wms_storage_out_item.storage_out_id = wms_storage_out.id
-        and wms_storage_out_item.type!='CustomerStorageOut')
+        and wms_storage_out_item.type='Others')
 
         LEFT JOIN t_sku_product ON wms_storage_out_item.sku_id = t_sku_product.id
 

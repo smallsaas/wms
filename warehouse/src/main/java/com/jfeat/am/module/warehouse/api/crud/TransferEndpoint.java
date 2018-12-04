@@ -44,15 +44,42 @@ public class TransferEndpoint extends BaseController {
     @Resource
     QueryTransferDao queryTransferDao;
 
-    @PostMapping
-    @ApiOperation(value = "新建 调拨表",response = TransferModel.class)
-    public Tip createTransfer(@RequestBody TransferModel entity) {
+    @PostMapping("/drafted")
+    @ApiOperation(value = "新建  Draft调拨表",response = TransferModel.class)
+    public Tip draftTransfer(@RequestBody TransferModel entity) {
 
         Integer affected = 0;
         try {
             String userName = JWTKit.getAccount(getHttpServletRequest());
             entity.setOriginatorName(userName);
-            affected = transferService.createTransfer(entity, JWTKit.getUserId(getHttpServletRequest()));
+            affected += transferService.draftTransfer(entity, JWTKit.getUserId(getHttpServletRequest()),JWTKit.getAccount(getHttpServletRequest()));
+
+        } catch (DuplicateKeyException e) {
+            throw new BusinessException(BusinessCode.DuplicateKey);
+        }
+        createPurchasekLog(entity.getId(), "createTransfer", "对调拨单进行了新建操作",  JSONObject.toJSONString(entity) + " &");
+        return SuccessTip.create(affected);
+    }
+
+    @PutMapping("/{id}")
+    @ApiOperation(value = "新建  Draft调拨表",response = TransferModel.class)
+    public Tip updateTransfer(@PathVariable Long id,@RequestBody TransferModel entity) {
+
+        Integer affected = 0;
+            affected += transferService.updateTransfer(id,entity);
+        createPurchasekLog(entity.getId(), "createTransfer", "对调拨单进行了新建操作",  JSONObject.toJSONString(entity) + " &");
+        return SuccessTip.create(affected);
+    }
+
+    @PostMapping("/{id}/execution")
+    @ApiOperation(value = "begin execution 调拨表",response = TransferModel.class)
+    public Tip createTransfer(@PathVariable Long id,@RequestBody TransferModel entity) {
+
+        Integer affected = 0;
+        try {
+            String userName = JWTKit.getAccount(getHttpServletRequest());
+            entity.setOriginatorName(userName);
+            affected += transferService.createTransfer(id,entity, JWTKit.getUserId(getHttpServletRequest()));
 
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
