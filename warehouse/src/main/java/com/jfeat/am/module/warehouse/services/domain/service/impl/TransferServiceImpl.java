@@ -102,6 +102,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                         } else {
                             outItem.setStorageOutId(transferId);
                             outItem.setType(TransactionType.TransferOut.toString());
+                            outItem.setRelationCode(transferId.toString());
                             affected += storageOutItemMapper.insert(outItem);
                         }
                     } else {
