@@ -44,7 +44,7 @@ public class TransferEndpoint extends BaseController {
     @Resource
     QueryTransferDao queryTransferDao;
 
-    @PostMapping("/drafted")
+    @PostMapping
     @ApiOperation(value = "新建  Draft调拨表",response = TransferModel.class)
     public Tip draftTransfer(@RequestBody TransferModel entity) {
 
