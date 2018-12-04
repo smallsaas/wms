@@ -20,7 +20,7 @@ public class SkuStorageDetails {
     Integer validValue;
     String relationCode;
     String recordType;
-    String parentId;
+    Long parentId;
 
     public String getRecordType() {
         return recordType;
@@ -143,11 +143,11 @@ public class SkuStorageDetails {
     }
 
 
-    public String getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(String parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 }

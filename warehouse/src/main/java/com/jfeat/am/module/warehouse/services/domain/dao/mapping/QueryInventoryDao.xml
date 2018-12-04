@@ -97,6 +97,26 @@
 
     <!-- 出入库记录 -->
 
+    <resultMap id="SkuStorageDetails" type="com.jfeat.am.module.warehouse.services.domain.model.SkuStorageDetails">
+        <id column="skuId" property="skuId" />
+        <result column="type" property="type" />
+        <result column="relationCode" property="relationCode" />
+        <result column="transactionSkuPrice" property="transactionSkuPrice" />
+        <result column="transactionQuantities" property="transactionQuantities" />
+        <result column="transactionTime" property="transactionTime" />
+        <result column="validValue" property="validValue" />
+        <result column="skuName" property="skuName" />
+        <result column="skuBarcode" property="skuBarcode" />
+        <result column="skuCode" property="skuCode" />
+        <result column="skuUnit" property="skuUnit" />
+        <result column="warehouseName" property="warehouseName" />
+        <result column="transactionType" property="transactionType" />
+        <result column="transactionCode" property="transactionCode" />
+        <result column="parentId" property="parentId" />
+
+        <result column="warehouseName" property="warehouseName" />
+    </resultMap>
+
     <select id="skuStorageDetails" resultType="com.jfeat.am.module.warehouse.services.domain.model.SkuStorageDetails">
         <choose>
 
