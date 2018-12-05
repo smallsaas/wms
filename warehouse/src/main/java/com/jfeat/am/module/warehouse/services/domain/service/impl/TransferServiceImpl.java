@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
@@ -32,6 +33,8 @@ import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDTransferServ
 import com.jfeat.am.module.warehouse.services.domain.service.WarehouseService;
 import com.jfeat.am.module.warehouse.services.persistence.dao.*;
 import com.jfeat.am.module.warehouse.services.persistence.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,6 +79,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
     SkuProductMapper skuProductMapper;
     @Resource
     QueryInventoryDao queryInventoryDao;
+
+    protected static final Logger logger = LoggerFactory.getLogger(TransferServiceImpl.class);
 
     @Transactional
     public Integer draftOutItem(List<StorageOutItem> items,Long fromWarehouseId,Long transferId){
@@ -173,7 +178,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
             model.setTransferTime(new Date());
         }
 
-        System.out.print(model.getFromWarehouseId()+"|"+model.getToWarehouseId());
+        logger.debug(model.getFromWarehouseId()+"|"+model.getToWarehouseId());
         if (model.getFromWarehouseId().compareTo(model.getToWarehouseId()) == 0) {
 
             throw new BusinessException(4100, "ERROR DATA" + "\"数据错误，调入|调出仓库不能相同\"");
@@ -182,7 +187,10 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         StorageOutModel storageOut = new StorageOutModel();
         storageOut.setStorageOutItems(model.getOutItems());
         storageOut.setStorageOutTime(model.getTransferTime());
-        System.out.print(model.getFromWarehouseId()+"|"+model.getToWarehouseId()+"改了的记得改一下i版本号\n");
+
+        logger.debug(model.getFromWarehouseId()+"|"+model.getToWarehouseId()+"改了的记得改一下i版本号\n");
+
+        
         storageOut.setTransactionType(TransactionType.TransferOut.toString());
         storageOut.setWarehouseId(model.getFromWarehouseId());
         storageOut.setOriginatorId(userId);
