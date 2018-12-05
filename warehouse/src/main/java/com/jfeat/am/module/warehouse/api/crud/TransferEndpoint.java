@@ -45,81 +45,79 @@ public class TransferEndpoint extends BaseController {
     QueryTransferDao queryTransferDao;
 
     @PostMapping
-    @ApiOperation(value = "新建  Draft调拨表",response = TransferModel.class)
+    @ApiOperation(value = "新建  Draft调拨表", response = TransferModel.class)
     public Tip draftTransfer(@RequestBody TransferModel entity) {
 
         Integer affected = 0;
         try {
             String userName = JWTKit.getAccount(getHttpServletRequest());
             entity.setOriginatorName(userName);
-            affected += transferService.draftTransfer(entity, JWTKit.getUserId(getHttpServletRequest()),JWTKit.getAccount(getHttpServletRequest()));
+            affected += transferService.draftTransfer(entity, JWTKit.getUserId(getHttpServletRequest()), JWTKit.getAccount(getHttpServletRequest()));
 
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
         }
-        createPurchasekLog(entity.getId(), "createTransfer", "对调拨单进行了新建操作",  JSONObject.toJSONString(entity) + " &");
+        createPurchasekLog(entity.getId(), "createTransfer", "对调拨单进行了新建操作", JSONObject.toJSONString(entity) + " &");
         return SuccessTip.create(affected);
     }
 
     @PutMapping("/{id}")
-    @ApiOperation(value = "新建  Draft调拨表",response = TransferModel.class)
-    public Tip updateTransfer(@PathVariable Long id,@RequestBody TransferModel entity) {
+    @ApiOperation(value = "新建  Draft调拨表", response = TransferModel.class)
+    public Tip updateTransfer(@PathVariable Long id, @RequestBody TransferModel entity) {
 
         Integer affected = 0;
-            affected += transferService.updateTransfer(id,entity);
-        createPurchasekLog(entity.getId(), "createTransfer", "对调拨单进行了新建操作",  JSONObject.toJSONString(entity) + " &");
+        affected += transferService.updateTransfer(id, entity);
+        createPurchasekLog(entity.getId(), "createTransfer", "对调拨单进行了新建操作", JSONObject.toJSONString(entity) + " &");
         return SuccessTip.create(affected);
     }
 
     @PostMapping("/{id}/execution")
-    @ApiOperation(value = "begin execution 调拨表",response = TransferModel.class)
-    public Tip createTransfer(@PathVariable Long id,@RequestBody TransferModel entity) {
+    @ApiOperation(value = "begin execution 调拨表", response = TransferModel.class)
+    public Tip createTransfer(@PathVariable Long id) {
 
         Integer affected = 0;
         try {
-            String userName = JWTKit.getAccount(getHttpServletRequest());
-            entity.setOriginatorName(userName);
-            affected += transferService.createTransfer(id,entity, JWTKit.getUserId(getHttpServletRequest()));
+            affected += transferService.createTransfer(id, JWTKit.getUserId(getHttpServletRequest()));
 
         } catch (DuplicateKeyException e) {
-            throw new BusinessException(BusinessCode.DuplicateKey);
+            throw new BusinessException(5100,"编号重复，请重新刷新页面");
         }
-        createPurchasekLog(entity.getId(), "createTransfer", "对调拨单进行了新建操作",  JSONObject.toJSONString(entity) + " &");
+        createPurchasekLog(id, "createTransfer", "对调拨单进行了新建操作", JSONObject.toJSONString(id) + " &");
         return SuccessTip.create(affected);
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "获取调拨表",response = TransferModel.class)
+    @ApiOperation(value = "获取调拨表", response = TransferModel.class)
     public Tip getTransfer(@PathVariable Long id) {
         return SuccessTip.create(transferService.transferDetails(id));
     }
 
     @PostMapping("/{id}/done")
-    @ApiOperation(value = "调拨完成",response = TransferModel.class)
+    @ApiOperation(value = "调拨完成", response = TransferModel.class)
     public Tip doneTransfer(@PathVariable Long id) {
         Tip resultTip = SuccessTip.create(transferService.doneTransfer(id, JWTKit.getUserId(getHttpServletRequest())));
-        createPurchasekLog(id, "doneTransfer", "对调拨单进行了调拨完成操作",  id + " &");
+        createPurchasekLog(id, "doneTransfer", "对调拨单进行了调拨完成操作", id + " &");
         return resultTip;
     }
 
     @PostMapping("/{id}/cancel")
-    @ApiOperation(value = "调拨作废",response = TransferModel.class)
+    @ApiOperation(value = "调拨作废", response = TransferModel.class)
     public Tip cancelTransfer(@PathVariable Long id) {
-        Tip resultTip = SuccessTip.create(transferService.cancelTransfer(id,JWTKit.getUserId(getHttpServletRequest())));
-        createPurchasekLog(id, "cancelTransfer", "对调拨单进行了调拨作废操作",  id + " &");
+        Tip resultTip = SuccessTip.create(transferService.cancelTransfer(id, JWTKit.getUserId(getHttpServletRequest())));
+        createPurchasekLog(id, "cancelTransfer", "对调拨单进行了调拨作废操作", id + " &");
         return resultTip;
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "删除调拨表",response = TransferModel.class)
+    @ApiOperation(value = "删除调拨表", response = TransferModel.class)
     public Tip deleteTransfer(@PathVariable Long id) {
         Tip resultTip = SuccessTip.create(transferService.deleteTransfer(id));
-        createPurchasekLog(id, "deleteTransfer", "对调拨单进行了删除操作",  id + " &");
+        createPurchasekLog(id, "deleteTransfer", "对调拨单进行了删除操作", id + " &");
         return resultTip;
     }
 
     @GetMapping
-    @ApiOperation(value = "调拨表列表",response = TransferModel.class)
+    @ApiOperation(value = "调拨表列表", response = TransferModel.class)
     public Tip queryTransfers(Page<TransferRecord> page,
                               @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                               @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
@@ -151,8 +149,8 @@ public class TransferEndpoint extends BaseController {
             orderBy = "`" + orderBy + "`" + " " + sort;
         }
 
-        Date startTime = (transactionTime!=null && transactionTime.length == 2)? transactionTime [0] : null;
-        Date endTime = (transactionTime!=null && transactionTime.length == 2)? transactionTime [1] : null;
+        Date startTime = (transactionTime != null && transactionTime.length == 2) ? transactionTime[0] : null;
+        Date endTime = (transactionTime != null && transactionTime.length == 2) ? transactionTime[1] : null;
 
         page.setCurrent(pageNum);
         page.setSize(pageSize);
@@ -171,12 +169,12 @@ public class TransferEndpoint extends BaseController {
         record.setField1(field1);
         record.setField2(field2);
 
-        page.setRecords(queryTransferDao.findTransferPage(page, warehouseId,record, orderBy,startTime,endTime));
+        page.setRecords(queryTransferDao.findTransferPage(page, warehouseId, record, orderBy, startTime, endTime));
 
         return SuccessTip.create(page);
     }
 
-    private void createPurchasekLog(Long targetId, String methodName, String operation,String message) {
+    private void createPurchasekLog(Long targetId, String methodName, String operation, String message) {
         LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
                 JWTKit.getAccount(getHttpServletRequest()),
                 operation,

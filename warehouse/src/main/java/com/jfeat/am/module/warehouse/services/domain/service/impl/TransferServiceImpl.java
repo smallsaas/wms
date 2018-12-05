@@ -83,10 +83,10 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
     protected static final Logger logger = LoggerFactory.getLogger(TransferServiceImpl.class);
 
     @Transactional
-    public Integer draftOutItem(List<StorageOutItem> items,Long fromWarehouseId,Long transferId){
+    public Integer draftOutItem(List<StorageOutItem> items, Long fromWarehouseId, Long transferId) {
         int affected = 0;
 
-        if (items!=null && items.size()>0){
+        if (items != null && items.size() > 0) {
 
             for (StorageOutItem outItem : items) {
                 SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
@@ -101,7 +101,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
                     if (originInventory != null) {
                         if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
-                            throw new BusinessException(4050, "\"" + skuProduct.getSkuName()+":"+skuProduct.getBarCode() + "\""
+                            throw new BusinessException(4050, "\"" + skuProduct.getSkuName() + ":" + skuProduct.getBarCode() + "\""
                                     + "库存不足," + "现有库存" + originInventory.getValidSku()
                                     + "小于出库量" + outItem.getTransactionQuantities());
                         } else {
@@ -111,7 +111,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                             affected += storageOutItemMapper.insert(outItem);
                         }
                     } else {
-                        throw new BusinessException(4055, "出库仓库无商品:"+"\""+skuProduct.getSkuName()+":"+skuProduct.getBarCode() + "\""+"库存，请重新核对");
+                        throw new BusinessException(4055, "出库仓库无商品:" + "\"" + skuProduct.getSkuName() + ":" + skuProduct.getBarCode() + "\"" + "库存，请重新核对");
                     }
 
                 } else {
@@ -127,10 +127,10 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
 
     /**
-     *  DraftTransfer
-     * */
+     * DraftTransfer
+     */
     @Transactional
-    public Integer draftTransfer(TransferModel model,Long userId,String userName){
+    public Integer draftTransfer(TransferModel model, Long userId, String userName) {
 
         int affected = 0;
         if (model.getTransferTime() == null) {
@@ -146,127 +146,110 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         model.setStatus(TransferStatus.Draft.toString());
         affected += transferMapper.insert(model);
 
-        affected += draftOutItem(model.getOutItems(),model.getFromWarehouseId(),model.getId());
+        affected += draftOutItem(model.getOutItems(), model.getFromWarehouseId(), model.getId());
 
         return affected;
     }
 
     @Transactional
-    public Integer updateTransfer(Long transderId,TransferModel model){
+    public Integer updateTransfer(Long transderId, TransferModel model) {
         int affected = 0;
         Transfer transfer = transferMapper.selectById(transderId);
-        if (transfer.getStatus().compareTo(TransferStatus.Draft.toString())!=0){
-            throw new BusinessException(5100,"不能对非草稿状态下的调拨单进行修改");
+        if (transfer.getStatus().compareTo(TransferStatus.Draft.toString()) != 0) {
+            throw new BusinessException(5100, "不能对非草稿状态下的调拨单进行修改");
         }
-        affected += storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,transderId)
-                                                                       .eq(StorageOutItem.TYPE,TransactionType.TransferOut.toString()));
-        affected += draftOutItem(model.getOutItems(),model.getFromWarehouseId(),transderId);
+        affected += storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID, transderId)
+                .eq(StorageOutItem.TYPE, TransactionType.TransferOut.toString()));
+        affected += draftOutItem(model.getOutItems(), model.getFromWarehouseId(), transderId);
         return affected;
     }
 
 
     @Transactional
-    public Integer createTransfer(Long transferId,TransferModel model, Long userId) {
+    public Integer createTransfer(Long transferId, Long userId) {
         /**
          * 1.调拨包括了两个仓库的出入库 主动为出 被动为入
          * 2.插入 storageIn 以及 storageInItems
          * 3.插入 storageOut 以及 storageOutItems
          * 4.插入 Transfer
          * */
+
         int affected = 0;
-        if (model.getTransferTime() == null) {
-            model.setTransferTime(new Date());
-        }
 
-        logger.debug(model.getFromWarehouseId()+"|"+model.getToWarehouseId());
-        if (model.getFromWarehouseId().compareTo(model.getToWarehouseId()) == 0) {
+        Transfer transfer = transferMapper.selectById(transferId);
 
-            throw new BusinessException(4100, "ERROR DATA" + "\"数据错误，调入|调出仓库不能相同\"");
-        }
+        List<StorageOutItem> items = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>().eq("storage_out_id", transferId)
+                .eq(StorageOutItem.TYPE, TransactionType.TransferOut.toString()));
 
-        StorageOutModel storageOut = new StorageOutModel();
-        storageOut.setStorageOutItems(model.getOutItems());
-        storageOut.setStorageOutTime(model.getTransferTime());
-
-        logger.debug(model.getFromWarehouseId()+"|"+model.getToWarehouseId()+"改了的记得改一下i版本号\n");
-
-        
-        storageOut.setTransactionType(TransactionType.TransferOut.toString());
-        storageOut.setWarehouseId(model.getFromWarehouseId());
-        storageOut.setOriginatorId(userId);
-        storageOut.setOriginatorName(model.getOriginatorName());
-        storageOut.setTransactionBy(model.getTransactionBy());
-        // 使用调拨记录表中的field1字段去接收出库的code
-        storageOut.setTransactionCode(model.getField1());
-        storageOut.setTransactionTime(new Date());
-        StorageOutFilter storageOutFilter = new StorageOutFilter();
-        List<StorageOutItem> items = new ArrayList<>();
-        if (model.getOutItems() != null && model.getOutItems().size() > 0) {
-            for (StorageOutItem outItem : model.getOutItems()) {
-
-                SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
-
-                if (outItem.getTransactionQuantities() > 0) {
-                    outItem.setRelationCode(model.getTransactionCode());// 插入最上级的 编号
-                    outItem.setTransactionTime(storageOut.getStorageOutTime());
-
-                    Inventory isExistInventory = new Inventory();
-                    isExistInventory.setSkuId(outItem.getSkuId());
-                    isExistInventory.setWarehouseId(model.getFromWarehouseId());
-
-                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
-                    if (originInventory != null) {
-                        if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
-                            throw new BusinessException(4050, "\"" + skuProduct.getSkuName() +":"+skuProduct.getBarCode() + "\""
-                                    + "库存不足," + "现有库存" +  originInventory.getValidSku() + "小于出库量" + outItem.getTransactionQuantities());
-                        } else {
-                            Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
-                            originInventory.setValidSku(afterCount);
-                            outItem.setAfterTransactionQuantities(afterCount);
-                            // 操作后的数量
-                            affected += inventoryMapper.updateById(originInventory);
-                            // 接收方为在途数
-                            Inventory inventory = new Inventory();
-                            inventory.setSkuId(outItem.getSkuId());
-                            inventory.setWarehouseId(model.getToWarehouseId());
-                            Inventory toInventory = inventoryMapper.selectOne(inventory);
-                            if (toInventory == null) {
-                                inventory.setValidSku(0);
-                                inventory.setMinInventory(0);
-                                inventory.setAdvanceQuantities(0);
-                                inventory.setMaxInventory(outItem.getTransactionQuantities());
-                                inventory.setTransmitQuantities(outItem.getTransactionQuantities());
-                                affected += inventoryMapper.insert(inventory);  //假设 接收方没有 ，则新建
-                            } else {
-                                int originCount = toInventory.getTransmitQuantities();
-                                originCount += outItem.getTransactionQuantities();
-                                toInventory.setTransmitQuantities(originCount);
-                                affected += inventoryMapper.updateAllColumnById(toInventory); //有 则是在途数
-
-                            }
-                        }
-                    } else {
-                        throw new BusinessException(4055, "商品不存在，请重新核对!");
-                    }
-                    items.add(outItem);
-
-                } else {
-                    throw new BusinessException(5000, "提交失败，" + "\"" + skuProduct.getSkuName() + "\"" + "商品调拨数量不能为0");
-                }
-            }
-        } else {
+        if (items == null && items.size() <= 0) {
             throw new BusinessException(4050, "商品不能为空，请先选择商品！");
         }
+
+        transfer.setTransferTime(new Date());
+
+        StorageOutModel storageOut = new StorageOutModel();
+
+        storageOut.setStorageOutTime(transfer.getTransactionTime());
+
+
+        storageOut.setTransactionType(TransactionType.TransferOut.toString());
+
+        storageOut.setWarehouseId(transfer.getFromWarehouseId());
+        storageOut.setOriginatorId(userId);
+        storageOut.setOriginatorName(transfer.getOriginatorName());
+        storageOut.setTransactionBy(transfer.getTransactionBy());
+        // 使用调拨记录表中的field1字段去接收出库的code
+        storageOut.setTransactionCode(transfer.getField1());
+        storageOut.setTransactionTime(new Date());
+
+        StorageOutFilter storageOutFilter = new StorageOutFilter();
+
+        for (StorageOutItem outItem : items) {
+
+            outItem.setRelationCode(transfer.getTransactionCode());// 插入最上级的 编号
+            outItem.setTransactionTime(storageOut.getStorageOutTime());
+
+            Inventory isExistInventory = new Inventory();
+            isExistInventory.setSkuId(outItem.getSkuId());
+            isExistInventory.setWarehouseId(transfer.getFromWarehouseId());
+
+            Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+            Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
+            originInventory.setValidSku(afterCount);
+            outItem.setAfterTransactionQuantities(afterCount);
+            // 操作后的数量
+            affected += inventoryMapper.updateById(originInventory);
+            // 接收方为在途数
+            Inventory inventory = new Inventory();
+            inventory.setSkuId(outItem.getSkuId());
+            inventory.setWarehouseId(transfer.getToWarehouseId());
+            Inventory toInventory = inventoryMapper.selectOne(inventory);
+            if (toInventory == null) {
+                inventory.setValidSku(0);
+                inventory.setMinInventory(0);
+                inventory.setAdvanceQuantities(0);
+                inventory.setMaxInventory(outItem.getTransactionQuantities());
+                inventory.setTransmitQuantities(outItem.getTransactionQuantities());
+                affected += inventoryMapper.insert(inventory);  //假设 接收方没有 ，则新建
+            } else {
+                int originCount = toInventory.getTransmitQuantities();
+                originCount += outItem.getTransactionQuantities();
+                toInventory.setTransmitQuantities(originCount);
+                affected += inventoryMapper.updateAllColumnById(toInventory); //有 则是在途数
+
+            }
+        }
+
         storageOut.setStorageOutItems(items);
         affected = crudStorageOutService.createMaster(storageOut, storageOutFilter, null, null);
 
-        model.setStorageOutId((Long) storageOutFilter.result().get("id") == null ? null : (Long) storageOutFilter.result().get("id"));
+        transfer.setStorageOutId((Long) storageOutFilter.result().get("id") == null ? null : (Long) storageOutFilter.result().get("id"));
 
-        model.setStatus(TransferStatus.Transfer.toString());
-        model.setOriginatorId(userId);
-        model.setTransactionTime(new Date());
-        model.setId(transferId);
-        affected += crudTransferService.updateMaster(model);
+        transfer.setStatus(TransferStatus.Transfer.toString());
+        transfer.setOriginatorId(userId);
+        transfer.setTransactionTime(new Date());
+        transfer.setId(transferId);
+        affected += crudTransferService.updateMaster(transfer);
         return affected;
     }
 
@@ -446,11 +429,11 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
          * */
         Transfer transfer = crudTransferService.retrieveMaster(id);
         if (transfer == null) {
-            throw new BusinessException(5200,"数据出错，无该调拨记录");
+            throw new BusinessException(5200, "数据出错，无该调拨记录");
         }
         JSONObject transferObj = JSON.parseObject(JSONObject.toJSONString(transfer));
 
-        if (transfer.getStatus().compareTo(TransferStatus.Draft.toString())==0){
+        if (transfer.getStatus().compareTo(TransferStatus.Draft.toString()) == 0) {
             List<StorageOutItemRecord> outItemRecords = queryTransferDao.draftOutItemRecords(id);
             transferObj.put("outItemRecords", outItemRecords);
             transferObj.put("fromWarehouseName", queryWarehouseDao.warehouseName(transfer.getFromWarehouseId()));
@@ -479,7 +462,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
         storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>().eq("storage_out_id", transfer.getStorageOutId()));
         storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>().eq("storage_out_id", id)
-                                                                            .eq(StorageOutItem.TYPE,TransactionType.TransferOut.toString()));
+                .eq(StorageOutItem.TYPE, TransactionType.TransferOut.toString()));
         storageOutMapper.delete(new EntityWrapper<StorageOut>().eq("id", transfer.getStorageOutId()));
 
 
