@@ -205,7 +205,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(outItem.getSkuId());
                     isExistInventory.setWarehouseId(model.getFromWarehouseId());
-                    
+
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                     if (originInventory != null) {
                         if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
