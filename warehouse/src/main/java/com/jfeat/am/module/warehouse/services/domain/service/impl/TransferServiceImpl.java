@@ -173,6 +173,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
             model.setTransferTime(new Date());
         }
 
+        System.out.print(model.getFromWarehouseId()+"|"+model.getToWarehouseId());
         if (model.getFromWarehouseId().compareTo(model.getToWarehouseId()) == 0) {
 
             throw new BusinessException(4100, "ERROR DATA" + "\"数据错误，调入|调出仓库不能相同\"");
@@ -181,7 +182,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         StorageOutModel storageOut = new StorageOutModel();
         storageOut.setStorageOutItems(model.getOutItems());
         storageOut.setStorageOutTime(model.getTransferTime());
-
+        System.out.print(model.getFromWarehouseId()+"|"+model.getToWarehouseId()+"改了的记得改一下i版本号\n");
         storageOut.setTransactionType(TransactionType.TransferOut.toString());
         storageOut.setWarehouseId(model.getFromWarehouseId());
         storageOut.setOriginatorId(userId);
@@ -204,6 +205,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(outItem.getSkuId());
                     isExistInventory.setWarehouseId(model.getFromWarehouseId());
+                    
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                     if (originInventory != null) {
                         if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
