@@ -139,7 +139,12 @@
                 wms_storage_in.transaction_code AS transactionCode,
                 'sin' recordType,
 
-                wms_storage_in.field1 as parentId
+                CASE
+                WHEN ISNULL(wms_storage_in.field1) THEN
+                wms_storage_in.id
+                ELSE
+                wms_storage_in.field1
+                END AS parentId
 
                 FROM
                 wms_storage_in_item sin
@@ -183,7 +188,13 @@
                 wms_storage_out.transaction_code AS transactionCode,
                 'sout' recordType,
 
-                wms_storage_out.field1 as parentId
+                CASE
+                WHEN ISNULL(wms_storage_out.field1) THEN
+                wms_storage_out.id
+                ELSE
+                wms_storage_out.field1
+                END AS parentId
+
 
                 FROM
                 wms_storage_out_item sout
@@ -283,7 +294,12 @@
                 wms_storage_in.transaction_code AS transactionCode,
                 'sin' recordType,
 
-                wms_storage_in.field1 as parentId
+                CASE
+                WHEN ISNULL(wms_storage_in.field1) THEN
+                wms_storage_in.id
+                ELSE
+                wms_storage_in.field1
+                END AS parentId
 
 
                 FROM
@@ -326,7 +342,12 @@
                 wms_storage_out.transaction_code AS transactionCode,
                 'sout' recordType,
 
-                wms_storage_out.field1 as parentId
+                CASE
+                WHEN ISNULL(wms_storage_out.field1) THEN
+                wms_storage_out.id
+                ELSE
+                wms_storage_out.field1
+                END AS parentId
 
                 FROM
                 wms_storage_out_item sout
