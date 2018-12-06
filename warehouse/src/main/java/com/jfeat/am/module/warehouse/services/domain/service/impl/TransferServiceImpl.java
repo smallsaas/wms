@@ -188,6 +188,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         transfer.setTransferTime(new Date());
 
         StorageOutModel storageOut = new StorageOutModel();
+        // field1 去接收最上层的ID  作跳转使用
+        storageOut.setField1(transferId.toString());
 
         storageOut.setStorageOutTime(transfer.getTransactionTime());
 
@@ -317,6 +319,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
             }
         }
 
+        // field1 去接收最上层的ID  作跳转使用
+        storageIn.setField1(id.toString());
 
         storageIn.setTransactionType(TransactionType.TransferIn.toString());
         storageIn.setWarehouseId(transfer.getToWarehouseId());
@@ -355,6 +359,10 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         transfer.setFinishTime(new Date());
 
         StorageInModel storageIn = new StorageInModel();
+
+        // field1 去接收最上层的ID  作跳转使用
+        storageIn.setField1(id.toString());
+
         storageIn.setStorageInTime(transfer.getFinishTime());
 
         StorageOut storageOut = storageOutMapper.selectById(transfer.getStorageOutId());

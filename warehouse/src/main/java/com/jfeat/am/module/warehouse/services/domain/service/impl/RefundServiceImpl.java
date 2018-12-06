@@ -90,7 +90,6 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         if (model.getItems() != null && model.getItems().size() > 0) {
             for (StorageOutItem outItem : model.getItems()) {
 
-
                 SkuProduct sku = skuProductMapper.selectById(outItem.getSkuId());
                 if (outItem.getTransactionQuantities() > 0) {
                     outItem.setRelationCode(model.getProductRefundCode());
@@ -227,6 +226,8 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         storageIn.setTransactionTime(new Date());
         StorageInFilter storageInFilter = new StorageInFilter();
         storageIn.setStorageInItems(storageInItems);
+        // field1 去接收最上层的ID  作跳转使用
+        storageIn.setField1(refundId.toString());
 
         affected += crudStorageInService.createMaster(storageIn, storageInFilter, null, null);
         refund.setProductRefundStatus(RefundStatus.Cancel.toString());
@@ -253,8 +254,8 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         List<StorageOutItemRecord> outItemRecords = new ArrayList<>();
         //searching out records
         List<StorageOut> storageOuts = storageOutMapper.selectList(new EntityWrapper<StorageOut>()
-                                                       .eq(StorageOut.ID, refund.getStorageOutId())
-                                                       .eq(StorageOut.TRANSACTION_TYPE, TransactionType.Refund.toString()));
+                .eq(StorageOut.ID, refund.getStorageOutId())
+                .eq(StorageOut.TRANSACTION_TYPE, TransactionType.Refund.toString()));
 
 
         if (storageOuts != null && storageOuts.size() > 0) {

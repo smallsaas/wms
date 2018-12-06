@@ -155,6 +155,9 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         if (model.getOutItems() != null && model.getOutItems().size() > 0) {
             // 判断所有的商品是否都已经入库
             StorageOut out = new StorageOut();
+            // field1 去接收最上层的ID  作跳转使用
+            out.setField1(salesId.toString());
+
             out.setOriginatorId(userId);
             out.setStorageOutTime(new Date());
             out.setTransactionTime(new Date());

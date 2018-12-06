@@ -171,6 +171,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             in.setStorageInTime(new Date());
             in.setTransactionTime(new Date());
 
+            // field1 去接收最上层的ID  作跳转使用
+            in.setField1(procurementId.toString());
+
             in.setOriginatorName(model.getOriginatorName());
             // 使用field1去接收 warehouseId 字段
             in.setWarehouseId(Long.valueOf(model.getField1()));
@@ -184,11 +187,10 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             for (StorageInItem item : model.getItems()) {
                 if (item.getTransactionQuantities() > 0) {
 
-                    // field1 去接收最上层的ID  作跳转使用
-                    in.setField1(procurement.getId().toString());
-
                     SkuProduct skuProduct = skuProductMapper.selectById(item.getSkuId());
+                    item.setType("Others");
                     item.setRelationCode(procurement.getProcurementCode());
+
                     // 某个 sku 的采购的数量
                     Integer skuProcurementCount = queryProcurementDao.skuProcurementCount(procurementId, item.getSkuId());
                     //某次采购 某个 sku 入库历史数量
