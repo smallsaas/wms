@@ -78,7 +78,7 @@ public class TransferEndpoint extends BaseController {
     public Tip commit(@PathVariable Long id) {
         Integer affected = 0;
         Transfer transfer = new Transfer();
-        transfer.setStatus(TransferStatus.Wait_Audit.toString());
+        transfer.setStatus(TransferStatus.Wait_To_Audit.toString());
         if(transfer.getId() != null) {
             affected += transferService.updateMaster(transfer);
             createPurchasekLog(id, "commit", "对调拨单进行了提交操作", id + " &");

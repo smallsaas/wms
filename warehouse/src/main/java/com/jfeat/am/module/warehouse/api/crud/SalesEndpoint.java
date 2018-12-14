@@ -73,7 +73,7 @@ public class SalesEndpoint extends BaseController {
         Integer affected = 0;
         Sales sales = new Sales();
         sales.setId(id);
-        sales.setSalesStatus(SalesStatus.Wait_Audit.toString());
+        sales.setSalesStatus(SalesStatus.Wait__To_Audit.toString());
         if(sales.getId() != null) {
             affected += salesService.updateMaster(sales);
             createSalesLog(id,  "commit", "对分销商出库进行了提交操作", id + " &");
