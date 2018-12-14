@@ -87,12 +87,30 @@ public class ProcurementEndpoint extends BaseController {
         return resultTip;
     }
 
-    @BusinessLog(name = "Procurement", value = "update Procurement")
+    @BusinessLog(name = "Procurement", value = "审核拒绝，自动转化为关闭状态")
     @PutMapping("/{id}/closed")
-    @ApiOperation(value = "closed",response = ProcurementModel.class)
+    @ApiOperation(value = "closed procurement",response = ProcurementModel.class)
     public Tip excutionProcurement(@PathVariable Long id) {
         Tip resultTip = SuccessTip.create(procurementService.closedProcurment(id));
-        createPurchasekLog(id,  "excutionProcurement", "对采购单进行了关闭操作",  id + " &");
+        createPurchasekLog(id,  "closedProcurment", "对采购单进行了关闭操作",  id + " &");
+        return resultTip;
+    }
+
+    @BusinessLog(name = "Procurement", value = "审核 Procurement")
+    @PutMapping("/{id}/audit")
+    @ApiOperation(value = "审核",response = ProcurementModel.class)
+    public Tip auditProcurement(@PathVariable Long id) {
+        Tip resultTip = SuccessTip.create(procurementService.auditProcurment(id));
+        createPurchasekLog(id,  "auditProcurment", "对采购单进行了提交审核操作",  id + " &");
+        return resultTip;
+    }
+
+    @BusinessLog(name = "Procurement", value = "审核通过 Procurement")
+    @PutMapping("/{id}/passed")
+    @ApiOperation(value = "审核通过",response = ProcurementModel.class)
+    public Tip passProcurement(@PathVariable Long id) {
+        Tip resultTip = SuccessTip.create(procurementService.passedProcurment(id));
+        createPurchasekLog(id,  "passedProcurment", "对采购单进行了审核通过操作",  id + " &");
         return resultTip;
     }
 

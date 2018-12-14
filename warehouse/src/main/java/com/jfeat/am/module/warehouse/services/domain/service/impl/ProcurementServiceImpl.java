@@ -88,7 +88,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         BigDecimal totalSpend = BigDecimal.valueOf(0);
         model.setOriginatorId(userId);
         model.setTransactionTime(new Date());
-        model.setProcureStatus(ProcurementStatus.WaitForStorageIn.toString());
+        model.setProcureStatus(ProcurementStatus.Draft.toString());
         for (StorageInItem item : model.getItems()) {
             BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
             sum = sum.multiply(item.getTransactionSkuPrice());
@@ -116,7 +116,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
         Procurement procurement = procurementMapper.selectById(procurementId);
         // 等待入库的情况下才能执行更新的操作
-        if (procurement.getProcureStatus().compareTo(ProcurementStatus.WaitForStorageIn.toString()) == 0) {
+        if (procurement.getProcureStatus().compareTo(ProcurementStatus.Draft.toString()) == 0) {
             model.setId(procurementId);
             model.setTransactionTime(new Date());
             model.setProcureStatus(ProcurementStatus.WaitForStorageIn.toString());
@@ -157,10 +157,13 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         int totalCount = queryProcurementDao.totalCount(procurementId);
 
         Procurement procurement = procurementMapper.selectById(procurementId);
+        if (procurement.getProcureStatus().compareTo(ProcurementStatus.Closed.toString())==0){
+            throw new BusinessException(5200,"审核未通过!");
+        }
         if (procurement.getProcureStatus().compareTo(ProcurementStatus.TotalStorageIn.toString())==0
             || procurement.getProcureStatus().compareTo(ProcurementStatus.Closed.toString())==0){
 
-            throw new BusinessException(BusinessCode.ErrorStatus);
+            throw new BusinessException(5200,"\"关闭|全部入库\"状态下无法执行入库操作");
         }
 
         model.setId(procurementId);
@@ -404,4 +407,27 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         return procurementMapper.updateById(procurement);
     }
 
+    /**
+     *  wait to audit this procurement
+     * */
+    @Transactional
+    public Integer auditProcurment(Long id){
+
+        Procurement procurement = procurementMapper.selectById(id);
+        procurement.setProcureStatus(ProcurementStatus.Wait_To_Audit.toString());
+        procurement.setId(id);
+        return procurementMapper.updateById(procurement);
+    }
+
+    /**
+     *  wait to audit passed this procurement
+     * */
+    @Transactional
+    public Integer passedProcurment(Long id){
+
+        Procurement procurement = procurementMapper.selectById(id);
+        procurement.setProcureStatus(ProcurementStatus.Audit_Passed.toString());
+        procurement.setId(id);
+        return procurementMapper.updateById(procurement);
+    }
 }
