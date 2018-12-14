@@ -3,20 +3,23 @@ package com.jfeat.am.module.warehouse.services.domain.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.jfeat.am.common.constant.tips.Ids;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
-import com.jfeat.am.module.warehouse.services.crud.filter.StorageOutFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutService;
+import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDSalesServiceImpl;
 import com.jfeat.am.module.warehouse.services.definition.SalesStatus;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QuerySalesDao;
-import com.jfeat.am.module.warehouse.services.domain.model.*;
+import com.jfeat.am.module.warehouse.services.domain.model.SalesDetails;
+import com.jfeat.am.module.warehouse.services.domain.model.SalesModel;
+import com.jfeat.am.module.warehouse.services.domain.model.StorageOutItemRecord;
+import com.jfeat.am.module.warehouse.services.domain.model.StorageOutRecord;
 import com.jfeat.am.module.warehouse.services.domain.service.SalesService;
-
-import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDSalesServiceImpl;
 import com.jfeat.am.module.warehouse.services.persistence.dao.InventoryMapper;
+import com.jfeat.am.module.warehouse.services.persistence.dao.SalesMapper;
 import com.jfeat.am.module.warehouse.services.persistence.dao.StorageOutItemMapper;
 import com.jfeat.am.module.warehouse.services.persistence.dao.StorageOutMapper;
 import com.jfeat.am.module.warehouse.services.persistence.model.Inventory;
@@ -24,13 +27,9 @@ import com.jfeat.am.module.warehouse.services.persistence.model.Sales;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOut;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem;
 import org.springframework.stereotype.Service;
-import com.jfeat.am.common.constant.tips.Ids;
-
-import javax.annotation.Resource;
-
-import com.jfeat.am.module.warehouse.services.persistence.dao.SalesMapper;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,12 +73,12 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         BigDecimal totalSpend = BigDecimal.valueOf(0);
         model.setOriginatorId(userId);
         model.setTransactionTime(new Date());
-        model.setSalesStatus(SalesStatus.WaitForStorageOut.toString());
+        model.setSalesStatus(SalesStatus.Draft.toString());
 
         int totalCount = 0;
         for (StorageOutItem item : model.getOutItems()) {
             BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
-            sum = sum.multiply(item.getTransactionSkuPrice());
+            sum = sum.multiply(item.getTransactionSkuPrice());;
             totalSpend = totalSpend.add(sum);
 
             totalCount += item.getTransactionQuantities();

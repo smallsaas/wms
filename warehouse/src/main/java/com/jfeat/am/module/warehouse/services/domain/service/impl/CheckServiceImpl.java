@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
+import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDCheckServiceImpl;
 import com.jfeat.am.module.warehouse.services.definition.CheckStatus;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryCheckDao;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryWarehouseDao;
@@ -12,8 +13,6 @@ import com.jfeat.am.module.warehouse.services.domain.model.CheckModel;
 import com.jfeat.am.module.warehouse.services.domain.model.CheckRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.CheckSkuRecord;
 import com.jfeat.am.module.warehouse.services.domain.service.CheckService;
-
-import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDCheckServiceImpl;
 import com.jfeat.am.module.warehouse.services.persistence.dao.CheckMapper;
 import com.jfeat.am.module.warehouse.services.persistence.dao.CheckSkuMapper;
 import com.jfeat.am.module.warehouse.services.persistence.dao.InventoryMapper;
@@ -24,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.beans.Transient;
 import java.util.Date;
 import java.util.List;
 
@@ -60,7 +58,7 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
         int affected = 0;
         model.setOriginatorId(userId);
         model.setProfitLost(0); //新建默认缺失值为0
-        model.setStatus(CheckStatus.WaitForCheck.toString());
+        model.setStatus(CheckStatus.Draft.toString());
         model.setCheckTime(new Date());
         affected += checkMapper.insert(model);
         if (model.getCheckSkus() == null && model.getCheckSkus().size() <= 0) {
