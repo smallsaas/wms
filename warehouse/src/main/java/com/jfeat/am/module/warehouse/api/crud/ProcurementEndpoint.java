@@ -65,7 +65,7 @@ public class ProcurementEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
-    @PostMapping("/{id}/commit")
+    /*@PostMapping("/{id}/commit")
     @ApiOperation(value = "提交采购单")
     public Tip commitProcurement(@PathVariable Long id) {
         Integer affected = 0;
@@ -77,16 +77,16 @@ public class ProcurementEndpoint extends BaseController {
             createPurchasekLog(id,  "commitProcurement", "对采购单进行了提交操作", id + " &");
         }
         return SuccessTip.create(affected);
-    }
+    }*/
 
-    @PostMapping("/{id}/reject")
+    /*@PostMapping("/{id}/reject")
     @ApiOperation(value = "采购单审核拒绝")
     public Tip reject(@PathVariable Long id) {
         Integer affected = 0;
         affected += procurementService.closedProcurment(id);
         createPurchasekLog(id,  "reject", "对采购单进行了审核拒绝操作",  id + " &");
         return SuccessTip.create(affected);
-    }
+    }*/
 
     @PostMapping("/{id}/pass")
     @ApiOperation(value = "采购单审核通过")
