@@ -10,7 +10,9 @@ public enum FormType {
     OUT("out"),     // 出库单
     TRANSFER("transfer"),   //调拨单
     PURCHASE("purchase"),   // 采购单
-    DISTRIBUTOR_OUT("distributor_out"); // 分销商出库
+    DISTRIBUTOR_OUT("distributor_out"), // 分销商出库
+    REFUND("refund")        //退货单
+    ;
 
     private String name;
 

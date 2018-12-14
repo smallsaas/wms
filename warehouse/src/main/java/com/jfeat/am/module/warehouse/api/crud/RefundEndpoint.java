@@ -1,6 +1,10 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jfeat.am.core.jwt.JWTKit;
+import com.jfeat.am.module.log.LogManager;
+import com.jfeat.am.module.log.LogTaskFactory;
+import com.jfeat.am.module.warehouse.services.definition.FormType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -64,7 +68,7 @@ public class RefundEndpoint extends BaseController {
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
         }
-
+        createRefundLog(entity.getId(),  "createRefund", "对退货表进行了新建操作",  JSONObject.toJSONString(entity) + " &");
         return SuccessTip.create(affected);
     }
 
@@ -152,5 +156,16 @@ public class RefundEndpoint extends BaseController {
         return SuccessTip.create(page);
     }
 
-
+    private void createRefundLog(Long targetId, String methodName, String operation,String message) {
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
+                JWTKit.getAccount(getHttpServletRequest()),
+                operation,
+                RefundEndpoint.class.getName(),
+                methodName,
+                message,
+                "成功",
+                targetId,
+                FormType.REFUND.toString()
+        ));
+    }
 }

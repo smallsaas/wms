@@ -11,11 +11,13 @@ import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.log.LogManager;
 import com.jfeat.am.module.log.LogTaskFactory;
+import com.jfeat.am.module.warehouse.services.definition.CheckStatus;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryCheckDao;
 import com.jfeat.am.module.warehouse.services.domain.model.CheckModel;
 import com.jfeat.am.module.warehouse.services.domain.model.CheckRecord;
 import com.jfeat.am.module.warehouse.services.domain.service.CheckService;
+import com.jfeat.am.module.warehouse.services.persistence.model.Check;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.dao.DuplicateKeyException;
@@ -61,6 +63,49 @@ public class CheckEndpoint extends BaseController {
             throw new BusinessException(BusinessCode.DuplicateKey);
         }
         createCheckLog(entity.getId(), "createCheck", "对库存盘点进行了新建操作", JSON.toJSONString(entity) + " &");
+        return SuccessTip.create(affected);
+    }
+
+
+    @PostMapping("/{id}/commit")
+    @ApiOperation(value = "提交盘点")
+    public Tip commit(@PathVariable Long id) {
+        Integer affected = 0;
+        Check check = new Check();
+        check.setId(id);
+        check.setStatus(CheckStatus.Wait_Audit.toString());
+        if(check.getId() != null) {
+            affected += checkService.updateMaster(check);
+            createCheckLog(id, "commit", "对库存盘点进行了提交操作", id + " &");
+        }
+        return SuccessTip.create(affected);
+    }
+
+    @PostMapping("/{id}/reject")
+    @ApiOperation(value = "库存盘点审核拒绝")
+    public Tip reject(@PathVariable Long id) {
+        Integer affected = 0;
+        Check check = new Check();
+        check.setId(id);
+        check.setStatus(CheckStatus.Closed.toString());
+        if(check.getId() != null) {
+            affected += checkService.updateMaster(check);
+            createCheckLog(id, "reject", "对库存盘点进行了审核拒绝操作", id + " &");
+        }
+        return SuccessTip.create(affected);
+    }
+
+    @PostMapping("/{id}/pass")
+    @ApiOperation(value = "库存盘点审核通过")
+    public Tip pass(@PathVariable Long id) {
+        Integer affected = 0;
+        Check check = new Check();
+        check.setId(id);
+        check.setStatus(CheckStatus.WaitForCheck.toString());
+        if(check.getId() != null) {
+            affected += checkService.updateMaster(check);
+            createCheckLog(id, "pass", "对库存盘点进行了审核通过操作", id + " &");
+        }
         return SuccessTip.create(affected);
     }
 

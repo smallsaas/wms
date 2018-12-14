@@ -12,10 +12,12 @@ import com.jfeat.am.module.log.LogManager;
 import com.jfeat.am.module.log.LogTaskFactory;
 import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
+import com.jfeat.am.module.warehouse.services.definition.ProcurementStatus;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryProcurementDao;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementModel;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementRecord;
 import com.jfeat.am.module.warehouse.services.domain.service.ProcurementService;
+import com.jfeat.am.module.warehouse.services.persistence.model.Procurement;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.dao.DuplicateKeyException;
@@ -62,6 +64,44 @@ public class ProcurementEndpoint extends BaseController {
         // createPurchasekLog
         return SuccessTip.create(affected);
     }
+
+    @PostMapping("/{id}/commit")
+    @ApiOperation(value = "提交采购单")
+    public Tip commitProcurement(@PathVariable Long id) {
+        Integer affected = 0;
+        Procurement procurement = new Procurement();
+        procurement.setId(id);
+        procurement.setProcureStatus(ProcurementStatus.Wait_Audit.toString());
+        if(procurement.getId() != null) {
+            affected += procurementService.updateMaster(procurement);
+            createPurchasekLog(id,  "commitProcurement", "对采购单进行了提交操作", id + " &");
+        }
+        return SuccessTip.create(affected);
+    }
+
+    @PostMapping("/{id}/reject")
+    @ApiOperation(value = "采购单审核拒绝")
+    public Tip reject(@PathVariable Long id) {
+        Integer affected = 0;
+        affected += procurementService.closedProcurment(id);
+        createPurchasekLog(id,  "reject", "对采购单进行了审核拒绝操作",  id + " &");
+        return SuccessTip.create(affected);
+    }
+
+    @PostMapping("/{id}/pass")
+    @ApiOperation(value = "采购单审核通过")
+    public Tip pass(@PathVariable Long id) {
+        Integer affected = 0;
+        Procurement procurement = new Procurement();
+        procurement.setId(id);
+        procurement.setProcureStatus(ProcurementStatus.WaitForStorageIn.toString());
+        if(procurement.getId() != null) {
+            affected += procurementService.updateMaster(procurement);
+            createPurchasekLog(id,  "pass", "对采购单进行了审核通过操作",  id + " &");
+        }
+        return SuccessTip.create(affected);
+    }
+
 
     @GetMapping("/{id}")
     @ApiOperation(value = "查看采购表单",response = ProcurementModel.class)

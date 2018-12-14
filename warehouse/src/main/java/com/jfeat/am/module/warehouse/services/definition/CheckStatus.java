@@ -4,5 +4,8 @@ public enum CheckStatus {
 
     WaitForCheck,
     Checking,
-    CheckOut
+    CheckOut,
+    Draft,
+    Wait_Audit,
+    Closed
 }

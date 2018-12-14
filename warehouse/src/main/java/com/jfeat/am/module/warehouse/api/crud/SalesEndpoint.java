@@ -13,10 +13,12 @@ import com.jfeat.am.module.log.LogManager;
 import com.jfeat.am.module.log.LogTaskFactory;
 import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
+import com.jfeat.am.module.warehouse.services.definition.SalesStatus;
 import com.jfeat.am.module.warehouse.services.domain.dao.QuerySalesDao;
 import com.jfeat.am.module.warehouse.services.domain.model.SalesModel;
 import com.jfeat.am.module.warehouse.services.domain.model.SalesRecord;
 import com.jfeat.am.module.warehouse.services.domain.service.SalesService;
+import com.jfeat.am.module.warehouse.services.persistence.model.Sales;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.dao.DuplicateKeyException;
@@ -64,6 +66,49 @@ public class SalesEndpoint extends BaseController {
         createSalesLog(entity.getId(),  "createSales", "对分销商出库进行了新建操作",  JSONObject.toJSONString(entity) + " &");
         return SuccessTip.create(affected);
     }
+
+    @PostMapping("/{id}/commit")
+    @ApiOperation(value = "分销商出库提交")
+    public Tip commit(@PathVariable Long id) {
+        Integer affected = 0;
+        Sales sales = new Sales();
+        sales.setId(id);
+        sales.setSalesStatus(SalesStatus.Wait_Audit.toString());
+        if(sales.getId() != null) {
+            affected += salesService.updateMaster(sales);
+            createSalesLog(id,  "commit", "对分销商出库进行了提交操作", id + " &");
+        }
+        return SuccessTip.create(affected);
+    }
+
+    @PostMapping("/{id}/reject")
+    @ApiOperation(value = "分销商出库审核拒绝")
+    public Tip reject(@PathVariable Long id) {
+        Integer affected = 0;
+        Sales sales = new Sales();
+        sales.setId(id);
+        sales.setSalesStatus(SalesStatus.Closed.toString());
+        if(sales.getId() != null) {
+            affected += salesService.updateMaster(sales);
+            createSalesLog(id,  "reject", "对分销商出库进行了审核拒绝操作", id + " &");
+        }
+        return SuccessTip.create(affected);
+    }
+
+    @PostMapping("/{id}/pass")
+    @ApiOperation(value = "分销商出库审核通过")
+    public Tip pass(@PathVariable Long id) {
+        Integer affected = 0;
+        Sales sales = new Sales();
+        sales.setId(id);
+        sales.setSalesStatus(SalesStatus.WaitForStorageOut.toString());
+        if(sales.getId() != null) {
+            affected += salesService.updateMaster(sales);
+            createSalesLog(id,  "pass", "对分销商出库进行了审核通过操作", id + " &");
+        }
+        return SuccessTip.create(affected);
+    }
+
 
     @GetMapping("/{id}")
     @ApiOperation("get more salesDetails")

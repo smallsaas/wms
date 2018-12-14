@@ -11,10 +11,12 @@ import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.log.LogManager;
 import com.jfeat.am.module.log.LogTaskFactory;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
+import com.jfeat.am.module.warehouse.services.definition.TransferStatus;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryTransferDao;
 import com.jfeat.am.module.warehouse.services.domain.model.TransferModel;
 import com.jfeat.am.module.warehouse.services.domain.model.TransferRecord;
 import com.jfeat.am.module.warehouse.services.domain.service.TransferService;
+import com.jfeat.am.module.warehouse.services.persistence.model.Transfer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.dao.DuplicateKeyException;
@@ -71,6 +73,47 @@ public class TransferEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
+    @PostMapping("/{id}/commit")
+    @ApiOperation(value = "提交调拨单")
+    public Tip commit(@PathVariable Long id) {
+        Integer affected = 0;
+        Transfer transfer = new Transfer();
+        transfer.setStatus(TransferStatus.Wait_Audit.toString());
+        if(transfer.getId() != null) {
+            affected += transferService.updateMaster(transfer);
+            createPurchasekLog(id, "commit", "对调拨单进行了提交操作", id + " &");
+        }
+        return SuccessTip.create(affected);
+    }
+
+    @PostMapping("/{id}/reject")
+    @ApiOperation(value = "调拨单审核拒绝")
+    public Tip reject(@PathVariable Long id) {
+        Integer affected = 0;
+        Transfer transfer = new Transfer();
+        transfer.setStatus(TransferStatus.Cancel.toString());
+        if(transfer.getId() != null) {
+            affected += transferService.updateMaster(transfer);
+            createPurchasekLog(id, "reject", "对调拨单进行了审核拒绝操作", id + " &");
+        }
+        return SuccessTip.create(affected);
+    }
+
+    @PostMapping("/{id}/pass")
+    @ApiOperation(value = "调拨单审核通过")
+    public Tip pass(@PathVariable Long id) {
+        Integer affected = 0;
+        try {
+            affected += transferService.createTransfer(id, JWTKit.getUserId(getHttpServletRequest()));
+
+        } catch (DuplicateKeyException e) {
+            throw new BusinessException(5100,"编号重复，请重新刷新页面");
+        }
+        createPurchasekLog(id, "pass", "对调拨单进行了审核通过操作", id + " &");
+        return SuccessTip.create(affected);
+    }
+
+
     @PostMapping("/{id}/execution")
     @ApiOperation(value = "begin execution 调拨表", response = TransferModel.class)
     public Tip createTransfer(@PathVariable Long id) {
@@ -82,7 +125,7 @@ public class TransferEndpoint extends BaseController {
         } catch (DuplicateKeyException e) {
             throw new BusinessException(5100,"编号重复，请重新刷新页面");
         }
-        createPurchasekLog(id, "createTransfer", "对调拨单进行了新建操作", JSONObject.toJSONString(id) + " &");
+        createPurchasekLog(id, "createTransfer", "对调拨单进行了开始调拨操作", JSONObject.toJSONString(id) + " &");
         return SuccessTip.create(affected);
     }
 
