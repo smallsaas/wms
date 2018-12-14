@@ -6,5 +6,5 @@ public enum TransferStatus {
     Transfer,
     Done,
     Cancel,
-    Wait_Audit
+    Wait_To_Audit
 }

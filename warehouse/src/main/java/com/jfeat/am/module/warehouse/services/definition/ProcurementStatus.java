@@ -7,7 +7,6 @@ public enum ProcurementStatus {
     SectionStorageIn,
     TotalStorageIn,
     WaitForStorageIn,
-    Wait_Audit,
     Wait_To_Audit
 
 

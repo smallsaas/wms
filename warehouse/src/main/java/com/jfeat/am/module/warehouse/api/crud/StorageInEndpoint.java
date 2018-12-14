@@ -62,7 +62,7 @@ public class StorageInEndpoint extends BaseController {
         if (entity.getWarehouseId()==null){
             entity.setWarehouseId(1L);
         }
-        return SuccessTip.create(storageInService.createStorageIn(JWTKit.getUserId(getHttpServletRequest()),entity));
+        return SuccessTip.create(storageInService.executionStorageIn(JWTKit.getUserId(getHttpServletRequest()),entity));
     }
 
     @GetMapping("/{id}")

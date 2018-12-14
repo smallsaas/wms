@@ -5,6 +5,6 @@ public enum  SalesStatus {
     SectionStorageOut,
     TotalStorageOut,
     Draft,
-    Wait_Audit,
+    Wait__To_Audit,
     Closed
 }

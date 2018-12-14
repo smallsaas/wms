@@ -14,5 +14,5 @@ public interface StorageInService extends CRUDStorageInService{
      * 假设 该提交的 SKU 不存在 库存 ，则插入 ，如果存在 ，则更新
      * */
     @Transactional
-    public Integer createStorageIn(long userId,StorageInModel entity);
+    public Integer executionStorageIn(long userId,StorageInModel entity);
 }
