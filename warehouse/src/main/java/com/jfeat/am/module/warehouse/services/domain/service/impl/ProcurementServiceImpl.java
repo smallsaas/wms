@@ -116,7 +116,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         if (procurement.getProcureStatus().compareTo(ProcurementStatus.Draft.toString()) == 0) {
             model.setId(procurementId);
             model.setTransactionTime(new Date());
-            model.setProcureStatus(ProcurementStatus.WaitForStorageIn.toString());
+            model.setProcureStatus(ProcurementStatus.Draft.toString());
             if (model.getItems() == null || model.getItems().size() == 0) {
                 throw new BusinessException(5002,"请至少选择一种需要采购的商品");
             } else {
