@@ -32,6 +32,13 @@ public interface ProcurementService extends CRUDProcurementService{
     Integer closedProcurment(Long id);
 
     /**
+     *  提交并审核
+     * */
+    @Transactional
+    public Integer updateAndAuditProcurement(Long userId, Long procurementId, ProcurementModel model);
+
+
+    /**
      *  wait to audit this procurement
      * */
     @Transactional

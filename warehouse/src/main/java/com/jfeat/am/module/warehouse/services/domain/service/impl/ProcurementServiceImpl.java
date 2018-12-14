@@ -107,6 +107,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     }
 
 
+    /**
+     *  提交并审核
+     * */
     @Transactional
     public Integer updateProcurement(Long userId, Long procurementId, ProcurementModel model) {
         int affected = 0;
@@ -140,6 +143,44 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         }
         throw new BusinessException(BusinessCode.ErrorStatus);
     }
+
+    /**
+     *  提交并审核
+     * */
+    @Transactional
+    public Integer updateAndAuditProcurement(Long userId, Long procurementId, ProcurementModel model) {
+        int affected = 0;
+
+        Procurement procurement = procurementMapper.selectById(procurementId);
+        // 等待入库的情况下才能执行更新的操作
+        if (procurement.getProcureStatus().compareTo(ProcurementStatus.Draft.toString()) == 0) {
+            model.setId(procurementId);
+            model.setTransactionTime(new Date());
+            model.setProcureStatus(ProcurementStatus.Wait_To_Audit.toString());
+            if (model.getItems() == null || model.getItems().size() == 0) {
+                throw new BusinessException(5002,"请至少选择一种需要采购的商品");
+            } else {
+                storageInItemMapper.delete(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID,procurementId).eq(StorageInItem.TYPE,TransactionType.Procurement.toString()));
+                BigDecimal totalSpend = BigDecimal.valueOf(0);
+                for (StorageInItem item : model.getItems()) {
+                    BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
+                    sum = sum.multiply(item.getTransactionSkuPrice());
+                    totalSpend = totalSpend.add(sum);
+                }
+                model.setProcurementTotal(totalSpend);
+                for (StorageInItem item : model.getItems()) {
+                    item.setRelationCode(procurement.getProcurementCode());
+                    item.setStorageInId(procurementId);
+                    item.setType(TransactionType.Procurement.toString());
+                    affected += storageInItemMapper.insert(item);
+                }
+                affected += procurementMapper.updateById(model);
+            }
+            return affected;
+        }
+        throw new BusinessException(BusinessCode.ErrorStatus);
+    }
+
 
 
     /**

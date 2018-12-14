@@ -65,7 +65,7 @@ public class ProcurementEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
-    /*@PostMapping("/{id}/commit")
+/*    @PostMapping("/{id}/commit")
     @ApiOperation(value = "提交采购单")
     public Tip commitProcurement(@PathVariable Long id) {
         Integer affected = 0;
@@ -139,8 +139,9 @@ public class ProcurementEndpoint extends BaseController {
     @BusinessLog(name = "Procurement", value = "审核 Procurement")
     @PutMapping("/{id}/audit")
     @ApiOperation(value = "审核",response = ProcurementModel.class)
-    public Tip auditProcurement(@PathVariable Long id) {
-        Tip resultTip = SuccessTip.create(procurementService.auditProcurment(id));
+    public Tip auditProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
+        entity.setId(id);
+        Tip resultTip = SuccessTip.create(procurementService.updateAndAuditProcurement(JWTKit.getUserId(getHttpServletRequest()),id,entity));
         createPurchasekLog(id,  "auditProcurment", "对采购单进行了提交审核操作",  id + " &");
         return resultTip;
     }
