@@ -1,14 +1,14 @@
 package com.jfeat.am.module.warehouse.services.definition;
 
 public enum ProcurementStatus {
-    Draft,
-    Wait_Audit,
-    WaitForStorageIn,
-    SectionStorageIn,
-    TotalStorageIn,
+    Audit_Passed,
     Closed,
     Draft,
-    Wait_To_Audit,
-    Audit_Passed
+    SectionStorageIn,
+    TotalStorageIn,
+    WaitForStorageIn,
+    Wait_Audit,
+    Wait_To_Audit
+
 
 }
