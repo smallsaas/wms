@@ -1,6 +1,7 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
 import com.jfeat.am.core.jwt.JWTKit;
+import com.jfeat.am.core.support.StrKit;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,8 +58,10 @@ public class StorageInEndpoint extends BaseController {
     @PostMapping
     @ApiOperation(value = "新建入库单",response = StorageInModel.class)
     public Tip createStorageIn(@RequestBody StorageInModel entity) {
-        String userName = JWTKit.getAccount(getHttpServletRequest());
-        entity.setOriginatorName(userName);
+        if (StrKit.isBlank(entity.getOriginatorName())) {
+            String userName = JWTKit.getAccount(getHttpServletRequest());
+            entity.setOriginatorName(userName);
+        }
         if (entity.getWarehouseId()==null){
             entity.setWarehouseId(1L);
         }
