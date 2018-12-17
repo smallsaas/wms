@@ -1,6 +1,9 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
 import com.jfeat.am.core.jwt.JWTKit;
+import com.jfeat.am.module.log.LogManager;
+import com.jfeat.am.module.log.LogTaskFactory;
+import com.jfeat.am.module.warehouse.services.definition.FormType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.dao.DuplicateKeyException;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryStorageOutDao;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
@@ -50,6 +52,23 @@ public class StorageOutEndpoint extends BaseController {
     @Resource
     QueryStorageOutDao queryStorageOutDao;
 
+
+
+    private void createStorageOutLog(Long targetId, String methodName, String operation, String message) {
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
+                JWTKit.getAccount(getHttpServletRequest()),
+                operation,
+                ProcurementEndpoint.class.getName(),
+                methodName,
+                message,
+                "成功",
+                targetId,
+                FormType.PURCHASE.toString()
+        ));
+    }
+
+
+
     @BusinessLog(name = "StorageOut", value = "create StorageOut")
     @PostMapping
     @ApiOperation(value = "新建出库单",response = StorageOutModel.class)
@@ -59,15 +78,12 @@ public class StorageOutEndpoint extends BaseController {
         if (entity.getWarehouseId()==null){
             entity.setWarehouseId(1L);
         }
-        return SuccessTip.create(storageOutService.createStorageOut(JWTKit.getUserId(getHttpServletRequest()),entity));
+        return SuccessTip.create(storageOutService.draftStorageOut(JWTKit.getUserId(getHttpServletRequest()),entity));
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "查看出库单",response = StorageOutModel.class)
-
     public Tip getStorageOut(@PathVariable Long id) {
-//        return SuccessTip.create(storageOutService.retrieveMaster(id, null, null, null).toJSONObject());
-
         return SuccessTip.create(queryStorageOutDao.storagesOutDetails(id));
     }
 
@@ -76,9 +92,47 @@ public class StorageOutEndpoint extends BaseController {
     @ApiOperation(value = "修改出库单",response = StorageOutModel.class)
     public Tip updateStorageOut(@PathVariable Long id, @RequestBody StorageOutModel entity) {
         entity.setId(id);
-        return SuccessTip.create(storageOutService.updateMaster(entity, null, null, null));
+        return SuccessTip.create(storageOutService.updateStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
     }
 
+    @BusinessLog(name = "StorageOut", value = "审核 StorageOut")
+    @PutMapping("/{id}/audit")
+    @ApiOperation(value = "审核",response = StorageOutModel.class)
+    public Tip commitToAuditStorageOut(@PathVariable Long id, @RequestBody StorageOutModel entity) {
+        entity.setId(id);
+        Tip resultTip = SuccessTip.create(storageOutService.commitStorageOut(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        createStorageOutLog(id,  "commitToAuditStorageOut", "对出库单进行了提交审核操作",  id + " &");
+        return resultTip;
+    }
+
+    @BusinessLog(name = "StorageOut", value = "审核通过 StorageOut")
+    @PutMapping("/{id}/passed")
+    @ApiOperation(value = "审核通过",response = StorageOutModel.class)
+    public Tip auditStorage(@PathVariable Long id, @RequestBody StorageOutModel entity) {
+        entity.setId(id);
+        Tip resultTip = SuccessTip.create(storageOutService.passedStorageOut(id));
+        createStorageOutLog(id,  "auditStorageOut", "对出库单进行了审核通过操作",  id + " &");
+        return resultTip;
+    }
+
+    @BusinessLog(name = "StorageOut", value = "审核拒绝，自动转化为关闭状态")
+    @PutMapping("/{id}/closed")
+    @ApiOperation(value = "closed StorageIn",response = StorageOutModel.class)
+    public Tip closedStorageIn(@PathVariable Long id, @RequestBody StorageOutModel entity) {
+        Tip resultTip = SuccessTip.create(storageOutService.auditRejectedStorageOut(id));
+        createStorageOutLog(id,  "closedStorageIn", "对出库单进行了审核拒绝操作",  id + " &");
+        return resultTip;
+    }
+
+
+    @BusinessLog(name = "StorageOut", value = "执行入库")
+    @PutMapping("/{id}/executionRefund")
+    @ApiOperation(value = "executionRefund StorageIn",response = StorageOutModel.class)
+    public Tip executionStorageIn(@PathVariable Long id) {
+        Tip resultTip = SuccessTip.create(storageOutService.executionStorageOut(JWTKit.getAccount(getHttpServletRequest()),id));
+        createStorageOutLog(id,  "executionStorage", "对出库单进行了入库操作",  id + " &");
+        return resultTip;
+    }
     @BusinessLog(name = "StorageOut", value = "delete StorageOut")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除出库单",response = StorageOutModel.class)
@@ -137,6 +191,8 @@ public class StorageOutEndpoint extends BaseController {
 
         return SuccessTip.create(page);
     }
+
+
 
 
 }
