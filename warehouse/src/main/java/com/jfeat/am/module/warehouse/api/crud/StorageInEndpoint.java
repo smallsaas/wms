@@ -98,7 +98,7 @@ public class StorageInEndpoint extends BaseController {
     @ApiOperation(value = "审核通过",response = StorageInModel.class)
     public Tip auditStorage(@PathVariable Long id, @RequestBody StorageInModel entity) {
         entity.setId(id);
-        Tip resultTip = SuccessTip.create(storageInService.passedStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        Tip resultTip = SuccessTip.create(storageInService.passedStorageIn(id));
         createStorageInLog(id,  "auditStorageIn", "对入库单进行了审核通过操作",  id + " &");
         return resultTip;
     }
@@ -107,7 +107,7 @@ public class StorageInEndpoint extends BaseController {
     @PutMapping("/{id}/closed")
     @ApiOperation(value = "closed StorageIn",response = StorageInModel.class)
     public Tip closedStorageIn(@PathVariable Long id, @RequestBody StorageInModel entity) {
-        Tip resultTip = SuccessTip.create(storageInService.auditRejectedStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        Tip resultTip = SuccessTip.create(storageInService.auditRejectedStorageIn(id));
         createStorageInLog(id,  "closedStorageIn", "对入库单进行了关闭操作",  id + " &");
         return resultTip;
     }
@@ -116,7 +116,7 @@ public class StorageInEndpoint extends BaseController {
     @PutMapping("/{id}/execution")
     @ApiOperation(value = "execution StorageIn",response = StorageInModel.class)
     public Tip executionStorageIn(@PathVariable Long id, @RequestBody StorageInModel entity) {
-        Tip resultTip = SuccessTip.create(storageInService.auditRejectedStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        Tip resultTip = SuccessTip.create(storageInService.executionStorageIn(JWTKit.getAccount(getHttpServletRequest()),id));
         createStorageInLog(id,  "executionStorage", "对入库单进行了入库操作",  id + " &");
         return resultTip;
     }

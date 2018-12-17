@@ -72,7 +72,7 @@ public class TransferEndpoint extends BaseController {
         createPurchasekLog(entity.getId(), "createTransfer", "对调拨单进行了新建操作", JSONObject.toJSONString(entity) + " &");
         return SuccessTip.create(affected);
     }
-
+/*
     @PostMapping("/{id}/commit")
     @ApiOperation(value = "提交调拨单")
     public Tip commit(@PathVariable Long id) {
@@ -84,7 +84,7 @@ public class TransferEndpoint extends BaseController {
             createPurchasekLog(id, "commit", "对调拨单进行了提交操作", id + " &");
         }
         return SuccessTip.create(affected);
-    }
+    }*/
 
     @PostMapping("/{id}/reject")
     @ApiOperation(value = "调拨单审核拒绝")

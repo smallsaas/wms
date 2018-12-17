@@ -14,32 +14,32 @@ public interface StorageInService extends CRUDStorageInService{
      *  while create , storage in  status is Draft;
      * */
     @Transactional
-    Integer createStorageIn(long userId, StorageInModel entity);
+    Integer createStorageIn(Long userId, StorageInModel entity);
 
     /**
      *  update by do not modified status
      * */
     @Transactional
-    Integer updateStorageIn(long userId,Long storageInId,StorageInModel entity);
+    Integer updateStorageIn(Long userId,Long storageInId,StorageInModel entity);
 
     /**
      *  commit and wait to audit
      * */
     @Transactional
-    Integer commitStorageIn(long userId,Long storageInId,StorageInModel entity);
+    Integer commitStorageIn(Long userId,Long storageInId,StorageInModel entity);
 
     /**
      *  audit passed
      * */
     @Transactional
-    Integer passedStorageIn(long userId,Long storageInId,StorageInModel entity);
+    Integer passedStorageIn(Long storageInId);
 
 
     /**
      *  audit rejected
      * */
     @Transactional
-    Integer auditRejectedStorageIn(long userId,Long storageInId,StorageInModel entity);
+    Integer auditRejectedStorageIn(Long storageInId);
 
 
     /**
@@ -47,7 +47,7 @@ public interface StorageInService extends CRUDStorageInService{
      * 假设 该提交的 SKU 不存在 库存 ，则插入 ，如果存在 ，则更新
      * */
     @Transactional
-    Integer executionStorageIn(long userId,StorageInModel entity);
+    Integer executionStorageIn(String username,Long storageInId);
 
 
 }
