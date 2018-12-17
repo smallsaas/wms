@@ -5,6 +5,7 @@ import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutService;
 import com.jfeat.am.module.warehouse.services.definition.StorageOutStatus;
+import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryInventoryDao;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageOutModel;
 import com.jfeat.am.module.warehouse.services.domain.service.StorageOutService;
@@ -51,7 +52,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
 
         affected += outItemMapper.delete(new EntityWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, storageOutId)
-                .eq(StorageOutItem.TYPE, "Others"));
+                .eq(StorageOutItem.TYPE, TransactionType.StorageOut.toString()));
 
         entity.setOriginatorId(userId);
         entity.setTransactionTime(new Date());
@@ -65,6 +66,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                 if (outItem.getTransactionQuantities() > 0) {
                     outItem.setRelationCode(entity.getTransactionCode());
                     outItem.setTransactionTime(entity.getStorageOutTime());
+                    outItem.setType(TransactionType.StorageOut.toString());
                     // 设置产品的入库时间
                     outItem.setTransactionTime(entity.getTransactionTime());
 
@@ -77,7 +79,6 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                             throw new BusinessException(4050, "库存不足," + "现有库存" + originInventory.getValidSku() + "小于出库量" + outItem.getTransactionQuantities());
                         } else {
 
-                            outItem.setType("Others");
                             affected += outItemMapper.insert(outItem);
                         }
                     } else {
@@ -124,7 +125,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                             throw new BusinessException(4050, "库存不足," + "现有库存" + originInventory.getValidSku() + "小于出库量" + outItem.getTransactionQuantities());
                         } else {
 
-                            outItem.setType("Others");
+                            outItem.setType(TransactionType.StorageOut.toString());
                             affected += outItemMapper.insert(outItem);
                         }
                     } else {
@@ -242,11 +243,14 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
 
         List<StorageOutItem> items = outItemMapper.selectList(new EntityWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, storageOutId)
-                .eq(StorageOutItem.TYPE, "Others"));
+                .eq(StorageOutItem.TYPE, TransactionType.StorageOut.toString()));
 
         if (items != null && items.size() > 0) {
             for (StorageOutItem outItem : items) {
                 if (outItem.getTransactionQuantities() > 0) {
+
+                    outItem.setType("Others");
+                    outItemMapper.updateById(outItem);
 
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(outItem.getSkuId());

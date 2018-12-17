@@ -6,6 +6,7 @@ import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
 import com.jfeat.am.module.warehouse.services.definition.StorageInStatus;
+import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageInModel;
 import com.jfeat.am.module.warehouse.services.domain.service.StorageInService;
 
@@ -47,7 +48,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
 
         affected += inItemMapper.delete(new EntityWrapper<StorageInItem>()
                 .eq(StorageInItem.STORAGE_IN_ID,storageInId)
-                .eq(StorageInItem.TYPE,"Others"));
+                .eq(StorageInItem.TYPE,TransactionType.StorageIn.toString()));
 
 
         entity.setOriginatorId(userId);
@@ -62,6 +63,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
                 if (inItem.getTransactionQuantities() > 0) {
                     inItem.setRelationCode(entity.getTransactionCode());
                     inItem.setTransactionTime(entity.getStorageInTime());
+                    inItem.setType(TransactionType.StorageIn.toString());
                     // 设置产品的入库时间
                     inItem.setTransactionTime(entity.getTransactionTime());
                     affected += inItemMapper.insert(inItem);
@@ -96,6 +98,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
                 if (inItem.getTransactionQuantities() > 0) {
                     inItem.setRelationCode(entity.getTransactionCode());
                     inItem.setTransactionTime(entity.getStorageInTime());
+                    inItem.setType(TransactionType.StorageIn.toString());
                     // 设置产品的入库时间
                     inItem.setTransactionTime(entity.getTransactionTime());
 
@@ -195,7 +198,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
 
         List<StorageInItem> items = inItemMapper.selectList(new EntityWrapper<StorageInItem>()
                 .eq(StorageInItem.STORAGE_IN_ID,storageInId)
-                .eq(StorageInItem.TYPE,"Others"));
+                .eq(StorageInItem.TYPE,TransactionType.StorageIn.toString()));
 
         in.setTransactionBy(username);
         in.setTransactionTime(new Date());
@@ -206,6 +209,9 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         if (items != null && items.size() > 0) {
             for (StorageInItem inItem : items) {
                 if (inItem.getTransactionQuantities() > 0) {
+
+                    inItem.setType("Others");
+                    inItemMapper.updateById(inItem);
 
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(inItem.getSkuId());
