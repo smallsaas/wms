@@ -72,19 +72,18 @@ public class TransferEndpoint extends BaseController {
         createPurchasekLog(entity.getId(), "createTransfer", "对调拨单进行了新建操作", JSONObject.toJSONString(entity) + " &");
         return SuccessTip.create(affected);
     }
-/*
-    @PostMapping("/{id}/commit")
+    @PostMapping("/{id}/audit")
     @ApiOperation(value = "提交调拨单")
     public Tip commit(@PathVariable Long id) {
         Integer affected = 0;
         Transfer transfer = new Transfer();
-        transfer.setStatus(TransferStatus.Wait_Audit.toString());
+        transfer.setStatus(TransferStatus.Wait_To_Audit.toString());
         if(transfer.getId() != null) {
             affected += transferService.updateMaster(transfer);
             createPurchasekLog(id, "commit", "对调拨单进行了提交操作", id + " &");
         }
         return SuccessTip.create(affected);
-    }*/
+    }
 
     @PostMapping("/{id}/reject")
     @ApiOperation(value = "调拨单审核拒绝")
@@ -115,7 +114,7 @@ public class TransferEndpoint extends BaseController {
 
 
     @PostMapping("/{id}/execution")
-    @ApiOperation(value = "begin execution 调拨表", response = TransferModel.class)
+    @ApiOperation(value = "begin executionRefund 调拨表", response = TransferModel.class)
     public Tip createTransfer(@PathVariable Long id) {
 
         Integer affected = 0;
