@@ -70,31 +70,26 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     QueryInventoryDao queryInventoryDao;
     @Resource
     SuppliersMapper suppliersMapper;
+    @Resource
+    RefundMapper refundMapper;
 
-    /**
-     * 重构 Refund 问题
-     */
-    @Transactional
-    @Override
-    public Integer createRefund(long userId, RefundModel model) {
-        /**
-         * 1.先执行生成出库单，然后拿到入库单的 id 插入的采购的表单中
-         * 2.
-         * */
+
+    public Integer createOrUpdate(Long refundId, RefundModel model) {
+
+
         int affected = 0;
-        int refundTotal = 0;
-        StorageOutModel storageOutModel = new StorageOutModel();
-        storageOutModel.setStorageOutTime(new Date());
 
-        List<StorageOutItem> storageOutItems = new ArrayList<>();
         if (model.getItems() != null && model.getItems().size() > 0) {
+            // execution delete before insert
+            affected += storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>()
+                                        .eq(StorageOutItem.STORAGE_OUT_ID,refundId)
+                                        .eq(StorageOutItem.TYPE,TransactionType.Refund.toString()));
+
             for (StorageOutItem outItem : model.getItems()) {
 
                 SkuProduct sku = skuProductMapper.selectById(outItem.getSkuId());
                 if (outItem.getTransactionQuantities() > 0) {
                     outItem.setRelationCode(model.getProductRefundCode());
-                    outItem.setTransactionTime(storageOutModel.getStorageOutTime());
-                    refundTotal += outItem.getTransactionQuantities();
 
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(outItem.getSkuId());
@@ -105,10 +100,132 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                         if (originInventory.getValidSku() == null) {
                             originInventory.setValidSku(0);
                         }
+                        if (model.getProductProcurementId() == null) {
+                            //do nothings
+                            outItem.setStorageOutId(refundId);
+                            outItem.setType(TransactionType.Refund.toString());
+                            affected += storageOutItemMapper.insert(outItem);
+
+                        } else {
+                            if (outItem.getTransactionQuantities() > queryRefundDao.skuStorageInCount(model.getProductProcurementId(), outItem.getSkuId())) {
+                                throw new BusinessException(4050, "\"" + sku.getSkuName() + "\"退货数量不能大于入库的数量");
+                            } else {
+                                outItem.setStorageOutId(refundId);
+                                outItem.setType(TransactionType.Refund.toString());
+                                affected += storageOutItemMapper.insert(outItem);
+                            }
+                        }
+
+                    } else {
+                        throw new BusinessException(4060, "该仓库不存在\"" + sku.getSkuName() + "\"商品");
+                    }
+                } else {
+                    throw new BusinessException(5000, "提交失败，" + "\"" + sku.getSkuName() + "\"" + "商品退货数量不能为0");
+                }
+            }
+        } else {
+            throw new BusinessException(4055, "请先选择需要退货的商品！");
+        }
+        return affected;
+    }
+
+    /**
+     * 重构 Refund 问题
+     */
+    @Transactional
+    public Integer createRefund(Long userId, RefundModel model) {
+
+        int affected = 0;
+
+        model.setOriginatorId(userId);
+        model.setTransactionTime(new Date());
+        model.setProductRefundStatus(RefundStatus.Draft.toString());
+        affected += refundMapper.insert(model);
+        affected += createOrUpdate(model.getId(),model);
+        return affected;
+    }
+
+
+    @Transactional
+    public Integer updateRefund(Long refundId, RefundModel model) {
+        int affected = 0;
+
+        Refund refund = refundMapper.selectById(refundId);
+        if (refund.getStatus().compareTo(RefundStatus.Draft.toString())!= 0){
+            throw new BusinessException(BusinessCode.ErrorStatus);
+        }
+
+        model.setId(refundId);
+        model.setProductRefundStatus(RefundStatus.Draft.toString());
+        affected += createOrUpdate(model.getId(),model);
+        affected += refundMapper.updateById(model);
+        return affected;
+    }
+
+    @Transactional
+    public Integer updateAndCommitRefund(Long refundId, RefundModel model) {
+        int affected = 0;
+
+        Refund refund = refundMapper.selectById(refundId);
+        if (refund.getStatus().compareTo(RefundStatus.Draft.toString())!= 0){
+            throw new BusinessException(BusinessCode.ErrorStatus);
+        }
+
+        model.setId(refundId);
+        model.setProductRefundStatus(RefundStatus.Wait_To_audit.toString());
+        affected += createOrUpdate(model.getId(),model);
+        affected += refundMapper.updateById(model);
+        return affected;
+    }
+
+    /**
+     * 重构 Refund 问题
+     */
+    @Transactional
+    @Override
+    public Integer executionRefund(String username, Long refundId) {
+        /**
+         * 1.先执行生成出库单，然后拿到入库单的 id 插入的采购的表单中
+         * 2.
+         * */
+        int affected = 0;
+        int refundTotal = 0;
+        Refund refund = refundMapper.selectById(refundId);
+        if (refund.getStatus().compareTo(RefundStatus.Audit_Passed.toString())!= 0){
+            throw new BusinessException(BusinessCode.ErrorStatus);
+        }
+
+        List<StorageOutItem> items = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
+                .eq(StorageOutItem.STORAGE_OUT_ID,refundId)
+                .eq(StorageOutItem.TYPE,TransactionType.Refund.toString()));
+
+        StorageOutModel storageOutModel = new StorageOutModel();
+        storageOutModel.setStorageOutTime(new Date());
+
+        List<StorageOutItem> storageOutItems = new ArrayList<>();
+        if (items != null && items.size() > 0) {
+            for (StorageOutItem outItem : items) {
+
+                SkuProduct sku = skuProductMapper.selectById(outItem.getSkuId());
+                if (outItem.getTransactionQuantities() > 0) {
+                    outItem.setRelationCode(refund.getProductRefundCode());
+                    outItem.setTransactionTime(storageOutModel.getStorageOutTime());
+                    outItem.setType("Others");
+                    refundTotal += outItem.getTransactionQuantities();
+
+                    Inventory isExistInventory = new Inventory();
+                    isExistInventory.setSkuId(outItem.getSkuId());
+                    isExistInventory.setWarehouseId(refund.getProductRefundWarehouseId());
+                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    if (originInventory != null) {
+                        // 退货数量不能大于库存量
+                        if (originInventory.getValidSku() == null) {
+                            originInventory.setValidSku(0);
+                        }
                     /*if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
                         throw new BusinessException(4050, "\""+sku.getSkuName()+"\"库存不足");
                     } else*/
-                        if (model.getProductProcurementId() == null) {
+                        if (refund.getProductProcurementId() == null) {
                             //操作后的数量
                             Integer afterSkuCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
                             outItem.setAfterTransactionQuantities(afterSkuCount);
@@ -117,7 +234,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                             affected += inventoryMapper.updateById(originInventory);
 
                         } else {
-                            if (outItem.getTransactionQuantities() > queryRefundDao.skuStorageInCount(model.getProductProcurementId(), outItem.getSkuId())) {
+                            if (outItem.getTransactionQuantities() > queryRefundDao.skuStorageInCount(refund.getProductProcurementId(), outItem.getSkuId())) {
                                 throw new BusinessException(4050, "\"" + sku.getSkuName() + "\"退货数量不能大于入库的数量");
                             } else {
                                 //操作后的数量
@@ -144,28 +261,29 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
 
         storageOutModel.setTransactionType(TransactionType.Refund.toString());
         storageOutModel.setStorageOutItems(storageOutItems);
-        storageOutModel.setWarehouseId(model.getProductRefundWarehouseId());
+        storageOutModel.setWarehouseId(refund.getProductRefundWarehouseId());
 
         // 用field1 来接收出库的code
-        storageOutModel.setTransactionCode(model.getField1());
-        storageOutModel.setOriginatorId(userId);
-        storageOutModel.setOriginatorName(model.getOriginatorName());
-        storageOutModel.setTransactionBy(model.getTransactionBy());
+        storageOutModel.setTransactionCode(refund.getField1());
+        storageOutModel.setTransactionBy(username);
+        storageOutModel.setOriginatorName(refund.getOriginatorName());
+        storageOutModel.setTransactionBy(refund.getTransactionBy());
         storageOutModel.setTransactionTime(new Date());
         StorageOutFilter storageOutFilter = new StorageOutFilter();
         affected += storageOutService.createMaster(storageOutModel, storageOutFilter, null, null);
 
-        model.setStorageOutId((Long) storageOutFilter.result().get("id") == null ? null : (Long) storageOutFilter.result().get("id"));
-        model.setOriginatorId(userId);
-        model.setTransactionTime(new Date());
-        model.setProductRefundQuantities(refundTotal);
-        model.setProductRefundStatus(RefundStatus.Done.toString());
-        affected += refundService.createMaster(model);
+        refund.setStorageOutId((Long) storageOutFilter.result().get("id") == null ? null : (Long) storageOutFilter.result().get("id"));
+        refund.setTransactionBy(username);
+        refund.setTransactionTime(new Date());
+        refund.setProductRefundQuantities(refundTotal);
+        refund.setProductRefundStatus(RefundStatus.Done.toString());
+        refund.setId(refundId);
+        affected += refundService.updateMaster(refund);
 
         // field1 去接收最上层的ID  作跳转使用
-        storageOutModel.setField1(model.getId().toString());
+        storageOutModel.setField1(refund.getId().toString());
 
-        storageOutModel.setId(model.getStorageOutId());
+        storageOutModel.setId(refund.getStorageOutId());
         storageOutMapper.updateById(storageOutModel);
 
         return affected;
@@ -235,7 +353,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         return affected;
     }
 
-    public RefundModel refundDetails(long id) {
+    public RefundModel refundDetails(Long id) {
         Refund refund = refundService.retrieveMaster(id);
         JSONObject refundObj = JSON.parseObject(JSONObject.toJSONString(refund));
 
@@ -283,24 +401,16 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     }
 
 
-    @Deprecated
-    @Transactional
-    public Integer updateRefund(long userId, RefundModel model) {
 
-        //
-        CRUDObject<StorageOutModel> storageOutModel = storageOutService.retrieveMasterModel(model.getProductProcurementId());
-        StorageOutModel storageOut = storageOutModel.toJavaObject(StorageOutModel.class);
-        storageOut.setStorageOutItems(model.getItems());
-        storageOutService.updateMaster(storageOut, null, null, null);
-
-        return refundService.updateMaster(model);
-    }
 
     @Transactional
-    public Integer deleteRefund(long id) {
+    public Integer deleteRefund(Long id) {
         Refund refund = refundService.retrieveMaster(id);
         StorageOut out = storageOutService.retrieveMaster(refund.getStorageOutId());
-        storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>().eq("storage_out_id", out.getId()));
+        storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>()
+                .eq(StorageOutItem.STORAGE_OUT_ID,id)
+                .eq(StorageOutItem.TYPE,TransactionType.Refund.toString()));
+        storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,out.getId()).eq(StorageOutItem.TYPE,"Others"));
         storageOutMapper.deleteById(refund.getStorageOutId());
         refundService.deleteMaster(id);
         return refundService.deleteMaster(id);

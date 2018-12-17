@@ -5,6 +5,8 @@ import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.log.LogManager;
 import com.jfeat.am.module.log.LogTaskFactory;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
+import com.jfeat.am.module.warehouse.services.definition.RefundStatus;
+import com.jfeat.am.module.warehouse.services.persistence.model.Refund;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -63,12 +65,12 @@ public class RefundEndpoint extends BaseController {
         try {
             String userName = JWTKit.getAccount(getHttpServletRequest());
             entity.setOriginatorName(userName);
-            affected = refundService.createRefund(JWTKit.getUserId(getHttpServletRequest()),entity);
+            affected += refundService.createRefund(JWTKit.getUserId(getHttpServletRequest()),entity);
 
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
         }
-        createRefundLog(entity.getId(),  "createRefund", "对退货表进行了新建操作",  JSONObject.toJSONString(entity) + " &");
+        createRefundLog(entity.getId(),  "executionRefund", "对退货表进行了新建操作",  JSONObject.toJSONString(entity) + " &");
         return SuccessTip.create(affected);
     }
 
@@ -82,11 +84,54 @@ public class RefundEndpoint extends BaseController {
     @BusinessLog(name = "Refund", value = "update Refund")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改退货表",response = RefundModel.class)
-
     public Tip updateRefund(@PathVariable Long id, @RequestBody RefundModel entity) {
         entity.setId(id);
-        return SuccessTip.create(refundService.updateRefund(JWTKit.getUserId(getHttpServletRequest()),entity));
+        return SuccessTip.create(refundService.updateRefund(id,entity));
     }
+
+    @PostMapping("/{id}/audit")
+    @ApiOperation(value = "修改退货表and提交 审核")
+    public Tip commit(@PathVariable Long id ,@RequestBody RefundModel entity) {
+        Integer affected = 0;
+        affected += refundService.updateAndCommitRefund(id,entity);
+        return SuccessTip.create(affected);
+    }
+
+    @PostMapping("/{id}/closed")
+    @ApiOperation(value = "退货表审核拒绝")
+    public Tip reject(@PathVariable Long id) {
+        Integer affected = 0;
+        Refund refund = new Refund();
+        refund.setId(id);
+        refund.setStatus(RefundStatus.Cancel.toString());
+        if(refund.getId() != null) {
+            affected += refundService.updateMaster(refund);
+        }
+        return SuccessTip.create(affected);
+    }
+
+    @PostMapping("/{id}/passed")
+    @ApiOperation(value = "退货表审核通过")
+    public Tip pass(@PathVariable Long id) {
+        Integer affected = 0;
+        Refund refund = new Refund();
+        refund.setId(id);
+        refund.setStatus(RefundStatus.Audit_Passed.toString());
+        if(refund.getId() != null) {
+            affected += refundService.updateMaster(refund);
+        }
+        return SuccessTip.create(affected);
+    }
+
+
+    @PostMapping("/{id}/execution")
+    @ApiOperation(value = "退货表审核通过")
+    public Tip execution (@PathVariable Long id) {
+        Integer affected = refundService.executionRefund(JWTKit.getAccount(getHttpServletRequest()),id);
+        return SuccessTip.create(affected);
+    }
+
+
 
     @BusinessLog(name = "Refund", value = "delete Refund")
     @DeleteMapping("/{id}")

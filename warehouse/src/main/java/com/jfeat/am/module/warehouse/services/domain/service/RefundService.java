@@ -10,14 +10,23 @@ import org.springframework.transaction.annotation.Transactional;
 public interface RefundService extends CRUDRefundService{
 
     @Transactional
-    Integer createRefund(long userId, RefundModel model);
+    Integer executionRefund(String username, Long refundId);
 
-    RefundModel refundDetails(long id);
+    /**
+     * 重构 Refund 问题
+     */
+    @Transactional
+    Integer createRefund(Long userId, RefundModel model);
+
+    RefundModel refundDetails(Long id);
 
     @Transactional
-    Integer updateRefund(long userId, RefundModel model);
+    Integer updateRefund(Long refundId, RefundModel model);
 
     @Transactional
-    Integer deleteRefund(long id);
+    Integer updateAndCommitRefund(Long refundId, RefundModel model);
+
+    @Transactional
+    Integer deleteRefund(Long id);
     
 }
