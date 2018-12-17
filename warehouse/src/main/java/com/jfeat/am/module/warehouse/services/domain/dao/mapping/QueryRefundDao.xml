@@ -126,6 +126,7 @@
         <result column="field1" property="field1" />
         <result column="field2" property="field2" />
 
+
         <result column="warehouseName" property="warehouseName" />
     </resultMap>
 
