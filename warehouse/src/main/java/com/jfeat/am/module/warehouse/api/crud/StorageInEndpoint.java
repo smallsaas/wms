@@ -55,6 +55,24 @@ public class StorageInEndpoint extends BaseController {
     @Resource
     QueryStorageInDao queryStorageInDao;
 
+
+
+
+    private void createStorageInLog(Long targetId, String methodName, String operation, String message) {
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
+                JWTKit.getAccount(getHttpServletRequest()),
+                operation,
+                ProcurementEndpoint.class.getName(),
+                methodName,
+                message,
+                "成功",
+                targetId,
+                FormType.PURCHASE.toString()
+        ));
+    }
+
+
+
     @BusinessLog(name = "StorageIn", value = "create StorageIn")
     @PostMapping
     @ApiOperation(value = "新建入库单",response = StorageInModel.class)
@@ -64,6 +82,8 @@ public class StorageInEndpoint extends BaseController {
         if (entity.getWarehouseId()==null){
             entity.setWarehouseId(1L);
         }
+        createStorageInLog(entity.getId(),  "commitToAuditStorageIn", "对入库单进行了提交审核操作",  entity
+                .getId() + " &");
         return SuccessTip.create(storageInService.createStorageIn(JWTKit.getUserId(getHttpServletRequest()),entity));
     }
 
@@ -112,10 +132,10 @@ public class StorageInEndpoint extends BaseController {
         return resultTip;
     }
 
-    @BusinessLog(name = "StorageIn", value = "审核拒绝，自动转化为关闭状态")
-    @PutMapping("/{id}/execution")
-    @ApiOperation(value = "execution StorageIn",response = StorageInModel.class)
-    public Tip executionStorageIn(@PathVariable Long id, @RequestBody StorageInModel entity) {
+    @BusinessLog(name = "StorageIn", value = "执行入库")
+    @PutMapping("/{id}/executionRefund")
+    @ApiOperation(value = "executionRefund StorageIn",response = StorageInModel.class)
+    public Tip executionStorageIn(@PathVariable Long id) {
         Tip resultTip = SuccessTip.create(storageInService.executionStorageIn(JWTKit.getAccount(getHttpServletRequest()),id));
         createStorageInLog(id,  "executionStorage", "对入库单进行了入库操作",  id + " &");
         return resultTip;
@@ -186,19 +206,5 @@ public class StorageInEndpoint extends BaseController {
         return SuccessTip.create(page);
     }
 
-
-
-    private void createStorageInLog(Long targetId, String methodName, String operation, String message) {
-        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
-                JWTKit.getAccount(getHttpServletRequest()),
-                operation,
-                ProcurementEndpoint.class.getName(),
-                methodName,
-                message,
-                "成功",
-                targetId,
-                FormType.PURCHASE.toString()
-        ));
-    }
 
 }

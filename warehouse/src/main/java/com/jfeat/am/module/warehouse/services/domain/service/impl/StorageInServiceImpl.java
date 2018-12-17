@@ -59,8 +59,6 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         if (entity.getStorageInTime() == null) {
             entity.setStorageInTime(new Date());
         }
-        StorageInFilter storageInFilter = new StorageInFilter();
-        List<StorageInItem> storageInItems = new ArrayList<>();
 
         if (entity.getStorageInItems() != null && entity.getStorageInItems().size() > 0) {
 
@@ -70,18 +68,16 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
                     inItem.setTransactionTime(entity.getStorageInTime());
                     // 设置产品的入库时间
                     inItem.setTransactionTime(entity.getTransactionTime());
+                    affected += inItemMapper.insert(inItem);
 
-                    storageInItems.add(inItem);
                 } else {
-
                     //while transaction quantities = 0 ,do nothing
                 }
             }
         } else {
             throw new BusinessException(4050, "商品不能为空，请先选择商品！");
         }
-        entity.setStorageInItems(storageInItems);
-        affected += crudStorageInService.createMaster(entity, storageInFilter, null, null);
+
         return affected;
 
     }
@@ -133,7 +129,10 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         if (in.getStatus().compareTo(StorageInStatus.Draft.toString())!=0){
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-        return changeStatus(userId,storageInId,entity);
+        affected += changeStatus(userId,storageInId,entity);
+        entity.setId(storageInId);
+        affected += crudStorageInService.updateMaster(entity);
+        return affected;
 
     }
 
@@ -143,12 +142,16 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
     @Transactional
     public Integer commitStorageIn(Long userId,Long storageInId,StorageInModel entity) {
 
+        Integer affected = 0;
         StorageIn in = crudStorageInService.retrieveMaster(storageInId);
         if (in.getStatus().compareTo(StorageInStatus.Draft.toString())!=0){
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
         in.setStatus(StorageInStatus.Wait_To_audit.toString());
-        return changeStatus(userId,storageInId,entity);
+        affected += changeStatus(userId,storageInId,entity);
+        entity.setId(storageInId);
+        affected += crudStorageInService.updateMaster(entity);
+        return affected;
     }
 
     /**
@@ -182,7 +185,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
 
 
     /**
-     * 假设 该提交的 SKU 不存在 库存 ，则插入 ，如果存在 ，则更新  execution storage in operation
+     * 假设 该提交的 SKU 不存在 库存 ，则插入 ，如果存在 ，则更新  executionRefund storage in operation
      */
     @Transactional
     public Integer executionStorageIn(String username,Long storageInId) {
@@ -190,6 +193,9 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
 
         StorageIn in = crudStorageInService.retrieveMaster(storageInId);
 
+        if (in.getStatus().compareTo(StorageInStatus.Audit_Passed.toString())!= 0){
+            throw new BusinessException(BusinessCode.ErrorStatus);
+        }
 
         List<StorageInItem> items = inItemMapper.selectList(new EntityWrapper<StorageInItem>()
                 .eq(StorageInItem.STORAGE_IN_ID,storageInId)
