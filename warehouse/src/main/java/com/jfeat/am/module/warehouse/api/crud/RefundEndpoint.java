@@ -103,7 +103,7 @@ public class RefundEndpoint extends BaseController {
         Integer affected = 0;
         Refund refund = new Refund();
         refund.setId(id);
-        refund.setStatus(RefundStatus.Cancel.toString());
+        refund.setStatus(RefundStatus.Closed.toString());
         if(refund.getId() != null) {
             affected += refundService.updateMaster(refund);
         }

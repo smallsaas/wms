@@ -90,7 +90,7 @@ public class TransferEndpoint extends BaseController {
     public Tip reject(@PathVariable Long id) {
         Integer affected = 0;
         Transfer transfer = new Transfer();
-        transfer.setStatus(TransferStatus.Cancel.toString());
+        transfer.setStatus(TransferStatus.Closed.toString());
         if(transfer.getId() != null) {
             affected += transferService.updateMaster(transfer);
             createPurchasekLog(id, "reject", "对调拨单进行了审核拒绝操作", id + " &");

@@ -5,6 +5,6 @@ public enum TransferStatus {
     Draft,
     Transfer,
     Done,
-    Cancel,
+    Closed,
     Wait_To_Audit
 }

@@ -13,7 +13,6 @@ import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDStorageOutSe
 import com.jfeat.am.module.warehouse.services.persistence.dao.InventoryMapper;
 import com.jfeat.am.module.warehouse.services.persistence.dao.StorageOutItemMapper;
 import com.jfeat.am.module.warehouse.services.persistence.model.Inventory;
-import com.jfeat.am.module.warehouse.services.persistence.model.StorageInItem;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOut;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem;
 import org.springframework.stereotype.Service;
@@ -215,7 +214,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (out.getStatus().compareTo(StorageOutStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-        out.setStatus(StorageOutStatus.Cancel.toString());
+        out.setStatus(StorageOutStatus.Closed.toString());
         out.setId(storageOutId);
         return crudStorageOutService.updateMaster(out);
     }

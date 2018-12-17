@@ -6,6 +6,6 @@ public enum  StorageInStatus {
     Wait_To_audit, // can not update
     Audit_Passed, // u can execute storage in
     Done, // finished all operation
-    Cancel    // means audit reject
+    Closed    // means audit reject
 
 }

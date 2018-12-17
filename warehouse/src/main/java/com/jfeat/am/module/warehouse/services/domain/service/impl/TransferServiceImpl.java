@@ -3,12 +3,7 @@ package com.jfeat.am.module.warehouse.services.domain.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.toolkit.IdWorker;
-import com.jfeat.am.common.controller.BaseController;
-import com.jfeat.am.common.crud.CRUDObject;
-import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
-import com.jfeat.am.modular.system.service.UserService;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
@@ -25,12 +20,9 @@ import com.jfeat.am.module.warehouse.services.domain.model.StorageInModel;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageOutItemRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageOutModel;
 import com.jfeat.am.module.warehouse.services.domain.model.TransferModel;
-import com.jfeat.am.module.warehouse.services.domain.service.StorageInService;
-import com.jfeat.am.module.warehouse.services.domain.service.StorageOutService;
 import com.jfeat.am.module.warehouse.services.domain.service.TransferService;
 
 import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDTransferServiceImpl;
-import com.jfeat.am.module.warehouse.services.domain.service.WarehouseService;
 import com.jfeat.am.module.warehouse.services.persistence.dao.*;
 import com.jfeat.am.module.warehouse.services.persistence.model.*;
 import org.slf4j.Logger;
@@ -422,7 +414,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         affected += crudStorageInService.createMaster(storageIn, storageInFilter, null, null);
 
         transfer.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
-        transfer.setStatus(TransferStatus.Cancel.toString());
+        transfer.setStatus(TransferStatus.Closed.toString());
         transfer.setId(id);
         affected += crudTransferService.updateMaster(transfer);
         return affected;

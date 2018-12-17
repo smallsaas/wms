@@ -6,10 +6,7 @@ import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
 import com.jfeat.am.module.warehouse.services.definition.StorageInStatus;
-import com.jfeat.am.module.warehouse.services.domain.dao.QueryInventoryDao;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageInModel;
-import com.jfeat.am.module.warehouse.services.domain.model.StorageModel;
-import com.jfeat.am.module.warehouse.services.domain.service.InventoryService;
 import com.jfeat.am.module.warehouse.services.domain.service.StorageInService;
 
 import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDStorageInServiceImpl;
@@ -18,7 +15,6 @@ import com.jfeat.am.module.warehouse.services.persistence.dao.StorageInItemMappe
 import com.jfeat.am.module.warehouse.services.persistence.model.Inventory;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageIn;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageInItem;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -179,7 +175,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
         in.setId(storageInId);
-        in.setStatus(StorageInStatus.Cancel.toString());
+        in.setStatus(StorageInStatus.Closed.toString());
         return crudStorageInService.updateMaster(in);
     }
 

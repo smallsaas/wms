@@ -7,6 +7,6 @@ public enum StorageOutStatus {
     Audit_Passed, // u can execute storage in
     Wait_Storage_In, // executionRefund storage
     Done, // finished all operation
-    Cancel    // means audit reject
+    Closed    // means audit reject
 
 }

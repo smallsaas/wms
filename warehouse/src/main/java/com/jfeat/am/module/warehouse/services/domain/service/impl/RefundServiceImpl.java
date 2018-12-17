@@ -3,11 +3,8 @@ package com.jfeat.am.module.warehouse.services.domain.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.toolkit.IdWorker;
-import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
-import com.jfeat.am.modular.system.service.UserService;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
@@ -348,7 +345,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         storageIn.setField1(refundId.toString());
 
         affected += crudStorageInService.createMaster(storageIn, storageInFilter, null, null);
-        refund.setProductRefundStatus(RefundStatus.Cancel.toString());
+        refund.setProductRefundStatus(RefundStatus.Closed.toString());
         affected += refundService.updateMaster(refund);
         return affected;
     }
