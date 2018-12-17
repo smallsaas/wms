@@ -29,6 +29,19 @@ public interface CheckService extends CRUDCheckService{
     Integer checkedCheck(Long checkId);
 
 
+    /**
+     * audit check ,if audit result is passed ,modified data,else rejected modified data
+     */
+    @Transactional
+    Integer auditCheckedPassed(Long checkId);
+
+
+    /**
+     * audit check ,if audit result is passed ,modified data,else rejected modified data
+     */
+    @Transactional
+    Integer auditCheckedReject(Long checkId);
+
     CheckRecord checkDetails(Long checkId);
 
 

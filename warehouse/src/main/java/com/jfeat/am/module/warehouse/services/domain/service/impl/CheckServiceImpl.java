@@ -125,16 +125,6 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
             sku.setDeservedQuantities(sku.getFactQuantities());
             totalProfitLostValue += sku.getProfitLost();
 
-            // 更新库存
-            Inventory inventory = new Inventory();
-            inventory.setWarehouseId(sku.getWarehouseId());
-            inventory.setSkuId(sku.getSkuId());
-            Inventory originInventory = inventoryMapper.selectOne(inventory);
-            if (originInventory == null) {
-                throw new BusinessException(10000, "未知错误，请联系专业人员");
-            }
-            originInventory.setValidSku(sku.getFactQuantities());
-            affected += inventoryMapper.updateAllColumnById(originInventory);
             affected += checkSkuMapper.updateAllColumnById(sku);//校对数据
         }
 
@@ -146,6 +136,60 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
         affected += checkMapper.updateById(check);
         return affected;
     }
+
+    /**
+     * audit check ,if audit result is passed ,modified data,else rejected modified data
+     */
+    @Transactional
+    public Integer auditCheckedPassed(Long checkId){
+        int affected = 0;
+        Check check = checkMapper.selectById(checkId);
+        if (check.getStatus().compareTo(CheckStatus.CheckOut.toString()) != 0) {
+            throw new BusinessException(5002, "请先完成盘点");
+        }
+        List<CheckSku> checkSkus = checkSkuMapper.selectList(new EntityWrapper<CheckSku>().eq(CheckSku.CHECK_ID, checkId));
+        for (CheckSku sku : checkSkus) {
+            if (sku.getFactQuantities() == null) {
+                throw new BusinessException(5001, "请先对未完成盘点的商品进行盘点");
+            }
+            if (sku.getFactQuantities() != null && sku.getDeservedQuantities() != null) {
+                sku.setProfitLost(sku.getFactQuantities() - sku.getDeservedQuantities());
+            }
+
+            // 更新库存
+            Inventory inventory = new Inventory();
+            inventory.setWarehouseId(sku.getWarehouseId());
+            inventory.setSkuId(sku.getSkuId());
+            Inventory originInventory = inventoryMapper.selectOne(inventory);
+            if (originInventory == null) {
+                throw new BusinessException(10000, "未知错误，请联系专业人员");
+            }
+            originInventory.setValidSku(sku.getFactQuantities());
+            affected += inventoryMapper.updateAllColumnById(originInventory);
+        }
+        check.setStatus(CheckStatus.Done.toString());
+        check.setId(checkId);
+        affected += checkMapper.updateById(check);
+        return affected;
+    }
+
+    /**
+     * audit check ,if audit result is passed ,modified data,else rejected modified data
+     */
+    @Transactional
+    public Integer auditCheckedReject(Long checkId){
+        int affected = 0;
+        Check check = checkMapper.selectById(checkId);
+        if (check.getStatus().compareTo(CheckStatus.CheckOut.toString()) != 0) {
+            throw new BusinessException(5002, "请先完成盘点");
+        }
+
+        check.setStatus(CheckStatus.Closed.toString());
+        check.setId(checkId);
+        affected += checkMapper.updateById(check);
+        return affected;
+    }
+
 
     public CheckRecord checkDetails(Long checkId) {
         Check check = checkMapper.selectById(checkId);

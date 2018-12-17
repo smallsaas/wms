@@ -7,5 +7,6 @@ public enum CheckStatus {
     CheckOut,
     Draft,
     Wait_Audit,
-    Closed
+    Closed,
+    Done
 }

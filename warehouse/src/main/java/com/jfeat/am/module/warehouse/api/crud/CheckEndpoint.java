@@ -67,48 +67,19 @@ public class CheckEndpoint extends BaseController {
     }
 
 
-    @PostMapping("/{id}/commit")
-    @ApiOperation(value = "提交盘点")
-    public Tip commit(@PathVariable Long id) {
-        Integer affected = 0;
-        Check check = new Check();
-        check.setId(id);
-        check.setStatus(CheckStatus.Wait_Audit.toString());
-        if(check.getId() != null) {
-            affected += checkService.updateMaster(check);
-            createCheckLog(id, "commit", "对库存盘点进行了提交操作", id + " &");
-        }
-        return SuccessTip.create(affected);
-    }
-
-    @PostMapping("/{id}/reject")
+    @PutMapping("/{id}/closed")
     @ApiOperation(value = "库存盘点审核拒绝")
     public Tip reject(@PathVariable Long id) {
-        Integer affected = 0;
-        Check check = new Check();
-        check.setId(id);
-        check.setStatus(CheckStatus.Closed.toString());
-        if(check.getId() != null) {
-            affected += checkService.updateMaster(check);
-            createCheckLog(id, "reject", "对库存盘点进行了审核拒绝操作", id + " &");
-        }
+        Integer affected = checkService.auditCheckedReject(id);
         return SuccessTip.create(affected);
     }
 
-    @PostMapping("/{id}/pass")
-    @ApiOperation(value = "库存盘点审核通过")
+    @PostMapping("/{id}/passed")
+    @ApiOperation(value = "库存盘点审核拒绝")
     public Tip pass(@PathVariable Long id) {
-        Integer affected = 0;
-        Check check = new Check();
-        check.setId(id);
-        check.setStatus(CheckStatus.WaitForCheck.toString());
-        if(check.getId() != null) {
-            affected += checkService.updateMaster(check);
-            createCheckLog(id, "pass", "对库存盘点进行了审核通过操作", id + " &");
-        }
+        Integer affected = checkService.auditCheckedPassed(id);
         return SuccessTip.create(affected);
     }
-
 
     @GetMapping("/{id}")
     @ApiOperation(value = "查看库存盘点", response = CheckModel.class)
