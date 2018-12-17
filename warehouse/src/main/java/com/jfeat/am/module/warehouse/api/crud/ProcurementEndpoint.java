@@ -65,42 +65,6 @@ public class ProcurementEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
-/*    @PostMapping("/{id}/commit")
-    @ApiOperation(value = "提交采购单")
-    public Tip commitProcurement(@PathVariable Long id) {
-        Integer affected = 0;
-        Procurement procurement = new Procurement();
-        procurement.setId(id);
-        procurement.setProcureStatus(ProcurementStatus.Wait_Audit.toString());
-        if(procurement.getId() != null) {
-            affected += procurementService.updateMaster(procurement);
-            createPurchasekLog(id,  "commitProcurement", "对采购单进行了提交操作", id + " &");
-        }
-        return SuccessTip.create(affected);
-    }*/
-
-    /*@PostMapping("/{id}/reject")
-    @ApiOperation(value = "采购单审核拒绝")
-    public Tip reject(@PathVariable Long id) {
-        Integer affected = 0;
-        affected += procurementService.closedProcurment(id);
-        createPurchasekLog(id,  "reject", "对采购单进行了审核拒绝操作",  id + " &");
-        return SuccessTip.create(affected);
-    }*/
-
-    @PostMapping("/{id}/pass")
-    @ApiOperation(value = "采购单审核通过")
-    public Tip pass(@PathVariable Long id) {
-        Integer affected = 0;
-        Procurement procurement = new Procurement();
-        procurement.setId(id);
-        procurement.setProcureStatus(ProcurementStatus.WaitForStorageIn.toString());
-        if(procurement.getId() != null) {
-            affected += procurementService.updateMaster(procurement);
-            createPurchasekLog(id,  "pass", "对采购单进行了审核通过操作",  id + " &");
-        }
-        return SuccessTip.create(affected);
-    }
 
 
     @GetMapping("/{id}")
@@ -120,7 +84,7 @@ public class ProcurementEndpoint extends BaseController {
 
     @PutMapping("/{id}/execution")
     @ApiOperation(value = "入库",response = ProcurementModel.class)
-    public Tip excutionProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
+    public Tip executionProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
         entity.setId(id);
         Tip resultTip = SuccessTip.create(procurementService.executionStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
         createPurchasekLog(id,  "excutionProcurement", "对采购单进行了入库操作", JSONObject.toJSONString(entity) + " & " + id + " &");
@@ -130,7 +94,7 @@ public class ProcurementEndpoint extends BaseController {
     @BusinessLog(name = "Procurement", value = "审核拒绝，自动转化为关闭状态")
     @PutMapping("/{id}/closed")
     @ApiOperation(value = "closed procurement",response = ProcurementModel.class)
-    public Tip excutionProcurement(@PathVariable Long id) {
+    public Tip closedProcurement(@PathVariable Long id) {
         Tip resultTip = SuccessTip.create(procurementService.closedProcurment(id));
         createPurchasekLog(id,  "closedProcurment", "对采购单进行了关闭操作",  id + " &");
         return resultTip;

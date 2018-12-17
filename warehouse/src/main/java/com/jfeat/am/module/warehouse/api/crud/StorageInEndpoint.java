@@ -1,6 +1,9 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
 import com.jfeat.am.core.jwt.JWTKit;
+import com.jfeat.am.module.log.LogManager;
+import com.jfeat.am.module.log.LogTaskFactory;
+import com.jfeat.am.module.warehouse.services.definition.FormType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.dao.DuplicateKeyException;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryStorageInDao;
 import com.jfeat.am.common.constant.tips.SuccessTip;
 import com.jfeat.am.common.constant.tips.Tip;
@@ -62,13 +64,12 @@ public class StorageInEndpoint extends BaseController {
         if (entity.getWarehouseId()==null){
             entity.setWarehouseId(1L);
         }
-        return SuccessTip.create(storageInService.executionStorageIn(JWTKit.getUserId(getHttpServletRequest()),entity));
+        return SuccessTip.create(storageInService.createStorageIn(JWTKit.getUserId(getHttpServletRequest()),entity));
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "查询入库单",response = StorageInModel.class)
     public Tip getStorageIn(@PathVariable Long id) {
-//        return SuccessTip.create(storageInService.retrieveMaster(id, null, null, null).toJSONObject());
 
         return SuccessTip.create(queryStorageInDao.storagesInDetails(id));
     }
@@ -79,13 +80,53 @@ public class StorageInEndpoint extends BaseController {
     @ApiOperation(value = "修改入库单",response = StorageInModel.class)
     public Tip updateStorageIn(@PathVariable Long id, @RequestBody StorageInModel entity) {
         entity.setId(id);
-        return SuccessTip.create(storageInService.updateMaster(entity, null, null, null));
+        return SuccessTip.create(storageInService.updateStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
     }
+
+    @BusinessLog(name = "StorageIn", value = "审核 StorageIn")
+    @PutMapping("/{id}/audit")
+    @ApiOperation(value = "审核",response = StorageInModel.class)
+    public Tip commitToAuditStorageIn(@PathVariable Long id, @RequestBody StorageInModel entity) {
+        entity.setId(id);
+        Tip resultTip = SuccessTip.create(storageInService.commitStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        createStorageInLog(id,  "commitToAuditStorageIn", "对入库单进行了提交审核操作",  id + " &");
+        return resultTip;
+    }
+
+    @BusinessLog(name = "StorageIn", value = "审核通过 StorageIn")
+    @PutMapping("/{id}/passed")
+    @ApiOperation(value = "审核通过",response = StorageInModel.class)
+    public Tip auditStorage(@PathVariable Long id, @RequestBody StorageInModel entity) {
+        entity.setId(id);
+        Tip resultTip = SuccessTip.create(storageInService.passedStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        createStorageInLog(id,  "auditStorageIn", "对入库单进行了审核通过操作",  id + " &");
+        return resultTip;
+    }
+
+    @BusinessLog(name = "StorageIn", value = "审核拒绝，自动转化为关闭状态")
+    @PutMapping("/{id}/closed")
+    @ApiOperation(value = "closed StorageIn",response = StorageInModel.class)
+    public Tip closedStorageIn(@PathVariable Long id, @RequestBody StorageInModel entity) {
+        Tip resultTip = SuccessTip.create(storageInService.auditRejectedStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        createStorageInLog(id,  "closedStorageIn", "对入库单进行了关闭操作",  id + " &");
+        return resultTip;
+    }
+
+    @BusinessLog(name = "StorageIn", value = "审核拒绝，自动转化为关闭状态")
+    @PutMapping("/{id}/execution")
+    @ApiOperation(value = "execution StorageIn",response = StorageInModel.class)
+    public Tip executionStorageIn(@PathVariable Long id, @RequestBody StorageInModel entity) {
+        Tip resultTip = SuccessTip.create(storageInService.auditRejectedStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        createStorageInLog(id,  "executionStorage", "对入库单进行了入库操作",  id + " &");
+        return resultTip;
+    }
+
 
     @BusinessLog(name = "StorageIn", value = "delete StorageIn")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除入库单",response = StorageInModel.class)
     public Tip deleteStorageIn(@PathVariable Long id) {
+        createStorageInLog(id,  "deleteStorageIn", "对入库单进行了删除操作",  id + " &");
         return SuccessTip.create(storageInService.deleteMaster(id));
     }
 
@@ -145,5 +186,19 @@ public class StorageInEndpoint extends BaseController {
         return SuccessTip.create(page);
     }
 
+
+
+    private void createStorageInLog(Long targetId, String methodName, String operation, String message) {
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
+                JWTKit.getAccount(getHttpServletRequest()),
+                operation,
+                ProcurementEndpoint.class.getName(),
+                methodName,
+                message,
+                "成功",
+                targetId,
+                FormType.PURCHASE.toString()
+        ));
+    }
 
 }

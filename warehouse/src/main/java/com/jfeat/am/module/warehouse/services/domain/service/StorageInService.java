@@ -9,10 +9,45 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public interface StorageInService extends CRUDStorageInService{
 
+
+    /**
+     *  while create , storage in  status is Draft;
+     * */
+    @Transactional
+    Integer createStorageIn(long userId, StorageInModel entity);
+
+    /**
+     *  update by do not modified status
+     * */
+    @Transactional
+    Integer updateStorageIn(long userId,Long storageInId,StorageInModel entity);
+
+    /**
+     *  commit and wait to audit
+     * */
+    @Transactional
+    Integer commitStorageIn(long userId,Long storageInId,StorageInModel entity);
+
+    /**
+     *  audit passed
+     * */
+    @Transactional
+    Integer passedStorageIn(long userId,Long storageInId,StorageInModel entity);
+
+
+    /**
+     *  audit rejected
+     * */
+    @Transactional
+    Integer auditRejectedStorageIn(long userId,Long storageInId,StorageInModel entity);
+
+
     /**
      *
      * 假设 该提交的 SKU 不存在 库存 ，则插入 ，如果存在 ，则更新
      * */
     @Transactional
-    public Integer executionStorageIn(long userId,StorageInModel entity);
+    Integer executionStorageIn(long userId,StorageInModel entity);
+
+
 }
