@@ -85,7 +85,7 @@ public class TransferEndpoint extends BaseController {
         createPurchasekLog(entity.getId(), "createTransfer", "对调拨单进行了修改操作", JSONObject.toJSONString(entity) + " &");
         return SuccessTip.create(affected);
     }
-    @PostMapping("/{id}/audit")
+    @PutMapping("/{id}/audit")
     @ApiOperation(value = "提交审核调拨单")
     public Tip commit(@PathVariable Long id) {
         Integer affected = 0;
@@ -147,7 +147,7 @@ public class TransferEndpoint extends BaseController {
         return SuccessTip.create(transferService.transferDetails(id));
     }
 
-    @PostMapping("/{id}/done")
+    @PutMapping("/{id}/done")
     @ApiOperation(value = "调拨完成", response = TransferModel.class)
     public Tip doneTransfer(@PathVariable Long id) {
         Tip resultTip = SuccessTip.create(transferService.doneTransfer(id, JWTKit.getUserId(getHttpServletRequest())));
@@ -155,7 +155,7 @@ public class TransferEndpoint extends BaseController {
         return resultTip;
     }
 
-    @PostMapping("/{id}/cancel")
+    @PutMapping("/{id}/cancel")
     @ApiOperation(value = "调拨作废", response = TransferModel.class)
     public Tip cancelTransfer(@PathVariable Long id) {
         Tip resultTip = SuccessTip.create(transferService.cancelTransfer(id, JWTKit.getUserId(getHttpServletRequest())));
