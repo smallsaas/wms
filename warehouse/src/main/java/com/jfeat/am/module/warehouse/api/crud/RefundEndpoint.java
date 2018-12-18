@@ -120,7 +120,7 @@ public class RefundEndpoint extends BaseController {
         Integer affected = 0;
         Refund refund = new Refund();
         refund.setId(id);
-        refund.setStatus(RefundStatus.Closed.toString());
+        refund.setProductRefundStatus(RefundStatus.Closed.toString());
         if(refund.getId() != null) {
             affected += refundService.updateMaster(refund);
         }
@@ -134,7 +134,7 @@ public class RefundEndpoint extends BaseController {
         Integer affected = 0;
         Refund refund = new Refund();
         refund.setId(id);
-        refund.setStatus(RefundStatus.Audit_Passed.toString());
+        refund.setProductRefundStatus(RefundStatus.Audit_Passed.toString());
         if(refund.getId() != null) {
             affected += refundService.updateMaster(refund);
         }

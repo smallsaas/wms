@@ -148,7 +148,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         int affected = 0;
 
         Refund refund = refundMapper.selectById(refundId);
-        if (refund.getStatus().compareTo(RefundStatus.Draft.toString())!= 0){
+        if (refund.getProductRefundStatus().compareTo(RefundStatus.Draft.toString())!= 0){
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
 
@@ -164,7 +164,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         int affected = 0;
 
         Refund refund = refundMapper.selectById(refundId);
-        if (refund.getStatus().compareTo(RefundStatus.Draft.toString())!= 0){
+        if (refund.getProductRefundStatus().compareTo(RefundStatus.Draft.toString())!= 0){
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
 
@@ -188,7 +188,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         int affected = 0;
         int refundTotal = 0;
         Refund refund = refundMapper.selectById(refundId);
-        if (refund.getStatus().compareTo(RefundStatus.Audit_Passed.toString())!= 0){
+        if (refund.getProductRefundStatus().compareTo(RefundStatus.Audit_Passed.toString())!= 0){
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
 
@@ -371,7 +371,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         List<StorageOutItemRecord> outItemRecords = new ArrayList<>();
 
 
-        if (refund.getStatus().compareTo(RefundStatus.Done.toString())!=0){
+        if (refund.getProductRefundStatus().compareTo(RefundStatus.Done.toString())!=0){
 
             List<StorageOutItem> outItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
             .eq(StorageOutItem.STORAGE_OUT_ID,refund.getId())

@@ -117,7 +117,6 @@
         <result column="storage_out_time" property="storageOutTime" />
         <result column="batch_no" property="batchNo" />
         <result column="note" property="note" />
-        <result column="status" property="status" />
         <result column="transaction_by" property="transactionBy" />
         <result column="originator_id" property="originatorId" />
         <result column="originator_name" property="originatorName" />

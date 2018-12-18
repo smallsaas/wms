@@ -102,10 +102,6 @@ public class Refund extends Model<Refund> {
     @TableField("supplier_id")
     private Long supplierId;
 
-    /**
-     * 状态
-     */
-    private String status;
 
 
     public Long getId() {
@@ -243,13 +239,6 @@ public class Refund extends Model<Refund> {
         return this;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public Long getSupplierId() {
         return supplierId;
@@ -291,7 +280,6 @@ public class Refund extends Model<Refund> {
 
     public static final String SUPPLIER_ID = "supplier_id";
 
-    public static final String STATUS = "status";
 
     @Override
     protected Serializable pkVal() {
@@ -317,7 +305,6 @@ public class Refund extends Model<Refund> {
                 ", field1=" + field1 +
                 ", field2=" + field2 +
                 ", supplierId=" + supplierId +
-                ", status=" + status +
                 "}";
     }
 }
