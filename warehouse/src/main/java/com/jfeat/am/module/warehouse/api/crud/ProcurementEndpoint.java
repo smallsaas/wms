@@ -82,7 +82,7 @@ public class ProcurementEndpoint extends BaseController {
         return resultTip;
     }
 
-    @PutMapping("/{id}/executionRefund")
+    @PostMapping("/{id}/execution")
     @ApiOperation(value = "入库",response = ProcurementModel.class)
     public Tip executionProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
         entity.setId(id);

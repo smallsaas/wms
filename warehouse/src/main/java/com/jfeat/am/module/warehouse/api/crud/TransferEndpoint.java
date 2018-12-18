@@ -85,7 +85,7 @@ public class TransferEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
-    @PostMapping("/{id}/reject")
+    @PutMapping("/{id}/closed")
     @ApiOperation(value = "调拨单审核拒绝")
     public Tip reject(@PathVariable Long id) {
         Integer affected = 0;
@@ -98,7 +98,7 @@ public class TransferEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
-    @PostMapping("/{id}/pass")
+    @PutMapping("/{id}/passed")
     @ApiOperation(value = "调拨单审核通过")
     public Tip pass(@PathVariable Long id) {
         Integer affected = 0;

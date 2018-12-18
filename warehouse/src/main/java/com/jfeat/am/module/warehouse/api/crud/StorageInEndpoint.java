@@ -133,7 +133,7 @@ public class StorageInEndpoint extends BaseController {
     }
 
     @BusinessLog(name = "StorageIn", value = "执行入库")
-    @PutMapping("/{id}/executionRefund")
+    @PostMapping("/{id}/executionRefund")
     @ApiOperation(value = "executionRefund StorageIn",response = StorageInModel.class)
     public Tip executionStorageIn(@PathVariable Long id) {
         Tip resultTip = SuccessTip.create(storageInService.executionStorageIn(JWTKit.getAccount(getHttpServletRequest()),id));

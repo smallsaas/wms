@@ -126,7 +126,7 @@ public class StorageOutEndpoint extends BaseController {
 
 
     @BusinessLog(name = "StorageOut", value = "执行入库")
-    @PutMapping("/{id}/executionRefund")
+    @PostMapping("/{id}/execution")
     @ApiOperation(value = "executionRefund StorageIn",response = StorageOutModel.class)
     public Tip executionStorageIn(@PathVariable Long id) {
         Tip resultTip = SuccessTip.create(storageOutService.executionStorageOut(JWTKit.getAccount(getHttpServletRequest()),id));

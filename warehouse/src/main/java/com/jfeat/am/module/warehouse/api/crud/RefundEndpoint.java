@@ -89,7 +89,7 @@ public class RefundEndpoint extends BaseController {
         return SuccessTip.create(refundService.updateRefund(id,entity));
     }
 
-    @PostMapping("/{id}/audit")
+    @PutMapping("/{id}/audit")
     @ApiOperation(value = "修改退货表and提交 审核")
     public Tip commit(@PathVariable Long id ,@RequestBody RefundModel entity) {
         Integer affected = 0;
@@ -97,7 +97,7 @@ public class RefundEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
-    @PostMapping("/{id}/closed")
+    @PutMapping("/{id}/closed")
     @ApiOperation(value = "退货表审核拒绝")
     public Tip reject(@PathVariable Long id) {
         Integer affected = 0;
@@ -110,7 +110,7 @@ public class RefundEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
-    @PostMapping("/{id}/passed")
+    @PutMapping("/{id}/passed")
     @ApiOperation(value = "退货表审核通过")
     public Tip pass(@PathVariable Long id) {
         Integer affected = 0;

@@ -67,7 +67,7 @@ public class SalesEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
-    @PostMapping("/{id}/audit")
+    @PutMapping("/{id}/audit")
     @ApiOperation(value = "分销商出库提交 审核")
     public Tip commit(@PathVariable Long id ,@RequestBody SalesModel entity) {
         Integer affected = 0;
@@ -75,7 +75,7 @@ public class SalesEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
-    @PostMapping("/{id}/closed")
+    @PutMapping("/{id}/closed")
     @ApiOperation(value = "分销商出库审核拒绝")
     public Tip reject(@PathVariable Long id) {
         Integer affected = 0;
@@ -89,7 +89,7 @@ public class SalesEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
-    @PostMapping("/{id}/passed")
+    @PutMapping("/{id}/passed")
     @ApiOperation(value = "分销商出库审核通过")
     public Tip pass(@PathVariable Long id) {
         Integer affected = 0;
@@ -122,7 +122,7 @@ public class SalesEndpoint extends BaseController {
     }
 
     @BusinessLog(name = "SalesModel", value = "update SalesModel")
-    @PutMapping("/{id}/excution")
+    @PostMapping("/{id}/excution")
     @ApiOperation(value = "入库",response = SalesModel.class)
     public Tip excutionProcurement(@PathVariable Long id, @RequestBody SalesModel entity) {
         entity.setId(id);

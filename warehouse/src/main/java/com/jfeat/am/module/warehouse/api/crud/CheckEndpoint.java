@@ -74,8 +74,8 @@ public class CheckEndpoint extends BaseController {
         return SuccessTip.create(affected);
     }
 
-    @PostMapping("/{id}/passed")
-    @ApiOperation(value = "库存盘点审核拒绝")
+    @PutMapping("/{id}/passed")
+    @ApiOperation(value = "库存盘点审核passed")
     public Tip pass(@PathVariable Long id) {
         Integer affected = checkService.auditCheckedPassed(id);
         return SuccessTip.create(affected);
