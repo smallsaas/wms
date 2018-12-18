@@ -46,6 +46,19 @@ public class TransferEndpoint extends BaseController {
     @Resource
     QueryTransferDao queryTransferDao;
 
+    private void createPurchasekLog(Long targetId, String methodName, String operation, String message) {
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
+                JWTKit.getAccount(getHttpServletRequest()),
+                operation,
+                TransferEndpoint.class.getName(),
+                methodName,
+                message,
+                "成功",
+                targetId,
+                FormType.TRANSFER.toString()
+        ));
+    }
+
     @PostMapping
     @ApiOperation(value = "新建  Draft调拨表", response = TransferModel.class)
     public Tip draftTransfer(@RequestBody TransferModel entity) {
@@ -216,17 +229,6 @@ public class TransferEndpoint extends BaseController {
         return SuccessTip.create(page);
     }
 
-    private void createPurchasekLog(Long targetId, String methodName, String operation, String message) {
-        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
-                JWTKit.getAccount(getHttpServletRequest()),
-                operation,
-                TransferEndpoint.class.getName(),
-                methodName,
-                message,
-                "成功",
-                targetId,
-                FormType.TRANSFER.toString()
-        ));
-    }
+
 
 }
