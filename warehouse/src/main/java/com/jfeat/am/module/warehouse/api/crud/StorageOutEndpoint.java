@@ -78,7 +78,10 @@ public class StorageOutEndpoint extends BaseController {
         if (entity.getWarehouseId()==null){
             entity.setWarehouseId(1L);
         }
-        return SuccessTip.create(storageOutService.draftStorageOut(JWTKit.getUserId(getHttpServletRequest()),entity));
+        Integer result  = storageOutService.draftStorageOut(JWTKit.getUserId(getHttpServletRequest()),entity);
+        createStorageOutLog(entity.getId(),  "createStorageOut", "对出库单进行了新建操作",  entity
+                .getId() + " &");
+        return SuccessTip.create(result);
     }
 
     @GetMapping("/{id}")
@@ -92,7 +95,10 @@ public class StorageOutEndpoint extends BaseController {
     @ApiOperation(value = "修改出库单",response = StorageOutModel.class)
     public Tip updateStorageOut(@PathVariable Long id, @RequestBody StorageOutModel entity) {
         entity.setId(id);
-        return SuccessTip.create(storageOutService.updateStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        Integer result = storageOutService.updateStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity);
+        createStorageOutLog(entity.getId(),  "updateStorageOut", "对出库单进行了修改操作",  entity
+                .getId() + " &" + id + "&");
+        return SuccessTip.create(result);
     }
 
     @BusinessLog(name = "StorageOut", value = "审核 StorageOut")
@@ -130,15 +136,16 @@ public class StorageOutEndpoint extends BaseController {
     @ApiOperation(value = "executionRefund StorageIn",response = StorageOutModel.class)
     public Tip executionStorageIn(@PathVariable Long id) {
         Tip resultTip = SuccessTip.create(storageOutService.executionStorageOut(JWTKit.getAccount(getHttpServletRequest()),id));
-        createStorageOutLog(id,  "executionStorage", "对出库单进行了入库操作",  id + " &");
+        createStorageOutLog(id,  "executionStorage", "对出库单进行了执行入库操作",  id + " &");
         return resultTip;
     }
     @BusinessLog(name = "StorageOut", value = "delete StorageOut")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除出库单",response = StorageOutModel.class)
-
     public Tip deleteStorageOut(@PathVariable Long id) {
-        return SuccessTip.create(storageOutService.deleteMaster(id));
+        Integer result = storageOutService.deleteMaster(id);
+        createStorageOutLog(id,  "deleteStorageOut", "对出库单进行了删除操作",  id + " &");
+        return SuccessTip.create(result);
     }
 
     @GetMapping

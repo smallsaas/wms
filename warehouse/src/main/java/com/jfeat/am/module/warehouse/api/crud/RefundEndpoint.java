@@ -56,6 +56,20 @@ public class RefundEndpoint extends BaseController {
     @Resource
     QueryRefundDao queryRefundDao;
 
+
+    private void createRefundLog(Long targetId, String methodName, String operation,String message) {
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
+                JWTKit.getAccount(getHttpServletRequest()),
+                operation,
+                RefundEndpoint.class.getName(),
+                methodName,
+                message,
+                "成功",
+                targetId,
+                FormType.REFUND.toString()
+        ));
+    }
+
     @BusinessLog(name = "Refund", value = "create Refund")
     @PostMapping
     @ApiOperation(value = "新建退货表",response = RefundModel.class)
@@ -70,7 +84,7 @@ public class RefundEndpoint extends BaseController {
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
         }
-        createRefundLog(entity.getId(),  "executionRefund", "对退货表进行了新建操作",  JSONObject.toJSONString(entity) + " &");
+        createRefundLog(entity.getId(),  "createRefund", "对退货表进行了新建操作",  JSONObject.toJSONString(entity) + " &");
         return SuccessTip.create(affected);
     }
 
@@ -86,14 +100,17 @@ public class RefundEndpoint extends BaseController {
     @ApiOperation(value = "修改退货表",response = RefundModel.class)
     public Tip updateRefund(@PathVariable Long id, @RequestBody RefundModel entity) {
         entity.setId(id);
-        return SuccessTip.create(refundService.updateRefund(id,entity));
+        Integer result = refundService.updateRefund(id,entity);
+        createRefundLog(entity.getId(),  "updateRefund", "对退货表进行了修改操作",  JSONObject.toJSONString(entity) + " &" + id + "&");
+        return SuccessTip.create(result);
     }
 
     @PutMapping("/{id}/audit")
     @ApiOperation(value = "修改退货表and提交 审核")
-    public Tip commit(@PathVariable Long id ,@RequestBody RefundModel entity) {
+    public Tip audit(@PathVariable Long id ,@RequestBody RefundModel entity) {
         Integer affected = 0;
         affected += refundService.updateAndCommitRefund(id,entity);
+        createRefundLog(id,  "audit", "对退货表进行了修改操作",  JSONObject.toJSONString(entity) + " &" + id + "&");
         return SuccessTip.create(affected);
     }
 
@@ -107,6 +124,7 @@ public class RefundEndpoint extends BaseController {
         if(refund.getId() != null) {
             affected += refundService.updateMaster(refund);
         }
+        createRefundLog(id,  "reject", "对退货表进行了审核拒绝操作",   id + "&");
         return SuccessTip.create(affected);
     }
 
@@ -120,14 +138,18 @@ public class RefundEndpoint extends BaseController {
         if(refund.getId() != null) {
             affected += refundService.updateMaster(refund);
         }
+        createRefundLog(id,  "pass", "对退货表进行了审核通过操作",   id + "&");
+
         return SuccessTip.create(affected);
     }
 
 
     @PostMapping("/{id}/execution")
-    @ApiOperation(value = "退货表审核通过")
+    @ApiOperation(value = "执行退货")
     public Tip execution (@PathVariable Long id) {
         Integer affected = refundService.executionRefund(JWTKit.getAccount(getHttpServletRequest()),id);
+        createRefundLog(id,  "execution", "对退货表进行了执行退货操作",   id + "&");
+
         return SuccessTip.create(affected);
     }
 
@@ -138,7 +160,10 @@ public class RefundEndpoint extends BaseController {
     @ApiOperation(value = "删除退货表单",response = RefundModel.class)
 
     public Tip deleteRefund(@PathVariable Long id) {
-        return SuccessTip.create(refundService.deleteRefund(id));
+        Integer result = refundService.deleteRefund(id);
+
+        createRefundLog(id,  "deleteRefund", "对退货表进行了删除退货表单操作",   id + "&");
+        return SuccessTip.create(result);
     }
 
     @GetMapping
@@ -201,16 +226,5 @@ public class RefundEndpoint extends BaseController {
         return SuccessTip.create(page);
     }
 
-    private void createRefundLog(Long targetId, String methodName, String operation,String message) {
-        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
-                JWTKit.getAccount(getHttpServletRequest()),
-                operation,
-                RefundEndpoint.class.getName(),
-                methodName,
-                message,
-                "成功",
-                targetId,
-                FormType.REFUND.toString()
-        ));
-    }
+
 }

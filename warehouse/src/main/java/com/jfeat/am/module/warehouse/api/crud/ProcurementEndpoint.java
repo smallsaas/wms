@@ -49,6 +49,20 @@ public class ProcurementEndpoint extends BaseController {
     @Resource
     QueryProcurementDao queryProcurementDao;
 
+
+    private void createPurchasekLog(Long targetId, String methodName, String operation,String message) {
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
+                JWTKit.getAccount(getHttpServletRequest()),
+                operation,
+                ProcurementEndpoint.class.getName(),
+                methodName,
+                message,
+                "成功",
+                targetId,
+                FormType.PURCHASE.toString()
+        ));
+    }
+
     @PostMapping
     @ApiOperation(value = "新建采购表单",response = ProcurementModel.class)
     public Tip createProcurement(@RequestBody ProcurementModel entity) {
@@ -87,7 +101,7 @@ public class ProcurementEndpoint extends BaseController {
     public Tip executionProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
         entity.setId(id);
         Tip resultTip = SuccessTip.create(procurementService.executionStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
-        createPurchasekLog(id,  "excutionProcurement", "对采购单进行了入库操作", JSONObject.toJSONString(entity) + " & " + id + " &");
+        createPurchasekLog(id,  "executionProcurement", "对采购单进行了入库操作", JSONObject.toJSONString(entity) + " & " + id + " &");
         return resultTip;
     }
 
@@ -96,7 +110,7 @@ public class ProcurementEndpoint extends BaseController {
     @ApiOperation(value = "closed procurement",response = ProcurementModel.class)
     public Tip closedProcurement(@PathVariable Long id) {
         Tip resultTip = SuccessTip.create(procurementService.closedProcurment(id));
-        createPurchasekLog(id,  "closedProcurment", "对采购单进行了关闭操作",  id + " &");
+        createPurchasekLog(id,  "closedProcurment", "对采购单进行了审核拒绝操作",  id + " &");
         return resultTip;
     }
 
@@ -191,16 +205,5 @@ public class ProcurementEndpoint extends BaseController {
         return SuccessTip.create(page);
     }
 
-    private void createPurchasekLog(Long targetId, String methodName, String operation,String message) {
-        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
-                JWTKit.getAccount(getHttpServletRequest()),
-                operation,
-                ProcurementEndpoint.class.getName(),
-                methodName,
-                message,
-                "成功",
-                targetId,
-                FormType.PURCHASE.toString()
-        ));
-    }
+
 }

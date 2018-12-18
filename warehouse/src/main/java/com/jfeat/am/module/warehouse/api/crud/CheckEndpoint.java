@@ -47,6 +47,20 @@ public class CheckEndpoint extends BaseController {
     @Resource
     QueryCheckDao queryCheckDao;
 
+
+    private void createCheckLog(Long targetId, String methodName, String operation,String message) {
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
+                JWTKit.getAccount(getHttpServletRequest()),
+                operation,
+                CheckEndpoint.class.getName(),
+                methodName,
+                message,
+                "成功",
+                targetId,
+                FormType.CHECK.toString()
+        ));
+    }
+
     @ApiOperation(value = "新建库存盘点", response = CheckModel.class)
     @PostMapping
     public Tip createCheck(@RequestBody CheckModel entity) {
@@ -71,6 +85,7 @@ public class CheckEndpoint extends BaseController {
     @ApiOperation(value = "库存盘点审核拒绝")
     public Tip reject(@PathVariable Long id) {
         Integer affected = checkService.auditCheckedReject(id);
+        createCheckLog(id, "reject", "对库存盘点进行了审核拒绝操作", id + " &");
         return SuccessTip.create(affected);
     }
 
@@ -78,6 +93,7 @@ public class CheckEndpoint extends BaseController {
     @ApiOperation(value = "库存盘点审核passed")
     public Tip pass(@PathVariable Long id) {
         Integer affected = checkService.auditCheckedPassed(id);
+        createCheckLog(id, "pass", "对库存盘点进行了审核通过操作", id + " &");
         return SuccessTip.create(affected);
     }
 
@@ -164,16 +180,5 @@ public class CheckEndpoint extends BaseController {
 
 
 
-    private void createCheckLog(Long targetId, String methodName, String operation,String message) {
-        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
-                JWTKit.getAccount(getHttpServletRequest()),
-                operation,
-                CheckEndpoint.class.getName(),
-                methodName,
-                message,
-                "成功",
-                targetId,
-                FormType.CHECK.toString()
-        ));
-    }
+
 }

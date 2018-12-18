@@ -49,6 +49,20 @@ public class SalesEndpoint extends BaseController {
     @Resource
     QuerySalesDao querySalesDao;
 
+
+    private void createSalesLog(Long targetId, String methodName, String operation,String message) {
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
+                JWTKit.getAccount(getHttpServletRequest()),
+                operation,
+                SalesEndpoint.class.getName(),
+                methodName,
+                message,
+                "成功",
+                targetId,
+                FormType.DISTRIBUTOR_OUT.toString()
+        ));
+    }
+
     @PostMapping
     @ApiOperation("Create table record")
     public Tip createSales(@RequestBody SalesModel entity) {
@@ -72,6 +86,8 @@ public class SalesEndpoint extends BaseController {
     public Tip commit(@PathVariable Long id ,@RequestBody SalesModel entity) {
         Integer affected = 0;
         affected += salesService.updateAndCommitSales(JWTKit.getUserId(getHttpServletRequest()),id,entity);
+        createSalesLog(entity.getId(),  "commit", "对分销商出库进行了提交审核操作",  JSONObject.toJSONString(entity) + " &" + id +"&");
+
         return SuccessTip.create(affected);
     }
 
@@ -122,13 +138,13 @@ public class SalesEndpoint extends BaseController {
     }
 
     @BusinessLog(name = "SalesModel", value = "update SalesModel")
-    @PostMapping("/{id}/excution")
-    @ApiOperation(value = "入库",response = SalesModel.class)
+    @PostMapping("/{id}/execution")
+    @ApiOperation(value = "出库",response = SalesModel.class)
     public Tip excutionProcurement(@PathVariable Long id, @RequestBody SalesModel entity) {
         entity.setId(id);
         Tip resultTip = SuccessTip.create(salesService.executionStorageOut(JWTKit.getUserId(getHttpServletRequest()),id,entity));
 
-        createSalesLog(id,  "excutionProcurement", "对分销商出库进行了入库操作",  JSONObject.toJSONString(entity) + " & " + id + " &");
+        createSalesLog(id,  "excutionProcurement", "对分销商出库进行了出库操作",  JSONObject.toJSONString(entity) + " & " + id + " &");
         return resultTip;
     }
 
@@ -218,16 +234,5 @@ public class SalesEndpoint extends BaseController {
         return resultTip;
     }
 
-    private void createSalesLog(Long targetId, String methodName, String operation,String message) {
-        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
-                JWTKit.getAccount(getHttpServletRequest()),
-                operation,
-                SalesEndpoint.class.getName(),
-                methodName,
-                message,
-                "成功",
-                targetId,
-                FormType.DISTRIBUTOR_OUT.toString()
-        ));
-    }
+
 }

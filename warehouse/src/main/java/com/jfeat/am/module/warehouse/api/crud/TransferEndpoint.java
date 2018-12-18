@@ -64,23 +64,23 @@ public class TransferEndpoint extends BaseController {
     }
 
     @PutMapping("/{id}")
-    @ApiOperation(value = "新建  Draft调拨表", response = TransferModel.class)
+    @ApiOperation(value = "修改Draft调拨表", response = TransferModel.class)
     public Tip updateTransfer(@PathVariable Long id, @RequestBody TransferModel entity) {
 
         Integer affected = 0;
         affected += transferService.updateTransfer(id, entity);
-        createPurchasekLog(entity.getId(), "createTransfer", "对调拨单进行了新建操作", JSONObject.toJSONString(entity) + " &");
+        createPurchasekLog(entity.getId(), "createTransfer", "对调拨单进行了修改操作", JSONObject.toJSONString(entity) + " &");
         return SuccessTip.create(affected);
     }
     @PostMapping("/{id}/audit")
-    @ApiOperation(value = "提交调拨单")
+    @ApiOperation(value = "提交审核调拨单")
     public Tip commit(@PathVariable Long id) {
         Integer affected = 0;
         Transfer transfer = new Transfer();
         transfer.setStatus(TransferStatus.Wait_To_Audit.toString());
         if(transfer.getId() != null) {
             affected += transferService.updateMaster(transfer);
-            createPurchasekLog(id, "commit", "对调拨单进行了提交操作", id + " &");
+            createPurchasekLog(id, "commit", "对调拨单进行了提交审核操作", id + " &");
         }
         return SuccessTip.create(affected);
     }
