@@ -350,6 +350,8 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         return affected;
     }
 
+
+
     public RefundModel refundDetails(Long id) {
         Refund refund = refundService.retrieveMaster(id);
         JSONObject refundObj = JSON.parseObject(JSONObject.toJSONString(refund));
@@ -367,36 +369,57 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         }
 
         List<StorageOutItemRecord> outItemRecords = new ArrayList<>();
-        //searching out records
-        List<StorageOut> storageOuts = storageOutMapper.selectList(new EntityWrapper<StorageOut>()
-                .eq(StorageOut.ID, refund.getStorageOutId())
-                .eq(StorageOut.TRANSACTION_TYPE, TransactionType.Refund.toString()));
 
 
-        if (storageOuts != null && storageOuts.size() > 0) {
-            for (StorageOut out : storageOuts) {
-                StorageOutRecord record = queryRefundDao.outRecord(out.getId());//  关联上级出库单的信息
-                List<StorageOutItem> outItems = queryRefundDao.outItems(out.getId());
-                if (outItems != null && outItems.size() > 0) {
-                    for (StorageOutItem item : outItems) {
-                        // 出库 商品详情
-                        StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
-                        if (record.getOriginatorName() != null) {
-                            itemRecord.setOperator(record.getOriginatorName());
-                        }
-                        itemRecord.setWarehouseName(record.getWarehouseName());
-                        outItemRecords.add(itemRecord);
-                    }
-                    record.setStorageOutItemRecords(outItemRecords);
+        if (refund.getStatus().compareTo(RefundStatus.Done.toString())!=0){
+
+            List<StorageOutItem> outItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
+            .eq(StorageOutItem.STORAGE_OUT_ID,refund.getId())
+            .eq(StorageOutItem.TYPE,TransactionType.Refund.toString()));
+
+
+            if (outItems != null && outItems.size() > 0) {
+                for (StorageOutItem item : outItems) {
+                    // 出库 商品详情
+                    StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
+                    outItemRecords.add(itemRecord);
                 }
-//                outRecords.add(record);
+            }else {
+
             }
+        }else {
+
+            //searching out records
+            List<StorageOut> storageOuts = storageOutMapper.selectList(new EntityWrapper<StorageOut>()
+                    .eq(StorageOut.ID, refund.getStorageOutId())
+                    .eq(StorageOut.TRANSACTION_TYPE, TransactionType.Refund.toString()));
+
+
+            if (storageOuts != null && storageOuts.size() > 0) {
+                for (StorageOut out : storageOuts) {
+                    StorageOutRecord record = queryRefundDao.outRecord(out.getId());//  关联上级出库单的信息
+                    List<StorageOutItem> outItems = queryRefundDao.outItems(out.getId());
+                    if (outItems != null && outItems.size() > 0) {
+                        for (StorageOutItem item : outItems) {
+                            // 出库 商品详情
+                            StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
+                            if (record.getOriginatorName() != null) {
+                                itemRecord.setOperator(record.getOriginatorName());
+                            }
+                            itemRecord.setWarehouseName(record.getWarehouseName());
+                            outItemRecords.add(itemRecord);
+                        }
+                        record.setStorageOutItemRecords(outItemRecords);
+                    }
+//                outRecords.add(record);
+                }
+            }
+
         }
         refundObj.put("itemRecords", outItemRecords);
         RefundModel model = JSONObject.parseObject(JSONObject.toJSONString(refundObj), RefundModel.class);
         return model;
     }
-
 
 
 
