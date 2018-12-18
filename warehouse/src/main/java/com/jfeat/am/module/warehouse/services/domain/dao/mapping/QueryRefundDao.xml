@@ -105,7 +105,7 @@
         FROM wms_storage_out_item
         left join t_sku_product on t_sku_product.id = wms_storage_out_item.sku_id
         WHERE 1=1
-        and (wms_storage_out_item.id = #{outItemId} and wms_storage_out_item.type = 'Others')
+        and (wms_storage_out_item.id = #{outItemId})
     </select>
 
 
