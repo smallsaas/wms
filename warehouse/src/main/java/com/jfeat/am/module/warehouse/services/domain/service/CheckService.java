@@ -16,6 +16,13 @@ public interface CheckService extends CRUDCheckService{
     @Transactional
     Integer createCheckList(Long userId, CheckModel model);
 
+
+    /**
+     * update盘点单
+     */
+    @Transactional
+    Integer updateCheckList(Long userId, Long checkId ,CheckModel model);
+
     /**
      * 开始盘点
      * */

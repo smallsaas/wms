@@ -76,6 +76,44 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
     }
 
     /**
+     * update盘点单
+     */
+    @Transactional
+    public Integer updateCheckList(Long userId, Long checkId ,CheckModel model) {
+
+        int affected = 0;
+        Check check = checkMapper.selectById(checkId);
+
+        if (check.getStatus().compareTo(CheckStatus.Draft.toString())!=0){
+
+            throw new BusinessException(BusinessCode.ErrorStatus);
+        }
+        checkSkuMapper.delete(new EntityWrapper<CheckSku>().eq(CheckSku.CHECK_ID, checkId));
+
+        model.setOriginatorId(userId);
+        model.setProfitLost(0); //新建默认缺失值为0
+        model.setStatus(CheckStatus.Draft.toString());
+        model.setCheckTime(new Date());
+        model.setId(checkId);
+
+
+        if (model.getCheckSkus() == null && model.getCheckSkus().size() <= 0) {
+            throw new BusinessException(5000, "请选择需要盘点的商品");
+        }
+        for (CheckSku sku : model.getCheckSkus()) {
+            Integer validCount = queryCheckDao.validCount(sku.getWarehouseId(), sku.getSkuId());
+            sku.setWarehouseId(model.getWarehouseId());
+            sku.setDeservedQuantities(validCount);
+            sku.setCheckId(model.getId());
+            affected += checkSkuMapper.insert(sku);
+        }
+
+        affected += checkMapper.updateById(model);
+        return affected;
+
+    }
+
+    /**
      * 开始盘点
      */
     @Transactional

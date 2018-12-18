@@ -48,7 +48,7 @@ public class CheckEndpoint extends BaseController {
     QueryCheckDao queryCheckDao;
 
 
-    private void createCheckLog(Long targetId, String methodName, String operation,String message) {
+    private void createCheckLog(Long targetId, String methodName, String operation, String message) {
         LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
                 JWTKit.getAccount(getHttpServletRequest()),
                 operation,
@@ -71,12 +71,23 @@ public class CheckEndpoint extends BaseController {
             Long userId = JWTKit.getUserId(getHttpServletRequest());
             entity.setOriginatorName(userName);
             entity.setOriginatorId(userId);
-            affected = checkService.createCheckList(userId,entity);
+            affected = checkService.createCheckList(userId, entity);
 
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
         }
         createCheckLog(entity.getId(), "createCheck", "对库存盘点进行了新建操作", JSON.toJSONString(entity) + " &");
+        return SuccessTip.create(affected);
+    }
+
+    @ApiOperation(value = "更新库存盘点", response = CheckModel.class)
+    @PutMapping("/{id}")
+    public Tip updateCheck(@PathVariable Long id, @RequestBody CheckModel entity) {
+        Integer affected = 0;
+        Long userId = JWTKit.getUserId(getHttpServletRequest());
+        affected = checkService.updateCheckList(userId, id,entity);
+
+        createCheckLog(entity.getId(), "updateCheck", "对库存盘点进行了更新操作", JSON.toJSONString(entity) + " &");
         return SuccessTip.create(affected);
     }
 
@@ -105,10 +116,10 @@ public class CheckEndpoint extends BaseController {
 
     @PutMapping("/{id}/checking")
     @ApiOperation(value = "update check", response = CheckModel.class)
-    public Tip updateCheck(@PathVariable Long id, @RequestBody CheckModel entity) {
+    public Tip checkingCheck(@PathVariable Long id, @RequestBody CheckModel entity) {
         entity.setId(id);
-        Tip resultTip = SuccessTip.create(checkService.actionCheck(id,entity));
-        createCheckLog(id, "updateCheck", "对库存盘点进行了盘点操作", JSONObject.toJSONString(entity) + " & " + id + " &");
+        Tip resultTip = SuccessTip.create(checkService.actionCheck(id, entity));
+        createCheckLog(id, "checkingCheck", "对库存盘点进行了盘点操作", JSONObject.toJSONString(entity) + " & " + id + " &");
         return resultTip;
     }
 
@@ -118,16 +129,16 @@ public class CheckEndpoint extends BaseController {
     public Tip doneCheck(@PathVariable Long id) {
         Tip resultTip = SuccessTip.create(checkService.checkedCheck(id));
 
-        createCheckLog(id,  "doneCheck", "对库存盘点进行了完成盘点操作", id + " &");
+        createCheckLog(id, "doneCheck", "对库存盘点进行了完成盘点操作", id + " &");
         return resultTip;
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除库存盘点 only status WaitForCheck", response = CheckModel.class)
     public Tip deleteCheck(@PathVariable Long id) {
-        Tip resultTip =SuccessTip.create(checkService.deleteCheck(id));
+        Tip resultTip = SuccessTip.create(checkService.deleteCheck(id));
 
-        createCheckLog(id,  "deleteCheck", "对库存盘点进行了删除操作", id + " &");
+        createCheckLog(id, "deleteCheck", "对库存盘点进行了删除操作", id + " &");
         return resultTip;
     }
 
@@ -173,12 +184,10 @@ public class CheckEndpoint extends BaseController {
         record.setField1(field1);
         record.setField2(field2);
 
-        page.setRecords(queryCheckDao.findCheckPage(page, warehouseId,record, orderBy));
+        page.setRecords(queryCheckDao.findCheckPage(page, warehouseId, record, orderBy));
 
         return SuccessTip.create(page);
     }
-
-
 
 
 }
