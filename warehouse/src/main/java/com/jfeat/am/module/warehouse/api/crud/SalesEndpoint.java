@@ -140,11 +140,11 @@ public class SalesEndpoint extends BaseController {
     @BusinessLog(name = "SalesModel", value = "update SalesModel")
     @PostMapping("/{id}/execution")
     @ApiOperation(value = "出库",response = SalesModel.class)
-    public Tip excutionProcurement(@PathVariable Long id, @RequestBody SalesModel entity) {
+    public Tip executionProcurement(@PathVariable Long id, @RequestBody SalesModel entity) {
         entity.setId(id);
         Tip resultTip = SuccessTip.create(salesService.executionStorageOut(JWTKit.getUserId(getHttpServletRequest()),id,entity));
 
-        createSalesLog(id,  "excutionProcurement", "对分销商出库进行了出库操作",  JSONObject.toJSONString(entity) + " & " + id + " &");
+        createSalesLog(id,  "executionProcurement", "对分销商出库进行了出库操作",  JSONObject.toJSONString(entity) + " & " + id + " &");
         return resultTip;
     }
 

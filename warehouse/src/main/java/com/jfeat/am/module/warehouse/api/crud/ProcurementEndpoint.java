@@ -119,9 +119,9 @@ public class ProcurementEndpoint extends BaseController {
     @ApiOperation(value = "审核",response = ProcurementModel.class)
     public Tip auditProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
         entity.setId(id);
-        Tip resultTip = SuccessTip.create(procurementService.updateAndAuditProcurement(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        Integer resultTip =procurementService.updateAndAuditProcurement(JWTKit.getUserId(getHttpServletRequest()),id,entity);
         createPurchasekLog(id,  "auditProcurment", "对采购单进行了提交审核操作",  id + " &");
-        return resultTip;
+        return  SuccessTip.create(resultTip);
     }
 
     @BusinessLog(name = "Procurement", value = "审核通过 Procurement")

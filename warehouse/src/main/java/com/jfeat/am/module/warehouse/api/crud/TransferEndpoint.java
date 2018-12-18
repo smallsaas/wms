@@ -90,6 +90,7 @@ public class TransferEndpoint extends BaseController {
     public Tip commit(@PathVariable Long id) {
         Integer affected = 0;
         Transfer transfer = new Transfer();
+        transfer.setId(id);
         transfer.setStatus(TransferStatus.Wait_To_Audit.toString());
         if(transfer.getId() != null) {
             affected += transferService.updateMaster(transfer);
@@ -103,6 +104,8 @@ public class TransferEndpoint extends BaseController {
     public Tip reject(@PathVariable Long id) {
         Integer affected = 0;
         Transfer transfer = new Transfer();
+        transfer.setId(id);
+
         transfer.setStatus(TransferStatus.Closed.toString());
         if(transfer.getId() != null) {
             affected += transferService.updateMaster(transfer);
@@ -115,13 +118,14 @@ public class TransferEndpoint extends BaseController {
     @ApiOperation(value = "调拨单审核通过")
     public Tip pass(@PathVariable Long id) {
         Integer affected = 0;
-        try {
-            affected += transferService.createTransfer(id, JWTKit.getUserId(getHttpServletRequest()));
+        Transfer transfer = new Transfer();
+        transfer.setId(id);
 
-        } catch (DuplicateKeyException e) {
-            throw new BusinessException(5100,"编号重复，请重新刷新页面");
+        transfer.setStatus(TransferStatus.Audit_Passed.toString());
+        if(transfer.getId() != null) {
+            affected += transferService.updateMaster(transfer);
+            createPurchasekLog(id, "pass", "对调拨单进行了审核通过操作", id + " &");
         }
-        createPurchasekLog(id, "pass", "对调拨单进行了审核通过操作", id + " &");
         return SuccessTip.create(affected);
     }
 
