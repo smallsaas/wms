@@ -3,26 +3,34 @@ package com.jfeat.am.module.sku.services.domain.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jfeat.am.common.constant.tips.Ids;
 import com.jfeat.am.common.crud.CRUDObject;
 import com.jfeat.am.module.product.services.persistence.dao.ProductMapper;
 import com.jfeat.am.module.product.services.persistence.model.Product;
 import com.jfeat.am.module.sku.services.crud.filter.SkuProductFilter;
 import com.jfeat.am.module.sku.services.crud.model.SkuProductModel;
-import com.jfeat.am.module.sku.services.crud.model.SkuSpecificationGroupModel;
 import com.jfeat.am.module.sku.services.crud.service.CRUDSkuProductService;
 import com.jfeat.am.module.sku.services.crud.service.impl.CRUDSkuProductServiceImpl;
 import com.jfeat.am.module.sku.services.domain.dao.QuerySkuProductDao;
 import com.jfeat.am.module.sku.services.domain.model.CreateSkuProductModel;
 import com.jfeat.am.module.sku.services.domain.service.SkuProductService;
+import com.jfeat.am.module.sku.services.mq.SkuMessage;
+import com.jfeat.am.module.sku.services.mq.SkuUpdateSender;
 import com.jfeat.am.module.sku.services.persistence.dao.*;
 import com.jfeat.am.module.sku.services.persistence.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static com.jfeat.am.module.sku.services.utils.DataCheck.isUpdated;
 
 /**
  * <p>
@@ -34,7 +42,7 @@ import java.util.*;
  */
 @Service("skuProductService")
 public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements SkuProductService {
-
+    protected Logger logger = LoggerFactory.getLogger(SkuProductServiceImpl.class);
     @Resource
     CRUDSkuProductService crudSkuProductService;
     @Resource
@@ -55,6 +63,8 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
     SkuTagRelationMapper skuTagRelationMapper;
     @Resource
     QuerySkuProductDao querySkuProductDao;
+    @Resource
+    SkuUpdateSender skuUpdateSender;
 
 
     @Transactional
@@ -162,6 +172,7 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         model.setId(originSkuProduct.getProductId());
         affect += productMapper.updateById(model);
 
+        SkuMessage message = null;
 
         /*SkuPriceHistory history = new SkuPriceHistory();
         history.setSkuId(skuId);
@@ -187,7 +198,6 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
             model.getSkus().get(0).setSkuCode(model.getProductCode());
 
             affect += crudSkuProductService.updateMaster(model.getSkus().get(0));
-
 
             if (model.getSkus().get(0).getSpecId() == null || model.getSkus().get(0).getSpecId().size() == 0) {
                 skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
@@ -222,6 +232,33 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
 
             originSkuProduct.setCostPrice(model.getCostPrice());
             affect += crudSkuProductService.updateMaster(originSkuProduct);
+
+
+            /**
+             * set mq
+             * {"type":"SKU", "data": { "id": 11, "skuName": "xxx", "skuCode": "xxxx", "barCode": "xxvv" } }
+             **/
+            if(isUpdated(originSkuProduct.getSkuName(), model.getName())
+                    || isUpdated(originSkuProduct.getBarCode(), model.getBarCode())
+                    || isUpdated(originSkuProduct.getSkuCode(), model.getProductCode())) {
+                message = new SkuMessage();
+                message.setType(SkuUpdateSender.MESSAGE_TYPE);
+                message.setData(new SkuMessage.Data());
+                SkuMessage.Data data = message.getData();
+                data.setId(skuId);
+                data.setBarCode(model.getBarCode() == null ? model.getBarCode() : originSkuProduct.getBarCode());
+                data.setSkuName(model.getName() == null ? model.getName() : originSkuProduct.getSkuName());
+                data.setSkuCode(model.getProductCode() == null ? model.getProductCode() : originSkuProduct.getSkuCode());
+            }
+        }
+
+        /**
+         * send mq
+         **/
+        try {
+            skuUpdateSender.sendUpdateMessage(message);
+        } catch (JsonProcessingException e) {
+            logger.error("send skuUpdateMessage error: \n{}", e.getMessage());
         }
         return affect;
     }
