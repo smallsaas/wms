@@ -27,7 +27,7 @@ public class SkuUpdateSender {
 
     public void sendUpdateMessage(SkuMessage obj) throws JsonProcessingException {
         rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
-        rabbitTemplate.setRoutingKey(RabbitConfig.STORE_UPDATE_QUEUE);
+        rabbitTemplate.setRoutingKey(SkuMessageConfig.STORE_UPDATE_QUEUE);
         Message msg= MessageBuilder.withBody(objectMapper.writeValueAsBytes(obj)).build();
         logger.debug("send message = {}", JSONObject.toJSONString(obj));
         rabbitTemplate.convertAndSend(msg);
