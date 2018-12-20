@@ -2,6 +2,7 @@ package com.jfeat.am.module.sku.services.mq;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -25,7 +26,7 @@ public class SkuUpdateSender {
         rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
         rabbitTemplate.setRoutingKey(SkuMessageConfig.STORE_UPDATE_QUEUE);
         logger.debug("send message = {}", JSONObject.toJSONString(obj));
-        rabbitTemplate.convertAndSend(JSONObject.toJSONString(obj));
+        rabbitTemplate.convertAndSend(SerializationUtils.serialize(JSONObject.toJSONString(obj)));
     }
 }
 
