@@ -249,17 +249,11 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                 data.setBarCode(model.getBarCode() == null ? model.getBarCode() : originSkuProduct.getBarCode());
                 data.setSkuName(model.getName() == null ? model.getName() : originSkuProduct.getSkuName());
                 data.setSkuCode(model.getProductCode() == null ? model.getProductCode() : originSkuProduct.getSkuCode());
+
+                skuUpdateSender.sendUpdateMessage(message);
             }
         }
 
-        /**
-         * send mq
-         **/
-        try {
-            skuUpdateSender.sendUpdateMessage(message);
-        } catch (JsonProcessingException e) {
-            logger.error("send skuUpdateMessage error: \n{}", e.getMessage());
-        }
         return affect;
     }
 
