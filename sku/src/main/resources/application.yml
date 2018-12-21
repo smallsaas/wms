@@ -99,6 +99,11 @@ spring:
       initialize: false
       schema: classpath*:sql/*-schema.sql
       data: classpath*:sql/*-data.sql
+  rabbitmq:
+      host: 112.74.26.228
+      port: 5672
+      username: jfeat
+      password: jfeat
 
 logging:
   level: debug
