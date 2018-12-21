@@ -126,7 +126,6 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                         } else {
 
                             outItem.setType(TransactionType.StorageOut.toString());
-                            affected += outItemMapper.insert(outItem);
                         }
                     } else {
                         throw new BusinessException(4051, "产品不存在，请核对！");

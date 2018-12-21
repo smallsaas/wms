@@ -86,7 +86,7 @@ public class StorageOutEndpoint extends BaseController {
 
 
     @BusinessLog(name = "StorageOut", value = "create StorageOut")
-    @PostMapping("/sales")
+    @PostMapping("/mall")
     @ApiOperation(value = "新建出库单",response = StorageOutModel.class)
     public Tip salesStorageOut(@RequestBody StorageOutModel entity) {
         String userName = JWTKit.getAccount(getHttpServletRequest());
