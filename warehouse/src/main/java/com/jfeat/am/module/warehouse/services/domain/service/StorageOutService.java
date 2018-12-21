@@ -44,4 +44,12 @@ public interface StorageOutService extends CRUDStorageOutService{
      */
     @Transactional
     Integer executionStorageOut(String uasername, Long storageOutId);
+
+
+    /**
+     *
+     *  for 商城下单 出库，不需要审核直接出库
+     * */
+    @Transactional
+    Integer salesStorageOut(Long userId, StorageOutModel entity);
 }

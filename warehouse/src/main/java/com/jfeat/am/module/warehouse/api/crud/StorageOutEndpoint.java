@@ -84,6 +84,22 @@ public class StorageOutEndpoint extends BaseController {
         return SuccessTip.create(result);
     }
 
+
+    @BusinessLog(name = "StorageOut", value = "create StorageOut")
+    @PostMapping("/sales")
+    @ApiOperation(value = "新建出库单",response = StorageOutModel.class)
+    public Tip salesStorageOut(@RequestBody StorageOutModel entity) {
+        String userName = JWTKit.getAccount(getHttpServletRequest());
+        entity.setOriginatorName(userName);
+        if (entity.getWarehouseId()==null){
+            entity.setWarehouseId(1L);
+        }
+        Integer result  = storageOutService.salesStorageOut(JWTKit.getUserId(getHttpServletRequest()),entity);
+        createStorageOutLog(entity.getId(),  "createStorageOut", "对出库单进行了商城出库操作",  entity
+                .getId() + " &");
+        return SuccessTip.create(result);
+    }
+
     @GetMapping("/{id}")
     @ApiOperation(value = "查看出库单",response = StorageOutModel.class)
     public Tip getStorageOut(@PathVariable Long id) {

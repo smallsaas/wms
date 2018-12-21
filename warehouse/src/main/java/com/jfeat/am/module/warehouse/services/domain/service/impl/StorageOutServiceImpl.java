@@ -273,4 +273,52 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         affected = crudStorageOutService.createMaster(out);
         return affected;
     }
+
+    /**
+     *
+     *  for 商城下单 出库，不需要审核直接出库
+     * */
+    @Transactional
+    public Integer salesStorageOut(Long userId, StorageOutModel entity) {
+        Integer affected = 0;
+        entity.setOriginatorId(userId);
+        entity.setTransactionTime(new Date());
+        if (entity.getStorageOutTime() == null) {
+            entity.setStorageOutTime(new Date());
+        }
+        List<StorageOutItem> storageOutItems = new ArrayList<>();
+        if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
+            for (StorageOutItem outItem : entity.getStorageOutItems()) {
+                if (outItem.getTransactionQuantities() > 0) {
+                    outItem.setRelationCode(entity.getTransactionCode());
+                    outItem.setTransactionTime(entity.getStorageOutTime());
+                    Inventory isExistInventory = new Inventory();
+                    isExistInventory.setSkuId(outItem.getSkuId());
+                    isExistInventory.setWarehouseId(entity.getWarehouseId());
+                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    if (originInventory != null) {
+                        if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
+                            throw new BusinessException(4050, "库存不足," + "现有库存" + originInventory.getValidSku() + "小于出库量" + outItem.getTransactionQuantities());
+                        } else {
+                            Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
+                            outItem.setAfterTransactionQuantities(afterCount);
+                            originInventory.setValidSku(afterCount);
+                            affected += inventoryMapper.updateById(originInventory);
+                        }
+                    } else {
+                        throw new BusinessException(4051, "产品不存在，请核对！");
+                    }
+                    storageOutItems.add(outItem);
+                } else {
+                    //while transaction quantities = 0 ,do nothing
+                }
+            }
+        } else {
+            throw new BusinessException(4050, "商品不能为空，请先选择商品！");
+        }
+        entity.setStorageOutItems(storageOutItems);
+        affected = crudStorageOutService.createMaster(entity, null, null, null);
+        return affected;
+    }
+
 }
