@@ -87,6 +87,20 @@ public class StorageInEndpoint extends BaseController {
         return SuccessTip.create(storageInService.createStorageIn(JWTKit.getUserId(getHttpServletRequest()),entity));
     }
 
+    @BusinessLog(name = "StorageIn", value = "create StorageIn")
+    @PostMapping("/sales")
+    @ApiOperation(value = "新建入库单",response = StorageInModel.class)
+    public Tip salesStorageIn(@RequestBody StorageInModel entity) {
+        String userName = JWTKit.getAccount(getHttpServletRequest());
+        entity.setOriginatorName(userName);
+        if (entity.getWarehouseId()==null){
+            entity.setWarehouseId(1L);
+        }
+        createStorageInLog(entity.getId(),  "createStorageIn", "对退货入库单进行了新建操作",  entity
+                .getId() + " &");
+        return SuccessTip.create(storageInService.salesStorageIn(JWTKit.getUserId(getHttpServletRequest()),entity));
+    }
+
     @GetMapping("/{id}")
     @ApiOperation(value = "查询入库单",response = StorageInModel.class)
     public Tip getStorageIn(@PathVariable Long id) {

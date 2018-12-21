@@ -50,4 +50,11 @@ public interface StorageInService extends CRUDStorageInService{
     Integer executionStorageIn(String username,Long storageInId);
 
 
+    /**
+     *  for 商城退货的时候直接 插入，不许需要审核
+     * */
+    @Transactional
+    Integer salesStorageIn(Long userId, StorageInModel entity);
+
+
 }
