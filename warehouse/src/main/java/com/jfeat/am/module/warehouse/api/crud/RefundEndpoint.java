@@ -137,6 +137,7 @@ public class RefundEndpoint extends BaseController {
         refund.setProductRefundStatus(RefundStatus.Audit_Passed.toString());
         if(refund.getId() != null) {
             affected += refundService.updateMaster(refund);
+            refundService.executionRefund(JWTKit.getAccount(getHttpServletRequest()),id);
         }
         createRefundLog(id,  "pass", "对退货表进行了审核通过操作",   id + "&");
 
