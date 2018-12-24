@@ -311,6 +311,6 @@
             AND wms_sales.field2 LIKE CONCAT('%',#{record.field2},'%')
         </if>
 
-        order by wms_sales.transaction_time
+        order by wms_sales.transaction_time DESC
     </select>
 </mapper>
