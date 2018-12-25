@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface RefundService extends CRUDRefundService{
 
     @Transactional
-    Integer executionRefund(String username, Long refundId);
+    Integer executionRefund(String username,Long userId, Long refundId);
 
     /**
      * 重构 Refund 问题

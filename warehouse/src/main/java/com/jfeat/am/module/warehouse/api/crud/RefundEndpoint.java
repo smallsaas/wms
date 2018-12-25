@@ -137,7 +137,7 @@ public class RefundEndpoint extends BaseController {
         refund.setProductRefundStatus(RefundStatus.Audit_Passed.toString());
         if(refund.getId() != null) {
             affected += refundService.updateMaster(refund);
-            refundService.executionRefund(JWTKit.getAccount(getHttpServletRequest()),id);
+            refundService.executionRefund(JWTKit.getAccount(getHttpServletRequest()),JWTKit.getUserId(getHttpServletRequest()),id);
         }
         createRefundLog(id,  "pass", "对退货表进行了审核通过操作",   id + "&");
 
@@ -148,7 +148,7 @@ public class RefundEndpoint extends BaseController {
     @PostMapping("/{id}/execution")
     @ApiOperation(value = "执行退货")
     public Tip execution (@PathVariable Long id) {
-        Integer affected = refundService.executionRefund(JWTKit.getAccount(getHttpServletRequest()),id);
+        Integer affected =  refundService.executionRefund(JWTKit.getAccount(getHttpServletRequest()),JWTKit.getUserId(getHttpServletRequest()),id);
         createRefundLog(id,  "execution", "对退货表进行了执行退货操作",   id + "&");
 
         return SuccessTip.create(affected);

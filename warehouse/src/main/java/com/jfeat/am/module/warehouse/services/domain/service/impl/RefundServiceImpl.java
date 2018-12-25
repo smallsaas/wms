@@ -169,7 +169,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         }
 
         model.setId(refundId);
-        model.setProductRefundStatus(RefundStatus.Wait_To_audit.toString());
+        model.setProductRefundStatus(RefundStatus.Wait_To_Audit.toString());
         affected += createOrUpdate(model.getId(),model);
         affected += refundMapper.updateById(model);
         return affected;
@@ -180,7 +180,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
      */
     @Transactional
     @Override
-    public Integer executionRefund(String username, Long refundId) {
+    public Integer executionRefund(String username,Long userId, Long refundId) {
         /**
          * 1.先执行生成出库单，然后拿到入库单的 id 插入的采购的表单中
          * 2.
@@ -264,6 +264,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         storageOutModel.setTransactionCode(refund.getField1());
         storageOutModel.setTransactionBy(username);
         storageOutModel.setOriginatorName(refund.getOriginatorName());
+        storageOutModel.setOriginatorId(userId);
         storageOutModel.setTransactionBy(refund.getTransactionBy());
         storageOutModel.setTransactionTime(new Date());
         StorageOutFilter storageOutFilter = new StorageOutFilter();
