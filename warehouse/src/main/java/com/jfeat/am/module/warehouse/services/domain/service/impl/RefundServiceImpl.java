@@ -393,7 +393,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
 
             List<StorageOutItem> outItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
             .eq(StorageOutItem.STORAGE_OUT_ID,refund.getId())
-            .eq(StorageOutItem.TYPE,TransactionType.Refund.toString()));
+            .eq(StorageOutItem.TYPE,"Others"));
 
 
             if (outItems != null && outItems.size() > 0) {
