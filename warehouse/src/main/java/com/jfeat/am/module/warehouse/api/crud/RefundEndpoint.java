@@ -131,14 +131,7 @@ public class RefundEndpoint extends BaseController {
     @PutMapping("/{id}/passed")
     @ApiOperation(value = "退货表审核通过")
     public Tip pass(@PathVariable Long id) {
-        Integer affected = 0;
-        Refund refund = new Refund();
-        refund.setId(id);
-        refund.setProductRefundStatus(RefundStatus.Audit_Passed.toString());
-        if(refund.getId() != null) {
-            affected += refundService.updateMaster(refund);
-            refundService.executionRefund(JWTKit.getAccount(getHttpServletRequest()),JWTKit.getUserId(getHttpServletRequest()),id);
-        }
+        Integer affected = refundService.auditPassed(id,JWTKit.getAccount(getHttpServletRequest()),JWTKit.getUserId(getHttpServletRequest()));
         createRefundLog(id,  "pass", "对退货表进行了审核通过操作",   id + "&");
 
         return SuccessTip.create(affected);

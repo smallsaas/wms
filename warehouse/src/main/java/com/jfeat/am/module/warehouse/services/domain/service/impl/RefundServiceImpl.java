@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
+import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
@@ -172,6 +173,19 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         model.setProductRefundStatus(RefundStatus.Wait_To_Audit.toString());
         affected += createOrUpdate(model.getId(),model);
         affected += refundMapper.updateById(model);
+        return affected;
+    }
+
+    @Transactional
+    public Integer auditPassed(Long id,String username,Long userId){
+        Integer affected = 0;
+        Refund refund = new Refund();
+        refund.setId(id);
+        refund.setProductRefundStatus(RefundStatus.Audit_Passed.toString());
+        if(refund.getId() != null) {
+            affected += refundService.updateMaster(refund);
+            affected += executionRefund(username,userId,id);
+        }
         return affected;
     }
 
