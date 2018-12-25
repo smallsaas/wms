@@ -195,13 +195,12 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         int totalCount = queryProcurementDao.totalCount(procurementId);
 
         Procurement procurement = procurementMapper.selectById(procurementId);
-        if (procurement.getProcureStatus().compareTo(ProcurementStatus.Audit_Passed.toString())!=0){
-            throw new BusinessException(BusinessCode.ErrorStatus);
-        }
-        if (procurement.getProcureStatus().compareTo(ProcurementStatus.TotalStorageIn.toString())==0
+
+        if (procurement.getProcureStatus().compareTo(ProcurementStatus.Audit_Passed.toString())!=0
+            ||procurement.getProcureStatus().compareTo(ProcurementStatus.TotalStorageIn.toString())==0
             || procurement.getProcureStatus().compareTo(ProcurementStatus.Closed.toString())==0){
 
-            throw new BusinessException(5200,"\"关闭|全部入库\"状态下无法执行入库操作");
+            throw new BusinessException(5200,"\"审核未通过|关闭|全部入库\"状态下无法执行入库操作");
         }
 
         model.setId(procurementId);
