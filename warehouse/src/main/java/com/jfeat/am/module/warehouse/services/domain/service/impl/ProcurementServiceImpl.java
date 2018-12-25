@@ -196,11 +196,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
         Procurement procurement = procurementMapper.selectById(procurementId);
 
-        if (procurement.getProcureStatus().compareTo(ProcurementStatus.Audit_Passed.toString())!=0
-            ||procurement.getProcureStatus().compareTo(ProcurementStatus.TotalStorageIn.toString())==0
-            || procurement.getProcureStatus().compareTo(ProcurementStatus.Closed.toString())==0){
-
-            throw new BusinessException(5200,"\"审核未通过|关闭|全部入库\"状态下无法执行入库操作");
+        if (procurement.getProcureStatus().compareTo(ProcurementStatus.SectionStorageIn.toString())!=0){
+            throw new BusinessException(5200,"非\"部分入库状\"状态下无法执行入库操作");
         }
 
         model.setId(procurementId);
