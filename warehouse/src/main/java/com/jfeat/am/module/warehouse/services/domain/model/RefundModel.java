@@ -14,6 +14,7 @@ public class RefundModel extends Refund{
     String procurementCode;
     String supplierName;
 //    List<StorageOutRecord> outRecords;
+    String warehouseName;
 
     List<StorageOutItemRecord> itemRecords;
 
@@ -49,6 +50,14 @@ public class RefundModel extends Refund{
     public void setOutRecords(List<StorageOutRecord> outRecords) {
         this.outRecords = outRecords;
     }*/
+
+    public String getWarehouseName() {
+        return warehouseName;
+    }
+
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
+    }
 
     public List<StorageOutItemRecord> getItemRecords() {
         return itemRecords;

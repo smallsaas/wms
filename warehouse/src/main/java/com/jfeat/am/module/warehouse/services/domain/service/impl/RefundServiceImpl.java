@@ -51,13 +51,10 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     CRUDRefundService refundService;
     @Resource
     CRUDStorageInService crudStorageInService;
-
     @Resource
     StorageOutItemMapper storageOutItemMapper;
-
     @Resource
     SkuProductMapper skuProductMapper;
-
     @Resource
     ProcurementMapper procurementMapper;
     @Resource
@@ -70,6 +67,8 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     SuppliersMapper suppliersMapper;
     @Resource
     RefundMapper refundMapper;
+    @Resource
+    WarehouseMapper warehouseMapper;
 
 
     public Integer createOrUpdate(Long refundId, RefundModel model) {
@@ -370,6 +369,10 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     public RefundModel refundDetails(Long id) {
         Refund refund = refundService.retrieveMaster(id);
         JSONObject refundObj = JSON.parseObject(JSONObject.toJSONString(refund));
+
+        if (refund.getProductRefundWarehouseId()!=null){
+            refundObj.put("warehouseName",warehouseMapper.selectById(refund.getProductRefundWarehouseId()).getWarehouseName());
+        }
 
         if (refund.getProductProcurementId() != null) {
             Procurement procurement = procurementMapper.selectById(refund.getProductProcurementId());
