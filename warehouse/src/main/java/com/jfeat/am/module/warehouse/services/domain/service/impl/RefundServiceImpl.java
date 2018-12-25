@@ -389,10 +389,11 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         List<StorageOutItemRecord> outItemRecords = new ArrayList<>();
 
 
-        if (refund.getProductRefundStatus().compareTo(RefundStatus.Done.toString())!=0){
+        if (refund.getProductRefundStatus().compareTo(RefundStatus.Done.toString()) ==0
+                || refund.getProductRefundStatus().compareTo(RefundStatus.Audit_Passed.toString())==0){
 
             List<StorageOutItem> outItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
-            .eq(StorageOutItem.STORAGE_OUT_ID,refund.getId())
+            .eq(StorageOutItem.STORAGE_OUT_ID,refund.getStorageOutId())
             .eq(StorageOutItem.TYPE,"Others"));
 
 
@@ -409,7 +410,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
 
             //searching out records
             List<StorageOut> storageOuts = storageOutMapper.selectList(new EntityWrapper<StorageOut>()
-                    .eq(StorageOut.ID, refund.getStorageOutId())
+                    .eq(StorageOut.ID, refund.getId())
                     .eq(StorageOut.TRANSACTION_TYPE, TransactionType.Refund.toString()));
 
 
