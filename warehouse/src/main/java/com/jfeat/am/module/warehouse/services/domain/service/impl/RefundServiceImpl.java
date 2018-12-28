@@ -79,8 +79,8 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         if (model.getItems() != null && model.getItems().size() > 0) {
             // execution delete before insert
             affected += storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>()
-                                        .eq(StorageOutItem.STORAGE_OUT_ID,refundId)
-                                        .eq(StorageOutItem.TYPE,TransactionType.Refund.toString()));
+                    .eq(StorageOutItem.STORAGE_OUT_ID, refundId)
+                    .eq(StorageOutItem.TYPE, TransactionType.Refund.toString()));
 
             for (StorageOutItem outItem : model.getItems()) {
 
@@ -138,7 +138,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         model.setTransactionTime(new Date());
         model.setProductRefundStatus(RefundStatus.Draft.toString());
         affected += refundMapper.insert(model);
-        affected += createOrUpdate(model.getId(),model);
+        affected += createOrUpdate(model.getId(), model);
         return affected;
     }
 
@@ -148,13 +148,13 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         int affected = 0;
 
         Refund refund = refundMapper.selectById(refundId);
-        if (refund.getProductRefundStatus().compareTo(RefundStatus.Draft.toString())!= 0){
+        if (refund.getProductRefundStatus().compareTo(RefundStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
 
         model.setId(refundId);
         model.setProductRefundStatus(RefundStatus.Draft.toString());
-        affected += createOrUpdate(model.getId(),model);
+        affected += createOrUpdate(model.getId(), model);
         affected += refundMapper.updateById(model);
         return affected;
     }
@@ -164,19 +164,19 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         int affected = 0;
 
         Refund refund = refundMapper.selectById(refundId);
-        if (refund.getProductRefundStatus().compareTo(RefundStatus.Draft.toString())!= 0){
+        if (refund.getProductRefundStatus().compareTo(RefundStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
 
         model.setId(refundId);
         model.setProductRefundStatus(RefundStatus.Wait_To_Audit.toString());
-        affected += createOrUpdate(model.getId(),model);
+        affected += createOrUpdate(model.getId(), model);
         affected += refundMapper.updateById(model);
         return affected;
     }
 
     @Transactional
-    public Integer auditPassed(Long id,String username,Long userId){
+    public Integer auditPassed(Long id, String username, Long userId) {
         Integer affected = 0;
         Refund refund = new Refund();
         refund.setId(id);
@@ -193,7 +193,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
      */
     @Transactional
     @Override
-    public Integer executionRefund(String username,Long userId, Long refundId) {
+    public Integer executionRefund(String username, Long userId, Long refundId) {
         /**
          * 1.先执行生成出库单，然后拿到入库单的 id 插入的采购的表单中
          * 2.
@@ -201,13 +201,13 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         int affected = 0;
         int refundTotal = 0;
         Refund refund = refundMapper.selectById(refundId);
-        if (refund.getProductRefundStatus().compareTo(RefundStatus.Audit_Passed.toString())!= 0){
+        if (refund.getProductRefundStatus().compareTo(RefundStatus.Wait_To_Audit.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
 
         List<StorageOutItem> items = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
-                .eq(StorageOutItem.STORAGE_OUT_ID,refundId)
-                .eq(StorageOutItem.TYPE,TransactionType.Refund.toString()));
+                .eq(StorageOutItem.STORAGE_OUT_ID, refundId)
+                .eq(StorageOutItem.TYPE, TransactionType.Refund.toString()));
 
         StorageOutModel storageOutModel = new StorageOutModel();
         storageOutModel.setStorageOutTime(new Date());
@@ -365,13 +365,12 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     }
 
 
-
     public RefundModel refundDetails(Long id) {
         Refund refund = refundService.retrieveMaster(id);
         JSONObject refundObj = JSON.parseObject(JSONObject.toJSONString(refund));
 
-        if (refund.getProductRefundWarehouseId()!=null){
-            refundObj.put("warehouseName",warehouseMapper.selectById(refund.getProductRefundWarehouseId()).getWarehouseName());
+        if (refund.getProductRefundWarehouseId() != null) {
+            refundObj.put("warehouseName", warehouseMapper.selectById(refund.getProductRefundWarehouseId()).getWarehouseName());
         }
 
         if (refund.getProductProcurementId() != null) {
@@ -389,12 +388,12 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         List<StorageOutItemRecord> outItemRecords = new ArrayList<>();
 
 
-        if (refund.getProductRefundStatus().compareTo(RefundStatus.Done.toString()) ==0
-                || refund.getProductRefundStatus().compareTo(RefundStatus.Audit_Passed.toString())==0){
+        if (refund.getProductRefundStatus().compareTo(RefundStatus.Done.toString()) == 0
+                || refund.getProductRefundStatus().compareTo(RefundStatus.Audit_Passed.toString()) == 0) {
 
             List<StorageOutItem> outItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
-            .eq(StorageOutItem.STORAGE_OUT_ID,refund.getStorageOutId())
-            .eq(StorageOutItem.TYPE,"Others"));
+                    .eq(StorageOutItem.STORAGE_OUT_ID, refund.getStorageOutId())
+                    .eq(StorageOutItem.TYPE, "Others"));
 
 
             if (outItems != null && outItems.size() > 0) {
@@ -403,36 +402,24 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
                     outItemRecords.add(itemRecord);
                 }
-            }else {
+            } else {
 
             }
-        }else {
+        } else {
 
             //searching out records
-            List<StorageOut> storageOuts = storageOutMapper.selectList(new EntityWrapper<StorageOut>()
-                    .eq(StorageOut.ID, refund.getId())
-                    .eq(StorageOut.TRANSACTION_TYPE, TransactionType.Refund.toString()));
+            List<StorageOutItem> outItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
+                    .eq(StorageOutItem.STORAGE_OUT_ID, refund.getId())
+                    .eq(StorageOutItem.TYPE, TransactionType.Refund.toString()));
 
-
-            if (storageOuts != null && storageOuts.size() > 0) {
-                for (StorageOut out : storageOuts) {
-                    StorageOutRecord record = queryRefundDao.outRecord(out.getId());//  关联上级出库单的信息
-                    List<StorageOutItem> outItems = queryRefundDao.outItems(out.getId());
                     if (outItems != null && outItems.size() > 0) {
                         for (StorageOutItem item : outItems) {
                             // 出库 商品详情
                             StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
-                            if (record.getOriginatorName() != null) {
-                                itemRecord.setOperator(record.getOriginatorName());
-                            }
-                            itemRecord.setWarehouseName(record.getWarehouseName());
                             outItemRecords.add(itemRecord);
                         }
-                        record.setStorageOutItemRecords(outItemRecords);
                     }
-//                outRecords.add(record);
-                }
-            }
+
 
         }
         refundObj.put("itemRecords", outItemRecords);
@@ -441,15 +428,14 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     }
 
 
-
     @Transactional
     public Integer deleteRefund(Long id) {
         Refund refund = refundService.retrieveMaster(id);
         StorageOut out = storageOutService.retrieveMaster(refund.getStorageOutId());
         storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>()
-                .eq(StorageOutItem.STORAGE_OUT_ID,id)
-                .eq(StorageOutItem.TYPE,TransactionType.Refund.toString()));
-        storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,out.getId()).eq(StorageOutItem.TYPE,"Others"));
+                .eq(StorageOutItem.STORAGE_OUT_ID, id)
+                .eq(StorageOutItem.TYPE, TransactionType.Refund.toString()));
+        storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID, out.getId()).eq(StorageOutItem.TYPE, "Others"));
         storageOutMapper.deleteById(refund.getStorageOutId());
         refundService.deleteMaster(id);
         return refundService.deleteMaster(id);
