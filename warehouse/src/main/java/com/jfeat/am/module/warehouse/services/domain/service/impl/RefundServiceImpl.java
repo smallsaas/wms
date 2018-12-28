@@ -218,9 +218,14 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
 
                 SkuProduct sku = skuProductMapper.selectById(outItem.getSkuId());
                 if (outItem.getTransactionQuantities() > 0) {
-                    outItem.setRelationCode(refund.getProductRefundCode());
-                    outItem.setTransactionTime(storageOutModel.getStorageOutTime());
-                    outItem.setType("Others");
+                    StorageOutItem item = new StorageOutItem();
+                    item.setSkuId(outItem.getSkuId());
+                    item.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
+                    item.setTransactionQuantities(outItem.getTransactionQuantities());
+                    item.setRelationCode(refund.getProductRefundCode());
+                    item.setTransactionTime(storageOutModel.getStorageOutTime());
+                    item.setType("Others");
+
                     refundTotal += outItem.getTransactionQuantities();
 
                     Inventory isExistInventory = new Inventory();
@@ -238,7 +243,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                         if (refund.getProductProcurementId() == null) {
                             //操作后的数量
                             Integer afterSkuCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
-                            outItem.setAfterTransactionQuantities(afterSkuCount);
+                            item.setAfterTransactionQuantities(afterSkuCount);
 
                             originInventory.setValidSku(afterSkuCount);
                             affected += inventoryMapper.updateById(originInventory);
@@ -249,7 +254,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                             } else {
                                 //操作后的数量
                                 Integer afterSkuCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
-                                outItem.setAfterTransactionQuantities(afterSkuCount);
+                                item.setAfterTransactionQuantities(afterSkuCount);
 
                                 originInventory.setValidSku(afterSkuCount);
                                 affected += inventoryMapper.updateById(originInventory);
@@ -259,7 +264,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     } else {
                         throw new BusinessException(4060, "该仓库不存在\"" + sku.getSkuName() + "\"商品");
                     }
-                    storageOutItems.add(outItem);
+                    storageOutItems.add(item);
                 } else {
                     throw new BusinessException(5000, "提交失败，" + "\"" + sku.getSkuName() + "\"" + "商品退货数量不能为0");
                 }
