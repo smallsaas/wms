@@ -201,7 +201,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         int affected = 0;
         int refundTotal = 0;
         Refund refund = refundMapper.selectById(refundId);
-        if (refund.getProductRefundStatus().compareTo(RefundStatus.Wait_To_Audit.toString()) != 0) {
+        if (refund.getProductRefundStatus().compareTo(RefundStatus.Audit_Passed.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
 
