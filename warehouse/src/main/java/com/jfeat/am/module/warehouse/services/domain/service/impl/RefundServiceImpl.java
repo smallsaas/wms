@@ -277,6 +277,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         storageOutModel.setTransactionType(TransactionType.Refund.toString());
         storageOutModel.setStorageOutItems(storageOutItems);
         storageOutModel.setWarehouseId(refund.getProductRefundWarehouseId());
+        storageOutModel.setStatus("Done");
 
         // 用field1 来接收出库的code
         storageOutModel.setTransactionCode(refund.getField1());

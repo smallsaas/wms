@@ -322,6 +322,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             throw new BusinessException(4050, "商品不能为空，请先选择商品！");
         }
         entity.setStorageOutItems(storageOutItems);
+        entity.setStatus("Done");
         affected = crudStorageOutService.createMaster(entity, null, null, null);
         return affected;
     }

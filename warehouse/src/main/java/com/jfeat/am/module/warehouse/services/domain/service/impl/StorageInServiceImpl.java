@@ -297,6 +297,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
             throw new BusinessException(4050, "商品不能为空，请先选择商品！");
         }
         entity.setStorageInItems(storageInItems);
+        entity.setStatus("Done");
         affected = crudStorageInService.createMaster(entity, storageInFilter, null, null);
         return affected;
     }
