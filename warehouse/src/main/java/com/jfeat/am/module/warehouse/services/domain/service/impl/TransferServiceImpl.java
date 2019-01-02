@@ -435,21 +435,21 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         }
         JSONObject transferObj = JSON.parseObject(JSONObject.toJSONString(transfer));
 
-        if (transfer.getStatus().compareTo(TransferStatus.Draft.toString()) == 0) {
+//        if (transfer.getStatus().compareTo(TransferStatus.Draft.toString()) == 0) {
             List<StorageOutItemRecord> outItemRecords = queryTransferDao.draftOutItemRecords(id);
             transferObj.put("outItemRecords", outItemRecords);
             transferObj.put("fromWarehouseName", queryWarehouseDao.warehouseName(transfer.getFromWarehouseId()));
             transferObj.put("toWarehouseName", queryWarehouseDao.warehouseName(transfer.getToWarehouseId()));
             TransferModel model = JSONObject.parseObject(JSONObject.toJSONString(transferObj), TransferModel.class);
             return model;
-        }
+/*        }
 
         List<StorageOutItemRecord> outItemRecords = queryTransferDao.outItemRecords(transfer.getStorageOutId());
         transferObj.put("outItemRecords", outItemRecords);
         transferObj.put("fromWarehouseName", queryWarehouseDao.warehouseName(transfer.getFromWarehouseId()));
         transferObj.put("toWarehouseName", queryWarehouseDao.warehouseName(transfer.getToWarehouseId()));
         TransferModel model = JSONObject.parseObject(JSONObject.toJSONString(transferObj), TransferModel.class);
-        return model;
+        return model;*/
     }
 
 
