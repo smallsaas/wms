@@ -211,6 +211,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             in.setOriginatorId(userId);
             in.setStorageInTime(new Date());
             in.setTransactionTime(new Date());
+            in.setStatus("Done");
 
             // field1 去接收最上层的ID  作跳转使用
             in.setField1(procurementId.toString());
