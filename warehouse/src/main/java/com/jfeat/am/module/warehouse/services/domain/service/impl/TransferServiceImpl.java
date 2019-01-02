@@ -202,6 +202,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
             outItem.setRelationCode(transfer.getTransactionCode());// 插入最上级的 编号
             outItem.setTransactionTime(storageOut.getStorageOutTime());
+            outItem.setType("Others");
 
             Inventory isExistInventory = new Inventory();
             isExistInventory.setSkuId(outItem.getSkuId());
@@ -306,6 +307,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 inItem.setSkuId(outItem.getSkuId());
                 inItem.setTransactionQuantities(outItem.getTransactionQuantities());
                 inItem.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
+                inItem.setType("Others");
+
                 inItem.setTransactionTime(new Date());
 
                 items.add(inItem);
@@ -398,6 +401,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 inItem.setRelationCode(transfer.getTransactionCode());
                 inItem.setTransactionQuantities(outItem.getTransactionQuantities());
                 inItem.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
+                inItem.setType("Others");
                 inItem.setTransactionTime(new Date());
 
                 items.add(inItem);
