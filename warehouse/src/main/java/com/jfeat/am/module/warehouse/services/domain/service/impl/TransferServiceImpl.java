@@ -195,14 +195,15 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         // 使用调拨记录表中的field1字段去接收出库的code
         storageOut.setTransactionCode(transfer.getField1());
         storageOut.setTransactionTime(new Date());
-
-        StorageOutFilter storageOutFilter = new StorageOutFilter();
+        storageOut.setStatus("Done");
+        storageOutMapper.insert(storageOut);
 
         for (StorageOutItem outItem : items) {
 
             outItem.setRelationCode(transfer.getTransactionCode());// 插入最上级的 编号
             outItem.setTransactionTime(storageOut.getStorageOutTime());
             outItem.setType("Others");
+            outItem.setStorageOutId(storageOut.getId());
 
             Inventory isExistInventory = new Inventory();
             isExistInventory.setSkuId(outItem.getSkuId());
@@ -233,18 +234,15 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 affected += inventoryMapper.updateAllColumnById(toInventory); //有 则是在途数
 
             }
+            storageOutItemMapper.insert(outItem);
         }
 
-        storageOut.setStorageOutItems(items);
-        storageOut.setStatus("Done");
-        affected = crudStorageOutService.createMaster(storageOut, storageOutFilter, null, null);
-
-        transfer.setStorageOutId((Long) storageOutFilter.result().get("id") == null ? null : (Long) storageOutFilter.result().get("id"));
 
         transfer.setStatus(TransferStatus.Transfer.toString());
         transfer.setOriginatorId(userId);
         transfer.setTransactionTime(new Date());
         transfer.setId(transferId);
+        transfer.setStorageOutId(storageOut.getId());
         affected += crudTransferService.updateMaster(transfer);
         return affected;
     }
@@ -265,6 +263,21 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         transfer.setFinishTime(new Date());
         StorageInModel storageIn = new StorageInModel();
         storageIn.setStorageInTime(transfer.getFinishTime());
+        // field1 去接收最上层的ID  作跳转使用
+        storageIn.setField1(id.toString());
+
+
+        storageIn.setTransactionType(TransactionType.TransferIn.toString());
+        storageIn.setWarehouseId(transfer.getToWarehouseId());
+        storageIn.setOriginatorId(userId);
+        storageIn.setOriginatorName(transfer.getOriginatorName());
+        // needs code ?
+        storageIn.setTransactionCode(transfer.getField1().replace("OUT", "IN"));
+        storageIn.setTransactionTime(new Date());
+        storageIn.setStatus(TransferStatus.Done.toString());
+
+        storageInMapper.insert(storageIn);
+
 
         StorageOut storageOut = storageOutMapper.selectById(transfer.getStorageOutId());
         List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
@@ -310,30 +323,13 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 inItem.setType("Others");
 
                 inItem.setTransactionTime(new Date());
+                inItem.setStorageInId(storageIn.getId());
+                storageInItemMapper.insert(inItem);
 
-                items.add(inItem);
             }
         }
 
-        // field1 去接收最上层的ID  作跳转使用
-        storageIn.setField1(id.toString());
-
-        storageIn.setTransactionType(TransactionType.TransferIn.toString());
-        storageIn.setWarehouseId(transfer.getToWarehouseId());
-        storageIn.setOriginatorId(userId);
-        storageIn.setOriginatorName(transfer.getOriginatorName());
-        // needs code ?
-        storageIn.setTransactionCode(transfer.getField1().replace("OUT", "IN"));
-        storageIn.setTransactionTime(new Date());
-        StorageInFilter storageInFilter = new StorageInFilter();
-        storageIn.setStorageInItems(items);
-        storageIn.setStatus(TransferStatus.Done.toString());
-
-        affected += crudStorageInService.createMaster(storageIn, storageInFilter, null, null);
-
-
-        transfer.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
-
+        transfer.setStorageInId(storageIn.getId());
         transfer.setStatus(TransferStatus.Done.toString());
         transfer.setId(id);
         affected += crudTransferService.updateMaster(transfer);
@@ -361,12 +357,19 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         storageIn.setField1(id.toString());
 
         storageIn.setStorageInTime(transfer.getFinishTime());
+        storageIn.setTransactionType(TransactionType.OthersStorageIn.toString());
+        storageIn.setWarehouseId(transfer.getFromWarehouseId());
+        storageIn.setOriginatorId(userId);
+        storageIn.setOriginatorName(transfer.getOriginatorName());
+        // 这个 code 应该怎么去处理呢？
+        storageIn.setTransactionCode(transfer.getField1().replace("OUT", "IN"));
+        storageIn.setTransactionTime(new Date());
+        storageIn.setStatus("Done");
+        storageInMapper.insert(storageIn);
 
         StorageOut storageOut = storageOutMapper.selectById(transfer.getStorageOutId());
         List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID, storageOut.getId()));
 
-
-        List<StorageInItem> items = new ArrayList<>();
 
         if (storageOutItems != null && storageOutItems.size() > 0) {
             for (StorageOutItem outItem : storageOutItems) {
@@ -403,23 +406,13 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 inItem.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
                 inItem.setType("Others");
                 inItem.setTransactionTime(new Date());
+                inItem.setStorageInId(storageIn.getId());
+                storageInItemMapper.insert(inItem);
 
-                items.add(inItem);
             }
         }
 
-        storageIn.setTransactionType(TransactionType.OthersStorageIn.toString());
-        storageIn.setWarehouseId(transfer.getFromWarehouseId());
-        storageIn.setOriginatorId(userId);
-        storageIn.setOriginatorName(transfer.getOriginatorName());
-        // 这个 code 应该怎么去处理呢？
-        storageIn.setTransactionCode(transfer.getField1().replace("OUT", "IN"));
-        storageIn.setTransactionTime(new Date());
-        StorageInFilter storageInFilter = new StorageInFilter();
-        storageIn.setStorageInItems(items);
-        affected += crudStorageInService.createMaster(storageIn, storageInFilter, null, null);
-
-        transfer.setStorageInId((Long) storageInFilter.result().get("id") == null ? null : (Long) storageInFilter.result().get("id"));
+        transfer.setStorageInId(storageIn.getId());
         transfer.setStatus(TransferStatus.Closed.toString());
         transfer.setId(id);
         affected += crudTransferService.updateMaster(transfer);
