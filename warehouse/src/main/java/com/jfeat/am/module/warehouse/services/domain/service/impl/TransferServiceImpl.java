@@ -235,6 +235,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         }
 
         storageOut.setStorageOutItems(items);
+        storageOut.setStatus("Done");
         affected = crudStorageOutService.createMaster(storageOut, storageOutFilter, null, null);
 
         transfer.setStorageOutId((Long) storageOutFilter.result().get("id") == null ? null : (Long) storageOutFilter.result().get("id"));
@@ -323,6 +324,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         storageIn.setTransactionTime(new Date());
         StorageInFilter storageInFilter = new StorageInFilter();
         storageIn.setStorageInItems(items);
+        storageIn.setStatus(TransferStatus.Done.toString());
 
         affected += crudStorageInService.createMaster(storageIn, storageInFilter, null, null);
 
