@@ -138,7 +138,7 @@ public class SalesEndpoint extends BaseController {
     }
 
     @BusinessLog(name = "SalesModel", value = "update SalesModel")
-    @PostMapping("/{id}/execution")
+    @PutMapping("/{id}/execution")
     @ApiOperation(value = "出库",response = SalesModel.class)
     public Tip executionProcurement(@PathVariable Long id, @RequestBody SalesModel entity) {
         entity.setId(id);

@@ -209,7 +209,8 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             out.setTransactionCode(model.getField2());
             out.setSalesId(salesId);
             out.setTransactionType(TransactionType.CustomerStorageOut.toString());
-
+            // field1 去接收最上层的ID  作跳转使用
+            out.setField1(salesId.toString());
             outMapper.insert(out);
 
 
@@ -217,9 +218,6 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
 
             for (StorageOutItem item : model.getOutItems()) {
                 if (item.getTransactionQuantities() > 0) {
-
-                    // field1 去接收最上层的ID  作跳转使用
-                    out.setField1(item.getStorageOutId().toString());
 
                     item.setStorageOutId(out.getId());
                     item.setType("Others");
