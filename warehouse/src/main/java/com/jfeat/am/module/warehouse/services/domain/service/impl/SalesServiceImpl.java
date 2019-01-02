@@ -170,7 +170,8 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                     item.setType(TransactionType.SalesOut.toString());
                     affected += outItemMapper.insert(item);
                 }
-                sales.setSalesStatus(SalesStatus.Wait_To_Audit.toString());
+                model.setSalesStatus(SalesStatus.Wait_To_Audit.toString());
+                model.setId(salesId);
                 affected += salesMapper.updateById(model);
             }
             return affected;
