@@ -95,7 +95,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             }
             item.setRelationCode(model.getSalesCode());
             item.setStorageOutId(model.getId());
-            item.setType(TransactionType.CustomerStorageOut.toString());
+            item.setType(TransactionType.SalesOut.toString());
             affected += outItemMapper.insert(item);
         }
         return affected;
@@ -130,7 +130,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                 for (StorageOutItem item : model.getOutItems()) {
                     item.setRelationCode(sales.getSalesCode());
                     item.setStorageOutId(salesId);
-                    item.setType(TransactionType.CustomerStorageOut.toString());
+                    item.setType(TransactionType.SalesOut.toString());
                     affected += outItemMapper.insert(item);
                 }
                 affected += salesMapper.updateById(model);
@@ -167,7 +167,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                 for (StorageOutItem item : model.getOutItems()) {
                     item.setRelationCode(sales.getSalesCode());
                     item.setStorageOutId(salesId);
-                    item.setType(TransactionType.CustomerStorageOut.toString());
+                    item.setType(TransactionType.SalesOut.toString());
                     affected += outItemMapper.insert(item);
                 }
                 sales.setSalesStatus(SalesStatus.Wait_To_Audit.toString());
@@ -202,6 +202,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             out.setStorageOutTime(new Date());
             out.setTransactionTime(new Date());
             out.setOriginatorName(model.getOriginatorName());
+
             // 使用field1去接收 warehouseId 字段
             out.setWarehouseId(Long.valueOf(model.getField1()));
             //使用 field2 去接收 入库 code
