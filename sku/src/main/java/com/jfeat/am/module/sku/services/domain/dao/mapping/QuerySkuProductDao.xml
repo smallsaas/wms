@@ -139,7 +139,7 @@
         </if>
 
         group by t_sku_product.id
-        order by t_sku_product.create_time
+        order by t_sku_product.sku_code ASC
     </select>
 
 
