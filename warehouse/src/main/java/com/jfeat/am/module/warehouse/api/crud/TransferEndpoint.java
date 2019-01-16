@@ -153,7 +153,7 @@ public class TransferEndpoint extends BaseController {
         return SuccessTip.create(transferService.transferDetails(id));
     }
 
-    @PostMapping("/{id}/done")
+    @PutMapping("/{id}/done")
     @ApiOperation(value = "调拨完成", response = TransferModel.class)
     public Tip doneTransfer(@PathVariable Long id) {
         Tip resultTip = SuccessTip.create(transferService.doneTransfer(id, JWTKit.getUserId(getHttpServletRequest())));
