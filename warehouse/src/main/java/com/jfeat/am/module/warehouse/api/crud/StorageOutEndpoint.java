@@ -4,6 +4,7 @@ import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.log.LogManager;
 import com.jfeat.am.module.log.LogTaskFactory;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
+import com.jfeat.am.module.warehouse.services.domain.model.UpdateOrderCount;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -87,7 +88,7 @@ public class StorageOutEndpoint extends BaseController {
 
     @BusinessLog(name = "StorageOut", value = "create StorageOut")
     @PostMapping("/mall")
-    @ApiOperation(value = "新建出库单",response = StorageOutModel.class)
+    @ApiOperation(value = "新建出库单-商城端",response = StorageOutModel.class)
     public Tip salesStorageOut(@RequestBody StorageOutModel entity) {
         String userName = JWTKit.getAccount(getHttpServletRequest());
         entity.setOriginatorName(userName);
@@ -97,6 +98,13 @@ public class StorageOutEndpoint extends BaseController {
         Integer result  = storageOutService.salesStorageOut(JWTKit.getUserId(getHttpServletRequest()),entity);
         createStorageOutLog(entity.getId(),  "createStorageOut", "对出库单进行了商城出库操作",  entity
                 .getId() + " &");
+        return SuccessTip.create(result);
+    }
+    @BusinessLog(name = "StorageOut", value = "create StorageOut")
+    @PostMapping("/mall/update")
+    @ApiOperation(value = "新建出库单-商城端",response = StorageOutModel.class)
+    public Tip updateInventoryOrderCount(@RequestBody UpdateOrderCount entity) {
+        Integer result  = storageOutService.updateOrderCount(entity);
         return SuccessTip.create(result);
     }
 

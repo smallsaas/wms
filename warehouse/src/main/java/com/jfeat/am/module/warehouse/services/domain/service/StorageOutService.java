@@ -2,6 +2,7 @@ package com.jfeat.am.module.warehouse.services.domain.service;
 
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutService;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageOutModel;
+import com.jfeat.am.module.warehouse.services.domain.model.UpdateOrderCount;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -52,4 +53,9 @@ public interface StorageOutService extends CRUDStorageOutService{
      * */
     @Transactional
     Integer salesStorageOut(Long userId, StorageOutModel entity);
+
+    /**
+     * 更新占用库存，商城的出货的时候调用
+     * */
+    Integer updateOrderCount(UpdateOrderCount updateOrderCount);
 }
