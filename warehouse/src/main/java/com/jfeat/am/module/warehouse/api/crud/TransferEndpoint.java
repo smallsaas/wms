@@ -66,6 +66,8 @@ public class TransferEndpoint extends BaseController {
         Integer affected = 0;
         try {
             String userName = JWTKit.getAccount(getHttpServletRequest());
+            Long userId = JWTKit.getUserId(getHttpServletRequest());
+            entity.setOriginatorId(userId);
             entity.setOriginatorName(userName);
             affected += transferService.draftTransfer(entity, JWTKit.getUserId(getHttpServletRequest()), JWTKit.getAccount(getHttpServletRequest()));
 
