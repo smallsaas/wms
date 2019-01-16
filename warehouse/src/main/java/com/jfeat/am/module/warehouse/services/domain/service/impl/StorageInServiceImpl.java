@@ -146,8 +146,8 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         if (in.getStatus().compareTo(StorageInStatus.Draft.toString())!=0){
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-        in.setStatus(StorageInStatus.Wait_To_Audit.toString());
         affected += changeStatus(userId,storageInId,entity);
+        entity.setStatus(StorageInStatus.Wait_To_Audit.toString());
         entity.setId(storageInId);
         affected += crudStorageInService.updateMaster(entity);
         return affected;
