@@ -65,6 +65,12 @@ public class Inventory extends Model<Inventory> {
 	@TableField("transmit_quantities")
 	private Integer transmitQuantities;
 
+	/**
+	 * 在途量
+	 */
+	@TableField("order_count")
+	private Integer orderCount;
+
 
 	public Long getId() {
 		return id;
@@ -145,6 +151,14 @@ public class Inventory extends Model<Inventory> {
 	public Inventory setTransmitQuantities(Integer transmitQuantities) {
 		this.transmitQuantities = transmitQuantities;
 		return this;
+	}
+
+	public Integer getOrderCount() {
+		return orderCount;
+	}
+
+	public void setOrderCount(Integer orderCount) {
+		this.orderCount = orderCount;
 	}
 
 	public static final String ID = "id";

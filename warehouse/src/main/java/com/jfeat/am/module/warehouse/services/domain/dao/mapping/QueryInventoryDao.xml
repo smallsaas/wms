@@ -15,6 +15,7 @@
         <result column="valid_sku" property="validSku" />
         <result column="advance_quantities" property="advanceQuantities" />
         <result column="transmit_quantities" property="transmitQuantities" />
+        <result column="order_count" property="orderCount" />
 
         <result column="skuName" property="skuName" />
         <result column="skuBarcode" property="skuBarcode" />
@@ -112,6 +113,7 @@
         <result column="warehouseName" property="warehouseName" />
         <result column="transactionType" property="transactionType" />
         <result column="transactionCode" property="transactionCode" />
+        <result column="order_count" property="orderCount" />
         <result column="parentId" property="parentId" />
 
         <result column="warehouseName" property="warehouseName" />
