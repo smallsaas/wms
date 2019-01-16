@@ -163,7 +163,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
 
-        entity.setStatus(StorageOutStatus.Wait_To_audit.toString());
+        entity.setStatus(StorageOutStatus.Wait_To_Audit.toString());
         affected += changeStatus(userId, storageOutId, entity);
         entity.setId(storageOutId);
         affected += crudStorageOutService.updateMaster(entity);
@@ -185,7 +185,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (out.getStatus().compareTo(StorageOutStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-        entity.setStatus(StorageOutStatus.Wait_To_audit.toString());
+        entity.setStatus(StorageOutStatus.Wait_To_Audit.toString());
         entity.setId(storageOutId);
 
         affected += changeStatus(userId, storageOutId, entity);
