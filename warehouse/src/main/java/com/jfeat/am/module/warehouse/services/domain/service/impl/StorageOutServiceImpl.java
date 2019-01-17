@@ -9,6 +9,7 @@ import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutService
 import com.jfeat.am.module.warehouse.services.definition.StorageOutStatus;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryInventoryDao;
+import com.jfeat.am.module.warehouse.services.domain.model.BulkUpdateOrderCount;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageOutModel;
 import com.jfeat.am.module.warehouse.services.domain.model.UpdateOrderCount;
 import com.jfeat.am.module.warehouse.services.domain.service.StorageOutService;
@@ -335,24 +336,32 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
      * 更新占用库存，商城的出货的时候调用
      * */
     @Transactional
-    public Integer updateOrderCount(UpdateOrderCount updateOrderCount){
-        Inventory origin = new Inventory();
-        origin.setSkuId(updateOrderCount.getSkuId());
-        origin.setWarehouseId(updateOrderCount.getWarehouseId());
-        Inventory inventory = inventoryMapper.selectOne(origin);
-        if (inventory==null){
-            throw new BusinessException(5300,"无该商品库存记录!请核准然后重新提交!");
+    public Integer updateOrderCount(BulkUpdateOrderCount entity) {
+
+        Integer affected = 0;
+        if (entity == null || entity.getItems().size() <= 0) {
+            throw new BusinessException(5310, "未检测到需要执行更新占用库存操作的商品，请核准并重新提交");
         }
+        for (UpdateOrderCount updateOrderCount : entity.getItems()) {
+
+            Inventory origin = new Inventory();
+            origin.setSkuId(updateOrderCount.getSkuId());
+            origin.setWarehouseId(updateOrderCount.getWarehouseId());
+            Inventory inventory = inventoryMapper.selectOne(origin);
+            if (inventory == null) {
+                throw new BusinessException(5300, "无该商品库存记录!请核准然后重新提交!");
+            }
 
 
-        if (inventory.getOrderCount()<updateOrderCount.getOrderCount()){
-            throw new BusinessException(5300,"出货数据有误，请核准并重新提交");
+            if (inventory.getOrderCount() < updateOrderCount.getOrderCount()) {
+                throw new BusinessException(5300, "出货数据有误，请核准并重新提交");
+            }
+            Integer afterOrderCount = inventory.getOrderCount() - updateOrderCount.getOrderCount();
+            //inventory.setValidSku(inventory.getValidSku()-updateOrderCount.getOrderCount());
+            inventory.setOrderCount(afterOrderCount);
+            affected += inventoryMapper.updateById(inventory);
+
         }
-        Integer afterOrderCount = inventory.getOrderCount() - updateOrderCount.getOrderCount();
-        //inventory.setValidSku(inventory.getValidSku()-updateOrderCount.getOrderCount());
-        inventory.setOrderCount(afterOrderCount);
-        return inventoryMapper.updateById(inventory);
-
+        return affected;
     }
-
 }

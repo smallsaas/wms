@@ -4,6 +4,7 @@ import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.log.LogManager;
 import com.jfeat.am.module.log.LogTaskFactory;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
+import com.jfeat.am.module.warehouse.services.domain.model.BulkUpdateOrderCount;
 import com.jfeat.am.module.warehouse.services.domain.model.UpdateOrderCount;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -103,7 +104,7 @@ public class StorageOutEndpoint extends BaseController {
     @BusinessLog(name = "StorageOut", value = "create StorageOut")
     @PostMapping("/mall/update")
     @ApiOperation(value = "新建出库单-商城端",response = StorageOutModel.class)
-    public Tip updateInventoryOrderCount(@RequestBody UpdateOrderCount entity) {
+    public Tip updateInventoryOrderCount(@RequestBody BulkUpdateOrderCount entity) {
         Integer result  = storageOutService.updateOrderCount(entity);
         return SuccessTip.create(result);
     }
