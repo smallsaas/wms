@@ -165,7 +165,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         if (in==null){
             throw new BusinessException(BusinessCode.FileNotFound);
         }
-        if (in.getStatus().compareTo(StorageInStatus.Draft.toString())!=0){
+        if (in.getStatus().compareTo(StorageInStatus.Wait_To_Audit.toString())!=0){
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
         in.setStatus(StorageInStatus.Audit_Passed.toString());
@@ -183,7 +183,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         if (in==null){
             throw new BusinessException(BusinessCode.FileNotFound);
         }
-        if (in.getStatus().compareTo(StorageInStatus.Draft.toString())!=0){
+        if (in.getStatus().compareTo(StorageInStatus.Wait_To_Audit.toString())!=0){
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
         in.setId(storageInId);
