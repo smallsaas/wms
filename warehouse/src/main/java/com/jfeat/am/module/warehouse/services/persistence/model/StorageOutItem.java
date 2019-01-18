@@ -67,6 +67,12 @@ public class StorageOutItem extends Model<StorageOutItem> {
 	 */
 	private String type;
 
+	/**
+	 * 需求数量
+	 */
+	@TableField("demand_quantities")
+	private Integer demandQuantities;
+
 
 	public Long getId() {
 		return id;
@@ -146,6 +152,14 @@ public class StorageOutItem extends Model<StorageOutItem> {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public Integer getDemandQuantities() {
+		return demandQuantities;
+	}
+
+	public void setDemandQuantities(Integer demandQuantities) {
+		this.demandQuantities = demandQuantities;
 	}
 
 	public static final String ID = "id";

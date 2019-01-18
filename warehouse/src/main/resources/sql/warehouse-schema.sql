@@ -39,6 +39,7 @@ CREATE TABLE `wms_storage_in_item` (
   `transaction_time` datetime DEFAULT NULL COMMENT '操作时间',
   `type` varchar(26) DEFAULT 'Others' COMMENT '操作类型',
   `relation_code` varchar(255) NOT NULL COMMENT '关联的操作编号',
+   `demand_quantities` int(11) NOT NULL COMMENT '需求数量',
   PRIMARY KEY (`id`),
   FOREIGN KEY (`sku_id`) REFERENCES `t_sku_product` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -82,6 +83,7 @@ CREATE TABLE `wms_storage_out_item` (
   `transaction_time` datetime DEFAULT NULL COMMENT '操作时间',
   `relation_code` varchar(255) NOT NULL COMMENT '关联的操作编号',
   `type` varchar(26) DEFAULT 'Others' COMMENT '操作类型',
+  `demand_quantities` int(11) NOT NULL COMMENT '需求数量',
   PRIMARY KEY (`id`),
   FOREIGN KEY (`storage_out_id`) REFERENCES `wms_storage_out` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

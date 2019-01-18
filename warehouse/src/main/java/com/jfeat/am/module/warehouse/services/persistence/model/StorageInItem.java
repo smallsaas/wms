@@ -66,6 +66,11 @@ public class StorageInItem extends Model<StorageInItem> {
 	@TableField("relation_code")
 	private String relationCode;
 
+	/**
+	 * 需求数量
+	 */
+	@TableField("demand_quantities")
+	private Integer demandQuantities;
 
 	public Long getId() {
 		return id;
@@ -146,6 +151,14 @@ public class StorageInItem extends Model<StorageInItem> {
 	public StorageInItem setRelationCode(String relationCode) {
 		this.relationCode = relationCode;
 		return this;
+	}
+
+	public Integer getDemandQuantities() {
+		return demandQuantities;
+	}
+
+	public void setDemandQuantities(Integer demandQuantities) {
+		this.demandQuantities = demandQuantities;
 	}
 
 	public static final String ID = "id";

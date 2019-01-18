@@ -114,6 +114,7 @@
         <result column="skuBarcode" property="skuBarcode" />
         <result column="skuCode" property="skuCode" />
         <result column="skuUnit" property="skuUnit" />
+        <result column="demand_quantities" property="demandQuantities" />
     </resultMap>
     <select id="outItemRecords" resultMap="OutItemMap" parameterType="long">
         SELECT wms_storage_out_item.*,t_sku_product.sku_code as skuCode,

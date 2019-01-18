@@ -123,6 +123,7 @@
         <result column="transaction_quantities" property="transactionQuantities"/>
         <result column="transaction_time" property="transactionTime"/>
         <result column="type" property="type"/>
+        <result column="demand_quantities" property="demandQuantities" />
 
         <result column="skuName" property="skuName"/>
         <result column="skuCode" property="skuCode"/>

@@ -60,6 +60,7 @@
         <result column="transaction_time" property="transactionTime" />
         <result column="warehouse_id" property="warehouseId" />
         <result column="slot_id" property="slotId" />
+        <result column="demand_quantities" property="demandQuantities" />
 
         <result column="skuName" property="skuName" />
         <result column="skuBarcode" property="skuBarcode" />
