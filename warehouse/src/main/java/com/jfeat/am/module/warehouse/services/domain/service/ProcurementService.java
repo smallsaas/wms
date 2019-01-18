@@ -29,7 +29,7 @@ public interface ProcurementService extends CRUDProcurementService{
     /**
      *  closed procurement
      * */
-    Integer closedProcurment(Long id);
+    Integer closedProcurment(Long id, ProcurementModel model);
 
     /**
      *  提交并审核
@@ -48,5 +48,5 @@ public interface ProcurementService extends CRUDProcurementService{
      *  wait to audit passed this procurement
      * */
     @Transactional
-    Integer passedProcurment(Long id);
+    Integer passedProcurment(Long id, ProcurementModel model);
 }

@@ -87,29 +87,29 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         model.setTransactionTime(new Date());
         model.setProcureStatus(ProcurementStatus.Draft.toString());
         for (StorageInItem item : model.getItems()) {
+            if (item.getTransactionQuantities() == 0) {
+                throw new BusinessException(4501, "采购数量不能为0，请重新输入！");
+            }
+            // 需求数量 同 实际数量
+            item.setTransactionQuantities(item.getDemandQuantities());
+            item.setRelationCode(model.getProcurementCode());
+            item.setStorageInId(model.getId());
+            item.setType(TransactionType.Procurement.toString());
+            affected += storageInItemMapper.insert(item);
+
             BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
             sum = sum.multiply(item.getTransactionSkuPrice());
             totalSpend = totalSpend.add(sum);
         }
         model.setProcurementTotal(totalSpend);
         affected += procurementMapper.insert(model);
-
-        for (StorageInItem item : model.getItems()) {
-            if (item.getTransactionQuantities() == 0) {
-                throw new BusinessException(4501, "采购数量不能为0，请重新输入！");
-            }
-            item.setRelationCode(model.getProcurementCode());
-            item.setStorageInId(model.getId());
-            item.setType(TransactionType.Procurement.toString());
-            affected += storageInItemMapper.insert(item);
-        }
         return affected;
     }
 
 
     /**
-     *  提交并审核
-     * */
+     * 提交并审核
+     */
     @Transactional
     public Integer updateProcurement(Long userId, Long procurementId, ProcurementModel model) {
         int affected = 0;
@@ -121,22 +121,24 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             model.setTransactionTime(new Date());
             model.setProcureStatus(ProcurementStatus.Draft.toString());
             if (model.getItems() == null || model.getItems().size() == 0) {
-                throw new BusinessException(5002,"请至少选择一种需要采购的商品");
+                throw new BusinessException(5002, "请至少选择一种需要采购的商品");
             } else {
-                storageInItemMapper.delete(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID,procurementId).eq(StorageInItem.TYPE,TransactionType.Procurement.toString()));
+                storageInItemMapper.delete(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, procurementId).eq(StorageInItem.TYPE, TransactionType.Procurement.toString()));
                 BigDecimal totalSpend = BigDecimal.valueOf(0);
                 for (StorageInItem item : model.getItems()) {
+
+                    // 需求数量 同 实际数量
+                    item.setTransactionQuantities(item.getDemandQuantities());
+                    item.setRelationCode(procurement.getProcurementCode());
+                    item.setStorageInId(procurementId);
+                    item.setType(TransactionType.Procurement.toString());
+                    affected += storageInItemMapper.insert(item);
+
                     BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
                     sum = sum.multiply(item.getTransactionSkuPrice());
                     totalSpend = totalSpend.add(sum);
                 }
                 model.setProcurementTotal(totalSpend);
-                for (StorageInItem item : model.getItems()) {
-                    item.setRelationCode(procurement.getProcurementCode());
-                    item.setStorageInId(procurementId);
-                    item.setType(TransactionType.Procurement.toString());
-                    affected += storageInItemMapper.insert(item);
-                }
                 affected += procurementMapper.updateById(model);
             }
             return affected;
@@ -145,8 +147,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     }
 
     /**
-     *  提交并审核
-     * */
+     * 提交并审核
+     */
     @Transactional
     public Integer updateAndAuditProcurement(Long userId, Long procurementId, ProcurementModel model) {
         int affected = 0;
@@ -158,29 +160,30 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             model.setTransactionTime(new Date());
             model.setProcureStatus(ProcurementStatus.Wait_To_Audit.toString());
             if (model.getItems() == null || model.getItems().size() == 0) {
-                throw new BusinessException(5002,"请至少选择一种需要采购的商品");
+                throw new BusinessException(5002, "请至少选择一种需要采购的商品");
             } else {
-                storageInItemMapper.delete(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID,procurementId).eq(StorageInItem.TYPE,TransactionType.Procurement.toString()));
+                storageInItemMapper.delete(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, procurementId).eq(StorageInItem.TYPE, TransactionType.Procurement.toString()));
                 BigDecimal totalSpend = BigDecimal.valueOf(0);
                 for (StorageInItem item : model.getItems()) {
+
+                    // 需求数量 同 实际数量
+                    item.setTransactionQuantities(item.getDemandQuantities());
+                    item.setRelationCode(procurement.getProcurementCode());
+                    item.setStorageInId(procurementId);
+                    item.setType(TransactionType.Procurement.toString());
+                    affected += storageInItemMapper.insert(item);
+
                     BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
                     sum = sum.multiply(item.getTransactionSkuPrice());
                     totalSpend = totalSpend.add(sum);
                 }
                 model.setProcurementTotal(totalSpend);
-                for (StorageInItem item : model.getItems()) {
-                    item.setRelationCode(procurement.getProcurementCode());
-                    item.setStorageInId(procurementId);
-                    item.setType(TransactionType.Procurement.toString());
-                    affected += storageInItemMapper.insert(item);
-                }
                 affected += procurementMapper.updateById(model);
             }
             return affected;
         }
         throw new BusinessException(BusinessCode.ErrorStatus);
     }
-
 
 
     /**
@@ -196,11 +199,11 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
         Procurement procurement = procurementMapper.selectById(procurementId);
 
-        if (procurement.getProcureStatus().compareTo(ProcurementStatus.Audit_Passed.toString())!=0){
-            if (procurement.getProcureStatus().compareTo(ProcurementStatus.SectionStorageIn.toString())!=0){
-                throw new BusinessException(5200,"非\"部分入库|审核通过\"状态下无法执行入库操作");
+        if (procurement.getProcureStatus().compareTo(ProcurementStatus.Audit_Passed.toString()) != 0) {
+            if (procurement.getProcureStatus().compareTo(ProcurementStatus.SectionStorageIn.toString()) != 0) {
+                throw new BusinessException(5200, "非\"部分入库|审核通过\"状态下无法执行入库操作");
             }
-        }else {
+        } else {
 
         }
 
@@ -241,7 +244,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                         storageInCount = 0;
                     }
                     if (item.getTransactionQuantities() > (skuProcurementCount - storageInCount)) {
-                        throw new BusinessException(4500, "\""+skuProduct.getSkuName()+"\""+"入库数不能大于采购数，请先核对入库数！");
+                        throw new BusinessException(4500, "\"" + skuProduct.getSkuName() + "\"" + "入库数不能大于采购数，请先核对入库数！");
                     }
 
                     Inventory isExistInventory = new Inventory();
@@ -267,7 +270,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     }
                     item.setTransactionTime(in.getStorageInTime());
                     storageInItems.add(item);
-                }else {
+                } else {
                     //while transaction quantities = 0 ,do nothing
                 }
 
@@ -320,7 +323,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 int remainderCount = item.getTransactionQuantities();
                 int sectionCount = 0;
                 int canRefundCount = sectionCount; // ke tui huo shu
-                Integer finishedRefundCount = queryRefundDao.finishedRefundCount(item.getSkuId(),procurementId);//tui huo shu
+                Integer finishedRefundCount = queryRefundDao.finishedRefundCount(item.getSkuId(), procurementId);//tui huo shu
 
                 ProcurementItemRecord record = new ProcurementItemRecord();
 
@@ -376,10 +379,10 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                                 sectionCount += originItem.getTransactionQuantities();
                                 remainderCount = remainderCount - sectionCount;
                                 // 入库数 以及 剩余 入库数
-                                if (finishedRefundCount==null){
+                                if (finishedRefundCount == null) {
                                     canRefundCount = sectionCount;
-                                }else{
-                                    canRefundCount=sectionCount-finishedRefundCount;
+                                } else {
+                                    canRefundCount = sectionCount - finishedRefundCount;
                                 }
 
                             }
@@ -436,21 +439,35 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     }
 
     /**
-     *  closed procurement
-     * */
-    public Integer closedProcurment(Long id){
+     * closed procurement
+     */
+    public Integer closedProcurment(Long id, ProcurementModel model) {
+
+        int affected = 0;
 
         Procurement procurement = procurementMapper.selectById(id);
         procurement.setProcureStatus(ProcurementStatus.Closed.toString());
         procurement.setId(id);
-        return procurementMapper.updateById(procurement);
+
+        BigDecimal totalSpend = BigDecimal.valueOf(0);
+        for (StorageInItem item : model.getItems()) {
+            // 更新实际数量
+            affected += storageInItemMapper.updateById(item);
+            BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
+            sum = sum.multiply(item.getTransactionSkuPrice());
+            totalSpend = totalSpend.add(sum);
+        }
+        procurement.setProcurementTotal(totalSpend);
+        affected +=  procurementMapper.updateById(procurement);
+
+        return affected;
     }
 
     /**
-     *  wait to audit this procurement
-     * */
+     * wait to audit this procurement
+     */
     @Transactional
-    public Integer auditProcurment(Long id){
+    public Integer auditProcurment(Long id) {
 
         Procurement procurement = procurementMapper.selectById(id);
         procurement.setProcureStatus(ProcurementStatus.Wait_To_Audit.toString());
@@ -459,14 +476,27 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     }
 
     /**
-     *  wait to audit passed this procurement
-     * */
+     * wait to audit passed this procurement
+     */
     @Transactional
-    public Integer passedProcurment(Long id){
+    public Integer passedProcurment(Long id, ProcurementModel model) {
+
+        int affected = 0;
 
         Procurement procurement = procurementMapper.selectById(id);
         procurement.setProcureStatus(ProcurementStatus.Audit_Passed.toString());
         procurement.setId(id);
-        return procurementMapper.updateById(procurement);
+
+        BigDecimal totalSpend = BigDecimal.valueOf(0);
+        for (StorageInItem item : model.getItems()) {
+            // 更新实际数量
+            affected += storageInItemMapper.updateById(item);
+            BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
+            sum = sum.multiply(item.getTransactionSkuPrice());
+            totalSpend = totalSpend.add(sum);
+        }
+        procurement.setProcurementTotal(totalSpend);
+        affected += procurementMapper.updateById(procurement);
+        return affected;
     }
 }
