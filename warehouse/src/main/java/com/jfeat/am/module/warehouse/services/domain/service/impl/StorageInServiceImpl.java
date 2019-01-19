@@ -13,6 +13,7 @@ import com.jfeat.am.module.warehouse.services.domain.service.StorageInService;
 import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDStorageInServiceImpl;
 import com.jfeat.am.module.warehouse.services.persistence.dao.InventoryMapper;
 import com.jfeat.am.module.warehouse.services.persistence.dao.StorageInItemMapper;
+import com.jfeat.am.module.warehouse.services.persistence.dao.StorageInMapper;
 import com.jfeat.am.module.warehouse.services.persistence.model.Inventory;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageIn;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageInItem;
@@ -37,6 +38,8 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
 
     @Resource
     CRUDStorageInService crudStorageInService;
+    @Resource
+    StorageInMapper storageInMapper;
     @Resource
     InventoryMapper inventoryMapper;
     @Resource
@@ -130,7 +133,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         }
         affected += changeStatus(userId,storageInId,entity);
         entity.setId(storageInId);
-        affected += crudStorageInService.updateMaster(entity);
+        affected += storageInMapper.updateById(entity);
         return affected;
 
     }
@@ -152,7 +155,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         affected += changeStatus(userId,storageInId,entity);
         entity.setStatus(StorageInStatus.Wait_To_Audit.toString());
         entity.setId(storageInId);
-        affected += crudStorageInService.updateMaster(entity);
+        affected += storageInMapper.updateById(entity);
         return affected;
     }
 
@@ -176,7 +179,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
 
         entity.setStatus(StorageInStatus.Audit_Passed.toString());
         entity.setId(storageInId);
-        return crudStorageInService.updateMaster(entity);
+        return storageInMapper.updateById(entity);
     }
 
     /**
@@ -194,7 +197,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         }
         in.setId(storageInId);
         in.setStatus(StorageInStatus.Closed.toString());
-        return crudStorageInService.updateMaster(in);
+        return storageInMapper.updateById(in);
     }
 
 
@@ -260,7 +263,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         }
         in.setStatus(StorageInStatus.Done.toString());
         in.setId(storageInId);
-        affected = crudStorageInService.updateMaster(in);
+        affected = storageInMapper.updateById(in);
         return affected;
     }
 
