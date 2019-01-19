@@ -174,9 +174,9 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
             inItemMapper.updateById(item);
         }
 
-        in.setStatus(StorageInStatus.Audit_Passed.toString());
-        in.setId(storageInId);
-        return crudStorageInService.updateMaster(in);
+        entity.setStatus(StorageInStatus.Audit_Passed.toString());
+        entity.setId(storageInId);
+        return crudStorageInService.updateMaster(entity);
     }
 
     /**
