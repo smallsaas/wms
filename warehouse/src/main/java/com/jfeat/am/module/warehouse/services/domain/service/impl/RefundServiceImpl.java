@@ -226,6 +226,9 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
             for (StorageOutItem outItem : items) {
 
                 SkuProduct sku = skuProductMapper.selectById(outItem.getSkuId());
+                if (sku==null){
+                    throw new BusinessException(5310,"提交的商品ID\""+outItem.getSkuId()+"\"出错，请重新核对并重新提交!");
+                }
                 if (outItem.getTransactionQuantities() > 0) {
                     StorageOutItem item = new StorageOutItem();
                     item.setSkuId(outItem.getSkuId());
@@ -382,6 +385,9 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
 
     public RefundModel refundDetails(Long id) {
         Refund refund = refundService.retrieveMaster(id);
+        if (refund==null){
+            throw new BusinessException(BusinessCode.FileNotFound);
+        }
         JSONObject refundObj = JSON.parseObject(JSONObject.toJSONString(refund));
 
         if (refund.getProductRefundWarehouseId() != null) {
@@ -410,8 +416,8 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     .eq(StorageOutItem.STORAGE_OUT_ID, refund.getStorageOutId())
                     .eq(StorageOutItem.TYPE, "Others"));
 
-
             if (outItems != null && outItems.size() > 0) {
+                refundObj.put("items", outItems);
                 for (StorageOutItem item : outItems) {
                     // 出库 商品详情
                     StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
@@ -428,6 +434,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     .eq(StorageOutItem.TYPE, TransactionType.Refund.toString()));
 
                     if (outItems != null && outItems.size() > 0) {
+                        refundObj.put("items", outItems);
                         for (StorageOutItem item : outItems) {
                             // 出库 商品详情
                             StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
