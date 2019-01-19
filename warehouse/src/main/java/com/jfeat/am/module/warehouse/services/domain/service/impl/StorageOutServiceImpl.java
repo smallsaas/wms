@@ -17,6 +17,7 @@ import com.jfeat.am.module.warehouse.services.domain.service.StorageOutService;
 import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDStorageOutServiceImpl;
 import com.jfeat.am.module.warehouse.services.persistence.dao.InventoryMapper;
 import com.jfeat.am.module.warehouse.services.persistence.dao.StorageOutItemMapper;
+import com.jfeat.am.module.warehouse.services.persistence.dao.StorageOutMapper;
 import com.jfeat.am.module.warehouse.services.persistence.model.Inventory;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOut;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem;
@@ -42,6 +43,8 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
 
     @Resource
     CRUDStorageOutService crudStorageOutService;
+    @Resource
+    StorageOutMapper storageOutMapper;
     @Resource
     InventoryMapper inventoryMapper;
     @Resource
@@ -172,7 +175,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         entity.setStatus(StorageOutStatus.Wait_To_Audit.toString());
         affected += changeStatus(userId, storageOutId, entity);
         entity.setId(storageOutId);
-        affected += crudStorageOutService.updateMaster(entity);
+        affected += storageOutMapper.updateById(entity);
 
         return affected;
 
@@ -201,7 +204,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         affected += changeStatus(userId, storageOutId, entity);
 
 
-        affected += crudStorageOutService.updateMaster(entity);
+        affected += storageOutMapper.updateById(entity);
         return affected;
     }
 
@@ -216,7 +219,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (out==null){
             throw new BusinessException(BusinessCode.FileNotFound);
         }
-        if (out.getStatus().compareTo(StorageOutStatus.Draft.toString()) != 0) {
+        if (out.getStatus().compareTo(StorageOutStatus.Wait_To_Audit.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
         // 允许在审核的时候 修改 子项的数据
@@ -225,7 +228,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         }
         entity.setStatus(StorageOutStatus.Audit_Passed.toString());
         entity.setId(storageOutId);
-        return crudStorageOutService.updateMaster(entity);
+        return storageOutMapper.updateById(entity);
     }
 
     /**
@@ -243,7 +246,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         }
         out.setStatus(StorageOutStatus.Closed.toString());
         out.setId(storageOutId);
-        return crudStorageOutService.updateMaster(out);
+        return storageOutMapper.updateById(out);
     }
 
 
@@ -300,7 +303,8 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             throw new BusinessException(4050, "商品不能为空，请先选择商品！");
         }
         out.setStatus(StorageOutStatus.Done.toString());
-        affected = crudStorageOutService.createMaster(out);
+        out.setId(storageOutId);
+        affected = storageOutMapper.updateById(out);
         return affected;
     }
 
