@@ -1,5 +1,7 @@
 package com.jfeat.am.module.warehouse.services.domain.model;
 
+import com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem;
+
 import java.util.List;
 
 public class SalesDetails extends SalesRecord{
@@ -7,6 +9,8 @@ public class SalesDetails extends SalesRecord{
     List<StorageOutRecord> storageOutItemRecords;
 
     List<StorageOutItemRecord>  itemRecords;
+
+    List<StorageOutItem> outItems;
 
 
     public List<StorageOutRecord> getStorageOutItemRecords() {
@@ -23,5 +27,13 @@ public class SalesDetails extends SalesRecord{
 
     public void setItemRecords(List<StorageOutItemRecord> itemRecords) {
         this.itemRecords = itemRecords;
+    }
+
+    public List<StorageOutItem> getOutItems() {
+        return outItems;
+    }
+
+    public void setOutItems(List<StorageOutItem> outItems) {
+        this.outItems = outItems;
     }
 }

@@ -331,7 +331,11 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
 
         }
 
+        List<StorageOutItem> outItems = new ArrayList<>();
+        outItems.addAll(itemRecords);
+
         details.put("storageOutItemRecords",records);
+        details.put("outItems",outItems);
 
         SalesDetails result = JSON.parseObject(JSON.toJSONString(details),SalesDetails.class);
 
