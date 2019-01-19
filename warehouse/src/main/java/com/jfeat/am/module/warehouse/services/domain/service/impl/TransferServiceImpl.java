@@ -3,6 +3,7 @@ package com.jfeat.am.module.warehouse.services.domain.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
@@ -156,6 +157,26 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         return affected;
     }
 
+    @Transactional
+    public Integer auditPass(Long transderId, TransferModel model) {
+        int affected = 0;
+        Transfer transfer = transferMapper.selectById(transderId);
+        if (transfer==null){
+            throw new BusinessException(BusinessCode.FileNotFound);
+        }
+        if (transfer.getStatus().compareTo(TransferStatus.Draft.toString()) != 0) {
+            throw new BusinessException(5100, "不能对非草稿状态下的调拨单进行修改");
+        }
+
+        for (StorageOutItem item : model.getOutItems()){
+            storageOutItemMapper.updateById(item);
+        }
+
+        model.setStatus(TransferStatus.Audit_Passed.toString());
+        model.setId(transderId);
+        transferMapper.updateById(model);
+        return affected;
+    }
 
     @Transactional
     public Integer createTransfer(Long transferId, Long userId) {

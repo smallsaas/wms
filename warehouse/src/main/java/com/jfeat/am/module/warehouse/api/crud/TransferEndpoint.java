@@ -87,6 +87,7 @@ public class TransferEndpoint extends BaseController {
         createPurchasekLog(entity.getId(), "createTransfer", "对调拨单进行了修改操作", JSONObject.toJSONString(entity) + " &");
         return SuccessTip.create(affected);
     }
+
     @PutMapping("/{id}/audit")
     @ApiOperation(value = "提交审核调拨单")
     public Tip commit(@PathVariable Long id) {
@@ -94,7 +95,7 @@ public class TransferEndpoint extends BaseController {
         Transfer transfer = new Transfer();
         transfer.setId(id);
         transfer.setStatus(TransferStatus.Wait_To_Audit.toString());
-        if(transfer.getId() != null) {
+        if (transfer.getId() != null) {
             affected += transferService.updateMaster(transfer);
             createPurchasekLog(id, "commit", "对调拨单进行了提交审核操作", id + " &");
         }
@@ -109,7 +110,7 @@ public class TransferEndpoint extends BaseController {
         transfer.setId(id);
 
         transfer.setStatus(TransferStatus.Closed.toString());
-        if(transfer.getId() != null) {
+        if (transfer.getId() != null) {
             affected += transferService.updateMaster(transfer);
             createPurchasekLog(id, "reject", "对调拨单进行了审核拒绝操作", id + " &");
         }
@@ -118,16 +119,9 @@ public class TransferEndpoint extends BaseController {
 
     @PutMapping("/{id}/passed")
     @ApiOperation(value = "调拨单审核通过")
-    public Tip pass(@PathVariable Long id) {
-        Integer affected = 0;
-        Transfer transfer = new Transfer();
-        transfer.setId(id);
-
-        transfer.setStatus(TransferStatus.Audit_Passed.toString());
-        if(transfer.getId() != null) {
-            affected += transferService.updateMaster(transfer);
-            createPurchasekLog(id, "pass", "对调拨单进行了审核通过操作", id + " &");
-        }
+    public Tip pass(@PathVariable Long id, @RequestBody TransferModel entity) {
+        Integer affected = transferService.auditPass(id, entity);
+        createPurchasekLog(id, "pass", "对调拨单进行了审核通过操作", id + " &");
         return SuccessTip.create(affected);
     }
 
@@ -141,7 +135,7 @@ public class TransferEndpoint extends BaseController {
             affected += transferService.createTransfer(id, JWTKit.getUserId(getHttpServletRequest()));
 
         } catch (DuplicateKeyException e) {
-            throw new BusinessException(5100,"编号重复，请重新刷新页面");
+            throw new BusinessException(5100, "编号重复，请重新刷新页面");
         }
         createPurchasekLog(id, "createTransfer", "对调拨单进行了开始调拨操作", JSONObject.toJSONString(id) + " &");
         return SuccessTip.create(affected);
@@ -234,7 +228,6 @@ public class TransferEndpoint extends BaseController {
 
         return SuccessTip.create(page);
     }
-
 
 
 }

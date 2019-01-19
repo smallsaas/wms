@@ -46,4 +46,7 @@ public interface TransferService extends CRUDTransferService {
     @Transactional
     Integer updateTransfer(Long transderId, TransferModel model);
 
+    @Transactional
+    Integer auditPass(Long transderId, TransferModel model);
+
 }
