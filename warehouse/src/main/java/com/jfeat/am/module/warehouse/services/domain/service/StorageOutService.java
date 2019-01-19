@@ -32,7 +32,7 @@ public interface StorageOutService extends CRUDStorageOutService{
      * audit passed
      */
     @Transactional
-    Integer passedStorageOut(Long storageOutId);
+    Integer passedStorageOut(Long storageOutId, StorageOutModel entity);
 
     /**
      * audit rejected

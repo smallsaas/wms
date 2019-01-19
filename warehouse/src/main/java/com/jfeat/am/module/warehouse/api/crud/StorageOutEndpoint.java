@@ -141,7 +141,7 @@ public class StorageOutEndpoint extends BaseController {
     @ApiOperation(value = "审核通过",response = StorageOutModel.class)
     public Tip auditStorage(@PathVariable Long id, @RequestBody StorageOutModel entity) {
         entity.setId(id);
-        Tip resultTip = SuccessTip.create(storageOutService.passedStorageOut(id));
+        Tip resultTip = SuccessTip.create(storageOutService.passedStorageOut(id,entity));
         createStorageOutLog(id,  "auditStorageOut", "对出库单进行了审核通过操作",  id + " &");
         return resultTip;
     }

@@ -161,6 +161,10 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
 
         Integer affected = 0;
         StorageOut out = crudStorageOutService.retrieveMaster(storageOutId);
+        if (out==null){
+            throw new BusinessException(BusinessCode.FileNotFound);
+        }
+
         if (out.getStatus().compareTo(StorageOutStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
@@ -184,6 +188,10 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
 
 
         StorageOut out = crudStorageOutService.retrieveMaster(storageOutId);
+
+        if (out==null){
+            throw new BusinessException(BusinessCode.FileNotFound);
+        }
         if (out.getStatus().compareTo(StorageOutStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
@@ -202,14 +210,22 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
      * audit passed
      */
     @Transactional
-    public Integer passedStorageOut(Long storageOutId) {
+    public Integer passedStorageOut(Long storageOutId, StorageOutModel entity) {
         StorageOut out = crudStorageOutService.retrieveMaster(storageOutId);
+
+        if (out==null){
+            throw new BusinessException(BusinessCode.FileNotFound);
+        }
         if (out.getStatus().compareTo(StorageOutStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-        out.setStatus(StorageOutStatus.Audit_Passed.toString());
-        out.setId(storageOutId);
-        return crudStorageOutService.updateMaster(out);
+        // 允许在审核的时候 修改 子项的数据
+        for (StorageOutItem item : entity.getStorageOutItems()){
+            outItemMapper.updateById(item);
+        }
+        entity.setStatus(StorageOutStatus.Audit_Passed.toString());
+        entity.setId(storageOutId);
+        return crudStorageOutService.updateMaster(entity);
     }
 
     /**
@@ -218,6 +234,10 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     @Transactional
     public Integer auditRejectedStorageOut(Long storageOutId) {
         StorageOut out = crudStorageOutService.retrieveMaster(storageOutId);
+
+        if (out==null){
+            throw new BusinessException(BusinessCode.FileNotFound);
+        }
         if (out.getStatus().compareTo(StorageOutStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
@@ -234,6 +254,10 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     public Integer executionStorageOut(String uasername, Long storageOutId) {
 
         StorageOut out = crudStorageOutService.retrieveMaster(storageOutId);
+
+        if (out==null){
+            throw new BusinessException(BusinessCode.FileNotFound);
+        }
 
 
         if (out.getStatus().compareTo(StorageOutStatus.Audit_Passed.toString())!= 0){
