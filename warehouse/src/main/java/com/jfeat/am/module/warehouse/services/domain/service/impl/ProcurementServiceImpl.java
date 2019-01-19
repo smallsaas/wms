@@ -446,8 +446,14 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         int affected = 0;
 
         Procurement procurement = procurementMapper.selectById(id);
-        procurement.setProcureStatus(ProcurementStatus.Closed.toString());
-        procurement.setId(id);
+        if (procurement==null){
+            throw new BusinessException(BusinessCode.FileNotFound);
+        }
+        if (procurement.getProcureStatus().compareTo(ProcurementStatus.Wait_To_Audit.toString())!=0){
+            throw new BusinessException(BusinessCode.ErrorStatus);
+        }
+        model.setProcureStatus(ProcurementStatus.Closed.toString());
+        model.setId(id);
 
         BigDecimal totalSpend = BigDecimal.valueOf(0);
         for (StorageInItem item : model.getItems()) {
@@ -457,8 +463,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             sum = sum.multiply(item.getTransactionSkuPrice());
             totalSpend = totalSpend.add(sum);
         }
-        procurement.setProcurementTotal(totalSpend);
-        affected +=  procurementMapper.updateById(procurement);
+        model.setProcurementTotal(totalSpend);
+        affected +=  procurementMapper.updateById(model);
 
         return affected;
     }
@@ -470,6 +476,12 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     public Integer auditProcurment(Long id) {
 
         Procurement procurement = procurementMapper.selectById(id);
+        if (procurement==null){
+            throw new BusinessException(BusinessCode.FileNotFound);
+        }
+        if (procurement.getProcureStatus().compareTo(ProcurementStatus.Draft.toString())!=0){
+            throw new BusinessException(BusinessCode.ErrorStatus);
+        }
         procurement.setProcureStatus(ProcurementStatus.Wait_To_Audit.toString());
         procurement.setId(id);
         return procurementMapper.updateById(procurement);
@@ -484,8 +496,15 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         int affected = 0;
 
         Procurement procurement = procurementMapper.selectById(id);
-        procurement.setProcureStatus(ProcurementStatus.Audit_Passed.toString());
-        procurement.setId(id);
+        if (procurement==null){
+            throw new BusinessException(BusinessCode.FileNotFound);
+        }
+        if (procurement.getProcureStatus().compareTo(ProcurementStatus.Wait_To_Audit.toString())!=0){
+            throw new BusinessException(BusinessCode.ErrorStatus);
+        }
+
+        model.setProcureStatus(ProcurementStatus.Audit_Passed.toString());
+        model.setId(id);
 
         BigDecimal totalSpend = BigDecimal.valueOf(0);
         for (StorageInItem item : model.getItems()) {
@@ -495,8 +514,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             sum = sum.multiply(item.getTransactionSkuPrice());
             totalSpend = totalSpend.add(sum);
         }
-        procurement.setProcurementTotal(totalSpend);
-        affected += procurementMapper.updateById(procurement);
+        model.setProcurementTotal(totalSpend);
+        affected += procurementMapper.updateById(model);
         return affected;
     }
 }
