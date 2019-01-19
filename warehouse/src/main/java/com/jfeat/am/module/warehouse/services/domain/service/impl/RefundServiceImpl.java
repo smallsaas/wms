@@ -184,10 +184,10 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         if (refund == null){
             throw new BusinessException(BusinessCode.FileNotFound);
         }
-        refund.setId(id);
-        refund.setProductRefundStatus(RefundStatus.Audit_Passed.toString());
+        model.setId(id);
+        model.setProductRefundStatus(RefundStatus.Audit_Passed.toString());
         if(refund.getId() != null) {
-            affected += refundService.updateMaster(refund);
+            affected += refundService.updateMaster(model);
             for (StorageOutItem item : model.getItems()){
                 storageOutItemMapper.updateById(item);
             }
