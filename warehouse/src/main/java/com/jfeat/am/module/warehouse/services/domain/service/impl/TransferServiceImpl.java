@@ -455,6 +455,10 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
 //        if (transfer.getStatus().compareTo(TransferStatus.Draft.toString()) == 0) {
             List<StorageOutItemRecord> outItemRecords = queryTransferDao.draftOutItemRecords(id);
+
+            List<StorageOutItem> outItems = new ArrayList<>();
+            transferObj.put("outItems", outItems.addAll(outItemRecords));
+
             transferObj.put("outItemRecords", outItemRecords);
             transferObj.put("fromWarehouseName", queryWarehouseDao.warehouseName(transfer.getFromWarehouseId()));
             transferObj.put("toWarehouseName", queryWarehouseDao.warehouseName(transfer.getToWarehouseId()));
