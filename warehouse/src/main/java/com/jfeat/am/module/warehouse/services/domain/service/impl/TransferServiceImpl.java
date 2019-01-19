@@ -164,8 +164,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         if (transfer==null){
             throw new BusinessException(BusinessCode.FileNotFound);
         }
-        if (transfer.getStatus().compareTo(TransferStatus.Draft.toString()) != 0) {
-            throw new BusinessException(5100, "不能对非草稿状态下的调拨单进行修改");
+        if (transfer.getStatus().compareTo(TransferStatus.Wait_To_Audit.toString()) != 0) {
+            throw new BusinessException(BusinessCode.ErrorStatus);
         }
 
         for (StorageOutItem item : model.getOutItems()){
