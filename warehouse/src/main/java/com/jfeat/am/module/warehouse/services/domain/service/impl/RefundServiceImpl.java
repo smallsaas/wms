@@ -100,15 +100,17 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                         if (model.getProductProcurementId() == null) {
                             //do nothings
                             outItem.setStorageOutId(refundId);
+                            outItem.setTransactionQuantities(outItem.getDemandQuantities());
                             outItem.setType(TransactionType.Refund.toString());
                             affected += storageOutItemMapper.insert(outItem);
 
                         } else {
-                            if (outItem.getTransactionQuantities() > queryRefundDao.skuStorageInCount(model.getProductProcurementId(), outItem.getSkuId())) {
+                            if (outItem.getDemandQuantities() > queryRefundDao.skuStorageInCount(model.getProductProcurementId(), outItem.getSkuId())) {
                                 throw new BusinessException(4050, "\"" + sku.getSkuName() + "\"退货数量不能大于入库的数量");
                             } else {
                                 outItem.setStorageOutId(refundId);
                                 outItem.setType(TransactionType.Refund.toString());
+                                outItem.setTransactionQuantities(outItem.getDemandQuantities());
                                 affected += storageOutItemMapper.insert(outItem);
                             }
                         }
@@ -176,13 +178,20 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     }
 
     @Transactional
-    public Integer auditPassed(Long id, String username, Long userId) {
+    public Integer auditPassed(Long id, String username, Long userId, RefundModel model) {
         Integer affected = 0;
-        Refund refund = new Refund();
+        Refund refund = refundMapper.selectById(id);
+        if (refund == null){
+            throw new BusinessException(BusinessCode.FileNotFound);
+        }
         refund.setId(id);
         refund.setProductRefundStatus(RefundStatus.Audit_Passed.toString());
         if(refund.getId() != null) {
             affected += refundService.updateMaster(refund);
+            for (StorageOutItem item : model.getItems()){
+                storageOutItemMapper.updateById(item);
+            }
+            // 成功就立即执行入库，无须再调用执行入库的API
             affected += executionRefund(username,userId,id);
         }
         return affected;

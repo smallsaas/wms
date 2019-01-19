@@ -27,7 +27,7 @@ public interface RefundService extends CRUDRefundService{
     Integer updateAndCommitRefund(Long refundId, RefundModel model);
 
     @Transactional
-    Integer auditPassed(Long id,String username,Long userId);
+    Integer auditPassed(Long id,String username,Long userId, RefundModel model);
 
     @Transactional
     Integer deleteRefund(Long id);
