@@ -86,6 +86,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         model.setOriginatorId(userId);
         model.setTransactionTime(new Date());
         model.setProcureStatus(ProcurementStatus.Draft.toString());
+        
+        affected += procurementMapper.insert(model);
         for (StorageInItem item : model.getItems()) {
             if (item.getTransactionQuantities() == 0) {
                 throw new BusinessException(4501, "采购数量不能为0，请重新输入！");
@@ -102,7 +104,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             totalSpend = totalSpend.add(sum);
         }
         model.setProcurementTotal(totalSpend);
-        affected += procurementMapper.insert(model);
+        affected += procurementMapper.updateById(model);
         return affected;
     }
 
