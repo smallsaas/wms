@@ -276,6 +276,27 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
 
     }
 
+    @Transactional
+    public Integer auditPass(Long salesId, SalesModel model){
+        Integer affected = 0;
+
+        Sales sales = salesMapper.selectById(salesId);
+        if (sales==null){
+            throw new  BusinessException(BusinessCode.FileNotFound);
+        }
+        if (sales.getSalesStatus().compareTo(SalesStatus.Wait_To_Audit.toString())!=0){
+            throw new BusinessException(BusinessCode.ErrorStatus);
+        }
+        for (StorageOutItem item : model.getOutItems()){
+            affected += outItemMapper.updateById(item);
+        }
+        model.setSalesStatus(SalesStatus.WaitForStorageOut.toString());
+        model.setId(salesId);
+        affected += salesMapper.updateById(model);
+        return affected;
+
+    }
+
 
     public SalesDetails salesDetails(Long salesId) {
 

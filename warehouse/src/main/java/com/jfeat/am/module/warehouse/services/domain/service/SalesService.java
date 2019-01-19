@@ -22,6 +22,8 @@ public interface SalesService extends CRUDSalesService {
 
     SalesDetails salesDetails(Long salesId);
 
+    Integer auditPass(Long salesId, SalesModel model);
+
     Integer deleteSales(Long id);
 
     @Transactional

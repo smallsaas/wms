@@ -50,7 +50,7 @@ public class SalesEndpoint extends BaseController {
     QuerySalesDao querySalesDao;
 
 
-    private void createSalesLog(Long targetId, String methodName, String operation,String message) {
+    private void createSalesLog(Long targetId, String methodName, String operation, String message) {
         LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
                 JWTKit.getAccount(getHttpServletRequest()),
                 operation,
@@ -72,21 +72,21 @@ public class SalesEndpoint extends BaseController {
         entity.setOriginatorName(userName);
         Long userId = JWTKit.getUserId(getHttpServletRequest());
         try {
-            affected = salesService.createSales(userId,entity);
+            affected = salesService.createSales(userId, entity);
 
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
         }
-        createSalesLog(entity.getId(),  "createSales", "对分销商出库进行了新建操作",  JSONObject.toJSONString(entity) + " &");
+        createSalesLog(entity.getId(), "createSales", "对分销商出库进行了新建操作", JSONObject.toJSONString(entity) + " &");
         return SuccessTip.create(affected);
     }
 
     @PutMapping("/{id}/audit")
     @ApiOperation(value = "分销商出库提交 审核")
-    public Tip commit(@PathVariable Long id ,@RequestBody SalesModel entity) {
+    public Tip commit(@PathVariable Long id, @RequestBody SalesModel entity) {
         Integer affected = 0;
-        affected += salesService.updateAndCommitSales(JWTKit.getUserId(getHttpServletRequest()),id,entity);
-        createSalesLog(entity.getId(),  "commit", "对分销商出库进行了提交审核操作",  JSONObject.toJSONString(entity) + " &" + id +"&");
+        affected += salesService.updateAndCommitSales(JWTKit.getUserId(getHttpServletRequest()), id, entity);
+        createSalesLog(entity.getId(), "commit", "对分销商出库进行了提交审核操作", JSONObject.toJSONString(entity) + " &" + id + "&");
 
         return SuccessTip.create(affected);
     }
@@ -98,24 +98,19 @@ public class SalesEndpoint extends BaseController {
         Sales sales = new Sales();
         sales.setId(id);
         sales.setSalesStatus(SalesStatus.Closed.toString());
-        if(sales.getId() != null) {
+        if (sales.getId() != null) {
             affected += salesService.updateMaster(sales);
-            createSalesLog(id,  "reject", "对分销商出库进行了审核拒绝操作", id + " &");
+            createSalesLog(id, "reject", "对分销商出库进行了审核拒绝操作", id + " &");
         }
         return SuccessTip.create(affected);
     }
 
     @PutMapping("/{id}/passed")
     @ApiOperation(value = "分销商出库审核通过")
-    public Tip pass(@PathVariable Long id) {
-        Integer affected = 0;
-        Sales sales = new Sales();
-        sales.setId(id);
-        sales.setSalesStatus(SalesStatus.WaitForStorageOut.toString());
-        if(sales.getId() != null) {
-            affected += salesService.updateMaster(sales);
-            createSalesLog(id,  "pass", "对分销商出库进行了审核通过操作", id + " &");
-        }
+    public Tip pass(@PathVariable Long id, @RequestBody SalesModel entity) {
+
+        Integer affected = salesService.auditPass(id,entity);
+        createSalesLog(id, "pass", "对分销商出库进行了审核通过操作", id + " &");
         return SuccessTip.create(affected);
     }
 
@@ -131,20 +126,20 @@ public class SalesEndpoint extends BaseController {
     public Tip updateSales(@PathVariable Long id, @RequestBody SalesModel entity) {
         entity.setId(id);
         Long userId = JWTKit.getUserId(getHttpServletRequest());
-        Tip resultTip = SuccessTip.create(salesService.updateSales(userId,id,entity));
+        Tip resultTip = SuccessTip.create(salesService.updateSales(userId, id, entity));
 
-        createSalesLog(id,  "updateSales", "对分销商出库进行了更新操作",  JSONObject.toJSONString(entity) + " & " + id + " &");
+        createSalesLog(id, "updateSales", "对分销商出库进行了更新操作", JSONObject.toJSONString(entity) + " & " + id + " &");
         return resultTip;
     }
 
     @BusinessLog(name = "SalesModel", value = "update SalesModel")
     @PutMapping("/{id}/execution")
-    @ApiOperation(value = "出库",response = SalesModel.class)
+    @ApiOperation(value = "出库", response = SalesModel.class)
     public Tip executionProcurement(@PathVariable Long id, @RequestBody SalesModel entity) {
         entity.setId(id);
-        Tip resultTip = SuccessTip.create(salesService.executionStorageOut(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        Tip resultTip = SuccessTip.create(salesService.executionStorageOut(JWTKit.getUserId(getHttpServletRequest()), id, entity));
 
-        createSalesLog(id,  "executionProcurement", "对分销商出库进行了出库操作",  JSONObject.toJSONString(entity) + " & " + id + " &");
+        createSalesLog(id, "executionProcurement", "对分销商出库进行了出库操作", JSONObject.toJSONString(entity) + " & " + id + " &");
         return resultTip;
     }
 
@@ -155,7 +150,7 @@ public class SalesEndpoint extends BaseController {
     public Tip deleteSales(@PathVariable Long id) {
         Tip resultTip = SuccessTip.create(salesService.deleteSales(id));
 
-        createSalesLog(id,  "deleteSales", "对分销商出库进行了删除操作",  id + " &");
+        createSalesLog(id, "deleteSales", "对分销商出库进行了删除操作", id + " &");
         return resultTip;
     }
 
@@ -195,8 +190,8 @@ public class SalesEndpoint extends BaseController {
         }
 
 
-        Date startTime = (transactionTime!=null && transactionTime.length == 2)? transactionTime [0] : null;
-        Date endTime = (transactionTime!=null && transactionTime.length == 2)? transactionTime [1] : null;
+        Date startTime = (transactionTime != null && transactionTime.length == 2) ? transactionTime[0] : null;
+        Date endTime = (transactionTime != null && transactionTime.length == 2) ? transactionTime[1] : null;
 
 
         page.setCurrent(pageNum);
@@ -219,7 +214,7 @@ public class SalesEndpoint extends BaseController {
         record.setField1(field1);
         record.setField2(field2);
 
-        page.setRecords(querySalesDao.findSalesPage(page, traderName,record, orderBy,startTime,endTime));
+        page.setRecords(querySalesDao.findSalesPage(page, traderName, record, orderBy, startTime, endTime));
 
         return SuccessTip.create(page);
     }
@@ -228,8 +223,8 @@ public class SalesEndpoint extends BaseController {
     @PostMapping("/bulk/delete")
     public Tip deleteList(@RequestBody Ids ids) {
         Tip resultTip = SuccessTip.create(salesService.bulkDelete(ids));
-        for(Long id : ids.getIds()) {
-            createSalesLog(id,  "deleteList", "对分销商出库进行了批量删除操作",  id + " &");
+        for (Long id : ids.getIds()) {
+            createSalesLog(id, "deleteList", "对分销商出库进行了批量删除操作", id + " &");
         }
         return resultTip;
     }
