@@ -135,7 +135,7 @@ public class StorageInEndpoint extends BaseController {
     @ApiOperation(value = "审核通过",response = StorageInModel.class)
     public Tip auditStorageIn(@PathVariable Long id, @RequestBody StorageInModel entity) {
         entity.setId(id);
-        Tip resultTip = SuccessTip.create(storageInService.passedStorageIn(id));
+        Tip resultTip = SuccessTip.create(storageInService.passedStorageIn(id,entity));
         createStorageInLog(id,  "auditStorageIn", "对入库单进行了审核通过操作",  id + " &");
         return resultTip;
     }

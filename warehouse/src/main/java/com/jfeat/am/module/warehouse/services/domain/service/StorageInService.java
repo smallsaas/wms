@@ -32,7 +32,7 @@ public interface StorageInService extends CRUDStorageInService{
      *  audit passed
      * */
     @Transactional
-    Integer passedStorageIn(Long storageInId);
+    Integer passedStorageIn(Long storageInId,StorageInModel entity);
 
 
     /**

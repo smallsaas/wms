@@ -160,7 +160,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
      *  audit passed
      * */
     @Transactional
-    public Integer passedStorageIn(Long storageInId) {
+    public Integer passedStorageIn(Long storageInId,StorageInModel entity) {
         StorageIn in = crudStorageInService.retrieveMaster(storageInId);
         if (in==null){
             throw new BusinessException(BusinessCode.FileNotFound);
@@ -168,6 +168,12 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         if (in.getStatus().compareTo(StorageInStatus.Wait_To_Audit.toString())!=0){
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
+
+        // 审核可能改变数据，先 update 子项数据
+        for (StorageInItem item : entity.getStorageInItems()){
+            inItemMapper.updateById(item);
+        }
+
         in.setStatus(StorageInStatus.Audit_Passed.toString());
         in.setId(storageInId);
         return crudStorageInService.updateMaster(in);
