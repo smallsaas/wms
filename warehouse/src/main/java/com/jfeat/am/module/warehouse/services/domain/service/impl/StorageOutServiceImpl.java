@@ -72,7 +72,8 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
 
             for (StorageOutItem outItem : entity.getStorageOutItems()) {
-                if (outItem.getTransactionQuantities() > 0) {
+                if (outItem.getDemandQuantities() > 0) {
+                    outItem.setTransactionQuantities(outItem.getDemandQuantities());
                     outItem.setRelationCode(entity.getTransactionCode());
                     outItem.setTransactionTime(entity.getStorageOutTime());
                     outItem.setType(TransactionType.StorageOut.toString());
@@ -122,7 +123,8 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
 
         if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
             for (StorageOutItem outItem : entity.getStorageOutItems()) {
-                if (outItem.getTransactionQuantities() > 0) {
+                if (outItem.getDemandQuantities() > 0) {
+                    outItem.setTransactionQuantities(outItem.getDemandQuantities());
                     outItem.setRelationCode(entity.getTransactionCode());
                     SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
                     outItem.setTransactionTime(entity.getStorageOutTime());
@@ -214,7 +216,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
      */
     @Transactional
     public Integer passedStorageOut(Long storageOutId, StorageOutModel entity) {
-        StorageOut out = crudStorageOutService.retrieveMaster(storageOutId);
+        StorageOut out = storageOutMapper.selectById(storageOutId);
 
         if (out==null){
             throw new BusinessException(BusinessCode.FileNotFound);
@@ -241,7 +243,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (out==null){
             throw new BusinessException(BusinessCode.FileNotFound);
         }
-        if (out.getStatus().compareTo(StorageOutStatus.Draft.toString()) != 0) {
+        if (out.getStatus().compareTo(StorageOutStatus.Wait_Storage_In.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
         out.setStatus(StorageOutStatus.Closed.toString());
