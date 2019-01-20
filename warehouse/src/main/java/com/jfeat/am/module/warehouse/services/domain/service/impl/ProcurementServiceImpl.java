@@ -332,6 +332,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 SkuProduct sku = skuProductMapper.selectById(item.getSkuId());
 
                 record.setTotalCount(item.getTransactionQuantities()); // cai gou zong shu
+                record.setDemandQuantities(item.getDemandQuantities());
                 record.setSkuCode(sku.getSkuCode());
                 record.setSkuName(sku.getSkuName());
                 record.setSkuBarcode(sku.getBarCode());
