@@ -12,7 +12,7 @@ public class StorageOutRecord extends StorageOut{
     String warehouseName;
     String slotName;
     String operatorName;
-    List<StorageOutItemRecord> storageOutItemRecords;
+    List<StorageOutItemRecord> items;
 
 
     public String getWarehouseName() {
@@ -40,11 +40,11 @@ public class StorageOutRecord extends StorageOut{
     }
 
 
-    public List<StorageOutItemRecord> getStorageOutItemRecords() {
-        return storageOutItemRecords;
+    public List<StorageOutItemRecord> getItems() {
+        return items;
     }
 
-    public void setStorageOutItemRecords(List<StorageOutItemRecord> storageOutItemRecords) {
-        this.storageOutItemRecords = storageOutItemRecords;
+    public void setItems(List<StorageOutItemRecord> items) {
+        this.items = items;
     }
 }
