@@ -234,6 +234,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     item.setSkuId(outItem.getSkuId());
                     item.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
                     item.setTransactionQuantities(outItem.getTransactionQuantities());
+                    item.setDemandQuantities(outItem.getDemandQuantities());
                     item.setRelationCode(refund.getProductRefundCode());
                     item.setTransactionTime(storageOutModel.getStorageOutTime());
                     item.setType("Others");
@@ -319,70 +320,6 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     }
 
 
-    /**
-     * @Param Long refundId
-     * 退货作废
-     */
-    @Transactional
-    public Integer cancelRefund(Long userId, Long refundId) {
-        int affected = 0;
-        Refund refund = refundService.retrieveMaster(refundId);
-        StorageInModel storageIn = new StorageInModel();
-        storageIn.setStorageInTime(new Date());
-
-        StorageOut out = storageOutMapper.selectById(refund.getStorageOutId());
-        List<StorageInItem> storageInItems = new ArrayList<>();
-        List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
-                .eq(StorageOutItem.STORAGE_OUT_ID, out.getId()).eq(StorageOutItem.RELATION_CODE, refund.getProductRefundCode()));
-        if (storageOutItems == null && storageOutItems.size() == 0) {
-            throw new BusinessException(5000, "未知错误");
-        }
-        for (StorageOutItem outItem : storageOutItems) {
-            Inventory isExistInventory = new Inventory();
-            isExistInventory.setSkuId(outItem.getSkuId());
-            isExistInventory.setWarehouseId(refund.getProductRefundWarehouseId());
-            Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
-            if (originInventory == null) {
-                // 应该不会出现吧 出现就是数据库异常吧
-                throw new BusinessException(BusinessCode.DatabaseConnectFailure);
-            }
-            Integer validSku = originInventory.getValidSku();
-            validSku += outItem.getTransactionQuantities();
-            originInventory.setValidSku(validSku);
-
-            StorageInItem item = new StorageInItem();
-            item.setRelationCode(refund.getProductRefundCode());
-            item.setTransactionTime(storageIn.getStorageInTime());
-
-            item.setTransactionQuantities(outItem.getTransactionQuantities());
-            item.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
-            item.setSkuId(outItem.getSkuId());
-            item.setType("Others");
-            // 操作后的数量
-            item.setAfterTransactionQuantities(validSku);
-            item.setTransactionTime(new Date());
-            storageInItems.add(item);
-
-            affected += inventoryMapper.updateAllColumnById(originInventory);
-        }
-        storageIn.setTransactionType(TransactionType.OthersStorageIn.toString());
-        storageIn.setWarehouseId(refund.getProductRefundWarehouseId());
-        storageIn.setOriginatorId(userId);
-        // needs code ?
-        storageIn.setTransactionCode(refund.getField1().replace("OUT", "IN"));
-        storageIn.setTransactionTime(new Date());
-        StorageInFilter storageInFilter = new StorageInFilter();
-        storageIn.setStorageInItems(storageInItems);
-        // field1 去接收最上层的ID  作跳转使用
-        storageIn.setField1(refundId.toString());
-
-        affected += crudStorageInService.createMaster(storageIn, storageInFilter, null, null);
-        refund.setProductRefundStatus(RefundStatus.Closed.toString());
-        affected += refundService.updateMaster(refund);
-        return affected;
-    }
-
-
     public RefundModel refundDetails(Long id) {
         Refund refund = refundService.retrieveMaster(id);
         if (refund==null){
@@ -463,5 +400,68 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         return refundService.deleteMaster(id);
     }
 
+
+    /**
+     * @Param Long refundId
+     * 退货作废
+     */
+    @Transactional
+    public Integer cancelRefund(Long userId, Long refundId) {
+        int affected = 0;
+        Refund refund = refundService.retrieveMaster(refundId);
+        StorageInModel storageIn = new StorageInModel();
+        storageIn.setStorageInTime(new Date());
+
+        StorageOut out = storageOutMapper.selectById(refund.getStorageOutId());
+        List<StorageInItem> storageInItems = new ArrayList<>();
+        List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
+                .eq(StorageOutItem.STORAGE_OUT_ID, out.getId()).eq(StorageOutItem.RELATION_CODE, refund.getProductRefundCode()));
+        if (storageOutItems == null && storageOutItems.size() == 0) {
+            throw new BusinessException(5000, "未知错误");
+        }
+        for (StorageOutItem outItem : storageOutItems) {
+            Inventory isExistInventory = new Inventory();
+            isExistInventory.setSkuId(outItem.getSkuId());
+            isExistInventory.setWarehouseId(refund.getProductRefundWarehouseId());
+            Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+            if (originInventory == null) {
+                // 应该不会出现吧 出现就是数据库异常吧
+                throw new BusinessException(BusinessCode.DatabaseConnectFailure);
+            }
+            Integer validSku = originInventory.getValidSku();
+            validSku += outItem.getTransactionQuantities();
+            originInventory.setValidSku(validSku);
+
+            StorageInItem item = new StorageInItem();
+            item.setRelationCode(refund.getProductRefundCode());
+            item.setTransactionTime(storageIn.getStorageInTime());
+
+            item.setTransactionQuantities(outItem.getTransactionQuantities());
+            item.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
+            item.setSkuId(outItem.getSkuId());
+            item.setType("Others");
+            // 操作后的数量
+            item.setAfterTransactionQuantities(validSku);
+            item.setTransactionTime(new Date());
+            storageInItems.add(item);
+
+            affected += inventoryMapper.updateAllColumnById(originInventory);
+        }
+        storageIn.setTransactionType(TransactionType.OthersStorageIn.toString());
+        storageIn.setWarehouseId(refund.getProductRefundWarehouseId());
+        storageIn.setOriginatorId(userId);
+        // needs code ?
+        storageIn.setTransactionCode(refund.getField1().replace("OUT", "IN"));
+        storageIn.setTransactionTime(new Date());
+        StorageInFilter storageInFilter = new StorageInFilter();
+        storageIn.setStorageInItems(storageInItems);
+        // field1 去接收最上层的ID  作跳转使用
+        storageIn.setField1(refundId.toString());
+
+        affected += crudStorageInService.createMaster(storageIn, storageInFilter, null, null);
+        refund.setProductRefundStatus(RefundStatus.Closed.toString());
+        affected += refundService.updateMaster(refund);
+        return affected;
+    }
 
 }

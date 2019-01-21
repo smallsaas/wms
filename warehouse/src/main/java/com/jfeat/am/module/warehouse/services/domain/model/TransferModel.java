@@ -10,21 +10,14 @@ import java.util.List;
  * Created by Code Generator on 2018-06-22
  */
 public class TransferModel extends Transfer{
-    List<StorageOutItem> outItems;
+    List<StorageOutItemRecord> outItems;
     String operatorName;
 
     String fromWarehouseName;
     String toWarehouseName;
 
-    List<StorageOutItemRecord> outItemRecords;
+//    List<StorageOutItemRecord> outItemRecords;
 
-    public List<StorageOutItem> getOutItems() {
-        return outItems;
-    }
-
-    public void setOutItems(List<StorageOutItem> outItems) {
-        this.outItems = outItems;
-    }
 
     public String getOperatorName() {
         return operatorName;
@@ -50,11 +43,11 @@ public class TransferModel extends Transfer{
         this.toWarehouseName = toWarehouseName;
     }
 
-    public List<StorageOutItemRecord> getOutItemRecords() {
-        return outItemRecords;
+    public List<StorageOutItemRecord> getOutItems() {
+        return outItems;
     }
 
-    public void setOutItemRecords(List<StorageOutItemRecord> outItemRecords) {
-        this.outItemRecords = outItemRecords;
+    public void setOutItems(List<StorageOutItemRecord> outItems) {
+        this.outItems = outItems;
     }
 }

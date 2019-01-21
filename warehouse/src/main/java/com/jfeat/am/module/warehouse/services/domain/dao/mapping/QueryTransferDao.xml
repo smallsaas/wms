@@ -143,4 +143,13 @@
         and wms_storage_out_item.type='TransferOut'
 
     </select>
+
+    <select id="outItems" resultMap="OutItemMap" parameterType="long">
+        SELECT wms_storage_out_item.*
+        FROM wms_storage_out_item
+        WHERE 1=1
+        and wms_storage_out_item.storage_out_id = #{outItemId}
+        and wms_storage_out_item.type='TransferOut'
+
+    </select>
 </mapper>

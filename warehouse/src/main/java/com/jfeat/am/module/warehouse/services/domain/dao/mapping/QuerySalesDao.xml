@@ -81,9 +81,9 @@
         <result column="traderContactPhone" property="traderContactPhone"/>
 
 
-        <collection property="itemRecords"
+        <collection property="items"
                     column="id"
-                    select="itemRecords"
+                    select="items"
                     ofType="com.jfeat.am.module.warehouse.services.domain.model.StorageOutItemRecord">
 
         </collection>
@@ -121,7 +121,7 @@
         <result column="finishedCount" property="finishedCount"/>
 
     </resultMap>
-    <select id="itemRecords" resultMap="ItemRecord" parameterType="long">
+    <select id="items" resultMap="ItemRecord" parameterType="long">
         SELECT wms_storage_out_item.*,
         t_sku_product.sku_code as skuCode,
         t_sku_product.bar_code as skuBarcode,

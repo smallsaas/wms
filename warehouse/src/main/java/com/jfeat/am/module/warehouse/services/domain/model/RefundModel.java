@@ -1,7 +1,6 @@
 package com.jfeat.am.module.warehouse.services.domain.model;
 
 import com.jfeat.am.module.warehouse.services.persistence.model.Refund;
-import com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem;
 
 import java.util.List;
 
@@ -9,22 +8,14 @@ import java.util.List;
  * Created by Code Generator on 2018-06-22
  */
 public class RefundModel extends Refund{
-    List<StorageOutItem> items;
     String operatorName;
     String procurementCode;
     String supplierName;
 //    List<StorageOutRecord> outRecords;
     String warehouseName;
 
-    List<StorageOutItemRecord> itemRecords;
+    List<StorageOutItemRecord> items;
 
-    public List<StorageOutItem> getItems() {
-        return items;
-    }
-
-    public void setItems(List<StorageOutItem> items) {
-        this.items = items;
-    }
 
 
     public String getOperatorName() {
@@ -59,12 +50,12 @@ public class RefundModel extends Refund{
         this.warehouseName = warehouseName;
     }
 
-    public List<StorageOutItemRecord> getItemRecords() {
-        return itemRecords;
+    public List<StorageOutItemRecord> getItems() {
+        return items;
     }
 
-    public void setItemRecords(List<StorageOutItemRecord> itemRecords) {
-        this.itemRecords = itemRecords;
+    public void setItems(List<StorageOutItemRecord> items) {
+        this.items = items;
     }
 
     public String getSupplierName() {

@@ -76,7 +76,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
     protected static final Logger logger = LoggerFactory.getLogger(TransferServiceImpl.class);
 
     @Transactional
-    public Integer draftOutItem(List<StorageOutItem> items, Long fromWarehouseId, Long transferId) {
+    public Integer draftOutItem(List<StorageOutItemRecord> items, Long fromWarehouseId, Long transferId) {
         int affected = 0;
 
         if (items != null && items.size() > 0) {
@@ -162,14 +162,14 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
     public Integer auditPass(Long transderId, TransferModel model) {
         int affected = 0;
         Transfer transfer = transferMapper.selectById(transderId);
-        if (transfer==null){
+        if (transfer == null) {
             throw new BusinessException(BusinessCode.FileNotFound);
         }
         if (transfer.getStatus().compareTo(TransferStatus.Wait_To_Audit.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
 
-        for (StorageOutItem item : model.getOutItems()){
+        for (StorageOutItem item : model.getOutItems()) {
             storageOutItemMapper.updateById(item);
         }
 
@@ -454,25 +454,14 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         }
         JSONObject transferObj = JSON.parseObject(JSONObject.toJSONString(transfer));
 
-//        if (transfer.getStatus().compareTo(TransferStatus.Draft.toString()) == 0) {
-            List<StorageOutItemRecord> outItemRecords = queryTransferDao.draftOutItemRecords(id);
+        List<StorageOutItemRecord> outItemRecords = queryTransferDao.draftOutItemRecords(id);
 
-            List<StorageOutItem> outItems = new ArrayList<>();
-            transferObj.put("outItems", outItems.addAll(outItemRecords));
-
-            transferObj.put("outItemRecords", outItemRecords);
-            transferObj.put("fromWarehouseName", queryWarehouseDao.warehouseName(transfer.getFromWarehouseId()));
-            transferObj.put("toWarehouseName", queryWarehouseDao.warehouseName(transfer.getToWarehouseId()));
-            TransferModel model = JSONObject.parseObject(JSONObject.toJSONString(transferObj), TransferModel.class);
-            return model;
-/*        }
-
-        List<StorageOutItemRecord> outItemRecords = queryTransferDao.outItemRecords(transfer.getStorageOutId());
-        transferObj.put("outItemRecords", outItemRecords);
+        transferObj.put("outItems", outItemRecords);
         transferObj.put("fromWarehouseName", queryWarehouseDao.warehouseName(transfer.getFromWarehouseId()));
         transferObj.put("toWarehouseName", queryWarehouseDao.warehouseName(transfer.getToWarehouseId()));
         TransferModel model = JSONObject.parseObject(JSONObject.toJSONString(transferObj), TransferModel.class);
-        return model;*/
+        return model;
+
     }
 
 

@@ -5,6 +5,7 @@ import com.jfeat.am.module.warehouse.services.domain.model.TransferRecord;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -28,4 +29,7 @@ public interface QueryTransferDao extends BaseMapper<TransferRecord> {
 
     // Draft 调拨 详情
     List<StorageOutItemRecord> draftOutItemRecords(@Param("outItemId")Long outItemId);
+
+    // 为了前端映射 key
+    List<StorageOutItem> outItems(@Param("outItemId")Long outItemId);
 }
