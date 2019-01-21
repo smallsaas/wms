@@ -164,7 +164,7 @@
         <result column="operatorName" property="operatorName"/>
         <result column="slotName" property="slotName"/>
 
-        <collection property="items"
+        <collection property="storageOutItems"
                     column="id"
                     select="storageOutItems"
                     ofType="com.jfeat.am.module.warehouse.services.domain.model.StorageOutItemRecord">

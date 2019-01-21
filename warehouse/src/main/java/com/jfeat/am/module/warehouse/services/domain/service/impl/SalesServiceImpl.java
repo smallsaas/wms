@@ -78,26 +78,28 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
 
         int totalCount = 0;
         for (StorageOutItem item : model.getOutItems()) {
-            BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
+
+            if (item.getDemandQuantities() == 0) {
+                throw new BusinessException(4501, "出库商品需求数量不能为0，请重新输入！");
+            }
+            item.setTransactionQuantities(item.getDemandQuantities());
+            item.setRelationCode(model.getSalesCode());
+            item.setStorageOutId(model.getId());
+            item.setType(TransactionType.SalesOut.toString());
+            affected += outItemMapper.insert(item);
+
+
+
+            BigDecimal sum = new BigDecimal(item.getDemandQuantities());
             sum = sum.multiply(item.getTransactionSkuPrice());;
             totalSpend = totalSpend.add(sum);
 
-            totalCount += item.getTransactionQuantities();
+            totalCount += item.getDemandQuantities();
         }
         model.setSalesTotal(totalSpend);
         model.setTotalCount(totalCount);
         affected += salesMapper.insert(model);
 
-
-        for (StorageOutItem item : model.getOutItems()) {
-            if (item.getTransactionQuantities() == 0) {
-                throw new BusinessException(4501, "出库数量不能为0，请重新输入！");
-            }
-            item.setRelationCode(model.getSalesCode());
-            item.setStorageOutId(model.getId());
-            item.setType(TransactionType.SalesOut.toString());
-            affected += outItemMapper.insert(item);
-        }
         return affected;
 
     }
@@ -120,6 +122,16 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                 int totalCount = 0;
                 BigDecimal totalSpend = BigDecimal.valueOf(0);
                 for (StorageOutItem item : model.getOutItems()) {
+
+                    if (item.getDemandQuantities() == 0) {
+                        throw new BusinessException(4501, "出库商品需求数量不能为0，请重新输入！");
+                    }
+                    item.setTransactionQuantities(item.getDemandQuantities());
+                    item.setRelationCode(model.getSalesCode());
+                    item.setStorageOutId(model.getId());
+                    item.setType(TransactionType.SalesOut.toString());
+                    affected += outItemMapper.insert(item);
+
                     BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
                     sum = sum.multiply(item.getTransactionSkuPrice());
                     totalSpend = totalSpend.add(sum);
@@ -127,12 +139,6 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                 }
                 model.setTotalCount(totalCount);
                 model.setSalesTotal(totalSpend);
-                for (StorageOutItem item : model.getOutItems()) {
-                    item.setRelationCode(sales.getSalesCode());
-                    item.setStorageOutId(salesId);
-                    item.setType(TransactionType.SalesOut.toString());
-                    affected += outItemMapper.insert(item);
-                }
                 affected += salesMapper.updateById(model);
             }
             return affected;
@@ -157,6 +163,16 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                 int totalCount = 0;
                 BigDecimal totalSpend = BigDecimal.valueOf(0);
                 for (StorageOutItem item : model.getOutItems()) {
+
+                    if (item.getDemandQuantities() == 0) {
+                        throw new BusinessException(4501, "出库商品需求数量不能为0，请重新输入！");
+                    }
+                    item.setTransactionQuantities(item.getDemandQuantities());
+                    item.setRelationCode(model.getSalesCode());
+                    item.setStorageOutId(model.getId());
+                    item.setType(TransactionType.SalesOut.toString());
+                    affected += outItemMapper.insert(item);
+
                     BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
                     sum = sum.multiply(item.getTransactionSkuPrice());
                     totalSpend = totalSpend.add(sum);
@@ -164,12 +180,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                 }
                 model.setTotalCount(totalCount);
                 model.setSalesTotal(totalSpend);
-                for (StorageOutItem item : model.getOutItems()) {
-                    item.setRelationCode(sales.getSalesCode());
-                    item.setStorageOutId(salesId);
-                    item.setType(TransactionType.SalesOut.toString());
-                    affected += outItemMapper.insert(item);
-                }
+               
                 model.setSalesStatus(SalesStatus.Wait_To_Audit.toString());
                 model.setId(salesId);
                 affected += salesMapper.updateById(model);

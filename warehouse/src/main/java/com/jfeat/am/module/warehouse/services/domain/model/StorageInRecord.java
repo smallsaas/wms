@@ -12,7 +12,7 @@ public class StorageInRecord extends StorageIn{
     String slotName;
 
     String operatorName;
-    List<StorageInItemRecord> items;
+    List<StorageInItemRecord> storageInItems;
 
 
     public String getWarehouseName() {
@@ -40,11 +40,11 @@ public class StorageInRecord extends StorageIn{
     }
 
 
-    public List<StorageInItemRecord> getItems() {
-        return items;
+    public List<StorageInItemRecord> getStorageInItems() {
+        return storageInItems;
     }
 
-    public void setItems(List<StorageInItemRecord> items) {
-        this.items = items;
+    public void setStorageInItems(List<StorageInItemRecord> storageInItems) {
+        this.storageInItems = storageInItems;
     }
 }

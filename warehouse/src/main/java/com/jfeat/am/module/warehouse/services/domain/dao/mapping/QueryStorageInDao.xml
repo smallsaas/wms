@@ -31,7 +31,7 @@
         <result column="distributor_customer" property="distributorCustomer" />
         <result column="out_order_num" property="outOrderNum" />
 
-        <collection property="items"
+        <collection property="storageInItems"
                     column="id"
                     select="storageInItems"
                     ofType="com.jfeat.am.module.warehouse.services.domain.model.StorageInItemRecord">
