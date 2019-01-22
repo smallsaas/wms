@@ -63,7 +63,8 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         if (entity.getStorageInItems() != null && entity.getStorageInItems().size() > 0) {
 
             for (StorageInItem inItem : entity.getStorageInItems()) {
-                if (inItem.getTransactionQuantities() > 0) {
+                if (inItem.getDemandQuantities() > 0) {
+                    inItem.setTransactionQuantities(inItem.getDemandQuantities());
                     inItem.setRelationCode(entity.getTransactionCode());
                     inItem.setTransactionTime(entity.getStorageInTime());
                     inItem.setType(TransactionType.StorageIn.toString());
@@ -98,7 +99,8 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         List<StorageInItem> storageInItems = new ArrayList<>();
         if (entity.getStorageInItems() != null && entity.getStorageInItems().size() > 0) {
             for (StorageInItem inItem : entity.getStorageInItems()) {
-                if (inItem.getTransactionQuantities() > 0) {
+                if (inItem.getDemandQuantities() > 0) {
+                    inItem.setTransactionQuantities(inItem.getDemandQuantities());
                     inItem.setRelationCode(entity.getTransactionCode());
                     inItem.setTransactionTime(entity.getStorageInTime());
                     inItem.setType(TransactionType.StorageIn.toString());
