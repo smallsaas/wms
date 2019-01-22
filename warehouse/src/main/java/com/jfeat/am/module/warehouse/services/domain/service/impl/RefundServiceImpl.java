@@ -354,7 +354,6 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     .eq(StorageOutItem.TYPE, "Others"));
 
             if (outItems != null && outItems.size() > 0) {
-                refundObj.put("items", outItems);
                 for (StorageOutItem item : outItems) {
                     // 出库 商品详情
                     StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
@@ -381,7 +380,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
 
 
         }
-        refundObj.put("itemRecords", outItemRecords);
+        refundObj.put("items", outItemRecords);
         RefundModel model = JSONObject.parseObject(JSONObject.toJSONString(refundObj), RefundModel.class);
         return model;
     }
