@@ -13,7 +13,7 @@
         wms_storage_out_item
         WHERE wms_storage_out_item.storage_out_id=#{salesId}
         AND wms_storage_out_item.sku_id =#{skuId}
-        AND wms_storage_out_item.type='CustomerStorageOut'
+        AND wms_storage_out_item.type='SalesOut'
     </select>
 
     <!-- finished count-->
