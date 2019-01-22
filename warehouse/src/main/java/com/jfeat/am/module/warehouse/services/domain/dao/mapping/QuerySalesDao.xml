@@ -81,7 +81,7 @@
         <result column="traderContactPhone" property="traderContactPhone"/>
 
 
-        <collection property="items"
+        <collection property="outItems"
                     column="id"
                     select="items"
                     ofType="com.jfeat.am.module.warehouse.services.domain.model.StorageOutItemRecord">

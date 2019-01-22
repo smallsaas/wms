@@ -10,7 +10,6 @@ import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutService;
 import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDSalesServiceImpl;
-import com.jfeat.am.module.warehouse.services.definition.RefundStatus;
 import com.jfeat.am.module.warehouse.services.definition.SalesStatus;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QuerySalesDao;
@@ -316,7 +315,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         SalesDetails salesDetails = querySalesDao.salesDetails(salesId);
 
         List<StorageOutItemRecord> itemRecords = new ArrayList<>();
-        for (StorageOutItemRecord record : salesDetails.getItemRecords()){
+        for (StorageOutItemRecord record : salesDetails.getOutItems()){
             Integer totalCount = querySalesDao.totalCount(salesId,record.getSkuId());
             Integer finishedCount= querySalesDao.finishedCount(salesId,record.getSkuId());
             if (finishedCount==null){
@@ -328,7 +327,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             itemRecords.add(record);
         }
 
-        salesDetails.setItemRecords(itemRecords);
+        salesDetails.setOutItems(itemRecords);
         JSONObject details = JSON.parseObject(JSON.toJSONString(salesDetails));
 
         List<StorageOut> outs = outMapper.selectList(new EntityWrapper<StorageOut>().eq("sales_id", salesDetails.getId()));
