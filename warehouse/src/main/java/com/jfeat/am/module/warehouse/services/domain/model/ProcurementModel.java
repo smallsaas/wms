@@ -1,7 +1,6 @@
 package com.jfeat.am.module.warehouse.services.domain.model;
 
 import com.jfeat.am.module.warehouse.services.persistence.model.Procurement;
-import com.jfeat.am.module.warehouse.services.persistence.model.StorageInItem;
 
 import java.util.List;
 
@@ -10,10 +9,10 @@ import java.util.List;
  */
 public class ProcurementModel extends Procurement{
 
-    List<StorageInItem> items;
+//    List<StorageInItem> items;
+//
 
-
-    List<ProcurementItemRecord> records;
+    List<ProcurementItemRecord> items;
 
     List<StorageInItemRecord> inHistories;
 
@@ -31,20 +30,20 @@ public class ProcurementModel extends Procurement{
         this.operatorName = operatorName;
     }
 
-    public List<StorageInItem> getItems() {
+   /* public List<StorageInItem> getItems() {
         return items;
     }
 
     public void setItems(List<StorageInItem> items) {
         this.items = items;
+    }*/
+
+    public List<ProcurementItemRecord> getItems() {
+        return items;
     }
 
-    public List<ProcurementItemRecord> getRecords() {
-        return records;
-    }
-
-    public void setRecords(List<ProcurementItemRecord> records) {
-        this.records = records;
+    public void setItems(List<ProcurementItemRecord> items) {
+        this.items = items;
     }
 
     public String getSupplierName() {

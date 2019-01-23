@@ -411,8 +411,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
         }
         object.put("inHistories", procurementItems);
-        object.put("records", records);
-        object.put("items",items);
+//        object.put("records", records);
+        object.put("items",records);
         ProcurementModel model = JSON.parseObject(JSON.toJSONString(object), ProcurementModel.class);
 
         return model;
