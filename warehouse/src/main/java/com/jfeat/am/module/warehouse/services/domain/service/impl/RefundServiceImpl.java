@@ -82,10 +82,17 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     .eq(StorageOutItem.STORAGE_OUT_ID, refundId)
                     .eq(StorageOutItem.TYPE, TransactionType.Refund.toString()));
 
-            for (StorageOutItem outItem : model.getItems()) {
+            for (StorageOutItemRecord outItem : model.getItems()) {
 
                 SkuProduct sku = skuProductMapper.selectById(outItem.getSkuId());
-                if (outItem.getTransactionQuantities() > 0) {
+                if (outItem.getDemandQuantities() > 0) {
+                    //新建或更新时将需求数量插入实际数量
+                    outItem.setTransactionQuantities(outItem.getDemandQuantities());
+
+                    // 仅仅保存数据，将采购的可退货数量插入到 该字段中，该字段在该逻辑下无特别的用途
+                    if (outItem.getCanRefundCount()!=null){
+                        outItem.setAfterTransactionQuantities(outItem.getCanRefundCount());
+                    }
                     outItem.setRelationCode(model.getProductRefundCode());
 
                     Inventory isExistInventory = new Inventory();
@@ -357,6 +364,8 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                 for (StorageOutItem item : outItems) {
                     // 出库 商品详情
                     StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
+                    //插入 可退货数量
+                    itemRecord.setCanRefundCount(item.getAfterTransactionQuantities());
                     outItemRecords.add(itemRecord);
                 }
             } else {
@@ -370,15 +379,15 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     .eq(StorageOutItem.TYPE, TransactionType.Refund.toString()));
 
                     if (outItems != null && outItems.size() > 0) {
-                        refundObj.put("items", outItems);
+//                        refundObj.put("items", outItems);
                         for (StorageOutItem item : outItems) {
                             // 出库 商品详情
                             StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
+                            //插入 可退货数量
+                            itemRecord.setCanRefundCount(item.getAfterTransactionQuantities());
                             outItemRecords.add(itemRecord);
                         }
                     }
-
-
         }
         refundObj.put("items", outItemRecords);
         RefundModel model = JSONObject.parseObject(JSONObject.toJSONString(refundObj), RefundModel.class);
