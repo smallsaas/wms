@@ -340,6 +340,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                     affected += inventoryMapper.insert(isExistInventory);
                 }
                 inItem.setSkuId(outItem.getSkuId());
+                inItem.setDemandQuantities(outItem.getDemandQuantities());
                 inItem.setTransactionQuantities(outItem.getTransactionQuantities());
                 inItem.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
                 inItem.setType("Others");
