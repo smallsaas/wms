@@ -17,6 +17,9 @@ public class StorageOutItemRecord extends StorageOutItem {
     Integer finishedCount;
     Integer totalCount;
 
+    // 前端显示可退货数量
+    Integer canRefundCount;
+
     public String getSkuName() {
         return skuName;
     }
@@ -79,5 +82,13 @@ public class StorageOutItemRecord extends StorageOutItem {
 
     public void setTotalCount(Integer totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public Integer getCanRefundCount() {
+        return canRefundCount;
+    }
+
+    public void setCanRefundCount(Integer canRefundCount) {
+        this.canRefundCount = canRefundCount;
     }
 }
