@@ -91,7 +91,9 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
 
                     // 仅仅保存数据，将采购的可退货数量插入到 该字段中，该字段在该逻辑下无特别的用途
                     if (outItem.getCanRefundCount()!=null){
+
                         outItem.setAfterTransactionQuantities(outItem.getCanRefundCount());
+
                     }
                     outItem.setRelationCode(model.getProductRefundCode());
 
@@ -196,6 +198,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         if(refund.getId() != null) {
             affected += refundService.updateMaster(model);
             for (StorageOutItem item : model.getItems()){
+                item.setType(TransactionType.Refund.toString());
                 storageOutItemMapper.updateById(item);
             }
             // 成功就立即执行入库，无须再调用执行入库的API
@@ -353,8 +356,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         List<StorageOutItemRecord> outItemRecords = new ArrayList<>();
 
 
-        if (refund.getProductRefundStatus().compareTo(RefundStatus.Done.toString()) == 0
-                || refund.getProductRefundStatus().compareTo(RefundStatus.Audit_Passed.toString()) == 0) {
+            if (refund.getProductRefundStatus().compareTo(RefundStatus.Done.toString()) == 0) {
 
             List<StorageOutItem> outItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
                     .eq(StorageOutItem.STORAGE_OUT_ID, refund.getStorageOutId())
