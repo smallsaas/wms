@@ -174,7 +174,6 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
 
-        entity.setStatus(StorageOutStatus.Wait_To_Audit.toString());
         affected += changeStatus(userId, storageOutId, entity);
         entity.setId(storageOutId);
         affected += storageOutMapper.updateById(entity);
