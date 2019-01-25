@@ -67,7 +67,7 @@ public class StorageInEndpoint extends BaseController {
                 message,
                 "成功",
                 targetId,
-                FormType.PURCHASE.toString()
+                FormType.IN.toString()
         ));
     }
 

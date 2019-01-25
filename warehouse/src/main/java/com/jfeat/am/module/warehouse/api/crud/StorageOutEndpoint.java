@@ -65,7 +65,7 @@ public class StorageOutEndpoint extends BaseController {
                 message,
                 "成功",
                 targetId,
-                FormType.PURCHASE.toString()
+                FormType.OUT.toString()
         ));
     }
 
