@@ -364,7 +364,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                                 procurementItem.setSkuName(sku.getSkuName());
                                 procurementItem.setSkuBarcode(sku.getBarCode());
                                 procurementItem.setId(item.getId());
-                                procurementItem.setWarehouseName(queryProcurementDao.warehouseName(in.getWarehouseId()));
+                                procurementItem.setWarehouseName(queryProcurementDao.warehouseName(in.getWarehouseId())==null?null:queryProcurementDao.warehouseName(in.getWarehouseId()));
                                 procurementItem.setStorageInCode(in.getTransactionCode());
                                 procurementItem.setStorageInNote(in.getNote());
                                 procurementItem.setBuyer(procurement.getBuyer());
