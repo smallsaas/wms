@@ -131,7 +131,10 @@
 
 
     <select id="draftOutItemRecords" resultMap="OutItemMap" parameterType="long">
-        SELECT wms_storage_out_item.*,t_sku_product.sku_code as skuCode,
+        SELECT
+        wms_storage_out_item.*,
+        wms_storage_out_item.after_transaction_quantities as canRefundCount,
+        t_sku_product.sku_code as skuCode,
         t_sku_product.sku_name as skuName,
         t_sku_product.bar_code as skuBarcode,
         t_sku_product.field1 as skuUnit

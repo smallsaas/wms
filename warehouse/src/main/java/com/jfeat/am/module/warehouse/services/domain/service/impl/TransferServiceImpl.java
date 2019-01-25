@@ -81,7 +81,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
         if (items != null && items.size() > 0) {
 
-            for (StorageOutItem outItem : items) {
+            for (StorageOutItemRecord outItem : items) {
                 SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
 
                 if (outItem.getDemandQuantities() > 0) {
@@ -98,6 +98,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                                     + "库存不足," + "现有库存" + originInventory.getValidSku()
                                     + "小于出库量" + outItem.getTransactionQuantities());
                         } else {
+                            //做前端 可用库存 使用，无实际的意义
+                            outItem.setAfterTransactionQuantities(originInventory.getValidSku());
                             outItem.setTransactionQuantities(outItem.getDemandQuantities());
                             outItem.setStorageOutId(transferId);
                             outItem.setType(TransactionType.TransferOut.toString());
@@ -170,6 +172,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         }
 
         for (StorageOutItem item : model.getOutItems()) {
+            item.setType(TransactionType.TransferOut.toString());
             storageOutItemMapper.updateById(item);
         }
 
