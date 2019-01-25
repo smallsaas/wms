@@ -458,16 +458,6 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         }
         model.setProcureStatus(ProcurementStatus.Closed.toString());
         model.setId(id);
-
-        BigDecimal totalSpend = BigDecimal.valueOf(0);
-        for (StorageInItem item : model.getItems()) {
-            // 更新实际数量
-            affected += storageInItemMapper.updateById(item);
-            BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
-            sum = sum.multiply(item.getTransactionSkuPrice());
-            totalSpend = totalSpend.add(sum);
-        }
-        model.setProcurementTotal(totalSpend);
         affected +=  procurementMapper.updateById(model);
 
         return affected;
