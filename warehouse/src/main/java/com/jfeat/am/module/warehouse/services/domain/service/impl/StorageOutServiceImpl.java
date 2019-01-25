@@ -242,7 +242,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (out==null){
             throw new BusinessException(BusinessCode.FileNotFound);
         }
-        if (out.getStatus().compareTo(StorageOutStatus.Wait_Storage_In.toString()) != 0) {
+        if (out.getStatus().compareTo(StorageOutStatus.Wait_To_Audit.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
         out.setStatus(StorageOutStatus.Closed.toString());
