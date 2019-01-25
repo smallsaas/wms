@@ -513,6 +513,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         BigDecimal totalSpend = BigDecimal.valueOf(0);
         for (StorageInItem item : model.getItems()) {
             // 更新实际数量
+            item.setType(TransactionType.Procurement.toString());
             affected += storageInItemMapper.updateById(item);
             BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
             sum = sum.multiply(item.getTransactionSkuPrice());
