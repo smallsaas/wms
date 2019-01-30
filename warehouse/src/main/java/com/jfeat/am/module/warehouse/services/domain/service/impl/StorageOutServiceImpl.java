@@ -321,10 +321,14 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (entity.getStorageOutTime() == null) {
             entity.setStorageOutTime(new Date());
         }
+        if (entity.getWarehouseId()==null){
+            entity.setWarehouseId(1L);
+        }
         List<StorageOutItem> storageOutItems = new ArrayList<>();
         if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
             for (StorageOutItem outItem : entity.getStorageOutItems()) {
                 if (outItem.getTransactionQuantities() > 0) {
+                    outItem.setDemandQuantities(outItem.getTransactionQuantities());
                     outItem.setRelationCode(entity.getTransactionCode());
                     outItem.setTransactionTime(entity.getStorageOutTime());
                     SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
