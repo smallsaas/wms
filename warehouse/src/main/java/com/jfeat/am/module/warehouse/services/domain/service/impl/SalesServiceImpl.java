@@ -293,6 +293,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
     public Integer auditPass(Long salesId, SalesModel model){
         Integer affected = 0;
 
+        int totalCount = 0;
         Sales sales = salesMapper.selectById(salesId);
         if (sales==null){
             throw new  BusinessException(BusinessCode.FileNotFound);
@@ -301,8 +302,11 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
         for (StorageOutItem item : model.getOutItems()){
+            item.setType(TransactionType.SalesOut.toString());
+            totalCount+=item.getTransactionQuantities();
             affected += outItemMapper.updateById(item);
         }
+        model.setTotalCount(totalCount);
         model.setSalesStatus(SalesStatus.WaitForStorageOut.toString());
         model.setId(salesId);
         affected += salesMapper.updateById(model);
