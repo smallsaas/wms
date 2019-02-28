@@ -89,7 +89,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         
         affected += procurementMapper.insert(model);
         for (StorageInItem item : model.getItems()) {
-            if (item.getTransactionQuantities() == 0) {
+            if (item.getDemandQuantities()==null) {
                 throw new BusinessException(4501, "采购数量不能为0，请重新输入！");
             }
             // 需求数量 同 实际数量
@@ -129,6 +129,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 BigDecimal totalSpend = BigDecimal.valueOf(0);
                 for (StorageInItem item : model.getItems()) {
 
+                    if (item.getDemandQuantities()==null||item.getDemandQuantities() == 0) {
+                        throw new BusinessException(4501, "采购数量不能为0，请重新输入！");
+                    }
                     // 需求数量 同 实际数量
                     item.setTransactionQuantities(item.getDemandQuantities());
                     item.setRelationCode(procurement.getProcurementCode());

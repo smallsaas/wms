@@ -84,7 +84,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
             for (StorageOutItemRecord outItem : items) {
                 SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
 
-                if (outItem.getDemandQuantities() > 0) {
+                if (outItem.getDemandQuantities()!=null) {
 
                     // search sku inventories count
                     Inventory isExistInventory = new Inventory();
@@ -134,7 +134,6 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         }
 
         if (model.getFromWarehouseId().compareTo(model.getToWarehouseId()) == 0) {
-
             throw new BusinessException(4100, "ERROR DATA" + "\"数据错误，调入|调出仓库不能相同\"");
         }
         model.setOriginatorId(userId);
