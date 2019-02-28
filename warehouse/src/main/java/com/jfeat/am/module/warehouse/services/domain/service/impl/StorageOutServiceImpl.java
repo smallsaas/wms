@@ -341,7 +341,8 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                             Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
                             outItem.setAfterTransactionQuantities(afterCount);
                             originInventory.setValidSku(afterCount);
-                            originInventory.setOrderCount(outItem.getTransactionQuantities());
+                            //占用内存量累加
+                            originInventory.setOrderCount(originInventory.getOrderCount()+outItem.getTransactionQuantities());
                             affected += inventoryMapper.updateById(originInventory);
                         }
                     } else {
