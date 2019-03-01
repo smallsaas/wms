@@ -300,9 +300,12 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
                     if (originInventory != null) {
                         //插入操作后的库存数量 原来数量+准备入库数量
                         Integer afterSkuCount = originInventory.getValidSku() + inItem.getTransactionQuantities();
+                        //占用库存-入库数量
                         inItem.setAfterTransactionQuantities(afterSkuCount);
 
                         originInventory.setValidSku(afterSkuCount);
+                        Integer newOrderCount = originInventory.getOrderCount()-inItem.getTransactionQuantities();
+                        originInventory.setOrderCount(newOrderCount);
                         affected += inventoryMapper.updateById(originInventory);
                     } else {
                         //插入操作后的库存数量 == 准备入库的数量 原来的不存在
