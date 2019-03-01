@@ -1,6 +1,8 @@
 package com.jfeat.am.module.warehouse.services.domain.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.jfeat.am.common.controller.BaseController;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
@@ -21,6 +23,8 @@ import com.jfeat.am.module.warehouse.services.persistence.dao.StorageOutMapper;
 import com.jfeat.am.module.warehouse.services.persistence.model.Inventory;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOut;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +44,8 @@ import java.util.List;
 @Service("crudStorageOutService")
 public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements StorageOutService {
 
+
+    protected static final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
     @Resource
     CRUDStorageOutService crudStorageOutService;
@@ -374,6 +380,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
 
         Integer affected = 0;
         if (entity == null || entity.getItems().size() <= 0) {
+            logger.info("没有更新占用库存"+"未检测到需要执行更新占用库存操作的商品，请核准并重新提交"+JSON.toJSONString(entity));
             throw new BusinessException(5310, "未检测到需要执行更新占用库存操作的商品，请核准并重新提交");
         }
         for (UpdateOrderCount updateOrderCount : entity.getItems()) {
@@ -383,17 +390,22 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             origin.setWarehouseId(updateOrderCount.getWarehouseId());
             Inventory inventory = inventoryMapper.selectOne(origin);
             if (inventory == null) {
+                logger.info("没有更新占用库存"+"无该商品库存记录!请核准然后重新提交!"+JSON.toJSONString(entity));
                 throw new BusinessException(5300, "无该商品库存记录!请核准然后重新提交!");
             }
 
 
+            logger.info("没有更新占用库存"+"----->更新之前，打印库存信息"+JSON.toJSONString(inventory));
             if (inventory.getOrderCount() < updateOrderCount.getOrderCount()) {
+
+                logger.info("没有更新占用库存"+"出货数据有误，请核准并重新提交"+JSON.toJSONString(entity));
                 throw new BusinessException(5300, "出货数据有误，请核准并重新提交");
             }
             Integer afterOrderCount = inventory.getOrderCount() - updateOrderCount.getOrderCount();
             //inventory.setValidSku(inventory.getValidSku()-updateOrderCount.getOrderCount());
             inventory.setOrderCount(afterOrderCount);
             affected += inventoryMapper.updateById(inventory);
+            logger.info("没有更新占用库存"+"----->这个时候更新成功了，打印库存信息"+JSON.toJSONString(inventory));
 
         }
         return affected;
