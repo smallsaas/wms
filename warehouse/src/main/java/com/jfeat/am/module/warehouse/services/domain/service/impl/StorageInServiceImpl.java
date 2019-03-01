@@ -288,6 +288,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
                 if (inItem.getTransactionQuantities() > 0) {
                     inItem.setRelationCode(entity.getTransactionCode());
                     inItem.setType("Others");
+                    inItem.setDemandQuantities(inItem.getTransactionQuantities());
                     inItem.setTransactionTime(entity.getStorageInTime());
                     // 设置产品的入库时间
                     inItem.setTransactionTime(entity.getTransactionTime());
