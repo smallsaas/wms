@@ -306,6 +306,9 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
                         originInventory.setValidSku(afterSkuCount);
                         Integer newOrderCount = originInventory.getOrderCount()-inItem.getTransactionQuantities();
                         originInventory.setOrderCount(newOrderCount);
+                        if (originInventory.getOrderCount() < inItem.getTransactionQuantities()) {
+                            throw new BusinessException(5300, "出货数据有误，请核准并重新提交");
+                        }
                         affected += inventoryMapper.updateById(originInventory);
                     } else {
                         //插入操作后的库存数量 == 准备入库的数量 原来的不存在
