@@ -40,6 +40,8 @@ CREATE TABLE `wms_storage_in_item` (
   `type` varchar(26) DEFAULT 'Others' COMMENT '操作类型',
   `relation_code` varchar(255) NOT NULL COMMENT '关联的操作编号',
    `demand_quantities` int(11) NOT NULL COMMENT '需求数量',
+   `sku_tax_price` decimal(12,4) DEFAULT NULL COMMENT '含税价格',
+   `sku_total_tax_price` decimal(12,4) DEFAULT NULL COMMENT '含税总价',
   PRIMARY KEY (`id`),
   FOREIGN KEY (`sku_id`) REFERENCES `t_sku_product` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

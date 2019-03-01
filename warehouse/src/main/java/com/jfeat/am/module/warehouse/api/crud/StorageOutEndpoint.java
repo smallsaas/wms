@@ -1,5 +1,6 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
+import com.alibaba.fastjson.JSON;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.log.LogManager;
 import com.jfeat.am.module.log.LogTaskFactory;
@@ -106,6 +107,7 @@ public class StorageOutEndpoint extends BaseController {
     @ApiOperation(value = "新建出库单-商城端",response = StorageOutModel.class)
     public Tip updateInventoryOrderCount(@RequestBody BulkUpdateOrderCount entity) {
         Integer result  = storageOutService.updateOrderCount(entity);
+        logger.info("没有更新占用库存"+JSON.toJSONString(entity));
         return SuccessTip.create(result);
     }
 
