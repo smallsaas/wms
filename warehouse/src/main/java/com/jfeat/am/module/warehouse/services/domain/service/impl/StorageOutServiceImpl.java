@@ -140,13 +140,13 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                     if (originInventory != null) {
                         if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
-                            throw new BusinessException(4050, "\""+skuProduct.getSkuName()+skuProduct.getBarCode()+":\""+"库存不足," + "现有库存" + originInventory.getValidSku() + "小于出库量" + outItem.getTransactionQuantities());
+                            throw new BusinessException(4050, "\"" + skuProduct.getSkuName() + skuProduct.getBarCode() + ":\"" + "库存不足," + "现有库存" + originInventory.getValidSku() + "小于出库量" + outItem.getTransactionQuantities());
                         } else {
 
                             outItem.setType(TransactionType.StorageOut.toString());
                         }
                     } else {
-                        throw new BusinessException(4051, "\""+skuProduct.getSkuName()+skuProduct.getBarCode()+":\""+"产品不存在，请核对！");
+                        throw new BusinessException(4051, "\"" + skuProduct.getSkuName() + skuProduct.getBarCode() + ":\"" + "产品不存在，请核对！");
                     }
 
                     storageOutItems.add(outItem);
@@ -172,7 +172,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
 
         Integer affected = 0;
         StorageOut out = crudStorageOutService.retrieveMaster(storageOutId);
-        if (out==null){
+        if (out == null) {
             throw new BusinessException(BusinessCode.FileNotFound);
         }
 
@@ -196,10 +196,9 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         Integer affected = 0;
 
 
-
         StorageOut out = crudStorageOutService.retrieveMaster(storageOutId);
 
-        if (out==null){
+        if (out == null) {
             throw new BusinessException(BusinessCode.FileNotFound);
         }
         if (out.getStatus().compareTo(StorageOutStatus.Draft.toString()) != 0) {
@@ -223,14 +222,14 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     public Integer passedStorageOut(Long storageOutId, StorageOutModel entity) {
         StorageOut out = storageOutMapper.selectById(storageOutId);
 
-        if (out==null){
+        if (out == null) {
             throw new BusinessException(BusinessCode.FileNotFound);
         }
         if (out.getStatus().compareTo(StorageOutStatus.Wait_To_Audit.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
         // 允许在审核的时候 修改 子项的数据
-        for (StorageOutItem item : entity.getStorageOutItems()){
+        for (StorageOutItem item : entity.getStorageOutItems()) {
             outItemMapper.updateById(item);
         }
         entity.setStatus(StorageOutStatus.Audit_Passed.toString());
@@ -245,7 +244,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     public Integer auditRejectedStorageOut(Long storageOutId) {
         StorageOut out = crudStorageOutService.retrieveMaster(storageOutId);
 
-        if (out==null){
+        if (out == null) {
             throw new BusinessException(BusinessCode.FileNotFound);
         }
         if (out.getStatus().compareTo(StorageOutStatus.Wait_To_Audit.toString()) != 0) {
@@ -265,12 +264,12 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
 
         StorageOut out = crudStorageOutService.retrieveMaster(storageOutId);
 
-        if (out==null){
+        if (out == null) {
             throw new BusinessException(BusinessCode.FileNotFound);
         }
 
 
-        if (out.getStatus().compareTo(StorageOutStatus.Audit_Passed.toString())!= 0){
+        if (out.getStatus().compareTo(StorageOutStatus.Audit_Passed.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
 
@@ -316,9 +315,8 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     }
 
     /**
-     *
-     *  for 商城下单 出库，不需要审核直接出库
-     * */
+     * for 商城下单 出库，不需要审核直接出库
+     */
     @Transactional
     public Integer salesStorageOut(Long userId, StorageOutModel entity) {
         Integer affected = 0;
@@ -327,7 +325,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (entity.getStorageOutTime() == null) {
             entity.setStorageOutTime(new Date());
         }
-        if (entity.getWarehouseId()==null){
+        if (entity.getWarehouseId() == null) {
             entity.setWarehouseId(1L);
         }
         List<StorageOutItem> storageOutItems = new ArrayList<>();
@@ -344,7 +342,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                     if (originInventory != null) {
                         if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
-                            throw new BusinessException(4050,"\""+skuProduct.getSkuName()+skuProduct.getBarCode()+":\""+ "库存不足," + "现有库存" + originInventory.getValidSku() + "小于出库量" + outItem.getTransactionQuantities());
+                            throw new BusinessException(4050, "\"" + skuProduct.getSkuName() + skuProduct.getBarCode() + ":\"" + "库存不足," + "现有库存" + originInventory.getValidSku() + "小于出库量" + outItem.getTransactionQuantities());
                         } else {
 
                             // 是否是直接减少 库存呢
@@ -352,11 +350,11 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                             outItem.setAfterTransactionQuantities(afterCount);
                             originInventory.setValidSku(afterCount);
                             //占用内存量累加
-                            originInventory.setOrderCount(originInventory.getOrderCount()+outItem.getTransactionQuantities());
+                            originInventory.setOrderCount(originInventory.getOrderCount() + outItem.getTransactionQuantities());
                             affected += inventoryMapper.updateById(originInventory);
                         }
                     } else {
-                        throw new BusinessException(4051, "\""+skuProduct.getSkuName()+skuProduct.getBarCode()+":\""+"产品不存在，请核对！");
+                        throw new BusinessException(4051, "\"" + skuProduct.getSkuName() + skuProduct.getBarCode() + ":\"" + "产品不存在，请核对！");
                     }
                     storageOutItems.add(outItem);
                 } else {
@@ -374,38 +372,42 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
 
     /**
      * 更新占用库存，商城的出货的时候调用
-     * */
+     */
     @Transactional
     public Integer updateOrderCount(BulkUpdateOrderCount entity) {
 
         Integer affected = 0;
         if (entity == null || entity.getItems().size() <= 0) {
-            logger.info("没有更新占用库存"+"未检测到需要执行更新占用库存操作的商品，请核准并重新提交"+JSON.toJSONString(entity));
+            logger.info("没有更新占用库存" + "未检测到需要执行更新占用库存操作的商品，请核准并重新提交" + JSON.toJSONString(entity));
             throw new BusinessException(5310, "未检测到需要执行更新占用库存操作的商品，请核准并重新提交");
         }
         for (UpdateOrderCount updateOrderCount : entity.getItems()) {
 
             Inventory origin = new Inventory();
             origin.setSkuId(updateOrderCount.getSkuId());
-            origin.setWarehouseId(updateOrderCount.getWarehouseId());
+            if (updateOrderCount.getWarehouseId() == null || updateOrderCount.getWarehouseId() < 0) {
+                origin.setWarehouseId(1L);
+            } else {
+                origin.setWarehouseId(updateOrderCount.getWarehouseId());
+            }
             Inventory inventory = inventoryMapper.selectOne(origin);
             if (inventory == null) {
-                logger.info("没有更新占用库存"+"无该商品库存记录!请核准然后重新提交!"+JSON.toJSONString(entity));
+                logger.info("没有更新占用库存" + "无该商品库存记录!请核准然后重新提交!" + JSON.toJSONString(entity));
                 throw new BusinessException(5300, "无该商品库存记录!请核准然后重新提交!");
             }
 
 
-            logger.info("没有更新占用库存"+"----->更新之前，打印库存信息"+JSON.toJSONString(inventory));
+            logger.info("没有更新占用库存" + "----->更新之前，打印库存信息" + JSON.toJSONString(inventory));
             if (inventory.getOrderCount() < updateOrderCount.getOrderCount()) {
 
-                logger.info("没有更新占用库存"+"出货数据有误，请核准并重新提交"+JSON.toJSONString(entity));
+                logger.info("没有更新占用库存" + "出货数据有误，请核准并重新提交" + JSON.toJSONString(entity));
                 throw new BusinessException(5300, "出货数据有误，请核准并重新提交");
             }
             Integer afterOrderCount = inventory.getOrderCount() - updateOrderCount.getOrderCount();
             //inventory.setValidSku(inventory.getValidSku()-updateOrderCount.getOrderCount());
             inventory.setOrderCount(afterOrderCount);
             affected += inventoryMapper.updateById(inventory);
-            logger.info("没有更新占用库存"+"----->这个时候更新成功了，打印库存信息"+JSON.toJSONString(inventory));
+            logger.info("没有更新占用库存" + "----->这个时候更新成功了，打印库存信息" + JSON.toJSONString(inventory));
 
         }
         return affected;

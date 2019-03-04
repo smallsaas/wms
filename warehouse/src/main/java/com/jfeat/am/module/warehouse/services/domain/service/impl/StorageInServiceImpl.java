@@ -295,7 +295,11 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
 
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(inItem.getSkuId());
-                    isExistInventory.setWarehouseId(entity.getWarehouseId());
+                    if (entity.getWarehouseId()==null || entity.getWarehouseId()<0){
+                        isExistInventory.setWarehouseId(1L);
+                    }else{
+                        isExistInventory.setWarehouseId(entity.getWarehouseId());
+                    }
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                     if (originInventory != null) {
                         //插入操作后的库存数量 原来数量+准备入库数量
