@@ -35,6 +35,11 @@
         </dependency>
         <dependency>
             <groupId>com.jfeat</groupId>
+            <artifactId>sb-log</artifactId>
+            <version>${sb-log.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jfeat</groupId>
             <artifactId>sb-event</artifactId>
             <version>${sb-event.version}</version>
         </dependency>
