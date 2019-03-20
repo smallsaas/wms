@@ -233,8 +233,8 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
             for (StorageInItem inItem : items) {
                 if (inItem.getTransactionQuantities() > 0) {
 
-                    inItem.setType("Others");
-                    inItemMapper.updateById(inItem);
+//                    inItem.setType("Others");
+//                    inItemMapper.updateById(inItem);
 
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(inItem.getSkuId());
@@ -287,7 +287,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
             for (StorageInItem inItem : entity.getStorageInItems()) {
                 if (inItem.getTransactionQuantities() > 0) {
                     inItem.setRelationCode(entity.getTransactionCode());
-                    inItem.setType("Others");
+                    inItem.setType(TransactionType.StorageIn.toString());
                     inItem.setDemandQuantities(inItem.getTransactionQuantities());
                     inItem.setTransactionTime(entity.getStorageInTime());
                     // 设置产品的入库时间

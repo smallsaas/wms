@@ -158,7 +158,7 @@
                 1 = 1
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
-                AND sin.type = 'Others'
+                AND (sin.type = 'Others' OR sin.type = 'StorageIn')
                 and wms_storage_in.transaction_type = #{transactionType}
                 <if test="startTime != null and endTime != null">
                     <![CDATA[

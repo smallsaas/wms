@@ -13,6 +13,7 @@ import com.jfeat.am.module.warehouse.services.crud.service.CRUDProcurementServic
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
 import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDProcurementServiceImpl;
 import com.jfeat.am.module.warehouse.services.definition.ProcurementStatus;
+import com.jfeat.am.module.warehouse.services.definition.StorageInStatus;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryInventoryDao;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryProcurementDao;
@@ -200,7 +201,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         int affected = 0;
         int inSuccess = 0;
         // 总需要入库的商品的数量
-        int totalCount = queryProcurementDao.totalCount(procurementId);
+        //int totalCount = queryProcurementDao.totalCount(procurementId);
 
         Procurement procurement = procurementMapper.selectById(procurementId);
 
@@ -219,7 +220,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             in.setOriginatorId(userId);
             in.setStorageInTime(new Date());
             in.setTransactionTime(new Date());
-            in.setStatus("Done");
+            // 待审核状态
+            in.setStatus(StorageInStatus.Wait_To_Audit.toString());
 
             // field1 去接收最上层的ID  作跳转使用
             in.setField1(procurementId.toString());
@@ -238,7 +240,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 if (item.getTransactionQuantities() > 0) {
 
                     SkuProduct skuProduct = skuProductMapper.selectById(item.getSkuId());
-                    item.setType("Others");
+                    item.setType(StorageInStatus.Wait_To_Audit.toString());
                     item.setRelationCode(procurement.getProcurementCode());
 
                     // 某个 sku 的采购的数量
@@ -294,6 +296,23 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         }
         affected += procurementMapper.updateById(model);
         return affected;
+    }
+    /*
+    * 审核采购的执行入库
+    * */
+    public Integer auditPass(Long id){
+
+        StorageIn in = storageInMapper.selectById(id);
+        if (in == null){
+            throw new BusinessException(5300,"")
+        }
+        List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
+                .eq(StorageInItem.STORAGE_IN_ID,id)
+                .eq(StorageInItem.TYPE,StorageInStatus.Wait_To_Audit.toString()));
+        // 总需要入库的商品的数量
+        int totalCount = queryProcurementDao.totalCount(in.getProcurementId());
+
+
     }
 
     /**
