@@ -201,7 +201,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         int affected = 0;
         int inSuccess = 0;
         // 总需要入库的商品的数量
-        //int totalCount = queryProcurementDao.totalCount(procurementId);
+        int totalCount = queryProcurementDao.totalCount(procurementId);
 
         Procurement procurement = procurementMapper.selectById(procurementId);
 
@@ -304,14 +304,14 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
         StorageIn in = storageInMapper.selectById(id);
         if (in == null){
-            throw new BusinessException(5300,"")
+            throw new BusinessException(5300,"");
         }
         List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
                 .eq(StorageInItem.STORAGE_IN_ID,id)
                 .eq(StorageInItem.TYPE,StorageInStatus.Wait_To_Audit.toString()));
         // 总需要入库的商品的数量
         int totalCount = queryProcurementDao.totalCount(in.getProcurementId());
-
+        return null;
 
     }
 
