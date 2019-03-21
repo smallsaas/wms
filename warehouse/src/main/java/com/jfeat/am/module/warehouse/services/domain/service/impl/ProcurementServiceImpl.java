@@ -288,6 +288,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     /*
      * 审核采购的执行入库
      * */
+    @Transactional
     public Integer auditPass(Long id, StorageInModel model) {
         StorageIn in = storageInMapper.selectById(id);
         if (in == null) {
@@ -339,6 +340,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         return storageInMapper.updateById(in);
     }
 
+    @Transactional
     public Integer executionProcurementStorageIn(Long id) {
 
         StorageIn in = storageInMapper.selectById(id);
@@ -394,6 +396,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     /*
      * 审核拒绝采购的执行入库---直接将入库单设置为 关闭状态
      * */
+    @Transactional
     public Integer auditReject(Long id) {
         StorageIn in = storageInMapper.selectById(id);
         if ((in.getProcurementId() == null || in.getProcurementId() < 0) && (in.getTransactionType().compareTo(TransactionType.Procurement.toString()) == 0)) {
@@ -570,6 +573,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     /**
      * closed procurement
      */
+    @Transactional
     public Integer closedProcurement(Long id, ProcurementModel model) {
 
         int affected = 0;
