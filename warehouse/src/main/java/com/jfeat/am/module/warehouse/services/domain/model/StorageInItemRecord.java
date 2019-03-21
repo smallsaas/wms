@@ -12,7 +12,6 @@ public class StorageInItemRecord extends StorageInItem{
     String skuBarcode;
     String skuCode;
 
-    // TODO skuSpec need more salesDetails
     String skuSpec;
 
     String skuUnit;
@@ -24,6 +23,7 @@ public class StorageInItemRecord extends StorageInItem{
     String procurementCode;
     String buyer;
     Date procurementDate;
+    String storageInStatus;
 
     public String getSkuName() {
         return skuName;
@@ -119,5 +119,13 @@ public class StorageInItemRecord extends StorageInItem{
 
     public void setProcurementDate(Date procurementDate) {
         this.procurementDate = procurementDate;
+    }
+
+    public String getStorageInStatus() {
+        return storageInStatus;
+    }
+
+    public void setStorageInStatus(String storageInStatus) {
+        this.storageInStatus = storageInStatus;
     }
 }

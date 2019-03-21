@@ -3,6 +3,7 @@ package com.jfeat.am.module.warehouse.services.domain.service;
 import com.jfeat.am.common.persistence.model.User;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDProcurementService;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementModel;
+import com.jfeat.am.module.warehouse.services.domain.model.StorageInModel;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -12,16 +13,16 @@ public interface ProcurementService extends CRUDProcurementService{
 
 
     @Transactional
-    Integer addProcurement(Long userId, ProcurementModel model);
+    Integer addProcurement(String username,Long userId, ProcurementModel model);
 
     @Transactional
-    Integer updateProcurement(Long userId, Long procurementId,ProcurementModel model);
+    Integer updateProcurement(String username,Long userId, Long procurementId,ProcurementModel model);
 
 
     ProcurementModel procurementDetails(Long procurementId);
 
     @Transactional
-    Integer executionStorageIn(Long userId, Long procurementId, ProcurementModel model);
+    Integer executionStorageIn(String username,Long userId, Long procurementId, ProcurementModel model);
 
     @Transactional
     Integer deleteProcurement(Long id);
@@ -29,7 +30,7 @@ public interface ProcurementService extends CRUDProcurementService{
     /**
      *  closed procurement
      * */
-    Integer closedProcurment(Long id, ProcurementModel model);
+    Integer closedProcurement(Long id, ProcurementModel model);
 
     /**
      *  提交并审核
@@ -42,11 +43,23 @@ public interface ProcurementService extends CRUDProcurementService{
      *  wait to audit this procurement
      * */
     @Transactional
-    Integer auditProcurment(Long id);
+    Integer auditProcurement(Long id);
 
     /**
      *  wait to audit passed this procurement
      * */
     @Transactional
-    Integer passedProcurment(Long id, ProcurementModel model);
+    Integer passedProcurement(Long id, ProcurementModel model);
+
+    /*
+     * 审核采购的执行入库
+     * */
+    Integer auditPass(Long id, StorageInModel model);
+
+    Integer executionProcurementStorageIn(Long id);
+
+    /*
+     * 审核拒绝采购的执行入库---直接将入库单设置为 关闭状态
+     * */
+    Integer auditReject(Long id);
 }

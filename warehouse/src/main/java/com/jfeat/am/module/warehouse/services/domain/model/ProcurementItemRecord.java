@@ -12,6 +12,7 @@ public class ProcurementItemRecord extends StorageInItem {
     String skuUnit;
     String skuBarcode;
     int canRefundCount;
+    int auditCount;
 
     public int getSectionInCount() {
         return sectionInCount;
@@ -75,5 +76,13 @@ public class ProcurementItemRecord extends StorageInItem {
 
     public void setCanRefundCount(int canRefundCount) {
         this.canRefundCount = canRefundCount;
+    }
+
+    public int getAuditCount() {
+        return auditCount;
+    }
+
+    public void setAuditCount(int auditCount) {
+        this.auditCount = auditCount;
     }
 }

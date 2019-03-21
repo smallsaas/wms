@@ -58,17 +58,25 @@ public interface QueryProcurementDao extends BaseMapper<ProcurementRecord> {
 
 
     // 某次采购 某个 sku 入库历史记录
-    @Select("SELECT wms_storage_in_item.* FROM wms_storage_in_item WHERE wms_storage_in_item.storage_in_id = #{inId} AND wms_storage_in_item.sku_id = #{skuId} AND wms_storage_in_item.type != #{type}")
+    @Select("SELECT wms_storage_in_item.* FROM wms_storage_in_item WHERE wms_storage_in_item.storage_in_id = #{inId} AND wms_storage_in_item.sku_id = #{skuId} AND (wms_storage_in_item.type = 'Others' or wms_storage_in_item.type = 'Closed'")
     List<StorageInItem> originItems(@Param("inId")Long inId,
                                     @Param("skuId")Long skuId,
                                     @Param("type")String type);
 
     //某次采购 某个 sku 入库历史数量
     @Select("SELECT SUM(transaction_quantities) as storageInCount FROM wms_storage_in_item " +
-            "LEFT JOIN wms_storage_in on (wms_storage_in.id = wms_storage_in_item.storage_in_id AND wms_storage_in_item.type != 'Procurement') " +
+            "LEFT JOIN wms_storage_in on ( !ISNULL(wms_storage_in.procurement_id) AND wms_storage_in.id = wms_storage_in_item.storage_in_id AND wms_storage_in_item.type = 'Others' ) " +
             "LEFT JOIN wms_procurement on (wms_procurement.id = wms_storage_in.procurement_id AND wms_storage_in.transaction_type = 'Procurement') " +
             "WHERE wms_procurement.id = #{procurementId} AND wms_storage_in_item.sku_id = #{skuId}")
     Integer storageInCount(@Param("procurementId")Long procurementId,
+                           @Param("skuId")Long skuId);
+
+    //某次采购 某个 sku 未审核()入库历史数量
+    @Select("SELECT SUM(transaction_quantities) as storageInCount FROM wms_storage_in_item " +
+            "LEFT JOIN wms_storage_in on ( !ISNULL(wms_storage_in.procurement_id) AND wms_storage_in.id = wms_storage_in_item.storage_in_id AND wms_storage_in_item.type = 'Wait_To_Audit' ) " +
+            "LEFT JOIN wms_procurement on (wms_procurement.id = wms_storage_in.procurement_id AND wms_storage_in.transaction_type = 'Procurement') " +
+            "WHERE wms_procurement.id = #{procurementId} AND wms_storage_in_item.sku_id = #{skuId}")
+    Integer storageInAuditCount(@Param("procurementId")Long procurementId,
                            @Param("skuId")Long skuId);
 
     // 某个 sku 的采购的数量

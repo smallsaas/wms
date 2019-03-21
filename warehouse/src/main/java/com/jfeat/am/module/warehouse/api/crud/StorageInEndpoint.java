@@ -4,6 +4,9 @@ import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.log.LogManager;
 import com.jfeat.am.module.log.LogTaskFactory;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
+import com.jfeat.am.module.warehouse.services.definition.TransactionType;
+import com.jfeat.am.module.warehouse.services.domain.service.ProcurementService;
+import com.jfeat.am.module.warehouse.services.persistence.model.StorageIn;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,6 +59,8 @@ public class StorageInEndpoint extends BaseController {
     QueryStorageInDao queryStorageInDao;
 
 
+    @Resource
+    ProcurementService procurementService;
 
 
     private void createStorageInLog(Long targetId, String methodName, String operation, String message) {
@@ -72,37 +77,36 @@ public class StorageInEndpoint extends BaseController {
     }
 
 
-
     @BusinessLog(name = "StorageIn", value = "create StorageIn")
     @PostMapping
-    @ApiOperation(value = "新建入库单",response = StorageInModel.class)
+    @ApiOperation(value = "新建入库单", response = StorageInModel.class)
     public Tip createStorageIn(@RequestBody StorageInModel entity) {
         String userName = JWTKit.getAccount(getHttpServletRequest());
         entity.setOriginatorName(userName);
-        if (entity.getWarehouseId()==null){
+        if (entity.getWarehouseId() == null) {
             entity.setWarehouseId(1L);
         }
-        createStorageInLog(entity.getId(),  "createStorageIn", "对入库单进行了新建操作",  entity
+        createStorageInLog(entity.getId(), "createStorageIn", "对入库单进行了新建操作", entity
                 .getId() + " &");
-        return SuccessTip.create(storageInService.createStorageIn(JWTKit.getUserId(getHttpServletRequest()),entity));
+        return SuccessTip.create(storageInService.createStorageIn(JWTKit.getUserId(getHttpServletRequest()), entity));
     }
 
     @BusinessLog(name = "StorageIn", value = "create StorageIn")
     @PostMapping("/mall")
-    @ApiOperation(value = "新建入库单",response = StorageInModel.class)
+    @ApiOperation(value = "商城新建入库单", response = StorageInModel.class)
     public Tip salesStorageIn(@RequestBody StorageInModel entity) {
         String userName = JWTKit.getAccount(getHttpServletRequest());
         entity.setOriginatorName(userName);
-        if (entity.getWarehouseId()==null){
+        if (entity.getWarehouseId() == null) {
             entity.setWarehouseId(1L);
         }
-        createStorageInLog(entity.getId(),  "createStorageIn", "对退货入库单进行了新建操作",  entity
+        createStorageInLog(entity.getId(), "createStorageIn", "对退货入库单进行了新建操作", entity
                 .getId() + " &");
-        return SuccessTip.create(storageInService.salesStorageIn(JWTKit.getUserId(getHttpServletRequest()),entity));
+        return SuccessTip.create(storageInService.salesStorageIn(JWTKit.getUserId(getHttpServletRequest()), entity));
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "查询入库单",response = StorageInModel.class)
+    @ApiOperation(value = "查询入库单", response = StorageInModel.class)
     public Tip getStorageIn(@PathVariable Long id) {
 
         return SuccessTip.create(queryStorageInDao.storagesInDetails(id));
@@ -111,64 +115,81 @@ public class StorageInEndpoint extends BaseController {
 
     @BusinessLog(name = "StorageIn", value = "update StorageIn")
     @PutMapping("/{id}")
-    @ApiOperation(value = "修改入库单",response = StorageInModel.class)
+    @ApiOperation(value = "修改入库单", response = StorageInModel.class)
     public Tip updateStorageIn(@PathVariable Long id, @RequestBody StorageInModel entity) {
         entity.setId(id);
-        Integer result = storageInService.updateStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity);
-        createStorageInLog(entity.getId(),  "updateStorageIn", "对入库单进行了修改操作",  entity
+        Integer result = storageInService.updateStorageIn(JWTKit.getUserId(getHttpServletRequest()), id, entity);
+        createStorageInLog(entity.getId(), "updateStorageIn", "对入库单进行了修改操作", entity
                 .getId() + " &" + id + "&");
         return SuccessTip.create();
     }
 
     @BusinessLog(name = "StorageIn", value = "审核 StorageIn")
     @PutMapping("/{id}/audit")
-    @ApiOperation(value = "审核",response = StorageInModel.class)
+    @ApiOperation(value = "审核", response = StorageInModel.class)
     public Tip commitToAuditStorageIn(@PathVariable Long id, @RequestBody StorageInModel entity) {
         entity.setId(id);
-        Tip resultTip = SuccessTip.create(storageInService.commitStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
-        createStorageInLog(id,  "commitToAuditStorageIn", "对入库单进行了提交审核操作",  id + " &");
+        Tip resultTip = SuccessTip.create(storageInService.commitStorageIn(JWTKit.getUserId(getHttpServletRequest()), id, entity));
+        createStorageInLog(id, "commitToAuditStorageIn", "对入库单进行了提交审核操作", id + " &");
         return resultTip;
     }
 
     @BusinessLog(name = "StorageIn", value = "审核通过 StorageIn")
     @PutMapping("/{id}/passed")
-    @ApiOperation(value = "审核通过",response = StorageInModel.class)
+    @ApiOperation(value = "审核通过", response = StorageInModel.class)
     public Tip auditStorageIn(@PathVariable Long id, @RequestBody StorageInModel entity) {
+
         entity.setId(id);
-        Tip resultTip = SuccessTip.create(storageInService.passedStorageIn(id,entity));
-        createStorageInLog(id,  "auditStorageIn", "对入库单进行了审核通过操作",  id + " &");
+        Tip resultTip;
+        if (entity.getTransactionType().compareTo(TransactionType.Procurement.toString()) == 0 && (entity.getProcurementId() != null)) {
+            resultTip = SuccessTip.create(procurementService.auditPass(id, entity));
+        } else {
+            resultTip = SuccessTip.create(storageInService.passedStorageIn(id, entity));
+        }
+        createStorageInLog(id, "auditStorageIn", "对入库单进行了审核通过操作", id + " &");
         return resultTip;
     }
 
     @BusinessLog(name = "StorageIn", value = "审核拒绝，自动转化为关闭状态")
     @PutMapping("/{id}/closed")
-    @ApiOperation(value = "closed StorageIn",response = StorageInModel.class)
+    @ApiOperation(value = "closed StorageIn", response = StorageInModel.class)
     public Tip closedStorageIn(@PathVariable Long id, @RequestBody StorageInModel entity) {
-        Tip resultTip = SuccessTip.create(storageInService.auditRejectedStorageIn(id));
-        createStorageInLog(id,  "closedStorageIn", "对入库单进行了审核拒绝操作",  id + " &");
+        Tip resultTip;
+        if (entity.getTransactionType().compareTo(TransactionType.Procurement.toString()) == 0 && (entity.getProcurementId() != null)) {
+            resultTip = SuccessTip.create(procurementService.auditReject(id));
+        } else {
+            resultTip = SuccessTip.create(storageInService.auditRejectedStorageIn(id));
+        }
+        createStorageInLog(id, "closedStorageIn", "对入库单进行了审核拒绝操作", id + " &");
         return resultTip;
     }
 
     @BusinessLog(name = "StorageIn", value = "执行入库")
     @PutMapping("/{id}/execution")
-    @ApiOperation(value = "executionRefund StorageIn",response = StorageInModel.class)
+    @ApiOperation(value = "executionRefund StorageIn", response = StorageInModel.class)
     public Tip executionStorageIn(@PathVariable Long id) {
-        Tip resultTip = SuccessTip.create(storageInService.executionStorageIn(JWTKit.getAccount(getHttpServletRequest()),id));
-        createStorageInLog(id,  "executionStorage", "对入库单进行了执行入库操作",  id + " &");
+        Tip resultTip;
+        StorageIn entity = storageInService.retrieveMaster(id);
+        if (entity.getTransactionType().compareTo(TransactionType.Procurement.toString()) == 0 && (entity.getProcurementId() != null)) {
+            resultTip = SuccessTip.create(procurementService.executionProcurementStorageIn(id));
+        } else {
+            resultTip = SuccessTip.create(storageInService.executionStorageIn(JWTKit.getAccount(getHttpServletRequest()), id));
+        }
+        createStorageInLog(id, "executionStorage", "对入库单进行了执行入库操作", id + " &");
         return resultTip;
     }
 
 
     @BusinessLog(name = "StorageIn", value = "delete StorageIn")
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "删除入库单",response = StorageInModel.class)
+    @ApiOperation(value = "删除入库单", response = StorageInModel.class)
     public Tip deleteStorageIn(@PathVariable Long id) {
-        createStorageInLog(id,  "deleteStorageIn", "对入库单进行了删除操作",  id + " &");
+        createStorageInLog(id, "deleteStorageIn", "对入库单进行了删除操作", id + " &");
         return SuccessTip.create(storageInService.deleteMaster(id));
     }
 
     @GetMapping
-    @ApiOperation(value = "入库单列表",response = StorageInRecord.class)
+    @ApiOperation(value = "入库单列表", response = StorageInRecord.class)
     public Tip queryStorageIns(Page<StorageInRecord> page,
                                @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,

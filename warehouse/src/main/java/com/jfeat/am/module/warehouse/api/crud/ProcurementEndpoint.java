@@ -70,7 +70,7 @@ public class ProcurementEndpoint extends BaseController {
         try {
             String userName = JWTKit.getAccount(getHttpServletRequest());
             entity.setOriginatorName(userName);
-            affected = procurementService.addProcurement(JWTKit.getUserId(getHttpServletRequest()),entity);
+            affected = procurementService.addProcurement(userName,JWTKit.getUserId(getHttpServletRequest()),entity);
         } catch (DuplicateKeyException e) {
             throw new BusinessException(5000,"采购单编号重复");
         }
@@ -91,7 +91,8 @@ public class ProcurementEndpoint extends BaseController {
     @ApiOperation(value = "更新采购单",response = ProcurementModel.class)
     public Tip updateProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
         entity.setId(id);
-        Tip resultTip = SuccessTip.create(procurementService.updateProcurement(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        String userName = JWTKit.getAccount(getHttpServletRequest());
+        Tip resultTip = SuccessTip.create(procurementService.updateProcurement(userName,JWTKit.getUserId(getHttpServletRequest()),id,entity));
         createPurchasekLog(id,  "updateProcurement", "对采购单进行了更新操作", JSONObject.toJSONString(entity) + " & " + id + " &");
         return resultTip;
     }
@@ -100,7 +101,8 @@ public class ProcurementEndpoint extends BaseController {
     @ApiOperation(value = "入库",response = ProcurementModel.class)
     public Tip executionProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
         entity.setId(id);
-        Tip resultTip = SuccessTip.create(procurementService.executionStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        String userName = JWTKit.getAccount(getHttpServletRequest());
+        Tip resultTip = SuccessTip.create(procurementService.executionStorageIn(userName,JWTKit.getUserId(getHttpServletRequest()),id,entity));
         createPurchasekLog(id,  "executionProcurement", "对采购单进行了入库操作", JSONObject.toJSONString(entity) + " & " + id + " &");
         return resultTip;
     }
@@ -109,8 +111,8 @@ public class ProcurementEndpoint extends BaseController {
     @PutMapping("/{id}/closed")
     @ApiOperation(value = "closed procurement",response = ProcurementModel.class)
     public Tip closedProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
-        Tip resultTip = SuccessTip.create(procurementService.closedProcurment(id,entity));
-        createPurchasekLog(id,  "closedProcurment", "对采购单进行了审核拒绝操作",  id + " &");
+        Tip resultTip = SuccessTip.create(procurementService.closedProcurement(id,entity));
+        createPurchasekLog(id,  "closedProcurement", "对采购单进行了审核拒绝操作",  id + " &");
         return resultTip;
     }
 
@@ -119,8 +121,9 @@ public class ProcurementEndpoint extends BaseController {
     @ApiOperation(value = "审核",response = ProcurementModel.class)
     public Tip auditProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
         entity.setId(id);
+        String userName = JWTKit.getAccount(getHttpServletRequest());
         Integer resultTip =procurementService.updateAndAuditProcurement(JWTKit.getUserId(getHttpServletRequest()),id,entity);
-        createPurchasekLog(id,  "auditProcurment", "对采购单进行了提交审核操作",  id + " &");
+        createPurchasekLog(id,  "auditProcurement", "对采购单进行了提交审核操作",  id + " &");
         return  SuccessTip.create(resultTip);
     }
 
@@ -128,8 +131,8 @@ public class ProcurementEndpoint extends BaseController {
     @PutMapping("/{id}/passed")
     @ApiOperation(value = "审核通过",response = ProcurementModel.class)
     public Tip passProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
-        Tip resultTip = SuccessTip.create(procurementService.passedProcurment(id,entity));
-        createPurchasekLog(id,  "passedProcurment", "对采购单进行了审核通过操作",  id + " &");
+        Tip resultTip = SuccessTip.create(procurementService.passedProcurement(id,entity));
+        createPurchasekLog(id,  "passedProcurement", "对采购单进行了审核通过操作",  id + " &");
         return resultTip;
     }
 
