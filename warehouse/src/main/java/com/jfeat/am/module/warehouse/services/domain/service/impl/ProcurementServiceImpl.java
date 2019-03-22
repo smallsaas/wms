@@ -74,7 +74,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     QueryInventoryDao queryInventoryDao;
 
     /**
-     * 重构 procurement 问题   待审核 item type = wait_to_audit 完成 item type = others 关闭 item type = closed
+     * 重构 procurement 问题   待审核/审核通过 item type = wait_to_audit 完成 item type = others 关闭 item type = closed
      */
     @Transactional
     public Integer addProcurement(String username, Long userId, ProcurementModel model) {
@@ -367,6 +367,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
             //某次采购 某个 sku 入库历史数量
             Integer storageInCount = queryProcurementDao.storageInCount(procurement.getId(), item.getSkuId());
+            if (storageInCount == null) {
+                storageInCount = 0;
+            }
 
             count += storageInCount;
 
@@ -404,10 +407,10 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         in.setStatus(StorageInStatus.Done.toString());
         in.setId(id);
         //假设入库数量等于需入库的数量，则设定入库完成，不等于则是部分入库  // 与总数对比确定最终的 采购单的状态
-        if (count == total){
+        if (count == total) {
             procurement.setProcureStatus(ProcurementStatus.TotalStorageIn.toString());
             procurementMapper.updateById(procurement);
-        }else {
+        } else {
             procurement.setProcureStatus(ProcurementStatus.SectionStorageIn.toString());
             procurementMapper.updateById(procurement);
         }
@@ -452,25 +455,29 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         //采购的商品
         List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
                 .eq(StorageInItem.TYPE, TransactionType.Procurement.toString()).eq(StorageInItem.STORAGE_IN_ID, procurementId));
-        //采购的商品
+
+        // 入库记录
+        List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>().eq(StorageIn.PROCUREMENT_ID, procurementId)
+                .eq(StorageIn.TRANSACTION_TYPE, TransactionType.Procurement.toString()));
 
         // 入库历史记录
         List<StorageInItemRecord> procurementItems = new ArrayList<>();
-        // 入库历史记录
 
         //采购的商品
         List<ProcurementItemRecord> records = new ArrayList<>();
-        //采购的商品
 
         if (items != null && items.size() > 0) {
             // 采购的 商品
             for (StorageInItem item : items) {
 
                 int remainderCount = item.getTransactionQuantities();
-                int sectionCount = 0;
-                int canRefundCount = sectionCount; // ke tui huo shu
+                // 已经 入库数
+                int sectionCount = queryProcurementDao.storageInCount(procurementId, item.getSkuId());;
+                int canRefundCount = 0; // ke tui huo shu
+                // 已经退货总数
                 Integer finishedRefundCount = queryRefundDao.finishedRefundCount(item.getSkuId(), procurementId);//tui huo shu
-                Integer storageInAuditCount = queryProcurementDao.storageInCount(procurementId, item.getSkuId());
+                // 待审核数
+                Integer storageInAuditCount = queryProcurementDao.storageInAuditCount(procurementId, item.getSkuId());
                 if (storageInAuditCount == null) {
                     storageInAuditCount = 0;
                 }
@@ -491,15 +498,11 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 record.setSkuUnit(sku.getField1());
                 record.setTransactionSkuPrice(item.getTransactionSkuPrice());
 
-                // 入库记录
-                List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>().eq(StorageIn.PROCUREMENT_ID, procurementId)
-                        .eq(StorageIn.TRANSACTION_TYPE, TransactionType.Procurement.toString()));
-
                 if (ins != null && ins.size() > 0) {
                     // 有入库记录
                     // 查找 入库 记录下已经入库的商品及数量
                     for (StorageIn in : ins) {
-                        if ((in.getProcurementId() == null || in.getProcurementId() < 0) && (in.getTransactionType().compareTo(TransactionType.Procurement.toString()) == 0)) {
+                        if ((in.getProcurementId() != null)) {
                             // 查找是否存在 这个 商品已经入库
                             List<StorageInItem> originItems = queryProcurementDao.originItems(in.getId(), item.getSkuId(), TransactionType.Procurement.toString());
                             if (originItems != null && originItems.size() > 0) {
@@ -531,9 +534,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                                     remainderCount = remainderCount - sectionCount;
                                     // 入库数 以及 剩余 入库数
                                     if (finishedRefundCount == null) {
-                                        canRefundCount = sectionCount - storageInAuditCount;
+                                        canRefundCount = sectionCount;
                                     } else {
-                                        canRefundCount = sectionCount - finishedRefundCount - storageInAuditCount;
+                                        canRefundCount = sectionCount - finishedRefundCount;
                                     }
                                 }
                             }

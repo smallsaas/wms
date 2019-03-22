@@ -153,8 +153,9 @@ public class StorageInEndpoint extends BaseController {
     @BusinessLog(name = "StorageIn", value = "审核拒绝，自动转化为关闭状态")
     @PutMapping("/{id}/closed")
     @ApiOperation(value = "closed StorageIn", response = StorageInModel.class)
-    public Tip closedStorageIn(@PathVariable Long id, @RequestBody StorageInModel entity) {
+    public Tip closedStorageIn(@PathVariable Long id) {
         Tip resultTip;
+        StorageIn entity = storageInService.retrieveMaster(id);
         if (entity.getTransactionType().compareTo(TransactionType.Procurement.toString()) == 0 && (entity.getProcurementId() != null)) {
             resultTip = SuccessTip.create(procurementService.auditReject(id));
         } else {
