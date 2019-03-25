@@ -257,6 +257,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
                     // 某个 sku 的采购的数量
                     Integer skuProcurementCount = queryProcurementDao.skuProcurementCount(procurementId, item.getSkuId());
+                    if (skuProcurementCount == null){
+                        skuProcurementCount=0;
+                    }
                     //某次采购 某个 sku 入库历史数量
                     Integer storageInCount = queryProcurementDao.storageInCount(procurementId, item.getSkuId());
                     if (storageInCount == null){
@@ -321,6 +324,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 item.setRelationCode(procurement.getProcurementCode());
                 // 某个 sku 的采购的数量
                 Integer skuProcurementCount = queryProcurementDao.skuProcurementCount(in.getProcurementId(), item.getSkuId());
+                if (skuProcurementCount == null){
+                    skuProcurementCount=0;
+                }
                 //某次采购 某个 sku 入库历史数量
                 Integer storageInCount = queryProcurementDao.storageInCount(in.getProcurementId(), item.getSkuId());
                 Integer storageInAuditCount = queryProcurementDao.storageInAuditCount(in.getProcurementId(), item.getSkuId());
@@ -370,6 +376,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         for (StorageInItem item : items) {
             // 某个 sku 的采购的数量
             Integer skuProcurementCount = queryProcurementDao.skuProcurementCount(procurement.getId(), item.getSkuId());
+            if (skuProcurementCount == null){
+                skuProcurementCount=0;
+            }
             total += skuProcurementCount;
 
             //某次采购 某个 sku 入库历史数量
