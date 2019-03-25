@@ -259,6 +259,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     Integer skuProcurementCount = queryProcurementDao.skuProcurementCount(procurementId, item.getSkuId());
                     //某次采购 某个 sku 入库历史数量
                     Integer storageInCount = queryProcurementDao.storageInCount(procurementId, item.getSkuId());
+                    if (storageInCount == null){
+                        storageInCount=0;
+                    }
                     // 带审核数
                     Integer storageInAuditCount = queryProcurementDao.storageInAuditCount(procurementId, item.getSkuId());
                     if (storageInAuditCount == null) {
@@ -478,7 +481,10 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
                 int remainderCount = item.getTransactionQuantities();
                 // 已经 入库数
-                int sectionCount = queryProcurementDao.storageInCount(procurementId, item.getSkuId());;
+                Integer sectionCount = queryProcurementDao.storageInCount(procurementId, item.getSkuId());
+                if (sectionCount==null){
+                    sectionCount = 0;
+                }
                 int canRefundCount = 0; // ke tui huo shu
                 // 已经退货总数
                 Integer finishedRefundCount = queryRefundDao.finishedRefundCount(item.getSkuId(), procurementId);//tui huo shu
