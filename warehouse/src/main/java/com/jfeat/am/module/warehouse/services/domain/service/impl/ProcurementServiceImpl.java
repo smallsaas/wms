@@ -26,6 +26,8 @@ import com.jfeat.am.module.warehouse.services.domain.service.ProcurementService;
 import com.jfeat.am.module.warehouse.services.domain.service.StorageInService;
 import com.jfeat.am.module.warehouse.services.persistence.dao.*;
 import com.jfeat.am.module.warehouse.services.persistence.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +47,8 @@ import java.util.List;
  */
 @Service("procurementService")
 public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implements ProcurementService {
+
+    Logger logger = LoggerFactory.getLogger(ProcurementServiceImpl.class);
 
     @Resource
     StorageInService storageInService;
@@ -466,6 +470,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         //采购的商品
         List<ProcurementItemRecord> records = new ArrayList<>();
 
+
+        logger.debug("items != null && items.size()>0");
         if (items != null && items.size() > 0) {
             // 采购的 商品
             for (StorageInItem item : items) {
@@ -498,6 +504,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 record.setSkuUnit(sku.getField1());
                 record.setTransactionSkuPrice(item.getTransactionSkuPrice());
 
+                logger.debug("ins != null && ins.size() > 0");
                 if (ins != null && ins.size() > 0) {
                     // 有入库记录
                     // 查找 入库 记录下已经入库的商品及数量
@@ -505,8 +512,10 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                         if ((in.getProcurementId() != null)) {
                             // 查找是否存在 这个 商品已经入库
                             List<StorageInItem> originItems = queryProcurementDao.originItems(in.getId(), item.getSkuId(), TransactionType.Procurement.toString());
+                            logger.debug("originItems != null && originItems.size() > 0");
                             if (originItems != null && originItems.size() > 0) {
                                 for (StorageInItem originItem : originItems) {
+                                    logger.debug("入库历史记录:  " + JSON.toJSONString(originItem));
                                     // 入库历史记录
                                     StorageInItemRecord procurementItem = new StorageInItemRecord();
                                     procurementItem.setStorageInStatus(in.getStatus());
@@ -550,6 +559,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     record.setAuditCount(storageInAuditCount);
                     records.add(record);
 
+                    logger.debug("有入库记录: records.add(record);");
+
                 } else {
                     // 无入库记录
                     record.setCanRefundCount(canRefundCount);
@@ -557,6 +568,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     record.setRemainderCount(remainderCount);
                     record.setAuditCount(storageInAuditCount);
                     records.add(record);
+                    logger.debug("无入库记录: records.add(record);");
                 }
             }
 
@@ -564,13 +576,13 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             // 无采购的商品
 
         }
+
         object.put("inHistories", procurementItems);
 //        object.put("records", records);
         object.put("items", records);
         ProcurementModel model = JSON.parseObject(JSON.toJSONString(object), ProcurementModel.class);
 
         return model;
-
     }
 
 
