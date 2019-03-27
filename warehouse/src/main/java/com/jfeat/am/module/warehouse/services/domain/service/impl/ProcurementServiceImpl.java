@@ -78,7 +78,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     QueryInventoryDao queryInventoryDao;
 
     /**
-     * 重构 procurement 问题   待审核/审核通过 item type = wait_to_audit 完成 item type = others 关闭 item type = closed
+     * 重构 procurement 问题   待审核/审核通过 item type = wait_to_audit 完成 item type = others 关闭 item type = closed   item type = storageIn 为商城退货 type
      */
     @Transactional
     public Integer addProcurement(String username, Long userId, ProcurementModel model) {
