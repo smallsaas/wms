@@ -106,6 +106,10 @@ public class StorageOutEndpoint extends BaseController {
     @PostMapping("/mall/update")
     @ApiOperation(value = "新建出库单-商城端",response = StorageOutModel.class)
     public Tip updateInventoryOrderCount(@RequestBody BulkUpdateOrderCount entity) {
+
+        if (entity.getOutOrderNum()==null){
+            throw new BusinessException(5300,"请提交订单号进行占用库存更新");
+        }
         Integer result  = storageOutService.updateOrderCount(entity);
         logger.info("没有更新占用库存"+JSON.toJSONString(entity));
         return SuccessTip.create(result);

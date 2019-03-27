@@ -61,6 +61,8 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     SkuProductMapper skuProductMapper;
 
 
+
+
     public Integer changeStatus(Long userId, Long storageOutId, StorageOutModel entity) {
 
         Integer affected = 0;
@@ -321,6 +323,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     public Integer salesStorageOut(Long userId, StorageOutModel entity) {
         Integer affected = 0;
         entity.setOriginatorId(userId);
+        entity.setOriginatorName("商城出库");
         entity.setTransactionTime(new Date());
         if (entity.getStorageOutTime() == null) {
             entity.setStorageOutTime(new Date());
@@ -365,7 +368,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             throw new BusinessException(4050, "商品不能为空，请先选择商品！");
         }
         entity.setStorageOutItems(storageOutItems);
-        entity.setStatus(StorageOutStatus.Done.toString());
+        entity.setStatus(StorageOutStatus.Audit_Passed.toString());
         affected = crudStorageOutService.createMaster(entity, null, null, null);
         return affected;
     }
@@ -375,14 +378,18 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
      */
     @Transactional
     public Integer updateOrderCount(BulkUpdateOrderCount entity) {
-
         // 需要前端 提交 订单的 ID，方便去索引 出库单
         Integer affected = 0;
         if (entity == null || entity.getItems().size() <= 0) {
             logger.info("没有更新占用库存" + "未检测到需要执行更新占用库存操作的商品，请核准并重新提交" + JSON.toJSONString(entity));
             throw new BusinessException(5310, "未检测到需要执行更新占用库存操作的商品，请核准并重新提交");
         }
-        if (entity.getDealSuccess().equals(1)){
+        StorageOut out = new StorageOut();
+        out.setOutOrderNum(entity.getOutOrderNum());
+        StorageOut originOut = storageOutMapper.selectOne(out);
+        if (originOut==null){
+            throw new BusinessException(5300,"未检测到id为"+entity.getOutOrderNum()+"的订单的出库记录，请重新核对");
+        }
             for (UpdateOrderCount updateOrderCount : entity.getItems()) {
                 Inventory origin = new Inventory();
                 origin.setSkuId(updateOrderCount.getSkuId());
@@ -396,7 +403,6 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                     logger.info("没有更新占用库存" + "无该商品库存记录!请核准然后重新提交!" + JSON.toJSONString(entity));
                     throw new BusinessException(5300, "无该商品库存记录!请核准然后重新提交!");
                 }
-
 
                 logger.info("没有更新占用库存" + "----->更新之前，打印库存信息" + JSON.toJSONString(inventory));
                 if (inventory.getOrderCount() < updateOrderCount.getOrderCount()) {
@@ -409,42 +415,10 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                 inventory.setOrderCount(afterOrderCount);
                 affected += inventoryMapper.updateById(inventory);
                 logger.info("没有更新占用库存" + "----->这个时候更新成功了，打印库存信息" + JSON.toJSONString(inventory));
-
-                // TODO 继续更新 出库单的状态  -- 此时对应的 出库单的状态应该为 完成 状态
             }
-        }else {
-            for (UpdateOrderCount updateOrderCount : entity.getItems()) {
-                Inventory origin = new Inventory();
-                origin.setSkuId(updateOrderCount.getSkuId());
-                if (updateOrderCount.getWarehouseId() == null || updateOrderCount.getWarehouseId() < 0) {
-                    origin.setWarehouseId(1L);
-                } else {
-                    origin.setWarehouseId(updateOrderCount.getWarehouseId());
-                }
-                Inventory inventory = inventoryMapper.selectOne(origin);
-                if (inventory == null) {
-                    logger.info("没有更新占用库存" + "无该商品库存记录!请核准然后重新提交!" + JSON.toJSONString(entity));
-                    throw new BusinessException(5300, "无该商品库存记录!请核准然后重新提交!");
-                }
-
-
-                logger.info("没有更新占用库存" + "----->更新之前，打印库存信息" + JSON.toJSONString(inventory));
-                if (inventory.getOrderCount() < updateOrderCount.getOrderCount()) {
-
-                    logger.info("没有更新占用库存" + "出货数据有误，请核准并重新提交" + JSON.toJSONString(entity));
-                    throw new BusinessException(5300, "出货数据有误，请核准并重新提交");
-                }
-                Integer afterOrderCount = inventory.getOrderCount() - updateOrderCount.getOrderCount();
-                // 数量回滚 ----- 支付超时订单关闭时，实际商品不会出货
-                inventory.setValidSku(inventory.getValidSku()+updateOrderCount.getOrderCount());
-                inventory.setOrderCount(afterOrderCount);
-                affected += inventoryMapper.updateById(inventory);
-                logger.info("没有更新占用库存" + "----->这个时候更新成功了，打印库存信息" + JSON.toJSONString(inventory));
-                // TODO 继续更新 出库单的状态 -- 此时对应的 出库单的状态应该为 关闭 状态
-            }
-
-        }
-
+            // TODO 继续更新 出库单的状态  -- 此时对应的 出库单的状态应该为 完成 状态
+            originOut.setStatus(StorageOutStatus.Done.toString());
+            storageOutMapper.updateById(originOut);
         return affected;
     }
 }

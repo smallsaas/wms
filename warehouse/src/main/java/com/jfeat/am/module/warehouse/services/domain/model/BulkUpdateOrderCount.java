@@ -3,8 +3,7 @@ package com.jfeat.am.module.warehouse.services.domain.model;
 import java.util.List;
 
 public class BulkUpdateOrderCount {
-    Integer dealSuccess;
-    String orderId;
+    String outOrderNum;
 
     List<UpdateOrderCount> items;
 
@@ -16,20 +15,12 @@ public class BulkUpdateOrderCount {
         this.items = items;
     }
 
-    public String getOrderId() {
-        return orderId;
+    public String getOutOrderNum() {
+        return outOrderNum;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public Integer getDealSuccess() {
-        return dealSuccess;
-    }
-
-    public void setDealSuccess(Integer dealSuccess) {
-        this.dealSuccess = dealSuccess;
+    public void setOutOrderNum(String outOrderNum) {
+        this.outOrderNum = outOrderNum;
     }
 }
 
