@@ -288,7 +288,14 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
     public Integer salesStorageIn(Long userId, StorageInModel entity) {
         Integer affected = 0;
 
-        if (entity.getDealSuccess().equals(1)) {
+
+        StorageOut out = new StorageOut();
+        out.setOutOrderNum(entity.getOutOrderNum());
+        StorageOut originOut = storageOutMapper.selectOne(out);
+        if (originOut==null){
+            throw new BusinessException(5320,"未找到订单号为"+entity.getOutOrderNum()+"的出库单，请核对后再次提交");
+        }
+        if (originOut.getStatus().compareTo(StorageOutStatus.Done.toString())==0) {
             entity.setOriginatorId(userId);
             entity.setTransactionTime(new Date());
             if (entity.getStorageInTime() == null) {
@@ -348,12 +355,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
             entity.setStatus("Done");
             affected = crudStorageInService.createMaster(entity, storageInFilter, null, null);
 
-        } else if (entity.getDealSuccess().equals(0)){
-
-            StorageOut out = new StorageOut();
-            out.setOutOrderNum(entity.getOutOrderNum());
-            StorageOut originOut = storageOutMapper.selectOne(out);
-
+        } else if (originOut.getStatus().compareTo(StorageOutStatus.Audit_Passed.toString())==0){
             for (StorageInItem inItem : entity.getStorageInItems()) {
                 Inventory origin = new Inventory();
                 origin.setSkuId(inItem.getSkuId());
@@ -383,7 +385,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
             originOut.setStatus(StorageOutStatus.Closed.toString());
             storageOutMapper.updateById(originOut);
         }else {
-            throw new BusinessException(5300,"值异常，请核对");
+            throw new BusinessException(5300,"状态错误，无法执行更新占用库存");
         }
         return affected;
     }
