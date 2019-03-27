@@ -257,13 +257,13 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
                     // 某个 sku 的采购的数量
                     Integer skuProcurementCount = queryProcurementDao.skuProcurementCount(procurementId, item.getSkuId());
-                    if (skuProcurementCount == null){
-                        skuProcurementCount=0;
+                    if (skuProcurementCount == null) {
+                        skuProcurementCount = 0;
                     }
                     //某次采购 某个 sku 入库历史数量
                     Integer storageInCount = queryProcurementDao.storageInCount(procurementId, item.getSkuId());
-                    if (storageInCount == null){
-                        storageInCount=0;
+                    if (storageInCount == null) {
+                        storageInCount = 0;
                     }
                     // 带审核数
                     Integer storageInAuditCount = queryProcurementDao.storageInAuditCount(procurementId, item.getSkuId());
@@ -324,8 +324,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 item.setRelationCode(procurement.getProcurementCode());
                 // 某个 sku 的采购的数量
                 Integer skuProcurementCount = queryProcurementDao.skuProcurementCount(in.getProcurementId(), item.getSkuId());
-                if (skuProcurementCount == null){
-                    skuProcurementCount=0;
+                if (skuProcurementCount == null) {
+                    skuProcurementCount = 0;
                 }
                 //某次采购 某个 sku 入库历史数量
                 Integer storageInCount = queryProcurementDao.storageInCount(in.getProcurementId(), item.getSkuId());
@@ -376,8 +376,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         for (StorageInItem item : items) {
             // 某个 sku 的采购的数量
             Integer skuProcurementCount = queryProcurementDao.skuProcurementCount(procurement.getId(), item.getSkuId());
-            if (skuProcurementCount == null){
-                skuProcurementCount=0;
+            if (skuProcurementCount == null) {
+                skuProcurementCount = 0;
             }
             total += skuProcurementCount;
 
@@ -491,12 +491,15 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 int remainderCount = item.getTransactionQuantities();
                 // 已经 入库数
                 Integer sectionCount = queryProcurementDao.storageInCount(procurementId, item.getSkuId());
-                if (sectionCount==null){
+                if (sectionCount == null) {
                     sectionCount = 0;
                 }
-                int canRefundCount = 0; // ke tui huo shu
                 // 已经退货总数
                 Integer finishedRefundCount = queryRefundDao.finishedRefundCount(item.getSkuId(), procurementId);//tui huo shu
+                if (finishedRefundCount == null) {
+                    finishedRefundCount = 0;
+                }
+                int canRefundCount= sectionCount - finishedRefundCount;// ke tui huo shu
                 // 待审核数
                 Integer storageInAuditCount = queryProcurementDao.storageInAuditCount(procurementId, item.getSkuId());
                 if (storageInAuditCount == null) {
@@ -507,6 +510,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 SkuProduct sku = skuProductMapper.selectById(item.getSkuId());
 
                 record.setTotalCount(item.getTransactionQuantities()); // cai gou zong shu
+                // 剩余 入库数
+                remainderCount = record.getTotalCount() - sectionCount;
+
                 record.setDemandQuantities(item.getDemandQuantities());
                 record.setSkuCode(sku.getSkuCode());
                 record.setSkuName(sku.getSkuName());
@@ -551,17 +557,6 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                                     procurementItem.setTransactionSkuPrice(originItem.getTransactionSkuPrice());
                                     procurementItem.setTransactionTime(originItem.getTransactionTime());
                                     procurementItems.add(procurementItem);
-                                    // 入库历史记录
-
-                                    // 入库数 以及 剩余 入库数
-                                    sectionCount += originItem.getTransactionQuantities();
-                                    remainderCount = remainderCount - sectionCount;
-                                    // 入库数 以及 剩余 入库数
-                                    if (finishedRefundCount == null) {
-                                        canRefundCount = sectionCount;
-                                    } else {
-                                        canRefundCount = sectionCount - finishedRefundCount;
-                                    }
                                 }
                             }
                         } else {
@@ -588,12 +583,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             }
 
         } else {
-            // 无采购的商品
-
         }
 
         object.put("inHistories", procurementItems);
-//        object.put("records", records);
         object.put("items", records);
         ProcurementModel model = JSON.parseObject(JSON.toJSONString(object), ProcurementModel.class);
 
