@@ -269,6 +269,9 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (out == null) {
             throw new BusinessException(BusinessCode.FileNotFound);
         }
+        if (out.getOutOrderNum()!=null){
+            throw new BusinessException(5320,"商城出库单只能通过发货途径去执行出库操作");
+        }
 
 
         if (out.getStatus().compareTo(StorageOutStatus.Audit_Passed.toString()) != 0) {
