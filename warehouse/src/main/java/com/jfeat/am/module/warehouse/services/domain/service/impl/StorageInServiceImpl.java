@@ -291,6 +291,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
 
         StorageOut out = new StorageOut();
         out.setOutOrderNum(entity.getOutOrderNum());
+        out.setTransactionType(TransactionType.SalesOut.toString());
         StorageOut originOut = storageOutMapper.selectOne(out);
         if (originOut==null){
             throw new BusinessException(5320,"未找到订单号为"+entity.getOutOrderNum()+"的出库单，请核对后再次提交");

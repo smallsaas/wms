@@ -324,6 +324,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         Integer affected = 0;
         entity.setOriginatorId(userId);
         entity.setOriginatorName("商城出库");
+        entity.setTransactionType(TransactionType.SalesOut.toString());
         entity.setTransactionTime(new Date());
         if (entity.getStorageOutTime() == null) {
             entity.setStorageOutTime(new Date());
