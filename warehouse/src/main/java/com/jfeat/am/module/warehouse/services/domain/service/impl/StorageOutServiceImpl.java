@@ -343,7 +343,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                     //         CASE
                     //        WHEN wms_storage_out.`status`='Done' THEN 'Others'
                     //        ELSE 'StorageOut' END
-                    outItem.setType(TransactionType.SalesOut.toString());
+                    outItem.setType(TransactionType.StorageOut.toString());
                     outItem.setRelationCode(entity.getTransactionCode());
                     outItem.setTransactionTime(entity.getStorageOutTime());
                     SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
@@ -404,7 +404,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             for (UpdateOrderCount updateOrderCount : entity.getItems()) {
                 StorageOutItem item = new StorageOutItem();
                 item.setSkuId(updateOrderCount.getSkuId());
-                item.setType(TransactionType.SalesOut.toString());
+                item.setType(TransactionType.StorageOut.toString());
                 item.setStorageOutId(originOut.getId());
                 StorageOutItem originOutItem = outItemMapper.selectOne(item);
                 logger.info("打出来，证明商品有值" + JSON.toJSONString(originOutItem));
@@ -417,7 +417,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                 Inventory origin = new Inventory();
                 origin.setSkuId(updateOrderCount.getSkuId());
                 if (updateOrderCount.getWarehouseId() == null || updateOrderCount.getWarehouseId() < 0) {
-                    origin.setWarehouseId(1L);
+                    origin.setWarehouseId(out.getWarehouseId()==null?1L:out.getWarehouseId());
                 } else {
                     origin.setWarehouseId(updateOrderCount.getWarehouseId());
                 }
