@@ -385,14 +385,16 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     public Integer updateOrderCount(BulkUpdateOrderCount entity) {
         // 需要前端 提交 订单的 ID，方便去索引 出库单
         Integer affected = 0;
-        if (entity == null || entity.getItems().size() <= 0) {
+        if (entity.getItems() == null || entity.getItems().size() <= 0) {
             logger.info("没有更新占用库存" + "未检测到需要执行更新占用库存操作的商品，请核准并重新提交" + JSON.toJSONString(entity));
             throw new BusinessException(5310, "未检测到需要执行更新占用库存操作的商品，请核准并重新提交");
         }
         StorageOut out = new StorageOut();
         out.setOutOrderNum(entity.getOutOrderNum());
         out.setTransactionType(TransactionType.SalesOut.toString());
+        logger.info("出库单查找的初始化值" + JSON.toJSONString(out));
         StorageOut originOut = storageOutMapper.selectOne(out);
+        logger.info("打出来，证明有值" + JSON.toJSONString(out));
         if (originOut==null){
             throw new BusinessException(5300,"未检测到id为"+entity.getOutOrderNum()+"的订单的出库记录，请重新核对");
         }
@@ -402,12 +404,12 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                 item.setType(TransactionType.SalesOut.toString());
                 item.setStorageOutId(originOut.getId());
                 StorageOutItem originOutItem = outItemMapper.selectOne(item);
+                logger.info("打出来，证明商品有值" + JSON.toJSONString(originOutItem));
                 if (originOutItem == null){
                     throw new BusinessException(5310,"该订单下无SKUID为"+updateOrderCount.getSkuId()+"的商品购买记录");
                 }
                 originOutItem.setType("Others");
                 outItemMapper.updateById(originOutItem);
-
 
                 Inventory origin = new Inventory();
                 origin.setSkuId(updateOrderCount.getSkuId());
@@ -420,9 +422,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                 if (inventory == null) {
                     throw new BusinessException(5300, "无该商品库存记录!请核准然后重新提交!");
                 }
-
                 if (inventory.getOrderCount() < updateOrderCount.getOrderCount()) {
-
                     throw new BusinessException(5300, "出货数据有误，请核准并重新提交");
                 }
                 Integer afterOrderCount = inventory.getOrderCount() - updateOrderCount.getOrderCount();
