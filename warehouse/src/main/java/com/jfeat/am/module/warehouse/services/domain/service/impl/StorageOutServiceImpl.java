@@ -386,6 +386,8 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
      */
     @Transactional
     public Integer updateOrderCount(BulkUpdateOrderCount entity) {
+        logger.info("调用API:/api/wms/storages/out/mall/update,对应数据:" + JSON.toJSONString(entity));
+
         // 需要前端 提交 订单的 ID，方便去索引 出库单
         Integer affected = 0;
         if (entity.getItems() == null || entity.getItems().size() <= 0) {
