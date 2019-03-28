@@ -343,7 +343,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                     //         CASE
                     //        WHEN wms_storage_out.`status`='Done' THEN 'Others'
                     //        ELSE 'StorageOut' END
-                    outItem.setType(TransactionType.StorageOut.toString());
+                    outItem.setType(TransactionType.SalesOut.toString());
                     outItem.setRelationCode(entity.getTransactionCode());
                     outItem.setTransactionTime(entity.getStorageOutTime());
                     SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
