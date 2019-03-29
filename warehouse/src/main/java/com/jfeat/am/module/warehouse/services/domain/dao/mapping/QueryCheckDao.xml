@@ -48,6 +48,8 @@
         <if test="record.field2 != null and record.field2!= ''">
             AND wms_check.field2 LIKE CONCAT('%',#{record.field2},'%')
         </if>
+
+        order by wms_check.check_time DESC
     </select>
 
 
