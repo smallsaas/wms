@@ -69,6 +69,13 @@
             </if>
 
         </if>
+        <if test="search != null">
+            AND(
+            t_sku_product.sku_name LIKE CONCAT('%',#{search},'%')
+            or t_sku_product.bar_code LIKE CONCAT('%',#{search},'%')
+            OR t_sku_product.sku_code LIKE CONCAT('%',#{search},'%')
+            )
+        </if>
 
         <if test="record.slotId != null and record.slotId>0 ">
             AND wms_inventory.slot_id LIKE CONCAT('%',#{record.slotId},'%')
