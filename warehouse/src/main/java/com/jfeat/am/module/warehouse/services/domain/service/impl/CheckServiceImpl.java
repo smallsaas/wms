@@ -245,7 +245,7 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
 
         int affected = 0;
         Check check = checkMapper.selectById(checkId);
-        if (check.getStatus().compareTo(CheckStatus.WaitForCheck.toString()) != 0) {
+        if (check.getStatus().compareTo(CheckStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
         affected += checkSkuMapper.delete(new EntityWrapper<CheckSku>().eq(CheckSku.CHECK_ID, checkId));
