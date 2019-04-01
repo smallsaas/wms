@@ -443,7 +443,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         if ((in.getProcurementId() == null || in.getProcurementId() < 0) && (in.getTransactionType().compareTo(TransactionType.Procurement.toString()) == 0)) {
             throw new BusinessException(5300, "非采购入库的流水单号!");
         }
-        // 采购入库待审核的商品
+        /*// 采购入库待审核的商品
         List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
                 .eq(StorageInItem.STORAGE_IN_ID, id)
                 .eq(StorageInItem.TYPE, StorageInStatus.Wait_To_Audit.toString()));
@@ -451,7 +451,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         for (StorageInItem item : items) {
             item.setType(StorageInStatus.Closed.toString());
             storageInItemMapper.updateById(item);
-        }
+        }*/
         in.setStatus(StorageInStatus.Closed.toString());
         in.setId(id);
         return storageInMapper.updateById(in);
@@ -471,24 +471,18 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
         //采购的商品
         List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
-                .eq(StorageInItem.TYPE, TransactionType.Procurement.toString()).eq(StorageInItem.STORAGE_IN_ID, procurementId));
+                .eq(StorageInItem.TYPE,ItemEnumType.PROCUREMENT).eq(StorageInItem.STORAGE_IN_ID, procurementId));
 
         // 入库记录
         List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>().eq(StorageIn.PROCUREMENT_ID, procurementId)
                 .eq(StorageIn.TRANSACTION_TYPE, TransactionType.Procurement.toString()));
-
-        // 入库历史记录
         List<StorageInItemRecord> procurementItems = new ArrayList<>();
-
         //采购的商品
         List<ProcurementItemRecord> records = new ArrayList<>();
-
-
         logger.debug("items != null && items.size()>0");
         if (items != null && items.size() > 0) {
             // 采购的 商品
             for (StorageInItem item : items) {
-
                 int remainderCount = item.getTransactionQuantities();
                 // 已经 入库数
                 Integer sectionCount = queryProcurementDao.storageInCount(procurementId, item.getSkuId());
@@ -496,6 +490,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     sectionCount = 0;
                 }
                 // 已经退货总数
+                // TODO 
                 Integer finishedRefundCount = queryRefundDao.finishedRefundCount(item.getSkuId(), procurementId);//tui huo shu
                 if (finishedRefundCount == null) {
                     finishedRefundCount = 0;
@@ -507,13 +502,10 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     storageInAuditCount = 0;
                 }
                 ProcurementItemRecord record = new ProcurementItemRecord();
-
                 SkuProduct sku = skuProductMapper.selectById(item.getSkuId());
-
                 record.setTotalCount(item.getTransactionQuantities()); // cai gou zong shu
                 // 剩余 入库数
                 remainderCount = record.getTotalCount() - sectionCount;
-
                 record.setDemandQuantities(item.getDemandQuantities());
                 record.setSkuCode(sku.getSkuCode());
                 record.setSkuName(sku.getSkuName());
@@ -533,7 +525,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     for (StorageIn in : ins) {
                         if ((in.getProcurementId() != null)) {
                             // 查找是否存在 这个 商品已经入库
-                            List<StorageInItem> originItems = queryProcurementDao.originItems(in.getId(), item.getSkuId(), TransactionType.Procurement.toString());
+                            List<StorageInItem> originItems = queryProcurementDao.originItems(in.getId(), item.getSkuId(),ItemEnumType.STORAGEIN.toString());
                             logger.debug("originItems != null && originItems.size() > 0");
                             if (originItems != null && originItems.size() > 0) {
                                 for (StorageInItem originItem : originItems) {
@@ -569,9 +561,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     record.setSectionInCount(sectionCount);
                     record.setAuditCount(storageInAuditCount);
                     records.add(record);
-
                     logger.debug("有入库记录: records.add(record);");
-
                 } else {
                     // 无入库记录
                     record.setCanRefundCount(canRefundCount);
