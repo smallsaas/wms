@@ -79,7 +79,9 @@
         LEFT JOIN t_sku_product ON wms_storage_in_item.sku_id = t_sku_product.id
         WHERE
         wms_storage_in.id = #{id}
-        AND wms_storage_in_item.type = (
+
+        AND wms_storage_in_item.type != 'PROCUREMENT'
+        <!--AND wms_storage_in_item.type = (
         CASE
         WHEN wms_storage_in.`status` = 'Done' THEN
         'Others'
@@ -103,7 +105,7 @@
         ELSE
         'StorageIn'
         END
-        )
+        )-->
 
     </select>
 
