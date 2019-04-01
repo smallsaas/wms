@@ -474,8 +474,10 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 .eq(StorageInItem.TYPE,ItemEnumType.PROCUREMENT).eq(StorageInItem.STORAGE_IN_ID, procurementId));
 
         // 入库记录
-        List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>().eq(StorageIn.PROCUREMENT_ID, procurementId)
-                .eq(StorageIn.TRANSACTION_TYPE, TransactionType.Procurement.toString()));
+        List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>()
+                .eq(StorageIn.PROCUREMENT_ID, procurementId)
+                .eq(StorageIn.TRANSACTION_TYPE, TransactionType.Procurement.toString())
+                .eq(StorageIn.STATUS,StorageInStatus.Done));
         List<StorageInItemRecord> procurementItems = new ArrayList<>();
         //采购的商品
         List<ProcurementItemRecord> records = new ArrayList<>();
@@ -490,7 +492,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     sectionCount = 0;
                 }
                 // 已经退货总数
-                // TODO 
+                // TODO
                 Integer finishedRefundCount = queryRefundDao.finishedRefundCount(item.getSkuId(), procurementId);//tui huo shu
                 if (finishedRefundCount == null) {
                     finishedRefundCount = 0;

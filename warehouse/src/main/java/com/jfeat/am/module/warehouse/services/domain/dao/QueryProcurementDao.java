@@ -39,7 +39,7 @@ public interface QueryProcurementDao extends BaseMapper<ProcurementRecord> {
 
 
     // 某次采购 某个 sku 入库历史记录
-    @Select("SELECT wms_storage_in_item.* FROM wms_storage_in_item WHERE wms_storage_in_item.storage_in_id = #{inId} AND wms_storage_in_item.sku_id = #{skuId} AND (wms_storage_in_item.type = 'Others' or wms_storage_in_item.type = 'Closed')")
+    @Select("SELECT wms_storage_in_item.* FROM wms_storage_in_item WHERE wms_storage_in_item.storage_in_id = #{inId} AND wms_storage_in_item.sku_id = #{skuId} AND wms_storage_in_item.type = #{type}")
     List<StorageInItem> originItems(@Param("inId")Long inId,
                                     @Param("skuId")Long skuId,
                                     @Param("type")String type);
