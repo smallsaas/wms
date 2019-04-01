@@ -80,7 +80,7 @@
         WHERE
         wms_storage_in.id = #{id}
 
-        AND wms_storage_in_item.type != 'PROCUREMENT'
+        AND wms_storage_in_item.type = 'STORAGEIN'
         <!--AND wms_storage_in_item.type = (
         CASE
         WHEN wms_storage_in.`status` = 'Done' THEN
