@@ -75,6 +75,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
 
             for (StorageInItem inItem : entity.getStorageInItems()) {
                 if (inItem.getDemandQuantities() > 0) {
+                    inItem.setStorageInId(storageInId);
                     inItem.setTransactionQuantities(inItem.getDemandQuantities());
                     inItem.setRelationCode(entity.getTransactionCode());
                     inItem.setTransactionTime(entity.getStorageInTime());
