@@ -26,16 +26,6 @@ public interface QueryRefundDao extends BaseMapper<RefundRecord> {
 
 
 
-    // 某个商品某次采购 总共入库的数目
-    @Select("SELECT SUM(transaction_quantities) AS storageSum " +
-            "FROM wms_storage_in_item " +
-            "LEFT JOIN wms_storage_in ON wms_storage_in.id = wms_storage_in_item.storage_in_id " +
-            "LEFT JOIN wms_procurement ON " +
-            "(wms_procurement.id = wms_storage_in.procurement_id AND wms_storage_in.transaction_type = 'Procurement') " +
-            "WHERE wms_storage_in_item.type != 'Procurement' and wms_procurement.id = #{procurementId} and wms_storage_in_item.sku_id = #{skuId}")
-    Integer skuStorageInCount(@Param("procurementId") Long procurementId,
-                         @Param("skuId")Long skuId);
-
 
     //查找 退货的商品
     @Select("select wms_storage_out_item.* from wms_storage_out_item left join wms_storage_out on wms_storage_out.id = wms_storage_out_item.storage_out_id where wms_storage_out.id=#{outId}")

@@ -90,7 +90,6 @@ public class RefundEndpoint extends BaseController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "查看退货表",response = RefundModel.class)
-
     public Tip getRefund(@PathVariable Long id) {
         return SuccessTip.create(refundService.refundDetails(id));
     }

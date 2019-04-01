@@ -10,6 +10,8 @@ public enum ItemEnumType {
 
     PROCUREMENT,// 采购入库对应的 子项 type  该type只索引采购的子项
 
+    REFUND,//退货 子项对应的KEY
+
 
 
 

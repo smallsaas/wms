@@ -12,9 +12,12 @@ import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageOutFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDRefundService;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
+import com.jfeat.am.module.warehouse.services.definition.ItemEnumType;
 import com.jfeat.am.module.warehouse.services.definition.RefundStatus;
+import com.jfeat.am.module.warehouse.services.definition.StorageOutStatus;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryInventoryDao;
+import com.jfeat.am.module.warehouse.services.domain.dao.QueryProcurementDao;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryRefundDao;
 import com.jfeat.am.module.warehouse.services.domain.model.*;
 import com.jfeat.am.module.warehouse.services.domain.service.RefundService;
@@ -69,31 +72,25 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     RefundMapper refundMapper;
     @Resource
     WarehouseMapper warehouseMapper;
+    @Resource
+    QueryProcurementDao queryProcurementDao;
 
 
     public Integer createOrUpdate(Long refundId, RefundModel model) {
-
-
         int affected = 0;
-
         if (model.getItems() != null && model.getItems().size() > 0) {
             // execution delete before insert
             affected += storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>()
                     .eq(StorageOutItem.STORAGE_OUT_ID, refundId)
-                    .eq(StorageOutItem.TYPE, TransactionType.Refund.toString()));
-
+                    .eq(StorageOutItem.TYPE, ItemEnumType.REFUND));
             for (StorageOutItemRecord outItem : model.getItems()) {
-
                 SkuProduct sku = skuProductMapper.selectById(outItem.getSkuId());
                 if (outItem.getDemandQuantities() > 0) {
                     //新建或更新时将需求数量插入实际数量
                     outItem.setTransactionQuantities(outItem.getDemandQuantities());
-
                     // 仅仅保存数据，将采购的可退货数量插入到 该字段中，该字段在该逻辑下无特别的用途
-                    if (outItem.getCanRefundCount()!=null){
-
+                    if (outItem.getCanRefundCount() != null) {
                         outItem.setAfterTransactionQuantities(outItem.getCanRefundCount());
-
                     }
                     outItem.setRelationCode(model.getProductRefundCode());
 
@@ -110,15 +107,14 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                             //do nothings
                             outItem.setStorageOutId(refundId);
                             outItem.setTransactionQuantities(outItem.getDemandQuantities());
-                            outItem.setType(TransactionType.Refund.toString());
+                            outItem.setType(ItemEnumType.REFUND.toString());
                             affected += storageOutItemMapper.insert(outItem);
-
                         } else {
-                            if (outItem.getDemandQuantities() > queryRefundDao.skuStorageInCount(model.getProductProcurementId(), outItem.getSkuId())) {
-                                throw new BusinessException(4050, "\"" + sku.getSkuName() + "\"退货数量不能大于入库的数量");
+                            if (outItem.getDemandQuantities() > queryProcurementDao.storageInCount(model.getProductProcurementId(), outItem.getSkuId())) {
+                                throw new BusinessException(4050, "\"" + sku.getSkuName() + "\"退货数量不能大于已入库的数量");
                             } else {
                                 outItem.setStorageOutId(refundId);
-                                outItem.setType(TransactionType.Refund.toString());
+                                outItem.setType(ItemEnumType.REFUND.toString());
                                 outItem.setTransactionQuantities(outItem.getDemandQuantities());
                                 affected += storageOutItemMapper.insert(outItem);
                             }
@@ -162,7 +158,6 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         if (refund.getProductRefundStatus().compareTo(RefundStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-
         model.setId(refundId);
         model.setProductRefundStatus(RefundStatus.Draft.toString());
         affected += createOrUpdate(model.getId(), model);
@@ -178,7 +173,6 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         if (refund.getProductRefundStatus().compareTo(RefundStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-
         model.setId(refundId);
         model.setProductRefundStatus(RefundStatus.Wait_To_Audit.toString());
         affected += createOrUpdate(model.getId(), model);
@@ -190,19 +184,19 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     public Integer auditPassed(Long id, String username, Long userId, RefundModel model) {
         Integer affected = 0;
         Refund refund = refundMapper.selectById(id);
-        if (refund == null){
+        if (refund == null) {
             throw new BusinessException(BusinessCode.FileNotFound);
         }
         model.setId(id);
         model.setProductRefundStatus(RefundStatus.Audit_Passed.toString());
-        if(refund.getId() != null) {
+        if (refund.getId() != null) {
             affected += refundService.updateMaster(model);
-            for (StorageOutItem item : model.getItems()){
-                item.setType(TransactionType.Refund.toString());
+            for (StorageOutItem item : model.getItems()) {
+                item.setType(ItemEnumType.REFUND.toString());
                 storageOutItemMapper.updateById(item);
             }
             // 成功就立即执行入库，无须再调用执行入库的API
-            affected += executionRefund(username,userId,id);
+            affected += executionRefund(username, userId, id);
         }
         return affected;
     }
@@ -213,10 +207,6 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     @Transactional
     @Override
     public Integer executionRefund(String username, Long userId, Long refundId) {
-        /**
-         * 1.先执行生成出库单，然后拿到入库单的 id 插入的采购的表单中
-         * 2.
-         * */
         int affected = 0;
         int refundTotal = 0;
         Refund refund = refundMapper.selectById(refundId);
@@ -226,81 +216,14 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
 
         List<StorageOutItem> items = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, refundId)
-                .eq(StorageOutItem.TYPE, TransactionType.Refund.toString()));
+                .eq(StorageOutItem.TYPE, ItemEnumType.REFUND));
 
         StorageOutModel storageOutModel = new StorageOutModel();
         storageOutModel.setStorageOutTime(new Date());
 
-        List<StorageOutItem> storageOutItems = new ArrayList<>();
-        if (items != null && items.size() > 0) {
-            for (StorageOutItem outItem : items) {
-
-                SkuProduct sku = skuProductMapper.selectById(outItem.getSkuId());
-                if (sku==null){
-                    throw new BusinessException(5310,"提交的商品ID\""+outItem.getSkuId()+"\"出错，请重新核对并重新提交!");
-                }
-                if (outItem.getTransactionQuantities() > 0) {
-                    StorageOutItem item = new StorageOutItem();
-                    item.setSkuId(outItem.getSkuId());
-                    item.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
-                    item.setTransactionQuantities(outItem.getTransactionQuantities());
-                    item.setDemandQuantities(outItem.getDemandQuantities());
-                    item.setRelationCode(refund.getProductRefundCode());
-                    item.setTransactionTime(storageOutModel.getStorageOutTime());
-                    item.setType("Others");
-
-                    refundTotal += outItem.getTransactionQuantities();
-
-                    Inventory isExistInventory = new Inventory();
-                    isExistInventory.setSkuId(outItem.getSkuId());
-                    isExistInventory.setWarehouseId(refund.getProductRefundWarehouseId());
-                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
-                    if (originInventory != null) {
-                        // 退货数量不能大于库存量
-                        if (originInventory.getValidSku() == null) {
-                            originInventory.setValidSku(0);
-                        }
-                    /*if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
-                        throw new BusinessException(4050, "\""+sku.getSkuName()+"\"库存不足");
-                    } else*/
-                        if (refund.getProductProcurementId() == null) {
-                            //操作后的数量
-                            Integer afterSkuCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
-                            item.setAfterTransactionQuantities(afterSkuCount);
-
-                            originInventory.setValidSku(afterSkuCount);
-                            affected += inventoryMapper.updateById(originInventory);
-
-                        } else {
-                            if (outItem.getTransactionQuantities() > queryRefundDao.skuStorageInCount(refund.getProductProcurementId(), outItem.getSkuId())) {
-                                throw new BusinessException(4050, "\"" + sku.getSkuName() + "\"退货数量不能大于入库的数量");
-                            } else {
-                                //操作后的数量
-                                Integer afterSkuCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
-                                item.setAfterTransactionQuantities(afterSkuCount);
-
-                                originInventory.setValidSku(afterSkuCount);
-                                affected += inventoryMapper.updateById(originInventory);
-                            }
-                        }
-
-                    } else {
-                        throw new BusinessException(4060, "该仓库不存在\"" + sku.getSkuName() + "\"商品");
-                    }
-                    storageOutItems.add(item);
-                } else {
-                    throw new BusinessException(5000, "提交失败，" + "\"" + sku.getSkuName() + "\"" + "商品退货数量不能为0");
-                }
-            }
-        } else {
-            throw new BusinessException(4055, "请先选择需要退货的商品！");
-        }
-
-
         storageOutModel.setTransactionType(TransactionType.Refund.toString());
-        storageOutModel.setStorageOutItems(storageOutItems);
         storageOutModel.setWarehouseId(refund.getProductRefundWarehouseId());
-        storageOutModel.setStatus("Done");
+        storageOutModel.setStatus(StorageOutStatus.Done.toString());
 
         // 用field1 来接收出库的code
         storageOutModel.setTransactionCode(refund.getField1());
@@ -309,30 +232,66 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         storageOutModel.setOriginatorId(userId);
         storageOutModel.setTransactionBy(refund.getTransactionBy());
         storageOutModel.setTransactionTime(new Date());
-        StorageOutFilter storageOutFilter = new StorageOutFilter();
-        affected += storageOutService.createMaster(storageOutModel, storageOutFilter, null, null);
+        storageOutMapper.insert(storageOutModel);
 
-        refund.setStorageOutId((Long) storageOutFilter.result().get("id") == null ? null : (Long) storageOutFilter.result().get("id"));
+        for (StorageOutItem outItem : items) {
+            if (outItem.getTransactionQuantities() > 0) {
+                StorageOutItem item = new StorageOutItem();
+                item.setStorageOutId(storageOutModel.getId());
+                item.setSkuId(outItem.getSkuId());
+                item.setTransactionSkuPrice(outItem.getTransactionSkuPrice());
+                item.setTransactionQuantities(outItem.getTransactionQuantities());
+                item.setDemandQuantities(outItem.getDemandQuantities());
+                item.setRelationCode(refund.getProductRefundCode());
+                item.setTransactionTime(storageOutModel.getStorageOutTime());
+                item.setType(ItemEnumType.STORAGEOUT.toString());
+                refundTotal += outItem.getTransactionQuantities();
+
+                Inventory isExistInventory = new Inventory();
+                isExistInventory.setSkuId(outItem.getSkuId());
+                isExistInventory.setWarehouseId(refund.getProductRefundWarehouseId());
+                Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                if (originInventory != null) {
+                    // 退货数量不能大于库存量
+                    if (originInventory.getValidSku() == null) {
+                        originInventory.setValidSku(0);
+                    }
+                    if (refund.getProductProcurementId() == null) {
+                        //操作后的数量
+                        Integer afterSkuCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
+                        item.setAfterTransactionQuantities(afterSkuCount);
+                        originInventory.setValidSku(afterSkuCount);
+                        affected += inventoryMapper.updateById(originInventory);
+                    } else {
+                        //操作后的数量
+                        Integer afterSkuCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
+                        item.setAfterTransactionQuantities(afterSkuCount);
+                        originInventory.setValidSku(afterSkuCount);
+                        affected += inventoryMapper.updateById(originInventory);
+                    }
+                }
+                storageOutItemMapper.insert(item);
+            }
+        }
+
+        refund.setStorageOutId(storageOutModel.getId());
         refund.setTransactionBy(username);
         refund.setTransactionTime(new Date());
         refund.setProductRefundQuantities(refundTotal);
         refund.setProductRefundStatus(RefundStatus.Done.toString());
         refund.setId(refundId);
         affected += refundService.updateMaster(refund);
-
         // field1 去接收最上层的ID  作跳转使用
         storageOutModel.setField1(refund.getId().toString());
-
         storageOutModel.setId(refund.getStorageOutId());
         storageOutMapper.updateById(storageOutModel);
-
         return affected;
     }
 
 
     public RefundModel refundDetails(Long id) {
         Refund refund = refundService.retrieveMaster(id);
-        if (refund==null){
+        if (refund == null) {
             throw new BusinessException(BusinessCode.FileNotFound);
         }
         JSONObject refundObj = JSON.parseObject(JSONObject.toJSONString(refund));
@@ -352,44 +311,20 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                 refundObj.put("supplierName", suppliers.getSupplierName());
             }
         }
-
         List<StorageOutItemRecord> outItemRecords = new ArrayList<>();
 
+        List<StorageOutItem> outItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
+                .eq(StorageOutItem.STORAGE_OUT_ID, refund.getId())
+                .eq(StorageOutItem.TYPE, ItemEnumType.REFUND));
 
-            if (refund.getProductRefundStatus().compareTo(RefundStatus.Done.toString()) == 0) {
-
-            List<StorageOutItem> outItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
-                    .eq(StorageOutItem.STORAGE_OUT_ID, refund.getStorageOutId())
-                    .eq(StorageOutItem.TYPE, "Others"));
-
-            if (outItems != null && outItems.size() > 0) {
-                for (StorageOutItem item : outItems) {
-                    // 出库 商品详情
-                    StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
-                    //插入 可退货数量
-                    itemRecord.setCanRefundCount(item.getAfterTransactionQuantities());
-                    outItemRecords.add(itemRecord);
-                }
-            } else {
-
+        if (outItems != null && outItems.size() > 0) {
+            for (StorageOutItem item : outItems) {
+                // 出库 商品详情
+                StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
+                //插入 可退货数量
+                itemRecord.setCanRefundCount(item.getAfterTransactionQuantities());
+                outItemRecords.add(itemRecord);
             }
-        } else {
-
-            //searching out records
-            List<StorageOutItem> outItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
-                    .eq(StorageOutItem.STORAGE_OUT_ID, refund.getId())
-                    .eq(StorageOutItem.TYPE, TransactionType.Refund.toString()));
-
-                    if (outItems != null && outItems.size() > 0) {
-//                        refundObj.put("items", outItems);
-                        for (StorageOutItem item : outItems) {
-                            // 出库 商品详情
-                            StorageOutItemRecord itemRecord = queryRefundDao.outItemRecord(item.getId());
-                            //插入 可退货数量
-                            itemRecord.setCanRefundCount(item.getAfterTransactionQuantities());
-                            outItemRecords.add(itemRecord);
-                        }
-                    }
         }
         refundObj.put("items", outItemRecords);
         RefundModel model = JSONObject.parseObject(JSONObject.toJSONString(refundObj), RefundModel.class);
