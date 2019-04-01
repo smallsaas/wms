@@ -169,7 +169,7 @@
                 1 = 1
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
-                AND (sin.type = 'Others' OR sin.type = 'StorageIn')
+                AND (sin.type = 'StorageIn' and wms_storage_in.`status`='Done')
                 and wms_storage_in.transaction_type = #{transactionType}
                 <if test="startTime != null and endTime != null">
                     <![CDATA[
@@ -219,7 +219,7 @@
                 1 = 1
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
-                and sout.type='Others'
+                and (sout.type='STORAGEOUT' and wms_storage_out.`status`='Done')
                 and wms_storage_out.transaction_type = #{transactionType}
                 <if test="startTime != null and endTime != null">
                     <![CDATA[
@@ -325,7 +325,7 @@
                 1 = 1
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
-                AND sin.type = 'Others'
+                AND (sin.type = 'STORAGEIN' and wms_storage_in.`status`='Done')
                 <if test="startTime != null and endTime != null">
                     <![CDATA[
                 AND sin.transaction_time >= date(#{startTime}) AND
@@ -372,7 +372,7 @@
                 1 = 1
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
-                and sout.type='Others'
+                and (sout.type='STORAGEOUT' and wms_storage_out.`status`='Done')
                 <if test="startTime != null and endTime != null">
                     <![CDATA[
                 AND sout.transaction_time >= date(#{startTime}) AND
