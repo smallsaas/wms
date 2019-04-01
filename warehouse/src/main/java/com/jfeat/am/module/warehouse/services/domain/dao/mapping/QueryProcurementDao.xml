@@ -153,7 +153,7 @@
     </select>
 
 
-    <select id="storageInCount" resultType="Integer">
+    <select id="storageInCount" resultType="int" parameterType="long">
         SELECT
             SUM(transaction_quantities) AS storageInCount
         FROM
@@ -171,7 +171,7 @@
             AND wms_storage_in_item.sku_id = #{skuId}
     </select>
 
-    <select id="auditStorageInCount" resultType="Integer">
+    <select id="auditStorageInCount" resultType="int" parameterType="long">
         SELECT
         SUM(transaction_quantities) AS storageInCount
         FROM
@@ -188,7 +188,7 @@
         wms_procurement.id = #{procurementId}
         AND wms_storage_in_item.sku_id = #{skuId}
     </select>
-    <select id="auditStorageInPass" resultType="Integer">
+    <select id="auditStorageInPass" resultType="int" parameterType="long">
         SELECT
         SUM(transaction_quantities) AS storageInCount
         FROM
@@ -206,7 +206,7 @@
         AND wms_storage_in_item.sku_id = #{skuId}
     </select>
 
-    <select id="totalProcurementCount" resultType="Integer">
+    <select id="totalProcurementCount" resultType="int" parameterType="long">
         SELECT SUM(transaction_quantities) AS storageInCount
         FROM
             wms_storage_in_item
@@ -218,7 +218,7 @@
             wms_procurement.id = #{procurementId}
     </select>
 
-    <select id="totalStorageInCount" resultType="Integer">
+    <select id="totalStorageInCount" resultType="int" parameterType="long">
         SELECT SUM(transaction_quantities) AS storageInCount
         FROM
         wms_storage_in_item
