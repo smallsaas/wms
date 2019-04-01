@@ -150,9 +150,9 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
     public Integer updateStorageIn(Long userId, Long storageInId, StorageInModel entity) {
         Integer affected = 0;
 
-        StorageIn in = crudStorageInService.retrieveMaster(storageInId);
-        if (in.getStatus().compareTo(StorageInStatus.Draft.toString()) != 0) {
-            throw new BusinessException(BusinessCode.ErrorStatus);
+        StorageIn in = storageInMapper.selectById(storageInId);
+        if (in == null) {
+            throw new BusinessException(5100,"无id为"+storageInId+"的入库单！");
         }
         affected += changeStatus(userId, storageInId, entity);
         entity.setId(storageInId);

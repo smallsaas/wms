@@ -8,6 +8,7 @@ import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutService;
+import com.jfeat.am.module.warehouse.services.definition.ItemEnumType;
 import com.jfeat.am.module.warehouse.services.definition.StorageOutStatus;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryInventoryDao;
@@ -61,15 +62,13 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     SkuProductMapper skuProductMapper;
 
 
-
-
     public Integer changeStatus(Long userId, Long storageOutId, StorageOutModel entity) {
 
         Integer affected = 0;
-
+        // 先执行删除，避免重复添加数据
         affected += outItemMapper.delete(new EntityWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, storageOutId)
-                .eq(StorageOutItem.TYPE, TransactionType.StorageOut.toString()));
+                .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT.toString()));
 
         entity.setOriginatorId(userId);
         entity.setTransactionTime(new Date());
@@ -78,15 +77,16 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         }
 
         if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
-
             for (StorageOutItem outItem : entity.getStorageOutItems()) {
                 if (outItem.getDemandQuantities() > 0) {
                     outItem.setTransactionQuantities(outItem.getDemandQuantities());
                     outItem.setRelationCode(entity.getTransactionCode());
                     outItem.setTransactionTime(entity.getStorageOutTime());
-                    outItem.setType(TransactionType.StorageOut.toString());
+                    outItem.setType(ItemEnumType.STORAGEOUT.toString());
                     // 设置产品的入库时间
                     outItem.setTransactionTime(entity.getTransactionTime());
+
+                    SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
 
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(outItem.getSkuId());
@@ -94,15 +94,18 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                     if (originInventory != null) {
                         if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
-                            throw new BusinessException(4050, "库存不足," + "现有库存" + originInventory.getValidSku() + "小于出库量" + outItem.getTransactionQuantities());
+                            throw new BusinessException(4050, "\""
+                                    + skuProduct.getSkuName()==null?null:skuProduct.getSkuName()
+                                    + skuProduct.getBarCode()==null?null:skuProduct.getBarCode()
+                                    + ":\"" + "库存不足," + "现有库存"
+                                    + originInventory.getValidSku()
+                                    + "小于出库量" + outItem.getTransactionQuantities());
                         } else {
-
                             affected += outItemMapper.insert(outItem);
                         }
                     } else {
                         throw new BusinessException(4051, "产品不存在，请核对！");
                     }
-
                 } else {
                     //while transaction quantities = 0 ,do nothing
                 }
@@ -115,7 +118,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     }
 
     /**
-     * while create , storage out  status is Draft;
+     * while create , storage out  status is Draft; 新建 出库单
      */
     public Integer draftStorageOut(Long userId, StorageOutModel entity) {
 
@@ -126,16 +129,20 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (entity.getStorageOutTime() == null) {
             entity.setStorageOutTime(new Date());
         }
+        entity.setStatus(StorageOutStatus.Draft.toString());
+        affected += storageOutMapper.insert(entity);
+        affected += changeStatus(userId,entity.getId(),entity);
+        return affected;
 
-        List<StorageOutItem> storageOutItems = new ArrayList<>();
-
-        if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
+                /*if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
             for (StorageOutItem outItem : entity.getStorageOutItems()) {
                 if (outItem.getDemandQuantities() > 0) {
                     outItem.setTransactionQuantities(outItem.getDemandQuantities());
                     outItem.setRelationCode(entity.getTransactionCode());
-                    SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
                     outItem.setTransactionTime(entity.getStorageOutTime());
+                    outItem.setType(ItemEnumType.STORAGEOUT.toString());
+
+                    SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(outItem.getSkuId());
                     isExistInventory.setWarehouseId(entity.getWarehouseId());
@@ -143,27 +150,18 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                     if (originInventory != null) {
                         if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
                             throw new BusinessException(4050, "\"" + skuProduct.getSkuName() + skuProduct.getBarCode() + ":\"" + "库存不足," + "现有库存" + originInventory.getValidSku() + "小于出库量" + outItem.getTransactionQuantities());
-                        } else {
-
-                            outItem.setType(TransactionType.StorageOut.toString());
                         }
                     } else {
                         throw new BusinessException(4051, "\"" + skuProduct.getSkuName() + skuProduct.getBarCode() + ":\"" + "产品不存在，请核对！");
                     }
-
-                    storageOutItems.add(outItem);
-
+                    affected += outItemMapper.insert(outItem);
                 } else {
                     //while transaction quantities = 0 ,do nothing
                 }
             }
         } else {
             throw new BusinessException(4050, "商品不能为空，请先选择商品！");
-        }
-        entity.setStorageOutItems(storageOutItems);
-        entity.setStatus(StorageOutStatus.Draft.toString());
-        affected = crudStorageOutService.createMaster(entity, null, null, null);
-        return affected;
+        }*/
     }
 
     /**
@@ -173,19 +171,16 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     public Integer updateStorageIn(Long userId, Long storageOutId, StorageOutModel entity) {
 
         Integer affected = 0;
-        StorageOut out = crudStorageOutService.retrieveMaster(storageOutId);
+        StorageOut out = storageOutMapper.selectById(storageOutId);
         if (out == null) {
-            throw new BusinessException(BusinessCode.FileNotFound);
+            throw new BusinessException(5100,"无id为"+storageOutId+"的出库单！");
         }
-
         if (out.getStatus().compareTo(StorageOutStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-
         affected += changeStatus(userId, storageOutId, entity);
         entity.setId(storageOutId);
         affected += storageOutMapper.updateById(entity);
-
         return affected;
 
     }
@@ -198,20 +193,17 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         Integer affected = 0;
 
 
-        StorageOut out = crudStorageOutService.retrieveMaster(storageOutId);
+        StorageOut out = storageOutMapper.selectById(storageOutId);
 
         if (out == null) {
-            throw new BusinessException(BusinessCode.FileNotFound);
+            throw new BusinessException(5100,"无id为"+storageOutId+"的出库单！");
         }
         if (out.getStatus().compareTo(StorageOutStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
         entity.setStatus(StorageOutStatus.Wait_To_Audit.toString());
         entity.setId(storageOutId);
-
         affected += changeStatus(userId, storageOutId, entity);
-
-
         affected += storageOutMapper.updateById(entity);
         return affected;
     }
@@ -225,13 +217,14 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         StorageOut out = storageOutMapper.selectById(storageOutId);
 
         if (out == null) {
-            throw new BusinessException(BusinessCode.FileNotFound);
+            throw new BusinessException(5100,"无id为"+storageOutId+"的出库单！");
         }
         if (out.getStatus().compareTo(StorageOutStatus.Wait_To_Audit.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
         // 允许在审核的时候 修改 子项的数据
         for (StorageOutItem item : entity.getStorageOutItems()) {
+            item.setType(ItemEnumType.STORAGEOUT.toString());
             outItemMapper.updateById(item);
         }
         entity.setStatus(StorageOutStatus.Audit_Passed.toString());
@@ -244,10 +237,10 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
      */
     @Transactional
     public Integer auditRejectedStorageOut(Long storageOutId) {
-        StorageOut out = crudStorageOutService.retrieveMaster(storageOutId);
+        StorageOut out = storageOutMapper.selectById(storageOutId);
 
         if (out == null) {
-            throw new BusinessException(BusinessCode.FileNotFound);
+            throw new BusinessException(5100,"无id为"+storageOutId+"的出库单！");
         }
         if (out.getStatus().compareTo(StorageOutStatus.Wait_To_Audit.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
@@ -264,20 +257,16 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     @Transactional
     public Integer executionStorageOut(String uasername, Long storageOutId) {
 
-        StorageOut out = crudStorageOutService.retrieveMaster(storageOutId);
-
+        StorageOut out = storageOutMapper.selectById(storageOutId);
         if (out == null) {
-            throw new BusinessException(BusinessCode.FileNotFound);
+            throw new BusinessException(5100,"无id为"+storageOutId+"的出库单！");
         }
-        if (out.getOutOrderNum()!=null){
-            throw new BusinessException(5320,"商城出库单只能通过发货途径去执行出库操作");
+        if (out.getOutOrderNum() != null) {
+            throw new BusinessException(5320, "商城出库单只能通过发货方式执行出库操作！");
         }
-
-
         if (out.getStatus().compareTo(StorageOutStatus.Audit_Passed.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-
         Integer affected = 0;
         out.setTransactionBy(uasername);
         out.setTransactionTime(new Date());
@@ -287,27 +276,24 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
 
         List<StorageOutItem> items = outItemMapper.selectList(new EntityWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, storageOutId)
-                .eq(StorageOutItem.TYPE, TransactionType.StorageOut.toString()));
+                .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT));
 
         if (items != null && items.size() > 0) {
             for (StorageOutItem outItem : items) {
                 if (outItem.getTransactionQuantities() > 0) {
-
-                    outItem.setType("Others");
-                    outItemMapper.updateById(outItem);
-
+                    /*outItem.setType("Others");
+                    outItemMapper.updateById(outItem);*/
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(outItem.getSkuId());
                     isExistInventory.setWarehouseId(out.getWarehouseId());
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
 
                     Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
-                    outItem.setAfterTransactionQuantities(afterCount);
+                    //outItem.setAfterTransactionQuantities(afterCount);
                     originInventory.setValidSku(afterCount);
                     affected += inventoryMapper.updateById(originInventory);
-
                 } else {
-                    //while transaction quantities = 0 ,do nothing
+                    throw new BusinessException(4050, "出库数量不能为空！");
                 }
             }
         } else {
@@ -335,15 +321,14 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (entity.getWarehouseId() == null) {
             entity.setWarehouseId(1L);
         }
-        List<StorageOutItem> storageOutItems = new ArrayList<>();
+        entity.setStatus(StorageOutStatus.Audit_Passed.toString());
+        affected += storageOutMapper.insert(entity);
         if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
             for (StorageOutItem outItem : entity.getStorageOutItems()) {
                 if (outItem.getTransactionQuantities() > 0) {
+                    outItem.setStorageOutId(entity.getId());
                     outItem.setDemandQuantities(outItem.getTransactionQuantities());
-                    //         CASE
-                    //        WHEN wms_storage_out.`status`='Done' THEN 'Others'
-                    //        ELSE 'StorageOut' END
-                    outItem.setType(TransactionType.StorageOut.toString());
+                    outItem.setType(ItemEnumType.STORAGEOUT.toString());
                     outItem.setRelationCode(entity.getTransactionCode());
                     outItem.setTransactionTime(entity.getStorageOutTime());
                     SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
@@ -353,12 +338,16 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                     if (originInventory != null) {
                         if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
-                            throw new BusinessException(4050, "\"" + skuProduct.getSkuName() + skuProduct.getBarCode() + ":\"" + "库存不足," + "现有库存" + originInventory.getValidSku() + "小于出库量" + outItem.getTransactionQuantities());
+                            throw new BusinessException(4050, "\""
+                                    + skuProduct.getSkuName()==null?null:skuProduct.getSkuName()
+                                    + skuProduct.getBarCode()==null?null:skuProduct.getBarCode()
+                                    + ":\"" + "库存不足," + "现有库存"
+                                    + originInventory.getValidSku()
+                                    + "小于出库量" + outItem.getTransactionQuantities());
                         } else {
-
                             // 是否是直接减少 库存呢
                             Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
-                            outItem.setAfterTransactionQuantities(afterCount);
+                            //outItem.setAfterTransactionQuantities(afterCount);
                             originInventory.setValidSku(afterCount);
                             //占用内存量累加
                             originInventory.setOrderCount(originInventory.getOrderCount() + outItem.getTransactionQuantities());
@@ -367,7 +356,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                     } else {
                         throw new BusinessException(4051, "\"" + skuProduct.getSkuName() + skuProduct.getBarCode() + ":\"" + "产品不存在，请核对！");
                     }
-                    storageOutItems.add(outItem);
+                    outItemMapper.insert(outItem);
                 } else {
                     //while transaction quantities = 0 ,do nothing
                 }
@@ -375,9 +364,6 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         } else {
             throw new BusinessException(4050, "商品不能为空，请先选择商品！");
         }
-        entity.setStorageOutItems(storageOutItems);
-        entity.setStatus(StorageOutStatus.Audit_Passed.toString());
-        affected = crudStorageOutService.createMaster(entity, null, null, null);
         return affected;
     }
 
@@ -400,43 +386,43 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         logger.info("出库单查找的初始化值" + JSON.toJSONString(out));
         StorageOut originOut = storageOutMapper.selectOne(out);
         logger.info("打出来，证明有值" + JSON.toJSONString(out));
-        if (originOut==null){
-            throw new BusinessException(5300,"未检测到id为"+entity.getOutOrderNum()+"的订单的出库记录，请重新核对");
+        if (originOut == null) {
+            throw new BusinessException(5300, "未检测到id为" + entity.getOutOrderNum() + "的订单的出库记录，请重新核对");
         }
-            for (UpdateOrderCount updateOrderCount : entity.getItems()) {
-                StorageOutItem item = new StorageOutItem();
-                item.setSkuId(updateOrderCount.getSkuId());
-                item.setType(TransactionType.StorageOut.toString());
-                item.setStorageOutId(originOut.getId());
-                StorageOutItem originOutItem = outItemMapper.selectOne(item);
-                logger.info("打出来，证明商品有值" + JSON.toJSONString(originOutItem));
-                if (originOutItem == null){
-                    throw new BusinessException(5310,"该订单下无SKUID为"+updateOrderCount.getSkuId()+"的商品购买记录");
-                }
-                originOutItem.setType("Others");
-                outItemMapper.updateById(originOutItem);
-
-                Inventory origin = new Inventory();
-                origin.setSkuId(updateOrderCount.getSkuId());
-                if (updateOrderCount.getWarehouseId() == null || updateOrderCount.getWarehouseId() < 0) {
-                    origin.setWarehouseId(out.getWarehouseId()==null?1L:out.getWarehouseId());
-                } else {
-                    origin.setWarehouseId(updateOrderCount.getWarehouseId());
-                }
-                Inventory inventory = inventoryMapper.selectOne(origin);
-                if (inventory == null) {
-                    throw new BusinessException(5300, "无该商品库存记录!请核准然后重新提交!");
-                }
-                if (inventory.getOrderCount() < updateOrderCount.getOrderCount()) {
-                    throw new BusinessException(5300, "出货数据有误，请核准并重新提交");
-                }
-                Integer afterOrderCount = inventory.getOrderCount() - updateOrderCount.getOrderCount();
-                //inventory.setValidSku(inventory.getValidSku()-updateOrderCount.getOrderCount());
-                inventory.setOrderCount(afterOrderCount);
-                affected += inventoryMapper.updateById(inventory);
+        for (UpdateOrderCount updateOrderCount : entity.getItems()) {
+            StorageOutItem item = new StorageOutItem();
+            item.setSkuId(updateOrderCount.getSkuId());
+            item.setType(ItemEnumType.STORAGEOUT.toString());
+            item.setStorageOutId(originOut.getId());
+            StorageOutItem originOutItem = outItemMapper.selectOne(item);
+            logger.info("打出来，证明商品有值" + JSON.toJSONString(originOutItem));
+            if (originOutItem == null) {
+                throw new BusinessException(5310, "该订单下无SKUID为" + updateOrderCount.getSkuId() + "的商品购买记录");
             }
-            originOut.setStatus(StorageOutStatus.Done.toString());
-            storageOutMapper.updateById(originOut);
+            /*originOutItem.setType("Others");
+            outItemMapper.updateById(originOutItem);*/
+
+            Inventory origin = new Inventory();
+            origin.setSkuId(updateOrderCount.getSkuId());
+            if (updateOrderCount.getWarehouseId() == null || updateOrderCount.getWarehouseId() < 0) {
+                origin.setWarehouseId(out.getWarehouseId() == null ? 1L : out.getWarehouseId());
+            } else {
+                origin.setWarehouseId(updateOrderCount.getWarehouseId());
+            }
+            Inventory inventory = inventoryMapper.selectOne(origin);
+            if (inventory == null) {
+                throw new BusinessException(5300, "无该商品库存记录!请核准然后重新提交!");
+            }
+            if (inventory.getOrderCount() < updateOrderCount.getOrderCount()) {
+                throw new BusinessException(5300, "出货数据有误，请核准并重新提交");
+            }
+            Integer afterOrderCount = inventory.getOrderCount() - updateOrderCount.getOrderCount();
+            //inventory.setValidSku(inventory.getValidSku()-updateOrderCount.getOrderCount());
+            inventory.setOrderCount(afterOrderCount);
+            affected += inventoryMapper.updateById(inventory);
+        }
+        originOut.setStatus(StorageOutStatus.Done.toString());
+        storageOutMapper.updateById(originOut);
         return affected;
     }
 }

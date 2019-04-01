@@ -86,10 +86,10 @@
         WHERE
         wms_storage_out.id = #{id}
         AND
-        wms_storage_out_item.type =
-        (CASE
+        wms_storage_out_item.type = 'STORAGEOUT'
+        <!--(CASE
         WHEN wms_storage_out.`status`='Done' THEN 'Others'
-        ELSE 'StorageOut' END)
+        ELSE 'StorageOut' END)-->
 
     </select>
 
