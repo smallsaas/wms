@@ -153,4 +153,82 @@
     </select>
 
 
+    <select id="storageInCount" resultType="Integer">
+        SELECT
+            SUM(transaction_quantities) AS storageInCount
+        FROM
+        wms_storage_in_item
+            LEFT JOIN wms_storage_in ON (wms_storage_in.id = wms_storage_in_item.storage_in_id
+            AND wms_storage_in_item.type = 'STORAGEIN'
+            AND wms_storage_in.`status`='Done'
+            )
+        LEFT JOIN wms_procurement ON (
+            wms_procurement.id = wms_storage_in.procurement_id
+            AND wms_storage_in.transaction_type = 'Procurement'
+            )
+        WHERE
+            wms_procurement.id = #{procurementId}
+            AND wms_storage_in_item.sku_id = #{skuId}
+    </select>
+
+    <select id="auditStorageInCount" resultType="Integer">
+        SELECT
+        SUM(transaction_quantities) AS storageInCount
+        FROM
+        wms_storage_in_item
+        LEFT JOIN wms_storage_in ON (wms_storage_in.id = wms_storage_in_item.storage_in_id
+        AND wms_storage_in_item.type = 'STORAGEIN'
+        AND wms_storage_in.`status`='Wait_To_Audit'
+        )
+        LEFT JOIN wms_procurement ON (
+        wms_procurement.id = wms_storage_in.procurement_id
+        AND wms_storage_in.transaction_type = 'Procurement'
+        )
+        WHERE
+        wms_procurement.id = #{procurementId}
+        AND wms_storage_in_item.sku_id = #{skuId}
+    </select>
+    <select id="auditStorageInPass" resultType="Integer">
+        SELECT
+        SUM(transaction_quantities) AS storageInCount
+        FROM
+        wms_storage_in_item
+        LEFT JOIN wms_storage_in ON (wms_storage_in.id = wms_storage_in_item.storage_in_id
+        AND wms_storage_in_item.type = 'STORAGEIN'
+        AND wms_storage_in.`status`='Audit_Passed'
+        )
+        LEFT JOIN wms_procurement ON (
+        wms_procurement.id = wms_storage_in.procurement_id
+        AND wms_storage_in.transaction_type = 'Procurement'
+        )
+        WHERE
+        wms_procurement.id = #{procurementId}
+        AND wms_storage_in_item.sku_id = #{skuId}
+    </select>
+
+    <select id="totalProcurementCount" resultType="Integer">
+        SELECT SUM(transaction_quantities) AS storageInCount
+        FROM
+            wms_storage_in_item
+            LEFT JOIN wms_procurement ON (
+            wms_procurement.id = wms_storage_in_item.storage_in_id
+            AND wms_storage_in_item.type = 'PROCUREMENT'
+            )
+        WHERE
+            wms_procurement.id = #{procurementId}
+    </select>
+
+    <select id="totalStorageInCount" resultType="Integer">
+        SELECT SUM(transaction_quantities) AS storageInCount
+        FROM
+        wms_storage_in_item
+        LEFT JOIN wms_procurement ON (
+        wms_procurement.id = wms_storage_in_item.storage_in_id
+        AND wms_storage_in_item.type = 'PROCUREMENT'
+        )
+        WHERE
+        wms_procurement.id = #{procurementId}
+    </select>
+
+
 </mapper>

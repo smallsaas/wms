@@ -26,25 +26,6 @@ public interface QueryProcurementDao extends BaseMapper<ProcurementRecord> {
                                                 @Param("endTime") Date endTime
     );
 
-
-    // 入库总数目 ，原入库总数目
-    @Select("SELECT SUM(transaction_quantities)  as totalCount " +
-            "FROM wms_storage_in_item " +
-            "LEFT JOIN wms_procurement on " +
-            "(wms_procurement.id = wms_storage_in_item.storage_in_id AND wms_storage_in_item.type = 'Procurement') " +
-            "where wms_procurement.id = #{procurementId}")
-    Integer totalCount(@Param("procurementId") Long procurementId);
-
-    // 已 入库的数目
-    @Select("SELECT SUM(transaction_quantities) AS sectionCount " +
-            "FROM wms_storage_in_item " +
-            "LEFT JOIN wms_storage_in ON wms_storage_in.id = wms_storage_in_item.storage_in_id " +
-            "LEFT JOIN wms_procurement ON " +
-            "(wms_procurement.id = wms_storage_in.procurement_id AND wms_storage_in.transaction_type = 'Procurement') " +
-            "WHERE wms_procurement.id = #{procurementId} AND wms_storage_in_item.type != 'Procurement'")
-    Integer sectionCount(@Param("procurementId") Long procurementId);
-
-
     // 进入的仓库的名称
     @Select("select wms_warehouse.warehouse_name from wms_warehouse where wms_warehouse.id = #{warehouseId}")
     String warehouseName(@Param("warehouseId")Long warehouseId);
@@ -64,12 +45,20 @@ public interface QueryProcurementDao extends BaseMapper<ProcurementRecord> {
                                     @Param("type")String type);
 
     //某次采购 某个 sku 入库历史数量
-    @Select("SELECT SUM(transaction_quantities) as storageInCount FROM wms_storage_in_item " +
-            "LEFT JOIN wms_storage_in on ( !ISNULL(wms_storage_in.procurement_id) AND wms_storage_in.id = wms_storage_in_item.storage_in_id AND wms_storage_in_item.type = 'Others' ) " +
-            "LEFT JOIN wms_procurement on (wms_procurement.id = wms_storage_in.procurement_id AND wms_storage_in.transaction_type = 'Procurement') " +
-            "WHERE wms_procurement.id = #{procurementId} AND wms_storage_in_item.sku_id = #{skuId}")
     Integer storageInCount(@Param("procurementId")Long procurementId,
                            @Param("skuId")Long skuId);
+    //某次采购 某个 sku 待审核入库的数量
+    Integer auditStorageInCount(@Param("procurementId")Long procurementId,
+                           @Param("skuId")Long skuId);
+
+    //某次采购 某个 sku 审核通过但未执行入库的数量
+    Integer auditStorageInPass(@Param("procurementId")Long procurementId,
+                                @Param("skuId")Long skuId);
+
+    //采购子项总数
+    Integer totalProcurementCount(@Param("procurementId")Long procurementId);
+    //已经入库子项总数
+    Integer totalStorageInCount(@Param("procurementId")Long procurementId);
 
     //某次采购 某个 sku 未审核()入库历史数量
     @Select("SELECT SUM(transaction_quantities) as storageInCount FROM wms_storage_in_item " +
@@ -83,7 +72,7 @@ public interface QueryProcurementDao extends BaseMapper<ProcurementRecord> {
     @Select("SELECT SUM(transaction_quantities) as skuProcurementCount FROM wms_storage_in_item " +
             "where wms_storage_in_item.storage_in_id = #{procurementId} " +
             "and wms_storage_in_item.sku_id = #{skuId}" +
-            " and wms_storage_in_item.type = 'Procurement'")
+            " and wms_storage_in_item.type = 'PROCUREMENT'")
     Integer skuProcurementCount(@Param("procurementId")Long procurementId,
                                 @Param("skuId")Long skuId);
 

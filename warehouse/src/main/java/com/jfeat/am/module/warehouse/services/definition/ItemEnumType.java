@@ -8,6 +8,7 @@ public enum ItemEnumType {
 
     TRANSFER,   // 调拨单子项 item 的类型  TYPE
 
+    PROCUREMENT,// 采购入库对应的 子项 type  该type只索引采购的子项
 
 
 
