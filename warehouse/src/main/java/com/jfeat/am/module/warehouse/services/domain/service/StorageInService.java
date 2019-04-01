@@ -56,5 +56,10 @@ public interface StorageInService extends CRUDStorageInService{
     @Transactional
     Integer salesStorageIn(Long userId, StorageInModel entity);
 
+    /**
+     * 删除 入库单 以及对应的子项
+     * */
+    @Transactional
+    Integer deleteStorageIn(Long id);
 
 }

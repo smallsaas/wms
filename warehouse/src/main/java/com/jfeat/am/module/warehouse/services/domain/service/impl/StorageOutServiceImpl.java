@@ -425,4 +425,15 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         storageOutMapper.updateById(originOut);
         return affected;
     }
+
+    /**
+     * 删除 入库单 以及对应的子项
+     * */
+    @Transactional
+    public Integer deleteStorageOut(Long id){
+        Integer affected = 0;
+        affected += outItemMapper.delete(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,id).eq(StorageOutItem.TYPE,ItemEnumType.STORAGEOUT));
+        affected += storageOutMapper.deleteById(id);
+        return affected;
+    }
 }

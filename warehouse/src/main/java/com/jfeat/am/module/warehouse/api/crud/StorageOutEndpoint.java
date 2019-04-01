@@ -174,7 +174,7 @@ public class StorageOutEndpoint extends BaseController {
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除出库单",response = StorageOutModel.class)
     public Tip deleteStorageOut(@PathVariable Long id) {
-        Integer result = storageOutService.deleteMaster(id);
+        Integer result = storageOutService.deleteStorageOut(id);
         createStorageOutLog(id,  "deleteStorageOut", "对出库单进行了删除操作",  id + " &");
         return SuccessTip.create(result);
     }

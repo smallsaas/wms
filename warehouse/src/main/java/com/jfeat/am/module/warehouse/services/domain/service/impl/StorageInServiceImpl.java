@@ -391,4 +391,16 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         }
         return affected;
     }
+
+    /**
+     * 删除 入库单 以及对应的子项
+     * */
+    @Transactional
+    public Integer deleteStorageIn(Long id){
+
+        Integer affected = 0;
+        affected += inItemMapper.delete(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID,id).eq(StorageInItem.TYPE,ItemEnumType.STORAGEIN));
+        affected += storageInMapper.deleteById(id);
+        return affected;
+    }
 }

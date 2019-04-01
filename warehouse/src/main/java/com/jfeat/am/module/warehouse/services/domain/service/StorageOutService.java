@@ -59,4 +59,10 @@ public interface StorageOutService extends CRUDStorageOutService{
      * 更新占用库存，商城的出货的时候调用
      * */
     Integer updateOrderCount(BulkUpdateOrderCount updateOrderCount);
+
+    /**
+     * 删除 入库单 以及对应的子项
+     * */
+    @Transactional
+    Integer deleteStorageOut(Long id);
 }

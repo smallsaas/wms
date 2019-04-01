@@ -186,7 +186,7 @@ public class StorageInEndpoint extends BaseController {
     @ApiOperation(value = "删除入库单", response = StorageInModel.class)
     public Tip deleteStorageIn(@PathVariable Long id) {
         createStorageInLog(id, "deleteStorageIn", "对入库单进行了删除操作", id + " &");
-        return SuccessTip.create(storageInService.deleteMaster(id));
+        return SuccessTip.create(storageInService.deleteStorageIn(id));
     }
 
     @GetMapping
