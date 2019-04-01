@@ -25,7 +25,7 @@ public interface TransferService extends CRUDTransferService {
      *  执行调拨
      * */
     @Transactional
-    Integer createTransfer(Long transferId, Long userId);
+    Integer executionTransfer(Long transferId, Long userId);
 
 
     /**
@@ -45,6 +45,12 @@ public interface TransferService extends CRUDTransferService {
      */
     @Transactional
     Integer updateTransfer(Long transderId, TransferModel model);
+
+    /**
+     * 更新并提交审核
+     * */
+    @Transactional
+    Integer updateAndCommitTransfer(Long transderId, TransferModel model);
 
     @Transactional
     Integer auditPass(Long transderId, TransferModel model);
