@@ -90,15 +90,10 @@ public class TransferEndpoint extends BaseController {
 
     @PutMapping("/{id}/audit")
     @ApiOperation(value = "提交审核调拨单")
-    public Tip commit(@PathVariable Long id) {
+    public Tip commit(@PathVariable Long id, @RequestBody TransferModel entity) {
         Integer affected = 0;
-        Transfer transfer = new Transfer();
-        transfer.setId(id);
-        transfer.setStatus(TransferStatus.Wait_To_Audit.toString());
-        if (transfer.getId() != null) {
-            affected += transferService.updateMaster(transfer);
-            createPurchasekLog(id, "commit", "对调拨单进行了提交审核操作", id + " &");
-        }
+        affected += transferService.updateAndCommitTransfer(id, entity);
+        createPurchasekLog(id, "commit", "对调拨单进行了提交审核操作", id + " &");
         return SuccessTip.create(affected);
     }
 
@@ -129,11 +124,9 @@ public class TransferEndpoint extends BaseController {
     @PostMapping("/{id}/execution")
     @ApiOperation(value = "begin executionRefund 调拨表", response = TransferModel.class)
     public Tip createTransfer(@PathVariable Long id) {
-
         Integer affected = 0;
         try {
-            affected += transferService.createTransfer(id, JWTKit.getUserId(getHttpServletRequest()));
-
+            affected += transferService.executionTransfer(id, JWTKit.getUserId(getHttpServletRequest()));
         } catch (DuplicateKeyException e) {
             throw new BusinessException(5100, "编号重复，请重新刷新页面");
         }

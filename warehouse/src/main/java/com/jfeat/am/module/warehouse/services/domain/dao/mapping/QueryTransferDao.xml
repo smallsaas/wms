@@ -4,8 +4,6 @@
     <sql id="Base_Column_List">
         wms_transfer.*
     </sql>
-
-
     <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.domain.model.TransferRecord">
         <id column="id" property="id" />
         <result column="transaction_code" property="transactionCode" />
@@ -24,59 +22,44 @@
         <result column="field1" property="field1" />
         <result column="field2" property="field2" />
 
-
-
         <result column="fromWarehouseName" property="fromWarehouseName" />
         <result column="toWarehouseName" property="toWarehouseName" />
 
-
     </resultMap>
-
-
-
     <select id="findTransferPage" resultMap="BaseResultMap" parameterType="TransferRecord">
         SELECT
             wms_transfer.*,
                 fwarehouse.warehouse_name as fromWarehouseName,
                 twarehouse.warehouse_name as toWarehouseName
-
         FROM wms_transfer
-
             left join wms_warehouse fwarehouse on fwarehouse.id = wms_transfer.from_warehouse_id
             left join wms_warehouse twarehouse on twarehouse.id = wms_transfer.to_warehouse_id
         WHERE 1=1
         <if test="record.id != null and record.id>0 ">
             AND wms_transfer.id LIKE CONCAT('%',#{record.id},'%')
         </if>
-
         <if test="warehouseId != null and warehouseId >0 ">
             AND (fwarehouse.id = #{warehouseId}
             or twarehouse.id = #{warehouseId})
         </if>
-
         <if test="record.transactionCode != null and record.transactionCode!= ''">
             AND wms_transfer.transaction_code LIKE CONCAT('%',#{record.transactionCode},'%')
         </if>
-
         <if test="record.fromWarehouseId != null and record.fromWarehouseId>0 ">
             AND wms_transfer.from_warehouse_id LIKE CONCAT('%',#{record.fromWarehouseId},'%')
         </if>
-
         <if test="record.toWarehouseId != null and record.toWarehouseId>0 ">
             AND wms_transfer.to_warehouse_id LIKE CONCAT('%',#{record.toWarehouseId},'%')
         </if>
-
         <if test="startTime != null and endTime != null">
             <![CDATA[
                 AND wms_transfer.transaction_time >= date(#{startTime}) AND
                 wms_transfer.transaction_time < DATE_ADD(date(#{endTime}),INTERVAL 1 DAY)
             ]]>
         </if>
-
         <if test="record.storageOutId != null and record.storageOutId>0 ">
             AND wms_transfer.storage_in_id LIKE CONCAT('%',#{record.storageOutId},'%')
         </if>
-
         <if test="record.storageOutId != null and record.storageOutId>0 ">
             AND wms_transfer.storage_out_id LIKE CONCAT('%',#{record.storageOutId},'%')
         </if>
@@ -89,7 +72,6 @@
         <if test="record.transactionBy != null and record.transactionBy!= ''">
             AND wms_transfer.transaction_by LIKE CONCAT('%',#{record.transactionBy},'%')
         </if>
-
         <if test="record.originatorId != null and record.originatorId>0 ">
             AND wms_transfer.originator_id LIKE CONCAT('%',#{record.originatorId},'%')
         </if>
@@ -124,11 +106,10 @@
         FROM wms_storage_out_item
         left join t_sku_product on t_sku_product.id = wms_storage_out_item.sku_id
         left join wms_storage_out on (wms_storage_out.id = wms_storage_out_item.storage_out_id
-                                        and wms_storage_out_item.type='Others')
+                                        and wms_storage_out_item.type='TRANSFER')
         WHERE 1=1
         and wms_storage_out.id = #{outId}
     </select>
-
 
     <select id="draftOutItemRecords" resultMap="OutItemMap" parameterType="long">
         SELECT
@@ -143,7 +124,7 @@
 
         WHERE 1=1
         and wms_storage_out_item.storage_out_id = #{outItemId}
-        and wms_storage_out_item.type='TransferOut'
+        and wms_storage_out_item.type='TRANSFER'
 
     </select>
 
@@ -152,7 +133,7 @@
         FROM wms_storage_out_item
         WHERE 1=1
         and wms_storage_out_item.storage_out_id = #{outItemId}
-        and wms_storage_out_item.type='TransferOut'
+        and wms_storage_out_item.type='TRANSFER'
 
     </select>
 </mapper>

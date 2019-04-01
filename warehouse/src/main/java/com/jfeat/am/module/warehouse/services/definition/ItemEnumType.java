@@ -6,6 +6,8 @@ public enum ItemEnumType {
 
     STORAGEOUT,// storageOut  的子项对应的  TYPE
 
+    TRANSFER,   // 调拨单子项 item 的类型  TYPE
+
 
 
 
