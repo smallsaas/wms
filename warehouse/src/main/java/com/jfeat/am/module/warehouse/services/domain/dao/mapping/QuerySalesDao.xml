@@ -41,7 +41,11 @@
         (wms_storage_out.id = wms_storage_out_item.storage_out_id
         AND wms_storage_out_item.type='STORAGEOUT'
         and wms_storage_out.`status`='Audit_Passed')
-        LEFT JOIN wms_sales ON (wms_storage_out.sales_id = wms_sales.id and wms_storage_out.transaction_type = 'CustomerStorageOut')
+        LEFT JOIN wms_sales ON
+            (
+                wms_storage_out.sales_id = wms_sales.id
+                and wms_storage_out.transaction_type = 'CustomerStorageOut'
+            )
         WHERE wms_sales.id=#{salesId}
         AND wms_storage_out_item.sku_id=#{skuId}
     </select>

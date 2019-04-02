@@ -43,4 +43,15 @@ public interface QuerySalesDao extends BaseMapper<SalesRecord> {
      * */
     Integer finishedCount(@Param("salesId")Long salesId,
                           @Param("skuId")Long skuId);
+    /**
+     * 审核通过但是没入库的数量
+     * */
+    Integer auditStorageOutPass(@Param("salesId")Long salesId,
+                          @Param("skuId")Long skuId);
+    /**
+     * 待审核的出库数
+     * */
+    Integer auditStorageOutCount(@Param("salesId")Long salesId,
+                          @Param("skuId")Long skuId);
+
 }
