@@ -219,7 +219,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             throw new BusinessException(5500,"无ID为"+procurementId+"的采购单！");
         }
         if (procurement.getProcureStatus().compareTo(ProcurementStatus.Audit_Passed.toString()) != 0
-                || procurement.getProcureStatus().compareTo(ProcurementStatus.SectionStorageIn.toString()) != 0) {
+                && procurement.getProcureStatus().compareTo(ProcurementStatus.SectionStorageIn.toString()) != 0) {
                 throw new BusinessException(5200, "非\"部分入库|审核通过\"状态下无法执行入库操作");
         }
         model.setId(procurementId);
