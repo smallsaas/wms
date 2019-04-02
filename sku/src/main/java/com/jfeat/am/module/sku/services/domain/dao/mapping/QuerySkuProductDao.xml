@@ -48,6 +48,14 @@
 
         WHERE 1=1
 
+        <if test="search != null and search!= ''">
+            AND (
+                    t_sku_product.sku_name LIKE CONCAT('%',#{search},'%')
+                    or t_sku_product.sku_code LIKE CONCAT('%',#{search},'%')
+                    or t_sku_product.bar_code LIKE CONCAT('%',#{search},'%')
+                )
+        </if>
+
         <if test="tagName != null and tagName!= ''">
             AND t_sku_tag.tag_name = #{tagName}
         </if>

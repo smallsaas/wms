@@ -19,6 +19,7 @@ public interface QuerySkuProductDao extends BaseMapper<SkuProductRecord> {
                                               @Param("specName") String specName,
                                               @Param("categoryName") String categoryName,
                                               @Param("warehouseName") String warehouseName,
-                                              @Param("warehouseId")  Long warehouseId);
+                                              @Param("warehouseId")  Long warehouseId,
+                                              @Param("search")  String search);
 
 }
