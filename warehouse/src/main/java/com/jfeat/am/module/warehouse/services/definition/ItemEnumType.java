@@ -12,6 +12,8 @@ public enum ItemEnumType {
 
     REFUND,//退货 子项对应的KEY
 
+    TRADER,// 分销商出库
+
 
 
 

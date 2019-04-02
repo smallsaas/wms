@@ -36,7 +36,7 @@ public interface QuerySalesDao extends BaseMapper<SalesRecord> {
     /**
      *  total count
      * */
-    Integer totalCount(@Param("salesId")Long salesId,
+    Integer totalSkuCount(@Param("salesId")Long salesId,
                        @Param("skuId")Long skuId);
     /**
      * finishedCount
