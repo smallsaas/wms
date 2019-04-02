@@ -221,13 +221,21 @@
     <select id="totalStorageInCount" resultType="int" parameterType="long">
         SELECT SUM(transaction_quantities) AS storageInCount
         FROM
-        wms_storage_in_item
-        LEFT JOIN wms_procurement ON (
-        wms_procurement.id = wms_storage_in_item.storage_in_id
-        AND wms_storage_in_item.type = 'PROCUREMENT'
-        )
+            wms_storage_in_item
+        LEFT JOIN wms_storage_in ON
+            (
+            wms_storage_in.id = wms_storage_in_item.storage_in_id
+            AND wms_storage_in_item.type = 'STORAGEIN'
+            AND wms_storage_in.`status` = 'Done'
+            )
+        LEFT JOIN wms_procurement ON
+            (
+            wms_procurement.id = wms_storage_in.procurement_id
+            AND wms_storage_in.transaction_type = 'Procurement'
+            )
+
         WHERE
-        wms_procurement.id = #{procurementId}
+            wms_procurement.id = #{procurementId}
     </select>
 
 
