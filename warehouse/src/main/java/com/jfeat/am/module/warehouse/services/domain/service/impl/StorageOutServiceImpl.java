@@ -62,6 +62,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     SkuProductMapper skuProductMapper;
 
 
+    @Transactional
     public Integer changeStatus(Long userId, Long storageOutId, StorageOutModel entity) {
 
         Integer affected = 0;
@@ -79,6 +80,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
             for (StorageOutItem outItem : entity.getStorageOutItems()) {
                 if (outItem.getDemandQuantities() > 0) {
+                    outItem.setStorageOutId(storageOutId);
                     outItem.setTransactionQuantities(outItem.getDemandQuantities());
                     outItem.setRelationCode(entity.getTransactionCode());
                     outItem.setTransactionTime(entity.getStorageOutTime());
@@ -120,6 +122,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     /**
      * while create , storage out  status is Draft; 新建 出库单
      */
+    @Transactional
     public Integer draftStorageOut(Long userId, StorageOutModel entity) {
 
         Integer affected = 0;
