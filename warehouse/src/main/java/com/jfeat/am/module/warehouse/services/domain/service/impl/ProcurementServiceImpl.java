@@ -369,9 +369,6 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
     @Transactional
     public Integer executionProcurementStorageIn(Long id) {
-
-
-
         StorageIn in = storageInMapper.selectById(id);
         if (in == null) {
             throw new BusinessException(5300, "入库单异常，请核对！");
@@ -499,7 +496,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 }
                 int canRefundCount= sectionCount - finishedRefundCount;// ke tui huo shu
                 // 待审核数
-                Integer storageInAuditCount = queryProcurementDao.storageInAuditCount(procurementId, item.getSkuId());
+                Integer storageInAuditCount = queryProcurementDao.auditStorageInCount(procurementId, item.getSkuId());
                 if (storageInAuditCount == null) {
                     storageInAuditCount = 0;
                 }
