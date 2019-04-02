@@ -30,6 +30,7 @@
         <result column="slotName" property="slotName" />
         <result column="distributor_customer" property="distributorCustomer" />
         <result column="out_order_num" property="outOrderNum" />
+        <result column="procurementCode" property="procurementCode" />
 
         <collection property="storageInItems"
                     column="id"
@@ -42,11 +43,11 @@
     <select id="storagesInDetails" resultMap="BaseStorageInRecord" parameterType="long">
         SELECT wms_storage_in.*,
         wms_warehouse.warehouse_name as warehouseName,
-        wms_warehouse_slot.slot_name as slotName
+        wms_procurement.procurement_code as procurementCode
 
         FROM wms_storage_in
         left join wms_warehouse on wms_warehouse.id = wms_storage_in.warehouse_id
-        left join wms_warehouse_slot on wms_warehouse_slot.id = wms_storage_in.slot_id
+        left join wms_procurement on wms_procurement.id = wms_storage_in.procurement_id
         WHERE 1=1
             AND wms_storage_in.id = #{id}
     </select>

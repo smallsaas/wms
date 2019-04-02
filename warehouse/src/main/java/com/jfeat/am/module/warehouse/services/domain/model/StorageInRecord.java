@@ -13,6 +13,7 @@ public class StorageInRecord extends StorageIn{
 
     String operatorName;
     List<StorageInItemRecord> storageInItems;
+    String procurementCode ;
 
 
     public String getWarehouseName() {
@@ -46,5 +47,13 @@ public class StorageInRecord extends StorageIn{
 
     public void setStorageInItems(List<StorageInItemRecord> storageInItems) {
         this.storageInItems = storageInItems;
+    }
+
+    public String getProcurementCode() {
+        return procurementCode;
+    }
+
+    public void setProcurementCode(String procurementCode) {
+        this.procurementCode = procurementCode;
     }
 }
