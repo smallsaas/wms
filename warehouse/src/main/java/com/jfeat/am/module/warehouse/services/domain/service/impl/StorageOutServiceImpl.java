@@ -9,9 +9,11 @@ import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutService;
 import com.jfeat.am.module.warehouse.services.definition.ItemEnumType;
+import com.jfeat.am.module.warehouse.services.definition.SalesStatus;
 import com.jfeat.am.module.warehouse.services.definition.StorageOutStatus;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryInventoryDao;
+import com.jfeat.am.module.warehouse.services.domain.dao.QuerySalesDao;
 import com.jfeat.am.module.warehouse.services.domain.model.BulkUpdateOrderCount;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageOutModel;
 import com.jfeat.am.module.warehouse.services.domain.model.UpdateOrderCount;
@@ -19,9 +21,11 @@ import com.jfeat.am.module.warehouse.services.domain.service.StorageOutService;
 
 import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDStorageOutServiceImpl;
 import com.jfeat.am.module.warehouse.services.persistence.dao.InventoryMapper;
+import com.jfeat.am.module.warehouse.services.persistence.dao.SalesMapper;
 import com.jfeat.am.module.warehouse.services.persistence.dao.StorageOutItemMapper;
 import com.jfeat.am.module.warehouse.services.persistence.dao.StorageOutMapper;
 import com.jfeat.am.module.warehouse.services.persistence.model.Inventory;
+import com.jfeat.am.module.warehouse.services.persistence.model.Sales;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOut;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem;
 import org.slf4j.Logger;
@@ -60,6 +64,10 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     StorageOutItemMapper outItemMapper;
     @Resource
     SkuProductMapper skuProductMapper;
+    @Resource
+    SalesMapper salesMapper;
+    @Resource
+    QuerySalesDao querySalesDao;
 
 
     @Transactional
@@ -136,35 +144,6 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         affected += storageOutMapper.insert(entity);
         affected += changeStatus(userId,entity.getId(),entity);
         return affected;
-
-                /*if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
-            for (StorageOutItem outItem : entity.getStorageOutItems()) {
-                if (outItem.getDemandQuantities() > 0) {
-                    outItem.setTransactionQuantities(outItem.getDemandQuantities());
-                    outItem.setRelationCode(entity.getTransactionCode());
-                    outItem.setTransactionTime(entity.getStorageOutTime());
-                    outItem.setType(ItemEnumType.STORAGEOUT.toString());
-
-                    SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
-                    Inventory isExistInventory = new Inventory();
-                    isExistInventory.setSkuId(outItem.getSkuId());
-                    isExistInventory.setWarehouseId(entity.getWarehouseId());
-                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
-                    if (originInventory != null) {
-                        if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
-                            throw new BusinessException(4050, "\"" + skuProduct.getSkuName() + skuProduct.getBarCode() + ":\"" + "库存不足," + "现有库存" + originInventory.getValidSku() + "小于出库量" + outItem.getTransactionQuantities());
-                        }
-                    } else {
-                        throw new BusinessException(4051, "\"" + skuProduct.getSkuName() + skuProduct.getBarCode() + ":\"" + "产品不存在，请核对！");
-                    }
-                    affected += outItemMapper.insert(outItem);
-                } else {
-                    //while transaction quantities = 0 ,do nothing
-                }
-            }
-        } else {
-            throw new BusinessException(4050, "商品不能为空，请先选择商品！");
-        }*/
     }
 
     /**
@@ -259,7 +238,6 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
      */
     @Transactional
     public Integer executionStorageOut(String uasername, Long storageOutId) {
-
         StorageOut out = storageOutMapper.selectById(storageOutId);
         if (out == null) {
             throw new BusinessException(5100,"无id为"+storageOutId+"的出库单！");
@@ -301,6 +279,67 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             }
         } else {
             throw new BusinessException(4050, "商品不能为空，请先选择商品！");
+        }
+        out.setStatus(StorageOutStatus.Done.toString());
+        out.setId(storageOutId);
+        affected = storageOutMapper.updateById(out);
+        return affected;
+    }
+
+    /**
+     *  分销商出库 执行出库
+     * */
+    @Transactional
+    public Integer executionSalesStorageOut(String uasername, Long storageOutId) {
+        StorageOut out = storageOutMapper.selectById(storageOutId);
+        if (out == null) {
+            throw new BusinessException(5100,"无id为"+storageOutId+"的出库单！");
+        }
+        Sales sales = salesMapper.selectById(out.getSalesId());
+        if (sales == null){
+            throw new BusinessException(5500,"分销商出库订单有误，请重新核对");
+        }
+        if (out.getStatus().compareTo(StorageOutStatus.Audit_Passed.toString()) != 0) {
+            throw new BusinessException(BusinessCode.ErrorStatus);
+        }
+        Integer affected = 0;
+        out.setTransactionBy(uasername);
+        out.setTransactionTime(new Date());
+        if (out.getStorageOutTime() == null) {
+            out.setStorageOutTime(new Date());
+        }
+        List<StorageOutItem> items = outItemMapper.selectList(new EntityWrapper<StorageOutItem>()
+                .eq(StorageOutItem.STORAGE_OUT_ID, storageOutId)
+                .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT));
+
+        Integer totalCount = querySalesDao.totalCount(sales.getId());
+        Integer finishedTotalCount = querySalesDao.finishedTotalCount(sales.getId());
+        if (finishedTotalCount == null){
+            finishedTotalCount=0;
+        }
+        if (items != null && items.size() > 0) {
+            for (StorageOutItem outItem : items) {
+                if (outItem.getTransactionQuantities() > 0) {
+                    Inventory isExistInventory = new Inventory();
+                    isExistInventory.setSkuId(outItem.getSkuId());
+                    isExistInventory.setWarehouseId(out.getWarehouseId());
+                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
+                    originInventory.setValidSku(afterCount);
+                    affected += inventoryMapper.updateById(originInventory);
+                    finishedTotalCount += outItem.getTransactionQuantities();
+                } else {
+                }
+            }
+        } else {
+            throw new BusinessException(4050, "数据出错！");
+        }
+        if (totalCount==finishedTotalCount){
+            sales.setSalesStatus(SalesStatus.TotalStorageOut.toString());
+            salesMapper.updateById(sales);
+        }else {
+            sales.setSalesStatus(SalesStatus.SectionStorageOut.toString());
+            salesMapper.updateById(sales);
         }
         out.setStatus(StorageOutStatus.Done.toString());
         out.setId(storageOutId);

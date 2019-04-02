@@ -34,12 +34,12 @@ public interface QuerySalesDao extends BaseMapper<SalesRecord> {
     StorageOutRecord storagesOutDetails(@Param("id")Long id);
 
     /**
-     *  total count
+     *  单个 sku total count
      * */
     Integer totalSkuCount(@Param("salesId")Long salesId,
                        @Param("skuId")Long skuId);
     /**
-     * finishedCount
+     * 单个 sku finishedCount
      * */
     Integer finishedCount(@Param("salesId")Long salesId,
                           @Param("skuId")Long skuId);
@@ -53,5 +53,12 @@ public interface QuerySalesDao extends BaseMapper<SalesRecord> {
      * */
     Integer auditStorageOutCount(@Param("salesId")Long salesId,
                           @Param("skuId")Long skuId);
+
+    Integer totalCount(@Param("salesId") Long salesId);
+
+    /**
+     * 单个 sku finishedCount
+     * */
+    Integer finishedTotalCount(@Param("salesId")Long salesId);
 
 }

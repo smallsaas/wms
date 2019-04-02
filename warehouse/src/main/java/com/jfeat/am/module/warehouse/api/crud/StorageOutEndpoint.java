@@ -5,8 +5,10 @@ import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.log.LogManager;
 import com.jfeat.am.module.log.LogTaskFactory;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
+import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.model.BulkUpdateOrderCount;
 import com.jfeat.am.module.warehouse.services.domain.model.UpdateOrderCount;
+import com.jfeat.am.module.warehouse.services.persistence.model.StorageOut;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -166,9 +168,17 @@ public class StorageOutEndpoint extends BaseController {
     @PutMapping("/{id}/execution")
     @ApiOperation(value = "executionRefund StorageIn",response = StorageOutModel.class)
     public Tip executionStorageIn(@PathVariable Long id) {
-        Tip resultTip = SuccessTip.create(storageOutService.executionStorageOut(JWTKit.getAccount(getHttpServletRequest()),id));
-        createStorageOutLog(id,  "executionStorage", "对出库单进行了执行入库操作",  id + " &");
-        return resultTip;
+        StorageOut out = storageOutService.retrieveMaster(id);
+        if ((out.getSalesId()!=null && out.getSalesId()>0)
+                && out.getTransactionType().compareTo(TransactionType.CustomerStorageOut.toString())==0){
+            Tip resultTip = SuccessTip.create(storageOutService.executionSalesStorageOut(JWTKit.getAccount(getHttpServletRequest()),id));
+            createStorageOutLog(id,  "executionStorage", "对出库单进行了执行入库操作",  id + " &");
+            return resultTip;
+        }else {
+            Tip resultTip = SuccessTip.create(storageOutService.executionStorageOut(JWTKit.getAccount(getHttpServletRequest()),id));
+            createStorageOutLog(id,  "executionStorage", "对出库单进行了执行入库操作",  id + " &");
+            return resultTip;
+        }
     }
     @BusinessLog(name = "StorageOut", value = "delete StorageOut")
     @DeleteMapping("/{id}")

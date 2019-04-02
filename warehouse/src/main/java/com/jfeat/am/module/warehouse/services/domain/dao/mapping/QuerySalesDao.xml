@@ -16,7 +16,7 @@
             AND wms_storage_out_item.type='TRADER'
     </select>
 
-    <!-- finished count 已经完成的出库数-->
+    <!-- finished count sku 已经完成的出库数-->
     <select id="finishedCount" resultType="int">
         SELECT
         SUM(wms_storage_out_item.transaction_quantities) AS finishedCount
@@ -29,6 +29,20 @@
         LEFT JOIN wms_sales ON (wms_storage_out.sales_id = wms_sales.id and wms_storage_out.transaction_type = 'CustomerStorageOut')
         WHERE wms_sales.id=#{salesId}
         AND wms_storage_out_item.sku_id=#{skuId}
+    </select>
+
+    <!-- zongshu已经完成的出库数-->
+    <select id="finishedTotalCount" resultType="int">
+        SELECT
+        SUM(wms_storage_out_item.transaction_quantities) AS finishedCount
+        FROM
+        wms_storage_out_item
+        LEFT JOIN wms_storage_out on
+        (wms_storage_out.id = wms_storage_out_item.storage_out_id
+        AND wms_storage_out_item.type='STORAGEOUT'
+        and wms_storage_out.`status`='Done')
+        LEFT JOIN wms_sales ON (wms_storage_out.sales_id = wms_sales.id and wms_storage_out.transaction_type = 'CustomerStorageOut')
+        WHERE wms_sales.id=#{salesId}
     </select>
 
     <!-- 已经完成审核但未出库的出库数-->
@@ -72,9 +86,12 @@
         FROM
         wms_storage_out_item
 
-            LEFT JOIN wms_sales ON (wms_storage_out_item.storage_out_id = wms_sales.id and wms_storage_out.transaction_type = 'CustomerStorageOut')
+            LEFT JOIN wms_sales ON
+                (
+                    wms_storage_out_item.storage_out_id = wms_sales.id
+                    and wms_storage_out_item.type = 'TRADER'
+                )
         WHERE wms_sales.id=#{salesId}
-        AND wms_storage_out_item.sku_id=#{skuId}
     </select>
 
 
