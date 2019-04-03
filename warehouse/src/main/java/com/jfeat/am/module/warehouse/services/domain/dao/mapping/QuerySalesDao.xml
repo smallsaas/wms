@@ -16,7 +16,7 @@
             AND wms_storage_out_item.type='TRADER'
     </select>
 
-    <!-- finished count sku 已经完成的出库数-->
+    <!-- 单个sku已经完成的出库数-->
     <select id="finishedCount" resultType="int">
         SELECT
         SUM(wms_storage_out_item.transaction_quantities) AS finishedCount
@@ -31,7 +31,7 @@
         AND wms_storage_out_item.sku_id=#{skuId}
     </select>
 
-    <!-- zongshu已经完成的出库数-->
+    <!-- 单个订单已经完成的总出库数-->
     <select id="finishedTotalCount" resultType="int">
         SELECT
         SUM(wms_storage_out_item.transaction_quantities) AS finishedCount

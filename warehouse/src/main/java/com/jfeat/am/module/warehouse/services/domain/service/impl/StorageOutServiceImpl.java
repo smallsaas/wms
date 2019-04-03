@@ -295,12 +295,12 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (out == null) {
             throw new BusinessException(5100,"无id为"+storageOutId+"的出库单！");
         }
+        if (out.getStatus().compareTo(StorageOutStatus.Audit_Passed.toString()) != 0) {
+            throw new BusinessException(BusinessCode.ErrorStatus);
+        }
         Sales sales = salesMapper.selectById(out.getSalesId());
         if (sales == null){
             throw new BusinessException(5500,"分销商出库订单有误，请重新核对");
-        }
-        if (out.getStatus().compareTo(StorageOutStatus.Audit_Passed.toString()) != 0) {
-            throw new BusinessException(BusinessCode.ErrorStatus);
         }
         Integer affected = 0;
         out.setTransactionBy(uasername);

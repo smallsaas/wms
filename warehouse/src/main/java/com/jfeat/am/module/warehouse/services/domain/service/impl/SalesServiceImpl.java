@@ -317,6 +317,9 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
 
     public SalesDetails salesDetails(Long salesId) {
         SalesDetails salesDetails = querySalesDao.salesDetails(salesId);
+        if (salesDetails==null){
+            throw new BusinessException(5500,"单据为空！");
+        }
         List<StorageOutItemRecord> itemRecords = new ArrayList<>();
         for (StorageOutItemRecord record : salesDetails.getOutItems()) {
             Integer totalCount = querySalesDao.totalSkuCount(salesId, record.getSkuId());
@@ -330,7 +333,9 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         }
         salesDetails.setOutItems(itemRecords);
         JSONObject details = JSON.parseObject(JSON.toJSONString(salesDetails));
-        List<StorageOut> outs = outMapper.selectList(new EntityWrapper<StorageOut>().eq("sales_id", salesDetails.getId()));
+        List<StorageOut> outs = outMapper.selectList(new EntityWrapper<StorageOut>()
+                .eq("sales_id", salesDetails.getId())
+                .eq(StorageOut.TRANSACTION_TYPE,TransactionType.CustomerStorageOut));
         List<StorageOutRecord> records = new ArrayList<>();
         if (outs != null || outs.size() > 0) {
             for (StorageOut out : outs) {
