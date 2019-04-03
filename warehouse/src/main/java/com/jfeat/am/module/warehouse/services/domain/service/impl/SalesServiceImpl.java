@@ -76,20 +76,19 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         model.setTransactionTime(new Date());
         model.setSalesStatus(SalesStatus.Draft.toString());
         for (StorageOutItem item : model.getOutItems()) {
-            if (item.getDemandQuantities() == 0) {
-                throw new BusinessException(4501, "出库商品需求数量不能为0，请重新输入！");
+            if (item.getTransactionQuantities() == 0) {
+            } else {
+                BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
+                sum = sum.multiply(item.getTransactionSkuPrice());
+                totalSpend = totalSpend.add(sum);
+                totalCount += item.getTransactionQuantities();
             }
-            BigDecimal sum = new BigDecimal(item.getDemandQuantities());
-            sum = sum.multiply(item.getTransactionSkuPrice());
-            ;
-            totalSpend = totalSpend.add(sum);
-            totalCount += item.getDemandQuantities();
         }
         model.setSalesTotal(totalSpend);
         model.setTotalCount(totalCount);
         affected += salesMapper.insert(model);
         for (StorageOutItem item : model.getOutItems()) {
-            item.setTransactionQuantities(item.getDemandQuantities());
+            item.setDemandQuantities(item.getTransactionQuantities());
             item.setRelationCode(model.getSalesCode());
             item.setStorageOutId(model.getId());
             item.setType(ItemEnumType.TRADER.toString());
@@ -120,8 +119,8 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                         .eq(StorageOutItem.STORAGE_OUT_ID, salesId)
                         .eq(StorageOutItem.TYPE, ItemEnumType.TRADER));
                 for (StorageOutItem item : model.getOutItems()) {
-                    if (item.getDemandQuantities() > 0) {
-                        item.setTransactionQuantities(item.getDemandQuantities());
+                    if (item.getTransactionQuantities() > 0) {
+                        item.setDemandQuantities(item.getTransactionQuantities());
                         item.setRelationCode(model.getSalesCode());
                         item.setStorageOutId(model.getId());
                         item.setType(ItemEnumType.TRADER.toString());
@@ -163,8 +162,8 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                         .eq(StorageOutItem.STORAGE_OUT_ID, salesId)
                         .eq(StorageOutItem.TYPE, ItemEnumType.TRADER));
                 for (StorageOutItem item : model.getOutItems()) {
-                    if (item.getDemandQuantities() > 0) {
-                        item.setTransactionQuantities(item.getDemandQuantities());
+                    if (item.getTransactionQuantities() > 0) {
+                        item.setDemandQuantities(item.getTransactionQuantities());
                         item.setRelationCode(model.getSalesCode());
                         item.setStorageOutId(model.getId());
                         item.setType(ItemEnumType.TRADER.toString());
@@ -201,8 +200,26 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         model.setId(salesId);
         if (model.getOutItems() != null && model.getOutItems().size() > 0) {
             List<String> noInventory = new ArrayList<>();
+            // 判断所有的商品是否都已经入库
+            StorageOut out = new StorageOut();
+            // field1 去接收最上层的ID  作跳转使用
+            out.setField1(salesId.toString());
+            out.setOriginatorId(userId);
+            out.setStorageOutTime(new Date());
+            out.setTransactionTime(new Date());
+            out.setOriginatorName(model.getOriginatorName());
+            // 使用field1去接收 warehouseId 字段
+            out.setWarehouseId(Long.valueOf(model.getField1()));
+            //使用 field2 去接收 入库 code
+            out.setTransactionCode(model.getField2());
+            out.setSalesId(salesId);
+            out.setTransactionType(TransactionType.CustomerStorageOut.toString());
+            out.setStatus(StorageOutStatus.Wait_To_Audit.toString());
+            // field1 去接收最上层的ID  作跳转使用
+            out.setField1(salesId.toString());
+            outMapper.insert(out);
             for (StorageOutItem item : model.getOutItems()) {
-                if (item.getDemandQuantities() > 0) {
+                if (item.getTransactionQuantities() > 0) {
                     SkuProduct skuProduct = skuProductMapper.selectById(item.getSkuId());
                     // 某个 sku 的 sales 的数量
                     Integer skuSalesCount = querySalesDao.totalSkuCount(salesId, item.getSkuId());
@@ -221,7 +238,11 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                     if (auditStorageOutCount == null) {
                         auditStorageOutCount = 0;
                     }
-                    if (item.getTransactionQuantities() > (skuSalesCount - finishedCount - auditStorageOutPass - auditStorageOutCount)) {
+                    if (item.getTransactionQuantities() >
+                            (skuSalesCount
+                                    - finishedCount
+                                    - auditStorageOutPass
+                                    - auditStorageOutCount)) {
                         throw new BusinessException(4500,
                                 "\""
                                         + skuProduct.getSkuName()
@@ -237,26 +258,9 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                                         + auditStorageOutCount
                                         + "!");
                     }
-                    // 判断所有的商品是否都已经入库
-                    StorageOut out = new StorageOut();
-                    // field1 去接收最上层的ID  作跳转使用
-                    out.setField1(salesId.toString());
-                    out.setOriginatorId(userId);
-                    out.setStorageOutTime(new Date());
-                    out.setTransactionTime(new Date());
-                    out.setOriginatorName(model.getOriginatorName());
-                    // 使用field1去接收 warehouseId 字段
-                    out.setWarehouseId(Long.valueOf(model.getField1()));
-                    //使用 field2 去接收 入库 code
-                    out.setTransactionCode(model.getField2());
-                    out.setSalesId(salesId);
-                    out.setTransactionType(TransactionType.CustomerStorageOut.toString());
-                    out.setStatus(StorageOutStatus.Wait_To_Audit.toString());
-                    // field1 去接收最上层的ID  作跳转使用
-                    out.setField1(salesId.toString());
-                    outMapper.insert(out);
+
                     item.setStorageOutId(out.getId());
-                    item.setTransactionQuantities(item.getDemandQuantities());
+                    item.setDemandQuantities(item.getTransactionQuantities());
                     item.setType(ItemEnumType.STORAGEOUT.toString());
                     item.setTransactionTime(out.getStorageOutTime());
                     item.setRelationCode(sales.getSalesCode());
@@ -265,11 +269,13 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                     isExistInventory.setWarehouseId(Long.valueOf(model.getField1()));
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                     if (originInventory != null) {
-                        /*Integer validSku = originInventory.getValidSku() - item.getTransactionQuantities();
-                        // 操作后的 数量
-                        item.setAfterTransactionQuantities(validSku);
-                        originInventory.setValidSku(validSku);
-                        affected += inventoryMapper.updateById(originInventory);*/
+                        if (originInventory.getValidSku() < item.getTransactionQuantities()) {
+                            throw new BusinessException(5500, skuProduct.getSkuName()
+                                    + "数量不足，" + "出库数"
+                                    + item.getTransactionQuantities()
+                                    + "大于可用库存数"
+                                    + originInventory.getValidSku());
+                        }
                         outItemMapper.insert(item);
                     } else {
                         noInventory.add(skuProduct.getSkuName() + ":" + skuProduct.getBarCode() + "\n"
@@ -300,7 +306,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
         for (StorageOutItem item : model.getOutItems()) {
-            item.setType(ItemEnumType.STORAGEOUT.toString());
+            item.setType(ItemEnumType.TRADER.toString());
             totalCount += item.getTransactionQuantities();
             affected += outItemMapper.updateById(item);
             BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
@@ -317,8 +323,8 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
 
     public SalesDetails salesDetails(Long salesId) {
         SalesDetails salesDetails = querySalesDao.salesDetails(salesId);
-        if (salesDetails==null){
-            throw new BusinessException(5500,"单据为空！");
+        if (salesDetails == null) {
+            throw new BusinessException(5500, "单据为空！");
         }
         List<StorageOutItemRecord> itemRecords = new ArrayList<>();
         for (StorageOutItemRecord record : salesDetails.getOutItems()) {
@@ -335,7 +341,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         JSONObject details = JSON.parseObject(JSON.toJSONString(salesDetails));
         List<StorageOut> outs = outMapper.selectList(new EntityWrapper<StorageOut>()
                 .eq("sales_id", salesDetails.getId())
-                .eq(StorageOut.TRANSACTION_TYPE,TransactionType.CustomerStorageOut));
+                .eq(StorageOut.TRANSACTION_TYPE, TransactionType.CustomerStorageOut));
         List<StorageOutRecord> records = new ArrayList<>();
         if (outs != null || outs.size() > 0) {
             for (StorageOut out : outs) {
@@ -359,7 +365,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                 .eq(StorageOutItem.TYPE, ItemEnumType.TRADER));
         List<StorageOut> outs = outMapper.selectList(new EntityWrapper<StorageOut>()
                 .eq("sales_id", id)
-                .eq(StorageOut.TRANSACTION_TYPE,TransactionType.CustomerStorageOut));
+                .eq(StorageOut.TRANSACTION_TYPE, TransactionType.CustomerStorageOut));
         for (StorageOut out : outs) {
             result += outItemMapper.delete(new EntityWrapper<StorageOutItem>()
                     .eq(StorageOutItem.STORAGE_OUT_ID, out.getId())

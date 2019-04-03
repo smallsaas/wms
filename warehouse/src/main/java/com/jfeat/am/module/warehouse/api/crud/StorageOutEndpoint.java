@@ -148,6 +148,13 @@ public class StorageOutEndpoint extends BaseController {
     @PutMapping("/{id}/passed")
     @ApiOperation(value = "审核通过",response = StorageOutModel.class)
     public Tip auditStorage(@PathVariable Long id, @RequestBody StorageOutModel entity) {
+        StorageOut out = storageOutService.retrieveMaster(id);
+        if (out.getSalesId()!=null && out.getTransactionType().compareTo(TransactionType.CustomerStorageOut.toString())==0){
+            entity.setId(id);
+            Tip resultTip = SuccessTip.create(storageOutService.passedSalesStorageOut(id,entity));
+            createStorageOutLog(id,  "auditStorageOut", "对出库单进行了审核通过操作",  id + " &");
+            return resultTip;
+        }
         entity.setId(id);
         Tip resultTip = SuccessTip.create(storageOutService.passedStorageOut(id,entity));
         createStorageOutLog(id,  "auditStorageOut", "对出库单进行了审核通过操作",  id + " &");
