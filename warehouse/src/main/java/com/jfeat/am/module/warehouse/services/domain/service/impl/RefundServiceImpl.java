@@ -85,9 +85,9 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     .eq(StorageOutItem.TYPE, ItemEnumType.REFUND));
             for (StorageOutItemRecord outItem : model.getItems()) {
                 SkuProduct sku = skuProductMapper.selectById(outItem.getSkuId());
-                if (outItem.getDemandQuantities() > 0) {
+                if (outItem.getTransactionQuantities() > 0) {
                     //新建或更新时将需求数量插入实际数量
-                    outItem.setTransactionQuantities(outItem.getDemandQuantities());
+                    outItem.setDemandQuantities(outItem.getTransactionQuantities());
                     // 仅仅保存数据，将采购的可退货数量插入到 该字段中，该字段在该逻辑下无特别的用途
                     if (outItem.getCanRefundCount() != null) {
                         outItem.setAfterTransactionQuantities(outItem.getCanRefundCount());
@@ -106,11 +106,11 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                         if (model.getProductProcurementId() == null) {
                             //do nothings
                             outItem.setStorageOutId(refundId);
-                            outItem.setTransactionQuantities(outItem.getDemandQuantities());
+                            outItem.setDemandQuantities(outItem.getTransactionQuantities());
                             outItem.setType(ItemEnumType.REFUND.toString());
                             affected += storageOutItemMapper.insert(outItem);
                         } else {
-                            if (outItem.getDemandQuantities() > queryProcurementDao.storageInCount(model.getProductProcurementId(), outItem.getSkuId())) {
+                            if (outItem.getTransactionQuantities() > queryProcurementDao.storageInCount(model.getProductProcurementId(), outItem.getSkuId())) {
                                 throw new BusinessException(4050, "\"" + sku.getSkuName() + "\"退货数量不能大于已入库的数量");
                             } else {
                                 outItem.setStorageOutId(refundId);
@@ -124,7 +124,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                         throw new BusinessException(4060, "该仓库不存在\"" + sku.getSkuName() + "\"商品");
                     }
                 } else {
-                    throw new BusinessException(5000, "提交失败，" + "\"" + sku.getSkuName() + "\"" + "商品退货数量不能为0");
+                    //do nothings//throw new BusinessException(5000, "提交失败，" + "\"" + sku.getSkuName() + "\"" + "商品退货数量不能为0");
                 }
             }
         } else {
