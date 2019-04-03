@@ -83,7 +83,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         if (items != null && items.size() > 0) {
             for (StorageOutItemRecord outItem : items) {
                 SkuProduct skuProduct = skuProductMapper.selectById(outItem.getSkuId());
-                if (outItem.getDemandQuantities() != null && outItem.getDemandQuantities() > 0) {
+                if (outItem.getTransactionQuantities() != null && outItem.getTransactionQuantities() > 0) {
                     // search sku inventories count
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(outItem.getSkuId());
@@ -103,7 +103,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                         } else {
                             //做前端 可用库存 使用，无实际的意义
                             outItem.setAfterTransactionQuantities(originInventory.getValidSku());
-                            outItem.setTransactionQuantities(outItem.getDemandQuantities());
+                            outItem.setDemandQuantities(outItem.getTransactionQuantities());
                             outItem.setStorageOutId(transferId);
                             outItem.setType(ItemEnumType.TRANSFER.toString());
                             outItem.setRelationCode(transferId.toString());
@@ -149,13 +149,13 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
     /**
      * 仅仅是更新，不提交审核
-     * */
+     */
     @Transactional
     public Integer updateTransfer(Long transferId, TransferModel model) {
         int affected = 0;
         Transfer transfer = transferMapper.selectById(transferId);
-        if (transfer==null){
-            throw new BusinessException(5400,"无ID为"+transferId+"的调拨单！");
+        if (transfer == null) {
+            throw new BusinessException(5400, "无ID为" + transferId + "的调拨单！");
         }
         if (transfer.getStatus().compareTo(TransferStatus.Draft.toString()) != 0) {
             throw new BusinessException(5100, "不能对非草稿状态下的调拨单进行修改");
@@ -168,13 +168,13 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
     /**
      * 更新并提交审核
-     * */
+     */
     @Transactional
     public Integer updateAndCommitTransfer(Long transferId, TransferModel model) {
         int affected = 0;
         Transfer transfer = transferMapper.selectById(transferId);
-        if (transfer==null){
-            throw new BusinessException(5400,"无ID为"+transferId+"的调拨单！");
+        if (transfer == null) {
+            throw new BusinessException(5400, "无ID为" + transferId + "的调拨单！");
         }
         if (transfer.getStatus().compareTo(TransferStatus.Draft.toString()) != 0) {
             throw new BusinessException(5100, "不能对非草稿状态下的调拨单进行修改");
@@ -189,8 +189,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
     public Integer auditPass(Long transferId, TransferModel model) {
         int affected = 0;
         Transfer transfer = transferMapper.selectById(transferId);
-        if (transfer==null){
-            throw new BusinessException(5400,"无ID为"+transferId+"的调拨单！");
+        if (transfer == null) {
+            throw new BusinessException(5400, "无ID为" + transferId + "的调拨单！");
         }
         if (transfer.getStatus().compareTo(TransferStatus.Wait_To_Audit.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
@@ -217,8 +217,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
          * */
         int affected = 0;
         Transfer transfer = transferMapper.selectById(transferId);
-        if (transfer==null){
-            throw new BusinessException(5400,"无ID为"+transferId+"的调拨单！");
+        if (transfer == null) {
+            throw new BusinessException(5400, "无ID为" + transferId + "的调拨单！");
         }
         List<StorageOutItem> items = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID, transferId)
                 .eq(StorageOutItem.TYPE, ItemEnumType.TRANSFER));
@@ -292,8 +292,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
     public Integer doneTransfer(Long id, Long userId) {
         int affected = 0;
         Transfer transfer = transferMapper.selectById(id);
-        if (transfer==null){
-            throw new BusinessException(5400,"无ID为"+id+"的调拨单！");
+        if (transfer == null) {
+            throw new BusinessException(5400, "无ID为" + id + "的调拨单！");
         }
         transfer.setFinishTime(new Date());
         StorageInModel storageIn = new StorageInModel();
@@ -313,7 +313,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         StorageOut storageOut = storageOutMapper.selectById(transfer.getStorageOutId());
         List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, storageOut.getId())
-                .eq(StorageOutItem.TYPE,ItemEnumType.STORAGEOUT));
+                .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT));
         if (storageOutItems != null && storageOutItems.size() > 0) {
             for (StorageOutItem outItem : storageOutItems) {
                 StorageInItem inItem = new StorageInItem();
@@ -329,7 +329,6 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                     Integer afterCount = originInventory.getValidSku() + outItem.getTransactionQuantities();
                     // 操作后的数量
                     inItem.setAfterTransactionQuantities(afterCount);
-
                     originInventory.setValidSku(afterCount);
                     Integer transmitCount = originInventory.getTransmitQuantities() - outItem.getTransactionQuantities();
                     originInventory.setTransmitQuantities(transmitCount);
@@ -353,7 +352,6 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 inItem.setTransactionTime(new Date());
                 inItem.setStorageInId(storageIn.getId());
                 storageInItemMapper.insert(inItem);
-
             }
         }
         transfer.setStorageInId(storageIn.getId());
@@ -370,8 +368,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
     public Integer cancelTransfer(Long id, Long userId) {
         int affected = 0;
         Transfer transfer = transferMapper.selectById(id);
-        if (transfer==null){
-            throw new BusinessException(5400,"无ID为"+id+"的调拨单！");
+        if (transfer == null) {
+            throw new BusinessException(5400, "无ID为" + id + "的调拨单！");
         }
         transfer.setFinishTime(new Date());
         StorageInModel storageIn = new StorageInModel();
@@ -390,7 +388,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         StorageOut storageOut = storageOutMapper.selectById(transfer.getStorageOutId());
         List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, storageOut.getId())
-                .eq(StorageOutItem.TYPE,ItemEnumType.STORAGEOUT));
+                .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT));
         if (storageOutItems != null && storageOutItems.size() > 0) {
             for (StorageOutItem outItem : storageOutItems) {
                 // come back to from warehouse
@@ -464,12 +462,12 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         }
         storageInItemMapper.delete(new EntityWrapper<StorageInItem>()
                 .eq(StorageInItem.STORAGE_IN_ID, transfer.getStorageInId())
-                .eq(StorageInItem.TYPE,ItemEnumType.STORAGEIN));
+                .eq(StorageInItem.TYPE, ItemEnumType.STORAGEIN));
         storageInMapper.delete(new EntityWrapper<StorageIn>()
                 .eq(StorageIn.ID, transfer.getStorageInId()));
         storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, transfer.getStorageOutId())
-                .eq(StorageOutItem.TYPE,ItemEnumType.STORAGEOUT));
+                .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT));
         storageOutMapper.delete(new EntityWrapper<StorageOut>()
                 .eq(StorageOut.ID, transfer.getStorageOutId()));
         return crudTransferService.deleteMaster(id);
