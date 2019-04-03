@@ -95,7 +95,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         model.setProcureStatus(ProcurementStatus.Draft.toString());
         affected += procurementMapper.insert(model);
         for (StorageInItem item : model.getItems()) {
-            if (item.getTransactionQuantities() == null||item.getTransactionQuantities()<=0) {
+            if (item.getTransactionQuantities() == null || item.getTransactionQuantities() <= 0) {
                 throw new BusinessException(4501, "采购数量不能为0，请重新输入！");
             }
             // 需求数量 同 实际数量
@@ -112,6 +112,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         affected += procurementMapper.updateById(model);
         return affected;
     }
+
     /**
      * 提交并审核
      */
@@ -119,8 +120,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     public Integer updateProcurement(String username, Long userId, Long procurementId, ProcurementModel model) {
         int affected = 0;
         Procurement procurement = procurementMapper.selectById(procurementId);
-        if (procurement==null){
-            throw new BusinessException(5500,"无该采购单数据");
+        if (procurement == null) {
+            throw new BusinessException(5500, "无该采购单数据");
         }
         // 草稿的情况下才能执行更新的操作
         if (procurement.getProcureStatus().compareTo(ProcurementStatus.Draft.toString()) == 0) {
@@ -145,7 +146,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     item.setDemandQuantities(item.getTransactionQuantities());
                     item.setRelationCode(procurement.getProcurementCode());
                     item.setStorageInId(procurementId);
-                    item.setType( ItemEnumType.PROCUREMENT.toString());
+                    item.setType(ItemEnumType.PROCUREMENT.toString());
                     affected += storageInItemMapper.insert(item);
                     BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
                     sum = sum.multiply(item.getTransactionSkuPrice());
@@ -166,8 +167,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     public Integer updateAndAuditProcurement(Long userId, Long procurementId, ProcurementModel model) {
         int affected = 0;
         Procurement procurement = procurementMapper.selectById(procurementId);
-        if (procurement==null){
-            throw new BusinessException(5500,"无该采购单数据");
+        if (procurement == null) {
+            throw new BusinessException(5500, "无该采购单数据");
         }
         // 草稿的情况下才能执行更新的操作
         if (procurement.getProcureStatus().compareTo(ProcurementStatus.Draft.toString()) == 0) {
@@ -184,9 +185,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                         .eq(StorageInItem.TYPE, ItemEnumType.PROCUREMENT));
                 BigDecimal totalSpend = BigDecimal.valueOf(0);
                 for (StorageInItem item : model.getItems()) {
-                    if (item.getTransactionQuantities() == null||item.getTransactionQuantities()<=0) {
+                    if (item.getTransactionQuantities() == null || item.getTransactionQuantities() <= 0) {
                         throw new BusinessException(4501, "采购数量不能为0，请重新输入！");
-                    }else {
+                    } else {
                         // 需求数量 同 实际数量
                         item.setDemandQuantities(item.getTransactionQuantities());
                         item.setRelationCode(procurement.getProcurementCode());
@@ -215,12 +216,12 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         int affected = 0;
         // 总需要入库的商品的数量
         Procurement procurement = procurementMapper.selectById(procurementId);
-        if (procurement==null){
-            throw new BusinessException(5500,"无ID为"+procurementId+"的采购单！");
+        if (procurement == null) {
+            throw new BusinessException(5500, "无ID为" + procurementId + "的采购单！");
         }
         if (procurement.getProcureStatus().compareTo(ProcurementStatus.Audit_Passed.toString()) != 0
                 && procurement.getProcureStatus().compareTo(ProcurementStatus.SectionStorageIn.toString()) != 0) {
-                throw new BusinessException(5200, "非\"部分入库|审核通过\"状态下无法执行入库操作");
+            throw new BusinessException(5200, "非\"部分入库|审核通过\"状态下无法执行入库操作");
         }
         model.setId(procurementId);
         if (model.getItems() != null && model.getItems().size() > 0) {
@@ -288,8 +289,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     //while transaction quantities = 0 ,do nothing
                 }
             }
-        }else {
-            throw new BusinessException(5500,"请至少选择一种商品进行入库！");
+        } else {
+            throw new BusinessException(5500, "请至少选择一种商品进行入库！");
         }
         affected += procurementMapper.updateById(model);
         return affected;
@@ -311,11 +312,6 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         if (in.getStatus().compareTo(StorageInStatus.Wait_To_Audit.toString()) != 0) {
             throw new BusinessException(5300, "状态错误，非\"待审核\"状态无法进行审核");
         }
-        // 先delete 掉 记录，避免索引的时候出错
-        /*storageInItemMapper.delete(new EntityWrapper<StorageInItem>()
-                .eq(StorageInItem.STORAGE_IN_ID, id)
-                .eq(StorageInItem.TYPE,ItemEnumType.STORAGEIN.toString()));*/
-
         for (StorageInItem item : model.getStorageInItems()) {
             if (item.getTransactionQuantities() > 0) {
                 // 审核通过并修改之后，会是实际的数量
@@ -344,20 +340,27 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     auditStorageInPass = 0;
                 }
 
-                if (item.getTransactionQuantities() > (skuProcurementCount - storageInCount - auditStorageInCount)) {
-                    throw new BusinessException(4500, "\""
-                            + skuProduct.getSkuName()
-                            + "\""
-                            + "入库数不能大于采购数，请先核对入库数！"
-                            + "其中已入库数为"
-                            + storageInCount
-                            + "，待审核入库数为"
-                            + auditStorageInCount
-                            + "，审核通过但未执行入库的数量为"
-                            + auditStorageInPass);
+                if (item.getTransactionQuantities() > item.getDemandQuantities()) {
+                    if (item.getTransactionQuantities() >
+                            (skuProcurementCount - storageInCount
+                                    - auditStorageInCount
+                                    - auditStorageInPass
+                                    + item.getDemandQuantities())) {
+                        throw new BusinessException(4500, "\""
+                                + skuProduct.getSkuName()
+                                + "\""
+                                + "入库数不能大于采购数，请先核对入库数！"
+                                + "其中已入库数为"
+                                + storageInCount
+                                + "，待审核入库数为"
+                                + auditStorageInCount
+                                + "，审核通过但未执行入库的数量为"
+                                + auditStorageInPass);
+                    }
                 }
+
                 item.setTransactionTime(in.getStorageInTime());
-                storageInItemMapper.insert(item);
+                storageInItemMapper.updateById(item);
             } else {
                 //while transaction quantities = 0 ,do nothing
             }
@@ -380,17 +383,17 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         if (procurement == null) {
             throw new BusinessException(5300, "采购单信息丢失，请核对！");
         }
-        int total = queryProcurementDao.totalProcurementCount(procurement.getId())==null?
-                0:queryProcurementDao.totalProcurementCount(procurement.getId());
-        int count = queryProcurementDao.totalStorageInCount(procurement.getId())==null?
-                0:queryProcurementDao.totalStorageInCount(procurement.getId());
+        int total = queryProcurementDao.totalProcurementCount(procurement.getId()) == null ?
+                0 : queryProcurementDao.totalProcurementCount(procurement.getId());
+        int count = queryProcurementDao.totalStorageInCount(procurement.getId()) == null ?
+                0 : queryProcurementDao.totalStorageInCount(procurement.getId());
 
         if (in.getStatus().compareTo(StorageInStatus.Audit_Passed.toString()) != 0) {
             throw new BusinessException(5300, "状态错误，非\"审核通过\"状态无法进行审核");
         }
 
         List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, id)
-                .eq(StorageInItem.TYPE,ItemEnumType.STORAGEIN));
+                .eq(StorageInItem.TYPE, ItemEnumType.STORAGEIN));
 
         for (StorageInItem item : items) {
             //执行库存修改
@@ -468,13 +471,13 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
         //采购的商品
         List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
-                .eq(StorageInItem.TYPE,ItemEnumType.PROCUREMENT).eq(StorageInItem.STORAGE_IN_ID, procurementId));
+                .eq(StorageInItem.TYPE, ItemEnumType.PROCUREMENT).eq(StorageInItem.STORAGE_IN_ID, procurementId));
 
         // 入库记录
         List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>()
                 .eq(StorageIn.PROCUREMENT_ID, procurementId)
                 .eq(StorageIn.TRANSACTION_TYPE, TransactionType.Procurement.toString())
-                .eq(StorageIn.STATUS,StorageInStatus.Done));
+                .eq(StorageIn.STATUS, StorageInStatus.Done));
         List<StorageInItemRecord> procurementItems = new ArrayList<>();
         //采购的商品
         List<ProcurementItemRecord> records = new ArrayList<>();
@@ -494,7 +497,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 if (finishedRefundCount == null) {
                     finishedRefundCount = 0;
                 }
-                int canRefundCount= sectionCount - finishedRefundCount;// ke tui huo shu
+                int canRefundCount = sectionCount - finishedRefundCount;// ke tui huo shu
                 // 待审核数
                 Integer storageInAuditCount = queryProcurementDao.auditStorageInCount(procurementId, item.getSkuId());
                 if (storageInAuditCount == null) {
@@ -524,7 +527,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     for (StorageIn in : ins) {
                         if ((in.getProcurementId() != null)) {
                             // 查找是否存在 这个 商品已经入库
-                            List<StorageInItem> originItems = queryProcurementDao.originItems(in.getId(), item.getSkuId(),ItemEnumType.STORAGEIN.toString());
+                            List<StorageInItem> originItems = queryProcurementDao.originItems(in.getId(), item.getSkuId(), ItemEnumType.STORAGEIN.toString());
                             logger.debug("originItems != null && originItems.size() > 0");
                             if (originItems != null && originItems.size() > 0) {
                                 for (StorageInItem originItem : originItems) {
