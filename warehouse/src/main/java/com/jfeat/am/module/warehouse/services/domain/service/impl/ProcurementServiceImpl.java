@@ -95,11 +95,11 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         model.setProcureStatus(ProcurementStatus.Draft.toString());
         affected += procurementMapper.insert(model);
         for (StorageInItem item : model.getItems()) {
-            if (item.getDemandQuantities() == null||item.getDemandQuantities()<=0) {
+            if (item.getTransactionQuantities() == null||item.getTransactionQuantities()<=0) {
                 throw new BusinessException(4501, "采购数量不能为0，请重新输入！");
             }
             // 需求数量 同 实际数量
-            item.setTransactionQuantities(item.getDemandQuantities());
+            item.setDemandQuantities(item.getTransactionQuantities());
             item.setRelationCode(model.getProcurementCode());
             item.setStorageInId(model.getId());
             item.setType(ItemEnumType.PROCUREMENT.toString());
@@ -138,11 +138,11 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                         .eq(StorageInItem.TYPE, ItemEnumType.PROCUREMENT));
                 BigDecimal totalSpend = BigDecimal.valueOf(0);
                 for (StorageInItem item : model.getItems()) {
-                    if (item.getDemandQuantities() == null || item.getDemandQuantities() == 0) {
+                    if (item.getTransactionQuantities() == null || item.getTransactionQuantities() == 0) {
                         throw new BusinessException(4501, "采购数量不能为0，请重新输入！");
                     }
                     // 需求数量 同 实际数量
-                    item.setTransactionQuantities(item.getDemandQuantities());
+                    item.setDemandQuantities(item.getTransactionQuantities());
                     item.setRelationCode(procurement.getProcurementCode());
                     item.setStorageInId(procurementId);
                     item.setType( ItemEnumType.PROCUREMENT.toString());
@@ -184,11 +184,11 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                         .eq(StorageInItem.TYPE, ItemEnumType.PROCUREMENT));
                 BigDecimal totalSpend = BigDecimal.valueOf(0);
                 for (StorageInItem item : model.getItems()) {
-                    if (item.getDemandQuantities() == null||item.getDemandQuantities()<=0) {
+                    if (item.getTransactionQuantities() == null||item.getTransactionQuantities()<=0) {
                         throw new BusinessException(4501, "采购数量不能为0，请重新输入！");
                     }else {
                         // 需求数量 同 实际数量
-                        item.setTransactionQuantities(item.getDemandQuantities());
+                        item.setDemandQuantities(item.getTransactionQuantities());
                         item.setRelationCode(procurement.getProcurementCode());
                         item.setStorageInId(procurementId);
                         item.setType(ItemEnumType.PROCUREMENT.toString());
@@ -243,9 +243,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             in.setTransactionType(TransactionType.Procurement.toString());
             storageInMapper.insert(in);
             for (StorageInItem item : model.getItems()) {
-                if (item.getDemandQuantities() > 0) {
+                if (item.getTransactionQuantities() > 0) {
                     item.setStorageInId(in.getId());
-                    item.setTransactionQuantities(item.getDemandQuantities());
+                    item.setDemandQuantities(item.getTransactionQuantities());
                     item.setType(ItemEnumType.STORAGEIN.toString());
                     SkuProduct skuProduct = skuProductMapper.selectById(item.getSkuId());
                     item.setRelationCode(procurement.getProcurementCode());
@@ -312,14 +312,14 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             throw new BusinessException(5300, "状态错误，非\"待审核\"状态无法进行审核");
         }
         // 先delete 掉 记录，避免索引的时候出错
-        storageInItemMapper.delete(new EntityWrapper<StorageInItem>()
+        /*storageInItemMapper.delete(new EntityWrapper<StorageInItem>()
                 .eq(StorageInItem.STORAGE_IN_ID, id)
-                .eq(StorageInItem.TYPE,ItemEnumType.STORAGEIN.toString()));
+                .eq(StorageInItem.TYPE,ItemEnumType.STORAGEIN.toString()));*/
 
         for (StorageInItem item : model.getStorageInItems()) {
             if (item.getTransactionQuantities() > 0) {
                 // 审核通过并修改之后，会是实际的数量
-                item.setDemandQuantities(item.getTransactionQuantities());
+                //item.setDemandQuantities(item.getTransactionQuantities());
                 SkuProduct skuProduct = skuProductMapper.selectById(item.getSkuId());
                 item.setType(ItemEnumType.STORAGEIN.toString());
                 item.setRelationCode(procurement.getProcurementCode());
