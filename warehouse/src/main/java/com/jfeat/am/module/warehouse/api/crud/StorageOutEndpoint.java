@@ -63,7 +63,7 @@ public class StorageOutEndpoint extends BaseController {
         LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
                 JWTKit.getAccount(getHttpServletRequest()),
                 operation,
-                ProcurementEndpoint.class.getName(),
+                StorageOutEndpoint.class.getName(),
                 methodName,
                 message,
                 "成功",
@@ -170,7 +170,7 @@ public class StorageOutEndpoint extends BaseController {
     public Tip executionStorageIn(@PathVariable Long id) {
         StorageOut out = storageOutService.retrieveMaster(id);
         if ((out.getSalesId()!=null && out.getSalesId()>0)
-                && out.getTransactionType().compareTo(TransactionType.CustomerStorageOut.toString())==0){
+                && out.getTransactionType().compareTo(TransactionType.SalesOut.toString())==0){
             Tip resultTip = SuccessTip.create(storageOutService.executionSalesStorageOut(JWTKit.getAccount(getHttpServletRequest()),id));
             createStorageOutLog(id,  "executionStorage", "对出库单进行了执行入库操作",  id + " &");
             return resultTip;

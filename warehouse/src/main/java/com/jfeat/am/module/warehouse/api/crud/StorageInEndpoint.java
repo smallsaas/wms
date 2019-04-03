@@ -1,5 +1,6 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.log.LogManager;
 import com.jfeat.am.module.log.LogTaskFactory;
@@ -67,7 +68,7 @@ public class StorageInEndpoint extends BaseController {
         LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
                 JWTKit.getAccount(getHttpServletRequest()),
                 operation,
-                ProcurementEndpoint.class.getName(),
+                StorageInEndpoint.class.getName(),
                 methodName,
                 message,
                 "成功",
