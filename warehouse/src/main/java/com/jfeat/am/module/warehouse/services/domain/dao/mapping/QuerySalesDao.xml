@@ -145,6 +145,7 @@
         <result column="delivered_address" property="deliveredAddress"/>
         <result column="traderName" property="traderName"/>
         <result column="traderContactPhone" property="traderContactPhone"/>
+        <result column="traderContactName" property="traderContactName"/>
 
 
         <collection property="outItems"
@@ -162,7 +163,8 @@
     <select id="salesDetails" resultMap="SalesDetails">
         SELECT wms_sales.*,
         wms_trader.trader_name as traderName,
-        wms_trader.trader_contact_phone as traderContactPhone
+        wms_trader.trader_contact_phone as traderContactPhone,
+        wms_trader.trader_contact_name as traderContactName
         FROM wms_sales
         left JOIN wms_trader on wms_trader.id = wms_sales.trader_id
         WHERE 1=1
@@ -282,7 +284,7 @@
 
         left join wms_storage_out on
         (wms_storage_out_item.storage_out_id = wms_storage_out.id
-        and wms_storage_out_item.type='Others')
+        and wms_storage_out_item.type='STORAGEOUT')
 
         LEFT JOIN t_sku_product ON wms_storage_out_item.sku_id = t_sku_product.id
 

@@ -10,6 +10,7 @@ public  class SalesRecord extends Sales {
 
     String traderName;
     String traderContactPhone;
+    String traderContactName;
 
     public String getTraderName() {
         return traderName;
@@ -25,5 +26,13 @@ public  class SalesRecord extends Sales {
 
     public void setTraderContactPhone(String traderContactPhone) {
         this.traderContactPhone = traderContactPhone;
+    }
+
+    public String getTraderContactName() {
+        return traderContactName;
+    }
+
+    public void setTraderContactName(String traderContactName) {
+        this.traderContactName = traderContactName;
     }
 }
