@@ -588,22 +588,21 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
 
     @Transactional
     public Integer deleteProcurement(Long id) {
-
         int affected = 0;
-        Procurement procurement = procurementService.retrieveMaster(id);
-
         // 先删除 入库的产品
-        affected += storageInItemMapper.delete(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, procurement.getId()).like(StorageInItem.TYPE, TransactionType.Procurement.toString()));
-
-        List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>().eq(StorageIn.PROCUREMENT_ID, procurement)
+        affected += storageInItemMapper.delete(new EntityWrapper<StorageInItem>()
+                .eq(StorageInItem.STORAGE_IN_ID,id)
+                .eq(StorageInItem.TYPE,ItemEnumType.PROCUREMENT.toString()));
+        List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>()
+                .eq(StorageIn.PROCUREMENT_ID, id)
                 .eq(StorageIn.TRANSACTION_TYPE, TransactionType.Procurement.toString()));
-
         if (ins != null && ins.size() > 0) {
             for (StorageIn in : ins) {
-                affected += storageInItemMapper.delete(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, in.getId()));
+                affected += storageInItemMapper.delete(new EntityWrapper<StorageInItem>()
+                        .eq(StorageInItem.STORAGE_IN_ID, in.getId())
+                        .eq(StorageInItem.TYPE,ItemEnumType.STORAGEIN));
                 affected += storageInMapper.deleteById(in.getId());
             }
-
         }
         return procurementService.deleteMaster(id);
     }

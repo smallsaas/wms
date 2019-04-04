@@ -335,13 +335,13 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     @Transactional
     public Integer deleteRefund(Long id) {
         Refund refund = refundService.retrieveMaster(id);
-        StorageOut out = storageOutService.retrieveMaster(refund.getStorageOutId());
         storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, id)
-                .eq(StorageOutItem.TYPE, TransactionType.Refund.toString()));
-        storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID, out.getId()).eq(StorageOutItem.TYPE, "Others"));
+                .eq(StorageOutItem.TYPE,ItemEnumType.REFUND));
+        storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>()
+                .eq(StorageOutItem.STORAGE_OUT_ID, refund.getStorageOutId())
+                .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT));
         storageOutMapper.deleteById(refund.getStorageOutId());
-        refundService.deleteMaster(id);
         return refundService.deleteMaster(id);
     }
 
