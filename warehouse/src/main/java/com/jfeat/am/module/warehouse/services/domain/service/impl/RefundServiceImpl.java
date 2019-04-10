@@ -158,10 +158,9 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         if (refund.getProductRefundStatus().compareTo(RefundStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-        model.setId(refundId);
-        model.setProductRefundStatus(RefundStatus.Draft.toString());
+        refund.setId(refundId);
         affected += createOrUpdate(model.getId(), model);
-        affected += refundMapper.updateById(model);
+        affected += refundMapper.updateById(refund);
         return affected;
     }
 
@@ -173,10 +172,10 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         if (refund.getProductRefundStatus().compareTo(RefundStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-        model.setId(refundId);
-        model.setProductRefundStatus(RefundStatus.Wait_To_Audit.toString());
+        refund.setId(refundId);
+        refund.setProductRefundStatus(RefundStatus.Wait_To_Audit.toString());
         affected += createOrUpdate(model.getId(), model);
-        affected += refundMapper.updateById(model);
+        affected += refundMapper.updateById(refund);
         return affected;
     }
 
@@ -187,8 +186,11 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         if (refund == null) {
             throw new BusinessException(BusinessCode.FileNotFound);
         }
-        model.setId(id);
-        model.setProductRefundStatus(RefundStatus.Audit_Passed.toString());
+        if (refund.getProductRefundStatus().compareTo(RefundStatus.Wait_To_Audit.toString())!=0){
+            throw new BusinessException(BusinessCode.ErrorStatus);
+        }
+        refund.setId(id);
+//        refund.setProductRefundStatus(RefundStatus.Audit_Passed.toString());
         if (refund.getId() != null) {
             affected += refundService.updateMaster(model);
             for (StorageOutItem item : model.getItems()) {
@@ -210,7 +212,8 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         int affected = 0;
         int refundTotal = 0;
         Refund refund = refundMapper.selectById(refundId);
-        if (refund.getProductRefundStatus().compareTo(RefundStatus.Audit_Passed.toString()) != 0) {
+        // 因为是立即执行的退货，所以直接判断了 是 待审核状态，因为是同步问题
+        if (refund.getProductRefundStatus().compareTo(RefundStatus.Wait_To_Audit.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
 

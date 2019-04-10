@@ -25,9 +25,25 @@
         <sb-log.version>1.0.0</sb-log.version>
         <sb-event.version>1.0.0</sb-event.version>
         <skipStandalone>true</skipStandalone>
+        <zero-io.version>0.0.1</zero-io.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.jfeat</groupId>
+            <artifactId>zero-io</artifactId>
+            <version>0.0.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>sb-base</artifactId>
