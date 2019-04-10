@@ -29,3 +29,22 @@
 
     #2:fixed删除 采购单/退货单 问题
 
+    #3: 插入的数据 ID 指向出错。修改 如下 10/04/2019
+    update wms_storage_out_item set wms_storage_out_item.storage_out_id = 29 where wms_storage_out_item.id in (1000,                                                                                                            1100,
+                                                                                                            1230,
+                                                                                                            1231,
+                                                                                                            1232,
+                                                                                                            1233,
+                                                                                                            1235,
+                                                                                                            1333,
+                                                                                                            1556,
+                                                                                                            2123,
+                                                                                                            2310,
+                                                                                                            2313,
+                                                                                                            2315,
+                                                                                                            3212,
+                                                                                                            4532,
+                                                                                                            5123,
+                                                                                                            5655,
+                                                                                                            6541,
+                                                                                                            7897)

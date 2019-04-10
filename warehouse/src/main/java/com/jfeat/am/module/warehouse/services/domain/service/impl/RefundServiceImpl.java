@@ -158,9 +158,11 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         if (refund.getProductRefundStatus().compareTo(RefundStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-        refund.setId(refundId);
+        model.setId(refundId);
+        model.setOriginatorName(refund.getOriginatorName());
+        model.setOriginatorId(refund.getOriginatorId());
         affected += createOrUpdate(model.getId(), model);
-        affected += refundMapper.updateById(refund);
+        affected += refundMapper.updateById(model);
         return affected;
     }
 
@@ -172,10 +174,12 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         if (refund.getProductRefundStatus().compareTo(RefundStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-        refund.setId(refundId);
-        refund.setProductRefundStatus(RefundStatus.Wait_To_Audit.toString());
+        model.setId(refundId);
+        model.setProductRefundStatus(RefundStatus.Wait_To_Audit.toString());
         affected += createOrUpdate(model.getId(), model);
-        affected += refundMapper.updateById(refund);
+        model.setOriginatorName(refund.getOriginatorName());
+        model.setOriginatorId(refund.getOriginatorId());
+        affected += refundMapper.updateById(model);
         return affected;
     }
 

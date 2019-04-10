@@ -125,8 +125,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         }
         // 草稿的情况下才能执行更新的操作
         if (procurement.getProcureStatus().compareTo(ProcurementStatus.Draft.toString()) == 0) {
-            procurement.setId(procurementId);
-            procurement.setTransactionTime(new Date());
+            model.setId(procurementId);
+            model.setTransactionTime(new Date());
             if (model.getItems() == null || model.getItems().size() == 0) {
                 throw new BusinessException(5002, "请至少选择一种需要采购的商品");
             } else {
@@ -149,8 +149,10 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                     sum = sum.multiply(item.getTransactionSkuPrice());
                     totalSpend = totalSpend.add(sum);
                 }
-                procurement.setProcurementTotal(totalSpend);
-                affected += procurementMapper.updateById(procurement);
+                model.setProcurementTotal(totalSpend);
+                model.setOriginatorName(procurement.getOriginatorName());
+                model.setOriginatorId(procurement.getOriginatorId());
+                affected += procurementMapper.updateById(model);
             }
             return affected;
         }
@@ -169,9 +171,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         }
         // 草稿的情况下才能执行更新的操作
         if (procurement.getProcureStatus().compareTo(ProcurementStatus.Draft.toString()) == 0) {
-            procurement.setId(procurementId);
-            procurement.setTransactionTime(new Date());
-            procurement.setProcureStatus(ProcurementStatus.Wait_To_Audit.toString());
+            model.setId(procurementId);
+            model.setTransactionTime(new Date());
+            model.setProcureStatus(ProcurementStatus.Wait_To_Audit.toString());
             if (model.getItems() == null || model.getItems().size() == 0) {
                 throw new BusinessException(5002, "请至少选择一种需要采购的商品");
             } else {
@@ -195,8 +197,10 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                         totalSpend = totalSpend.add(sum);
                     }
                 }
-                procurement.setProcurementTotal(totalSpend);
-                affected += procurementMapper.updateById(procurement);
+                model.setProcurementTotal(totalSpend);
+                model.setOriginatorName(procurement.getOriginatorName());
+                model.setOriginatorId(procurement.getOriginatorId());
+                affected += procurementMapper.updateById(model);
             }
             return affected;
         }
@@ -219,7 +223,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 && procurement.getProcureStatus().compareTo(ProcurementStatus.SectionStorageIn.toString()) != 0) {
             throw new BusinessException(5200, "非\"部分入库|审核通过\"状态下无法执行入库操作");
         }
-        procurement.setId(procurementId);
+        model.setId(procurementId);
         if (model.getItems() != null && model.getItems().size() > 0) {
             // 判断所有的商品是否都已经入库
             StorageInModel in = new StorageInModel();
@@ -288,7 +292,9 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         } else {
             throw new BusinessException(5500, "请至少选择一种商品进行入库！");
         }
-        affected += procurementMapper.updateById(procurement);
+        model.setOriginatorName(procurement.getOriginatorName());
+        model.setOriginatorId(procurement.getOriginatorId());
+        affected += procurementMapper.updateById(model);
         return affected;
     }
 
@@ -645,8 +651,10 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         if (procurement.getProcureStatus().compareTo(ProcurementStatus.Wait_To_Audit.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-        procurement.setProcureStatus(ProcurementStatus.Audit_Passed.toString());
-        procurement.setId(id);
+        model.setProcureStatus(ProcurementStatus.Audit_Passed.toString());
+        model.setId(id);
+        model.setOriginatorName(procurement.getOriginatorName());
+        model.setOriginatorId(procurement.getOriginatorId());
 
         BigDecimal totalSpend = BigDecimal.valueOf(0);
         for (StorageInItem item : model.getItems()) {
@@ -657,8 +665,8 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             sum = sum.multiply(item.getTransactionSkuPrice());
             totalSpend = totalSpend.add(sum);
         }
-        procurement.setProcurementTotal(totalSpend);
-        affected += procurementMapper.updateById(procurement);
+        model.setProcurementTotal(totalSpend);
+        affected += procurementMapper.updateById(model);
         return affected;
     }
 }

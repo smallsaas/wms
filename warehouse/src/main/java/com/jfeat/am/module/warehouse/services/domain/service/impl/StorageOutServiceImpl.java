@@ -77,11 +77,11 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         affected += outItemMapper.delete(new EntityWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, storageOutId)
                 .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT.toString()));
-        entity.setOriginatorId(userId);
-        entity.setTransactionTime(new Date());
-        if (entity.getStorageOutTime() == null) {
-            entity.setStorageOutTime(new Date());
-        }
+//        entity.setOriginatorId(userId);
+//        entity.setTransactionTime(new Date());
+//        if (entity.getStorageOutTime() == null) {
+//            entity.setStorageOutTime(new Date());
+//        }
         if (entity.getStorageOutItems() != null && entity.getStorageOutItems().size() > 0) {
             for (StorageOutItem outItem : entity.getStorageOutItems()) {
                 if (outItem.getTransactionQuantities() > 0) {
@@ -156,6 +156,8 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         }
         affected += changeStatus(userId, storageOutId, entity);
         entity.setId(storageOutId);
+        entity.setOriginatorName(out.getOriginatorName());
+        entity.setOriginatorId(out.getOriginatorId());
         affected += storageOutMapper.updateById(entity);
         return affected;
 
@@ -179,6 +181,8 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         }
         entity.setStatus(StorageOutStatus.Wait_To_Audit.toString());
         entity.setId(storageOutId);
+        entity.setOriginatorName(out.getOriginatorName());
+        entity.setOriginatorId(out.getOriginatorId());
         affected += changeStatus(userId, storageOutId, entity);
         affected += storageOutMapper.updateById(entity);
         return affected;
@@ -205,6 +209,8 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         }
         entity.setStatus(StorageOutStatus.Audit_Passed.toString());
         entity.setId(storageOutId);
+        entity.setOriginatorName(out.getOriginatorName());
+        entity.setOriginatorId(out.getOriginatorId());
         return storageOutMapper.updateById(entity);
     }
     /**
@@ -262,6 +268,8 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         }
         entity.setStatus(StorageOutStatus.Audit_Passed.toString());
         entity.setId(storageOutId);
+        entity.setOriginatorName(out.getOriginatorName());
+        entity.setOriginatorId(out.getOriginatorId());
         return storageOutMapper.updateById(entity);
     }
 

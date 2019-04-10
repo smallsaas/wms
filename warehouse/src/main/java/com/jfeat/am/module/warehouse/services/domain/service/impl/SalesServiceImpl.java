@@ -107,8 +107,8 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         }
         // 草稿的情况下才能执行更新的操作
         if (sales.getSalesStatus().compareTo(SalesStatus.Draft.toString()) == 0) {
-            sales.setId(salesId);
-            sales.setTransactionTime(new Date());
+            model.setId(salesId);
+            model.setTransactionTime(new Date());
             int totalCount = 0;
             BigDecimal totalSpend = BigDecimal.valueOf(0);
             if (model.getOutItems() == null || model.getOutItems().size() == 0) {
@@ -134,9 +134,11 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                     }
                 }
             }
-            sales.setTotalCount(totalCount);
-            sales.setSalesTotal(totalSpend);
-            affected += salesMapper.updateById(sales);
+            model.setTotalCount(totalCount);
+            model.setSalesTotal(totalSpend);
+            model.setOriginatorName(sales.getOriginatorName());
+            model.setOriginatorId(sales.getOriginatorId());
+            affected += salesMapper.updateById(model);
             return affected;
         }
         throw new BusinessException(BusinessCode.ErrorStatus);
@@ -151,8 +153,8 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         }
         // 等待入库的情况下才能执行更新的操作
         if (sales.getSalesStatus().compareTo(SalesStatus.Draft.toString()) == 0) {
-            sales.setId(salesId);
-            sales.setTransactionTime(new Date());
+            model.setId(sales.getId());
+            model.setTransactionTime(new Date());
             int totalCount = 0;
             BigDecimal totalSpend = BigDecimal.valueOf(0);
             if (model.getOutItems() == null || model.getOutItems().size() == 0) {
@@ -178,11 +180,13 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                     }
                 }
             }
-            sales.setTotalCount(totalCount);
-            sales.setSalesTotal(totalSpend);
-            sales.setSalesStatus(SalesStatus.Wait_To_Audit.toString());
-            sales.setId(salesId);
-            affected += salesMapper.updateById(sales);
+            model.setTotalCount(totalCount);
+            model.setSalesTotal(totalSpend);
+            model.setSalesStatus(SalesStatus.Wait_To_Audit.toString());
+            model.setId(salesId);
+            model.setOriginatorName(sales.getOriginatorName());
+            model.setOriginatorId(sales.getOriginatorId());
+            affected += salesMapper.updateById(model);
             return affected;
         }
         throw new BusinessException(BusinessCode.ErrorStatus);
@@ -313,10 +317,12 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             sum = sum.multiply(item.getTransactionSkuPrice());
             totalSpend = totalSpend.add(sum);
         }
-        sales.setTotalCount(totalCount);
-        sales.setSalesStatus(SalesStatus.WaitForStorageOut.toString());
-        sales.setId(salesId);
-        affected += salesMapper.updateById(sales);
+        model.setTotalCount(totalCount);
+        model.setSalesStatus(SalesStatus.WaitForStorageOut.toString());
+        model.setId(salesId);
+        model.setOriginatorName(sales.getOriginatorName());
+        model.setOriginatorId(sales.getOriginatorId());
+        affected += salesMapper.updateById(model);
         return affected;
     }
 

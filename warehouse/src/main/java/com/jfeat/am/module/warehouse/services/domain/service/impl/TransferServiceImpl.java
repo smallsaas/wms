@@ -161,6 +161,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
             throw new BusinessException(5100, "不能对非草稿状态下的调拨单进行修改");
         }
         model.setId(transferId);
+        model.setOriginatorName(transfer.getOriginatorName());
+        model.setOriginatorId(transfer.getOriginatorId());
         transferMapper.updateById(model);
         affected += draftOutItem(model.getOutItems(), model.getFromWarehouseId(), transferId);
         return affected;
@@ -179,8 +181,11 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         if (transfer.getStatus().compareTo(TransferStatus.Draft.toString()) != 0) {
             throw new BusinessException(5100, "不能对非草稿状态下的调拨单进行修改");
         }
-        transfer.setStatus(TransferStatus.Wait_To_Audit.toString());
-        transferMapper.updateById(transfer);
+        model.setId(transfer.getId());
+        model.setStatus(TransferStatus.Wait_To_Audit.toString());
+        model.setOriginatorName(transfer.getOriginatorName());
+        model.setOriginatorId(transfer.getOriginatorId());
+        transferMapper.updateById(model);
         affected += draftOutItem(model.getOutItems(), model.getFromWarehouseId(), transferId);
         return affected;
     }
@@ -203,6 +208,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
         model.setStatus(TransferStatus.Audit_Passed.toString());
         model.setId(transferId);
+        model.setOriginatorName(transfer.getOriginatorName());
+        model.setOriginatorId(transfer.getOriginatorId());
         transferMapper.updateById(model);
         return affected;
     }
@@ -277,7 +284,6 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
             storageOutItemMapper.insert(outItem);
         }
         transfer.setStatus(TransferStatus.Transfer.toString()); // 在途中
-        transfer.setOriginatorId(userId);
         transfer.setTransactionTime(new Date());
         transfer.setId(transferId);
         transfer.setStorageOutId(storageOut.getId());
