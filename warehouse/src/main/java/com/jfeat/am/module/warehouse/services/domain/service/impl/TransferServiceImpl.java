@@ -462,9 +462,13 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
 
     @Transactional
     public Integer deleteTransfer(Long id) {
+        int affected = 0;
         Transfer transfer = transferMapper.selectById(id);
         if (transfer == null) {
             throw new BusinessException(5200, "数据出错，无该调拨记录");
+        }
+        if (transfer.getStatus().compareTo(TransferStatus.Draft.toString())!=0){
+            throw new BusinessException(BusinessCode.ErrorStatus);
         }
         storageInItemMapper.delete(new EntityWrapper<StorageInItem>()
                 .eq(StorageInItem.STORAGE_IN_ID, transfer.getStorageInId())
@@ -474,9 +478,10 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, transfer.getStorageOutId())
                 .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT));
+        affected += crudTransferService.deleteMaster(id);
         storageOutMapper.delete(new EntityWrapper<StorageOut>()
                 .eq(StorageOut.ID, transfer.getStorageOutId()));
-        return crudTransferService.deleteMaster(id);
+        return affected;
     }
 
 

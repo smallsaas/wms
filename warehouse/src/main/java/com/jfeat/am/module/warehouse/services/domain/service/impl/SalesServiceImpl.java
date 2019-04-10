@@ -214,8 +214,8 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             out.setOriginatorName(model.getOriginatorName());
             // 使用field1去接收 warehouseId 字段
             out.setWarehouseId(Long.valueOf(model.getField1()));
-            //使用 field2 去接收 入库 code
-            out.setTransactionCode(model.getField2());
+            //使用 field2 去接收 出库 code
+            out.setTransactionCode(model.getField2().replace("IN","OUT"));
             out.setSalesId(salesId);
             out.setTransactionType(TransactionType.CustomerStorageOut.toString());
             out.setStatus(StorageOutStatus.Wait_To_Audit.toString());
