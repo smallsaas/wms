@@ -194,7 +194,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         int affected = 0;
         Sales sales = salesMapper.selectById(salesId);
         if (sales.getSalesStatus().compareTo(SalesStatus.WaitForStorageOut.toString()) != 0
-                && sales.getSalesStatus().compareTo(SalesStatus.SectionStorageOut.toString()) != 0) {
+                || sales.getSalesStatus().compareTo(SalesStatus.SectionStorageOut.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
         model.setId(salesId);
