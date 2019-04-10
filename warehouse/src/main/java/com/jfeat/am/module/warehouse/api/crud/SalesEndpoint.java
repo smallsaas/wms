@@ -138,7 +138,6 @@ public class SalesEndpoint extends BaseController {
     public Tip executionProcurement(@PathVariable Long id, @RequestBody SalesModel entity) {
         entity.setId(id);
         Tip resultTip = SuccessTip.create(salesService.executionStorageOut(JWTKit.getUserId(getHttpServletRequest()), id, entity));
-
         createSalesLog(id, "executionProcurement", "对分销商出库进行了出库操作", JSONObject.toJSONString(entity) + " & " + id + " &");
         return resultTip;
     }

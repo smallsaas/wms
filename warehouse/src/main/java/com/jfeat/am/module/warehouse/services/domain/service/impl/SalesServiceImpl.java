@@ -107,8 +107,8 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         }
         // 草稿的情况下才能执行更新的操作
         if (sales.getSalesStatus().compareTo(SalesStatus.Draft.toString()) == 0) {
-            model.setId(salesId);
-            model.setTransactionTime(new Date());
+            sales.setId(salesId);
+            sales.setTransactionTime(new Date());
             int totalCount = 0;
             BigDecimal totalSpend = BigDecimal.valueOf(0);
             if (model.getOutItems() == null || model.getOutItems().size() == 0) {
@@ -121,8 +121,8 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                 for (StorageOutItem item : model.getOutItems()) {
                     if (item.getTransactionQuantities() > 0) {
                         item.setDemandQuantities(item.getTransactionQuantities());
-                        item.setRelationCode(model.getSalesCode());
-                        item.setStorageOutId(model.getId());
+                        item.setRelationCode(sales.getSalesCode());
+                        item.setStorageOutId(sales.getId());
                         item.setType(ItemEnumType.TRADER.toString());
                         affected += outItemMapper.insert(item);
                         BigDecimal sum = new BigDecimal(item.getTransactionQuantities());
@@ -134,9 +134,9 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                     }
                 }
             }
-            model.setTotalCount(totalCount);
-            model.setSalesTotal(totalSpend);
-            affected += salesMapper.updateById(model);
+            sales.setTotalCount(totalCount);
+            sales.setSalesTotal(totalSpend);
+            affected += salesMapper.updateById(sales);
             return affected;
         }
         throw new BusinessException(BusinessCode.ErrorStatus);
@@ -151,8 +151,8 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         }
         // 等待入库的情况下才能执行更新的操作
         if (sales.getSalesStatus().compareTo(SalesStatus.Draft.toString()) == 0) {
-            model.setId(salesId);
-            model.setTransactionTime(new Date());
+            sales.setId(salesId);
+            sales.setTransactionTime(new Date());
             int totalCount = 0;
             BigDecimal totalSpend = BigDecimal.valueOf(0);
             if (model.getOutItems() == null || model.getOutItems().size() == 0) {
@@ -178,11 +178,11 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                     }
                 }
             }
-            model.setTotalCount(totalCount);
-            model.setSalesTotal(totalSpend);
-            model.setSalesStatus(SalesStatus.Wait_To_Audit.toString());
-            model.setId(salesId);
-            affected += salesMapper.updateById(model);
+            sales.setTotalCount(totalCount);
+            sales.setSalesTotal(totalSpend);
+            sales.setSalesStatus(SalesStatus.Wait_To_Audit.toString());
+            sales.setId(salesId);
+            affected += salesMapper.updateById(sales);
             return affected;
         }
         throw new BusinessException(BusinessCode.ErrorStatus);
@@ -194,7 +194,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         int affected = 0;
         Sales sales = salesMapper.selectById(salesId);
         if (sales.getSalesStatus().compareTo(SalesStatus.WaitForStorageOut.toString()) != 0
-                || sales.getSalesStatus().compareTo(SalesStatus.SectionStorageOut.toString()) != 0) {
+                && sales.getSalesStatus().compareTo(SalesStatus.SectionStorageOut.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
         model.setId(salesId);
@@ -289,7 +289,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                 throw new BusinessException(4501, "已选中的仓库中无以下商品" + "\"" + noInventory + "\"");
             }
         }
-        affected += salesMapper.updateById(model);
+        //affected += salesMapper.updateById(model);
         return affected;
     }
 
@@ -313,10 +313,10 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             sum = sum.multiply(item.getTransactionSkuPrice());
             totalSpend = totalSpend.add(sum);
         }
-        model.setTotalCount(totalCount);
-        model.setSalesStatus(SalesStatus.WaitForStorageOut.toString());
-        model.setId(salesId);
-        affected += salesMapper.updateById(model);
+        sales.setTotalCount(totalCount);
+        sales.setSalesStatus(SalesStatus.WaitForStorageOut.toString());
+        sales.setId(salesId);
+        affected += salesMapper.updateById(sales);
         return affected;
     }
 
