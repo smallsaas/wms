@@ -256,7 +256,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                                         + skuSalesCount
                                         + "，已出库数为:"
                                         + finishedCount
-                                        + "，审核通过但为出库数量为:"
+                                        + "，审核通过但未出库数量为:"
                                         + auditStorageOutPass
                                         + "，待审核出库总数为:"
                                         + auditStorageOutCount
