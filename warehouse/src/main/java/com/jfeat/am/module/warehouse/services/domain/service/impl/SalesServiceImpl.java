@@ -248,7 +248,9 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                                     - auditStorageOutPass
                                     - auditStorageOutCount)) {
                         throw new BusinessException(4500,
-                                "\""
+                                "\"请先对已提交的出库单执行\"出库\"或\"审核\"操作！"
+                                        +
+                                        "\""
                                         + skuProduct.getSkuName()
                                         + "\""
                                         + "出库数不能大于订单数，请先核对出库数！"
