@@ -446,7 +446,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                         } else {
                             // 是否是直接减少 库存呢
                             Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
-                            //outItem.setAfterTransactionQuantities(afterCount);
+                            outItem.setAfterTransactionQuantities(afterCount);
                             originInventory.setValidSku(afterCount);
                             //占用内存量累加
                             originInventory.setOrderCount(originInventory.getOrderCount() + outItem.getTransactionQuantities());
