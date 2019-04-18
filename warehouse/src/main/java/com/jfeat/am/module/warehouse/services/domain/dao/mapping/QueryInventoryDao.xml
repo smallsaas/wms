@@ -265,7 +265,7 @@
 
                 FROM
                 wms_check_sku csku
-                LEFT JOIN wms_check ON csku.check_id = wms_check.id
+                LEFT JOIN wms_check ON (csku.check_id = wms_check.id )
                 LEFT JOIN wms_warehouse ON csku.warehouse_id = wms_warehouse.id
                 LEFT JOIN t_sku_product ON t_sku_product.id = csku.sku_id
 
@@ -275,7 +275,7 @@
                 AND csku.profit_lost != 0
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
-
+                and wms_check.`status` = 'Done'
                 <if test="startTime != null and endTime != null">
                     <![CDATA[
                    AND wms_check.finish_time >= date(#{startTime}) AND
@@ -413,7 +413,7 @@
 
                 FROM
                 wms_check_sku csku
-                LEFT JOIN wms_check ON csku.check_id = wms_check.id
+                LEFT JOIN wms_check ON (csku.check_id = wms_check.id  and wms_check.`status` = 'Done')
                 LEFT JOIN wms_warehouse ON csku.warehouse_id = wms_warehouse.id
                 LEFT JOIN t_sku_product ON t_sku_product.id = csku.sku_id
 
@@ -423,6 +423,7 @@
                 AND csku.profit_lost != 0
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
+                and wms_check.`status` = 'Done'
 
                 <if test="startTime != null and endTime != null">
                     <![CDATA[
