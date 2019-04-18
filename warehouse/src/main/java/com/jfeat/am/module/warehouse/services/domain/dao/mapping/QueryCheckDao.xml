@@ -61,7 +61,7 @@
 
         <result column="profit_lost" property="profitLost"/>
         <result column="fact_quantities" property="factQuantities"/>
-        <result column="deserved_quantities" property="deservedQuantities"/>
+        <result column="deservedQuantities" property="deservedQuantities"/>
         <result column="field1" property="field1"/>
         <result column="field2" property="field2"/>
 
@@ -76,13 +76,26 @@
 
     <select id="skuRecords" resultMap="SkuRecords" parameterType="long">
         SELECT
-
         wms_check_sku.*,
         t_sku_product.sku_name as skuName,
         t_sku_product.bar_code as skuBarcode,
         t_sku_product.sku_code as skuCode,
         t_sku_product.field1 as skuUnit,
-        wms_warehouse.warehouse_name as warehouseName
+        wms_warehouse.warehouse_name as warehouseName,
+        CASE
+            WHEN
+                wms_check.`status` = 'Draft'
+                THEN
+                (
+                    SELECT
+                    wms_inventory.valid_sku
+                    FROM
+                    wms_inventory
+                    WHERE
+                    wms_inventory.sku_id = wms_check_sku.sku_id
+                    AND wms_inventory.warehouse_id = wms_warehouse.id
+                )
+            ELSE wms_check_sku.deserved_quantities END AS deservedQuantities
         FROM wms_check_sku
         left join t_sku_product on t_sku_product.id = wms_check_sku.sku_id
         left join wms_warehouse on wms_warehouse.id = wms_check_sku.warehouse_id
