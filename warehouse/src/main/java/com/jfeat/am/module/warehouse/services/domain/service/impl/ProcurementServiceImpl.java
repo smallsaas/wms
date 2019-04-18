@@ -407,12 +407,14 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 Integer validSku = originInventory.getValidSku() + item.getTransactionQuantities();
                 // 操作后的 数量
                 item.setAfterTransactionQuantities(validSku);
+                storageInItemMapper.updateById(item);
                 originInventory.setValidSku(validSku);
                 inventoryMapper.updateById(originInventory);
 
             } else {
                 // 操作后的 数量
                 item.setAfterTransactionQuantities(item.getTransactionQuantities());
+                storageInItemMapper.updateById(item);
                 isExistInventory.setTransmitQuantities(0);
                 isExistInventory.setAdvanceQuantities(0);
                 isExistInventory.setMinInventory(0);
