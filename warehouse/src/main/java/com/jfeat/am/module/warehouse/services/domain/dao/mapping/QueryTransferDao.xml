@@ -111,15 +111,29 @@
         and wms_storage_out.id = #{outId}
     </select>
 
+    <!-- 发现 前端不需要 对  OR wms_transfer.`status` = 'Wait_To_Audit' 这个条件 判断  ，删除了-->
     <select id="draftOutItemRecords" resultMap="OutItemMap" parameterType="long">
         SELECT
         wms_storage_out_item.*,
-        wms_storage_out_item.after_transaction_quantities as canRefundCount,
         t_sku_product.sku_code as skuCode,
         t_sku_product.sku_name as skuName,
         t_sku_product.bar_code as skuBarcode,
-        t_sku_product.field1 as skuUnit
+        t_sku_product.field1 as skuUnit,
+        CASE
+            WHEN (wms_transfer.`status` = 'Draft')
+            THEN
+            (
+                    SELECT
+                    wms_inventory.valid_sku
+                    FROM
+                    wms_inventory
+                    WHERE
+                    wms_inventory.sku_id = wms_storage_out_item.sku_id
+                    AND wms_inventory.warehouse_id = wms_transfer.from_warehouse_id
+            )
+            ELSE 0 END AS canRefundCount
         FROM wms_storage_out_item
+        LEFT JOIN wms_transfer ON (wms_transfer.id = wms_storage_out_item.storage_out_id AND wms_storage_out_item.type='TRANSFER')
         left join t_sku_product on t_sku_product.id = wms_storage_out_item.sku_id
 
         WHERE 1=1
