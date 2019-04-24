@@ -146,46 +146,46 @@
 
 
         ##入库子项相关:
-        #-- in_item
-        #-- skuId =1
+        -- in_item
+        -- skuId =1
         update wms_storage_in_item set after_transaction_quantities = 900 WHERE wms_storage_in_item.id = 906;
-        #-- skuId =2
+        -- skuId =2
         update wms_storage_in_item set after_transaction_quantities = 1000 WHERE wms_storage_in_item.id = 985;
-        #-- skuId =3
+        -- skuId =3
         update wms_storage_in_item set after_transaction_quantities = 1000 WHERE wms_storage_in_item.id = 983;
-        #-- skuId =21
+        -- skuId =21
         update wms_storage_in_item set after_transaction_quantities = 767 WHERE wms_storage_in_item.id = 984;
-        #-- skuId =62
+        -- skuId =62
         update wms_storage_in_item set after_transaction_quantities = 3000 WHERE wms_storage_in_item.id = 981;
-        #-- skuId =64
+        -- skuId =64
         update wms_storage_in_item set after_transaction_quantities = 3000 WHERE wms_storage_in_item.id = 982;
-        #-- skuId =69
+        -- skuId =69
         update wms_storage_in_item set after_transaction_quantities = 2000 WHERE wms_storage_in_item.id = 965;
-        #-- skuId =70
+        -- skuId =70
         update wms_storage_in_item set after_transaction_quantities = 4000 WHERE wms_storage_in_item.id = 966;
-        #-- skuId =73
+        -- skuId =73
         update wms_storage_in_item set after_transaction_quantities = 1885 WHERE wms_storage_in_item.id = 937;
-        #-- skuId =74
+        -- skuId =74
         update wms_storage_in_item set after_transaction_quantities = 2000 WHERE wms_storage_in_item.id = 961;
-        #-- skuId =75
+        -- skuId =75
         update wms_storage_in_item set after_transaction_quantities = 2000 WHERE wms_storage_in_item.id = 962;
-        #-- skuId =76
+        -- skuId =76
         update wms_storage_in_item set after_transaction_quantities = 2000 WHERE wms_storage_in_item.id = 969;
-        #-- skuId =77
+        -- skuId =77
         update wms_storage_in_item set after_transaction_quantities = 1912 WHERE wms_storage_in_item.id = 938;
-        #-- skuId =78
+        -- skuId =78
         update wms_storage_in_item set after_transaction_quantities = 2000 WHERE wms_storage_in_item.id = 963;
-        #-- skuId =79
+        -- skuId =79
         update wms_storage_in_item set after_transaction_quantities = 2000 WHERE wms_storage_in_item.id = 964;
-        #-- skuId =80
+        -- skuId =80
         update wms_storage_in_item set after_transaction_quantities = 2000 WHERE wms_storage_in_item.id = 970;
-        #-- skuId =81
+        -- skuId =81
         update wms_storage_in_item set after_transaction_quantities = 1865 WHERE wms_storage_in_item.id = 939;
-        #-- skuId =84
+        -- skuId =84
         update wms_storage_in_item set after_transaction_quantities = 6350 WHERE wms_storage_in_item.id = 954;
-        #-- skuId =85
+        -- skuId =85
         update wms_storage_in_item set after_transaction_quantities = 6350 WHERE wms_storage_in_item.id = 953;
-        #-- skuId =86
+        -- skuId =86
         update wms_storage_in_item set after_transaction_quantities = 6350 WHERE wms_storage_in_item.id = 952;
         -- skuId =87
         update wms_storage_in_item set after_transaction_quantities = 1885 WHERE wms_storage_in_item.id = 945;
@@ -193,3 +193,7 @@
         update wms_storage_in_item set after_transaction_quantities = 1912 WHERE wms_storage_in_item.id = 944;
         -- skuId =89
         update wms_storage_in_item set after_transaction_quantities = 1865 WHERE wms_storage_in_item.id = 943;
+
+    #采购入库的需求数量为采购的数量 24/04/2019
+        ##插入 采购的总数
+        ###item.setDemandQuantities(skuProcurementCount);
