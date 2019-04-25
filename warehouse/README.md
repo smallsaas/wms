@@ -197,3 +197,17 @@
     #采购入库的需求数量为采购的数量 24/04/2019
         ##插入 采购的总数
         ###item.setDemandQuantities(skuProcurementCount);
+
+    #采购入库的入库单 需求数量要是 采购的数量 25/04/2019
+        UPDATE wms_storage_in_item SET demand_quantities = 2000  WHERE id = 939;
+        UPDATE wms_storage_in_item SET demand_quantities = 2000  WHERE id = 938;
+
+        UPDATE wms_storage_in_item SET demand_quantities = 2000  WHERE id = 937;
+
+        UPDATE wms_storage_in_item SET demand_quantities = 2000  WHERE id = 1041;
+        UPDATE wms_storage_in_item SET demand_quantities = 1000  WHERE id = 985;
+        UPDATE wms_storage_in_item SET demand_quantities = 1000  WHERE id = 984;
+        UPDATE wms_storage_in_item SET demand_quantities = 1000  WHERE id = 983;
+        UPDATE wms_procurement SET procure_status = 'TotalStorageIn'  WHERE id = 35;
+        UPDATE wms_procurement SET procure_status = 'TotalStorageIn'  WHERE id = 33;
+        UPDATE wms_procurement SET procure_status = 'TotalStorageIn'  WHERE id = 32;
