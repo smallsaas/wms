@@ -29,7 +29,7 @@
         <result column="operatorName" property="operatorName" />
         <result column="slotName" property="slotName" />
         <result column="distributor_customer" property="distributorCustomer" />
-        <result column="out_order_num" property="outOrderNum" />
+        <result column="outOrderNum" property="outOrderNum" />
         <result column="procurementCode" property="procurementCode" />
 
         <collection property="storageInItems"
@@ -42,6 +42,9 @@
     </resultMap>
     <select id="storagesInDetails" resultMap="BaseStorageInRecord" parameterType="long">
         SELECT wms_storage_in.*,
+        CASE
+        WHEN wms_storage_in.transaction_type = 'Procurement' THEN wms_procurement.procurement_Code
+        ELSE wms_storage_in.out_order_num END AS OutOrderNum,
         wms_warehouse.warehouse_name as warehouseName,
         wms_procurement.procurement_code as procurementCode
 
