@@ -211,3 +211,7 @@
         UPDATE wms_procurement SET procure_status = 'TotalStorageIn'  WHERE id = 35;
         UPDATE wms_procurement SET procure_status = 'TotalStorageIn'  WHERE id = 33;
         UPDATE wms_procurement SET procure_status = 'TotalStorageIn'  WHERE id = 32;
+
+
+    #库存对不上问题 29/25/2019
+        UPDATE wms_storage_out SET wms_storage_out.`status` = 'Done' WHERE id in (823,822,718);
