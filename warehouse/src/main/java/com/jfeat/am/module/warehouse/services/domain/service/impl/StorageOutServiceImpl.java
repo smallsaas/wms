@@ -514,8 +514,8 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             }
             Integer afterOrderCount = inventory.getOrderCount() - updateOrderCount.getOrderCount();
             inventory.setOrderCount(afterOrderCount);
-            item.setAfterTransactionQuantities(inventory.getValidSku());
-            outItemMapper.updateById(item);
+            //originOutItem.setAfterTransactionQuantities(inventory.getValidSku());
+            outItemMapper.updateById(originOutItem);
             affected += inventoryMapper.updateById(inventory);
         }
         originOut.setStatus(StorageOutStatus.Done.toString());

@@ -153,7 +153,7 @@
                 'sin' recordType,
 
                 CASE
-                WHEN ISNULL(wms_storage_in.field1) THEN
+                WHEN (ISNULL(wms_storage_in.field1) OR wms_storage_in.field1 = '') THEN
                 wms_storage_in.id
                 ELSE
                 wms_storage_in.field1
@@ -202,7 +202,7 @@
                 'sout' recordType,
 
                 CASE
-                WHEN ISNULL(wms_storage_out.field1) THEN
+                WHEN (ISNULL(wms_storage_out.field1) OR wms_storage_out.field1 = '') THEN
                 wms_storage_out.id
                 ELSE
                 wms_storage_out.field1
@@ -308,7 +308,7 @@
                 'sin' recordType,
 
                 CASE
-                WHEN ISNULL(wms_storage_in.field1) THEN
+                WHEN (ISNULL(wms_storage_in.field1) OR wms_storage_in.field1 = '') THEN
                 wms_storage_in.id
                 ELSE
                 wms_storage_in.field1
@@ -356,7 +356,7 @@
                 'sout' recordType,
 
                 CASE
-                WHEN ISNULL(wms_storage_out.field1) THEN
+                WHEN (ISNULL(wms_storage_out.field1) OR wms_storage_out.field1 = '') THEN
                 wms_storage_out.id
                 ELSE
                 wms_storage_out.field1

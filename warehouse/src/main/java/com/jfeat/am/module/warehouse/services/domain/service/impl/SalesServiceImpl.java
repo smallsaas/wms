@@ -3,6 +3,7 @@ package com.jfeat.am.module.warehouse.services.domain.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.jfeat.AmApplication;
 import com.jfeat.am.common.constant.tips.Ids;
 import com.jfeat.am.common.exception.BusinessCode;
 import com.jfeat.am.common.exception.BusinessException;
@@ -28,6 +29,8 @@ import com.jfeat.am.module.warehouse.services.persistence.model.Inventory;
 import com.jfeat.am.module.warehouse.services.persistence.model.Sales;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOut;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,6 +66,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
     CRUDStorageOutService crudStorageOutService;
     @Resource
     StorageOutMapper outMapper;
+    protected final static Logger logger = LoggerFactory.getLogger(AmApplication.class);
 
     @Transactional
     public Integer createSales(Long userId, SalesModel model) {
@@ -275,6 +279,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                     isExistInventory.setWarehouseId(Long.valueOf(model.getField1()));
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                     if (originInventory != null) {
+                        logger.info("### 出库前的数量：###" + originInventory.getValidSku());
                         if (originInventory.getValidSku() < item.getTransactionQuantities()) {
                             throw new BusinessException(5500, skuProduct.getSkuName()
                                     + "数量不足，" + "出库数"
@@ -282,6 +287,13 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                                     + "大于可用库存数"
                                     + originInventory.getValidSku());
                         }
+
+                        /*Integer afterCount = originInventory.getValidSku() - item.getTransactionQuantities();
+                        logger.info("### 出库后的数量：###" + originInventory.getValidSku());
+                        originInventory.setValidSku(afterCount);
+                        inventoryMapper.updateById(originInventory);// 更新库存
+                        item.setAfterTransactionQuantities(afterCount);
+                        logger.info("### 出库子项JSON数据：###" + JSON.toJSONString(item));*/
                         outItemMapper.insert(item);
                     } else {
                         noInventory.add(skuProduct.getSkuName() + ":" + skuProduct.getBarCode() + "\n"
