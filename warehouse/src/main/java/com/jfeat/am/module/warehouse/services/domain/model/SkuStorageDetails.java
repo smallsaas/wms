@@ -21,6 +21,7 @@ public class SkuStorageDetails {
     String relationCode;
     String recordType;
     Long parentId;
+    String resultType;
 
     public String getRecordType() {
         return recordType;
@@ -149,5 +150,13 @@ public class SkuStorageDetails {
 
     public void setParentId(Long parentId) {
         this.parentId = parentId;
+    }
+
+    public String getResultType() {
+        return resultType;
+    }
+
+    public void setResultType(String resultType) {
+        this.resultType = resultType;
     }
 }

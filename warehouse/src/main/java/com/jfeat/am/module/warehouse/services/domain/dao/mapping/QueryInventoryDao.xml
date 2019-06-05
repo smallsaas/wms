@@ -125,6 +125,7 @@
         <result column="transactionType" property="transactionType" />
         <result column="transactionCode" property="transactionCode" />
         <result column="order_count" property="orderCount" />
+        <result column="resultType" property="resultType" />
         <result column="parentId" property="parentId" />
 
         <result column="warehouseName" property="warehouseName" />
@@ -151,6 +152,7 @@
                 wms_storage_in.transaction_type AS transactionType,
                 wms_storage_in.transaction_code AS transactionCode,
                 'sin' recordType,
+                wms_storage_in.`status` AS resultType,
 
                 CASE
                 WHEN (ISNULL(wms_storage_in.field1) OR wms_storage_in.field1 = '') THEN
@@ -169,7 +171,7 @@
                 1 = 1
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
-                AND (sin.type = 'StorageIn' and wms_storage_in.`status`='Done')
+                AND (sin.type = 'StorageIn' and wms_storage_in.`status`in ('Done','Closed'))
                 and wms_storage_in.transaction_type = #{transactionType}
                 <if test="startTime != null and endTime != null">
                     <![CDATA[
@@ -200,6 +202,7 @@
                 wms_storage_out.transaction_type AS transactionType,
                 wms_storage_out.transaction_code AS transactionCode,
                 'sout' recordType,
+                wms_storage_out.`status` AS resultType,
 
                 CASE
                 WHEN (ISNULL(wms_storage_out.field1) OR wms_storage_out.field1 = '') THEN
@@ -219,7 +222,7 @@
                 1 = 1
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
-                and (sout.type='STORAGEOUT' and wms_storage_out.`status`='Done')
+                and (sout.type='STORAGEOUT' and wms_storage_out.`status` in ('Done','Closed'))
                 and wms_storage_out.transaction_type = #{transactionType}
                 <if test="startTime != null and endTime != null">
                     <![CDATA[
@@ -252,14 +255,13 @@
                 wms_warehouse.warehouse_name AS warehouseName,
                 'checkUpdate' transactionType,
                 NULL AS transactionCode,
-
                 CASE
-
                 WHEN csku.profit_lost>0
                 THEN 'sin'
                 ELSE 'sout' END
                 AS recordType,
 
+                wms_check.`status` AS resultType,
                 csku.check_id as parentId
 
 
@@ -306,7 +308,7 @@
                 wms_storage_in.transaction_type AS transactionType,
                 wms_storage_in.transaction_code AS transactionCode,
                 'sin' recordType,
-
+                wms_storage_in.`status` AS resultType,
                 CASE
                 WHEN (ISNULL(wms_storage_in.field1) OR wms_storage_in.field1 = '') THEN
                 wms_storage_in.id
@@ -325,7 +327,7 @@
                 1 = 1
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
-                AND (sin.type = 'STORAGEIN' and wms_storage_in.`status`='Done')
+                AND (sin.type = 'STORAGEIN' and wms_storage_in.`status` in ('Done','Closed'))
                 <if test="startTime != null and endTime != null">
                     <![CDATA[
                 AND sin.transaction_time >= date(#{startTime}) AND
@@ -354,7 +356,7 @@
                 wms_storage_out.transaction_type AS transactionType,
                 wms_storage_out.transaction_code AS transactionCode,
                 'sout' recordType,
-
+                wms_storage_out.`status` AS resultType,
                 CASE
                 WHEN (ISNULL(wms_storage_out.field1) OR wms_storage_out.field1 = '') THEN
                 wms_storage_out.id
@@ -372,7 +374,7 @@
                 1 = 1
                 AND t_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
-                and (sout.type='STORAGEOUT' and wms_storage_out.`status`='Done')
+                and (sout.type='STORAGEOUT' and wms_storage_out.`status` in ('Done','Closed'))
                 <if test="startTime != null and endTime != null">
                     <![CDATA[
                 AND sout.transaction_time >= date(#{startTime}) AND
@@ -408,6 +410,8 @@
                 THEN 'sin'
                 ELSE 'sout' END
                 AS recordType,
+
+                wms_check.`status` AS resultType,
 
                 csku.check_id as parentId
 
