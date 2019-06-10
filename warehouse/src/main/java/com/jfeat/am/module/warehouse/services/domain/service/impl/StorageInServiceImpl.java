@@ -345,9 +345,13 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
                 }
                 logger.info("### storage in ###:操作前的数量"+ inventory.getValidSku());
                 Integer afterOrderCount = inventory.getOrderCount() - inItem.getTransactionQuantities();
-                // 数量回滚 ----- 支付超时订单关闭时，实际商品不会出货
-                inventory.setValidSku(inventory.getValidSku() + inItem.getTransactionQuantities());
+                // 数量回滚 ----- 支付超时订单关闭时，实际商品不会出货 -- 出库那边不直接 扣减  库存，故不需要加上操作数量 10/06/2019
+                //inventory.setValidSku(inventory.getValidSku() + inItem.getTransactionQuantities());
                 inventory.setOrderCount(afterOrderCount);
+
+                // 操作失败，故操作后的数量跟操作前的数量一致 -- 10/06/2019
+                inItem.setAfterTransactionQuantities(inItem.getBeforeTransactionQuantities());
+                inItemMapper.updateById(inItem);
                 affected += inventoryMapper.updateById(inventory);
                 logger.info("### storage in ###:操作后的数量"+ inventory.getValidSku());
                 logger.info("没有更新占用库存" + "----->这个时候更新成功了，打印库存信息" + JSON.toJSONString(inventory));

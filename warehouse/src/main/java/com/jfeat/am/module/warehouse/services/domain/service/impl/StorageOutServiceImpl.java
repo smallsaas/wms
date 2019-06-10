@@ -452,10 +452,11 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                         } else {
                             logger.info("### storage out ###:(商城出库)操作前的数量"+ originInventory.getValidSku());
                             outItem.setBeforeTransactionQuantities(originInventory.getValidSku());
-                            // 是否是直接减少 库存呢
+
                             Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
                             outItem.setAfterTransactionQuantities(afterCount);
-                            originInventory.setValidSku(afterCount);
+                            // 是否是直接减少 库存呢 -- 不能直接减少库存，直接减少库存的话，订单超时关闭期间内有新的订单会导致  新的订单的 afterTransactionQuantities 数据出错 -- update 10/06/2019
+                            //originInventory.setValidSku(afterCount);
                             //占用内存量累加
                             originInventory.setOrderCount(originInventory.getOrderCount() + outItem.getTransactionQuantities());
                             logger.info("### storage out ###:(商城出库)操作后的数量"+ originInventory.getValidSku());
@@ -525,7 +526,8 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             logger.info("### storage out ###:(商城出库-更新占用库存)操作前的数量"+ inventory.getValidSku()+"\t占用库存:"+inventory.getOrderCount());
             Integer afterOrderCount = inventory.getOrderCount() - updateOrderCount.getOrderCount();
             inventory.setOrderCount(afterOrderCount);
-            item.setAfterTransactionQuantities(inventory.getValidSku());
+            // 10/06/2019 在更新的时候再插入 操作后的数量
+            item.setAfterTransactionQuantities(inventory.getValidSku()-updateOrderCount.getOrderCount());
             outItemMapper.updateById(item);
             affected += inventoryMapper.updateById(inventory);
             logger.info("### storage out ###:(商城出库-更新占用库存)操作后的数量"+ inventory.getValidSku()+"\t占用库存:"+inventory.getOrderCount());
