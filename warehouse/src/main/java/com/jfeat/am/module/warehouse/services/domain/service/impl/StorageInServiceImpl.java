@@ -226,12 +226,17 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
                     isExistInventory.setWarehouseId(in.getWarehouseId());
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                     if (originInventory != null) {
+                        logger.info("### storage in ###:操作前的数量(原来的库存)"+ originInventory.getValidSku());
+                        inItem.setBeforeTransactionQuantities(originInventory.getValidSku());
                         //插入操作后的库存数量 原来数量+准备入库数量
                         Integer afterSkuCount = originInventory.getValidSku() + inItem.getTransactionQuantities();
                         inItem.setAfterTransactionQuantities(afterSkuCount);
                         originInventory.setValidSku(afterSkuCount);
                         affected += inventoryMapper.updateById(originInventory);
+                        logger.info("### storage in ###:操作后的数量"+ originInventory.getValidSku());
                     } else {
+                        logger.info("### storage in ###:操作前的数量(原来的无库存,操作前的数量为0)");
+                        inItem.setBeforeTransactionQuantities(0);
                         //插入操作后的库存数量 == 准备入库的数量 原来的不存在
                         inItem.setAfterTransactionQuantities(inItem.getTransactionQuantities());
 //                        isExistInventory.setWarehouseId(in.getWarehouseId());
@@ -292,12 +297,16 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
                         }
                         Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                         if (originInventory != null) {
+                            logger.info("### storage in ###:(商城退货)操作前的数量(原来的库存)"+ originInventory.getValidSku());
+                            inItem.setBeforeTransactionQuantities(originInventory.getValidSku());
                             //插入操作后的库存数量 原来数量+准备入库数量
                             Integer afterSkuCount = originInventory.getValidSku() + inItem.getTransactionQuantities();
                             originInventory.setValidSku(afterSkuCount);
                             inItem.setAfterTransactionQuantities(afterSkuCount);
                             affected += inventoryMapper.updateById(originInventory);
                         } else {
+                            logger.info("### storage in ###:(商城退货)操作前的数量(原来的无库存,操作前的数量为0)");
+                            inItem.setBeforeTransactionQuantities(0);
                             //插入操作后的库存数量 == 准备入库的数量 原来的不存在
                             inItem.setAfterTransactionQuantities(inItem.getTransactionQuantities());
                             isExistInventory.setWarehouseId(entity.getWarehouseId());
@@ -334,11 +343,13 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
                     logger.info("没有更新占用库存" + "出货数据有误，请核准并重新提交" + JSON.toJSONString(entity));
                     throw new BusinessException(5300, "出货数据有误，请核准并重新提交");
                 }
+                logger.info("### storage in ###:操作前的数量"+ inventory.getValidSku());
                 Integer afterOrderCount = inventory.getOrderCount() - inItem.getTransactionQuantities();
                 // 数量回滚 ----- 支付超时订单关闭时，实际商品不会出货
                 inventory.setValidSku(inventory.getValidSku() + inItem.getTransactionQuantities());
                 inventory.setOrderCount(afterOrderCount);
                 affected += inventoryMapper.updateById(inventory);
+                logger.info("### storage in ###:操作后的数量"+ inventory.getValidSku());
                 logger.info("没有更新占用库存" + "----->这个时候更新成功了，打印库存信息" + JSON.toJSONString(inventory));
             }
             originOut.setStatus(StorageOutStatus.Closed.toString());

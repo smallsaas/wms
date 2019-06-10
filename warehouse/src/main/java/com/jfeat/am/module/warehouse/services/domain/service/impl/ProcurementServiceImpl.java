@@ -406,14 +406,20 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             isExistInventory.setWarehouseId(in.getWarehouseId());
             Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
             if (originInventory != null) {
+                // 操作前的数量
+
+                logger.info("### procurement ###:(库存存在)操作前的数量"+ originInventory.getValidSku());
+                item.setBeforeTransactionQuantities(originInventory.getValidSku());
                 Integer validSku = originInventory.getValidSku() + item.getTransactionQuantities();
                 // 操作后的 数量
                 item.setAfterTransactionQuantities(validSku);
                 storageInItemMapper.updateById(item);
                 originInventory.setValidSku(validSku);
                 inventoryMapper.updateById(originInventory);
+                logger.info("### procurement ###:(库存存在)操作后的数量"+ originInventory.getValidSku());
 
             } else {
+                logger.info("### procurement ###:(库存不存在)操作前的数量:0");
                 // 操作后的 数量
                 item.setAfterTransactionQuantities(item.getTransactionQuantities());
                 storageInItemMapper.updateById(item);
@@ -422,6 +428,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 isExistInventory.setMinInventory(0);
                 isExistInventory.setValidSku(item.getTransactionQuantities());
                 isExistInventory.setMaxInventory(item.getTransactionQuantities());
+                logger.info("### procurement ###:(库存不存在)操作后的数量:" + isExistInventory.getValidSku());
                 inventoryMapper.insert(isExistInventory);
             }
             // 原来的 + 刚刚入库的

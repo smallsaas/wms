@@ -258,17 +258,21 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
             isExistInventory.setWarehouseId(transfer.getFromWarehouseId());
             Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
 
+            logger.info("### transfer ###:(发送方)操作前的数量"+originInventory.getValidSku());
+            outItem.setBeforeTransactionQuantities(originInventory.getValidSku());
             Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
             originInventory.setValidSku(afterCount);
             outItem.setAfterTransactionQuantities(afterCount);
             // 操作后的数量
             affected += inventoryMapper.updateById(originInventory);
+            logger.info("### transfer ###:(发送方)操作后的数量"+originInventory.getValidSku());
             // 接收方为在途数
             Inventory inventory = new Inventory();
             inventory.setSkuId(outItem.getSkuId());
             inventory.setWarehouseId(transfer.getToWarehouseId());
             Inventory toInventory = inventoryMapper.selectOne(inventory);
             if (toInventory == null) {
+                logger.info("### transfer ###:(接收方无库存,则操作前为0)操作前的数量");
                 inventory.setValidSku(0);
                 inventory.setMinInventory(0);
                 inventory.setAdvanceQuantities(0);
@@ -276,6 +280,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 inventory.setTransmitQuantities(outItem.getTransactionQuantities());
                 affected += inventoryMapper.insert(inventory);  //假设 接收方没有 ，则新建
             } else {
+                logger.info("### transfer ###:(接收方)操作前的数量" );
                 int originCount = toInventory.getTransmitQuantities();
                 originCount += outItem.getTransactionQuantities();
                 toInventory.setTransmitQuantities(originCount);
@@ -332,6 +337,9 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
 
                 if (originInventory != null) {
+                    logger.info("### transfer ###:(接收方入库)操作前的数量" + originInventory.getValidSku());
+                    logger.info("### transfer ###:(接收方入库)操作前在途数的数量" + originInventory.getTransmitQuantities());
+                    inItem.setBeforeTransactionQuantities(originInventory.getValidSku());
                     Integer afterCount = originInventory.getValidSku() + outItem.getTransactionQuantities();
                     // 操作后的数量
                     inItem.setAfterTransactionQuantities(afterCount);
@@ -339,7 +347,11 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                     Integer transmitCount = originInventory.getTransmitQuantities() - outItem.getTransactionQuantities();
                     originInventory.setTransmitQuantities(transmitCount);
                     affected += inventoryMapper.updateById(originInventory);
+                    logger.info("### transfer ###:(接收方入库)操作后的数量" + originInventory.getValidSku());
+                    logger.info("### transfer ###:(接收方入库)操作后在途数的数量" + originInventory.getTransmitQuantities());
                 } else {
+                    logger.info("### transfer ###:(接收方入库，无该库存)操作前的数量");
+                    inItem.setBeforeTransactionQuantities(0);
                     // 操作后的数量
                     inItem.setAfterTransactionQuantities(outItem.getTransactionQuantities());
                     isExistInventory.setMaxInventory(outItem.getTransactionQuantities());
@@ -349,6 +361,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                     isExistInventory.setValidSku(outItem.getTransactionQuantities());
                     isExistInventory.setSkuId(outItem.getSkuId());
                     affected += inventoryMapper.insert(isExistInventory);
+                    logger.info("### transfer ###:(接收方入库，无该库存)操作前的数量" + isExistInventory.getValidSku() + "\t 入库数为" + isExistInventory.getValidSku());
                 }
                 inItem.setSkuId(outItem.getSkuId());
                 inItem.setDemandQuantities(outItem.getDemandQuantities());
@@ -405,21 +418,33 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 isExistInventory.setSkuId(outItem.getSkuId());
                 isExistInventory.setWarehouseId(transfer.getFromWarehouseId());
                 Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                logger.info("### transfer ###:(接收方拒绝入库-调出库)操作前的数量" + originInventory.getValidSku());
+                inItem.setBeforeTransactionQuantities(originInventory.getValidSku());
+                logger.info("### transfer ###:(接收方拒绝入库-调出库)操作前在途数的数量" + originInventory.getTransmitQuantities());
                 Integer afterCount = originInventory.getValidSku() + outItem.getTransactionQuantities();
                 originInventory.setValidSku(afterCount);
                 // 操作后的数量
                 inItem.setAfterTransactionQuantities(afterCount);
                 affected += inventoryMapper.updateById(originInventory);
+                logger.info("### transfer ###:(接收方入库-调出库)操作后的数量" + originInventory.getValidSku());
+                logger.info("### transfer ###:(接收方入库-调出库)操作后在途数的数量" + originInventory.getTransmitQuantities());
                 // 接收方 在途数 - 调拨数
                 Inventory inventory = new Inventory();
                 inventory.setSkuId(outItem.getSkuId());
                 inventory.setWarehouseId(transfer.getToWarehouseId());
                 Inventory toInventory = inventoryMapper.selectOne(inventory);
+                logger.info("### transfer ###:(接收方入库-调入库)操作前的数量" + toInventory.getValidSku());
+
+                logger.info("### transfer ###:(接收方入库-调入库)操作前在途数的数量" + toInventory.getTransmitQuantities());
+
                 Integer transmitCount = toInventory.getTransmitQuantities() - outItem.getTransactionQuantities();
                 Integer nowValidCount = toInventory.getValidSku() + outItem.getTransactionQuantities();
                 toInventory.setValidSku(nowValidCount);
                 toInventory.setTransmitQuantities(transmitCount);
                 affected += inventoryMapper.updateById(toInventory);
+                logger.info("### transfer ###:(接收方入库-调入库)操作后的数量" + toInventory.getValidSku());
+
+                logger.info("### transfer ###:(接收方入库-调入库)操作后在途数的数量" + toInventory.getTransmitQuantities());
                 inItem.setDemandQuantities(outItem.getDemandQuantities());
                 inItem.setSkuId(outItem.getSkuId());
                 inItem.setRelationCode(transfer.getTransactionCode());

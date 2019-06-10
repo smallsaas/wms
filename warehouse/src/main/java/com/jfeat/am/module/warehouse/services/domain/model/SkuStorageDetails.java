@@ -18,6 +18,7 @@ public class SkuStorageDetails {
     String transactionType;
     String transactionCode;
     Integer validValue;
+    Integer beforeTransactionQuantities;
     String relationCode;
     String recordType;
     Long parentId;
@@ -158,5 +159,13 @@ public class SkuStorageDetails {
 
     public void setResultType(String resultType) {
         this.resultType = resultType;
+    }
+
+    public Integer getBeforeTransactionQuantities() {
+        return beforeTransactionQuantities;
+    }
+
+    public void setBeforeTransactionQuantities(Integer beforeTransactionQuantities) {
+        this.beforeTransactionQuantities = beforeTransactionQuantities;
     }
 }

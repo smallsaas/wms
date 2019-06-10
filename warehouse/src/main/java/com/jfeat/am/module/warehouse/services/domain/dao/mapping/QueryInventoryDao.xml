@@ -126,6 +126,7 @@
         <result column="transactionCode" property="transactionCode" />
         <result column="order_count" property="orderCount" />
         <result column="resultType" property="resultType" />
+        <result column="beforeTransactionQuantities" property="beforeTransactionQuantities" />
         <result column="parentId" property="parentId" />
 
         <result column="warehouseName" property="warehouseName" />
@@ -144,6 +145,7 @@
                 sin.transaction_quantities AS transactionQuantities,
                 sin.transaction_time AS transactionTime,
                 sin.after_transaction_quantities AS validValue,
+                sin.before_transaction_quantities AS beforeTransactionQuantities,
                 t_sku_product.sku_name AS skuName,
                 t_sku_product.bar_code AS skuBarcode,
                 t_sku_product.sku_code AS skuCode,
@@ -194,6 +196,7 @@
                 sout.transaction_quantities AS transactionQuantities,
                 sout.transaction_time AS transactionTime,
                 sout.after_transaction_quantities AS validValue,
+                sout.before_transaction_quantities AS beforeTransactionQuantities,
                 t_sku_product.sku_name AS skuName,
                 t_sku_product.bar_code AS skuBarcode,
                 t_sku_product.sku_code AS skuCode,
@@ -248,6 +251,7 @@
                 wms_check.finish_time AS transactionTime,
 
                 csku.fact_quantities AS validValue,
+                null as beforeTransactionQuantities,
                 t_sku_product.sku_name AS skuName,
                 t_sku_product.bar_code AS skuBarcode,
                 t_sku_product.sku_code AS skuCode,
@@ -300,6 +304,7 @@
                 sin.transaction_quantities AS transactionQuantities,
                 sin.transaction_time AS transactionTime,
                 sin.after_transaction_quantities AS validValue,
+                sin.before_transaction_quantities AS beforeTransactionQuantities,
                 t_sku_product.sku_name AS skuName,
                 t_sku_product.bar_code AS skuBarcode,
                 t_sku_product.sku_code AS skuCode,
@@ -348,6 +353,7 @@
                 sout.transaction_quantities AS transactionQuantities,
                 sout.transaction_time AS transactionTime,
                 sout.after_transaction_quantities AS validValue,
+                sout.before_transaction_quantities AS beforeTransactionQuantities,
                 t_sku_product.sku_name AS skuName,
                 t_sku_product.bar_code AS skuBarcode,
                 t_sku_product.sku_code AS skuCode,
@@ -396,6 +402,7 @@
                 wms_check.finish_time AS transactionTime,
 
                 csku.fact_quantities AS validValue,
+                null as beforeTransactionQuantities,
                 t_sku_product.sku_name AS skuName,
                 t_sku_product.bar_code AS skuBarcode,
                 t_sku_product.sku_code AS skuCode,

@@ -279,7 +279,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                     isExistInventory.setWarehouseId(Long.valueOf(model.getField1()));
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
                     if (originInventory != null) {
-                        logger.info("### 出库前的数量：###" + originInventory.getValidSku());
+                        logger.info("### sales ###:单签的数量"+ originInventory.getValidSku());
                         if (originInventory.getValidSku() < item.getTransactionQuantities()) {
                             throw new BusinessException(5500, skuProduct.getSkuName()
                                     + "数量不足，" + "出库数"
@@ -287,7 +287,6 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                                     + "大于可用库存数"
                                     + originInventory.getValidSku());
                         }
-
                         /*Integer afterCount = originInventory.getValidSku() - item.getTransactionQuantities();
                         logger.info("### 出库后的数量：###" + originInventory.getValidSku());
                         originInventory.setValidSku(afterCount);

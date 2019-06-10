@@ -215,3 +215,9 @@
 
     #库存对不上问题 29/25/2019
         UPDATE wms_storage_out SET wms_storage_out.`status` = 'Done' WHERE id in (823,822,718);
+
+
+
+    # 对商品操作前后的库存数据都加上
+        alter TABLE wms_storage_in_item ADD `before_transaction_quantities`  int(11) NOT NULL DEFAULT '0' COMMENT '操作后数量';
+        alter TABLE wms_storage_out_item ADD `before_transaction_quantities`  int(11) NOT NULL DEFAULT '0' COMMENT '操作后数量';

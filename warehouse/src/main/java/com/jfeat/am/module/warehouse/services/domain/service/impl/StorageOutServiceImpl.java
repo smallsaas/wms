@@ -324,10 +324,13 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                     isExistInventory.setSkuId(outItem.getSkuId());
                     isExistInventory.setWarehouseId(out.getWarehouseId());
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    logger.info("### storage out ###:操作前的数量"+ originInventory.getValidSku());
+                    outItem.setBeforeTransactionQuantities(originInventory.getValidSku());
                     Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
                     outItem.setAfterTransactionQuantities(afterCount);
                     originInventory.setValidSku(afterCount);
                     affected += inventoryMapper.updateById(originInventory);
+                    logger.info("### storage out ###:操作后的数量"+ originInventory.getValidSku());
                     affected += outItemMapper.updateById(outItem);
                 } else {
                     throw new BusinessException(4050, "出库数量不能为空！");
@@ -379,10 +382,13 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                     isExistInventory.setSkuId(outItem.getSkuId());
                     isExistInventory.setWarehouseId(out.getWarehouseId());
                     Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    logger.info("### storage out ###:(分销商出库)操作前的数量"+ originInventory.getValidSku());
+                    outItem.setBeforeTransactionQuantities(originInventory.getValidSku());
                     Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
                     originInventory.setValidSku(afterCount);
                     outItem.setAfterTransactionQuantities(afterCount);
                     affected += inventoryMapper.updateById(originInventory);
+                    logger.info("### storage out ###:(分销商出库)操作后的数量"+ originInventory.getValidSku());
                     outItemMapper.updateById(outItem);
                     finishedTotalCount += outItem.getTransactionQuantities();
                 } else {
@@ -444,12 +450,15 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                                     + originInventory.getValidSku()
                                     + "小于出库量" + outItem.getTransactionQuantities());
                         } else {
+                            logger.info("### storage out ###:(商城出库)操作前的数量"+ originInventory.getValidSku());
+                            outItem.setBeforeTransactionQuantities(originInventory.getValidSku());
                             // 是否是直接减少 库存呢
                             Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
                             outItem.setAfterTransactionQuantities(afterCount);
                             originInventory.setValidSku(afterCount);
                             //占用内存量累加
                             originInventory.setOrderCount(originInventory.getOrderCount() + outItem.getTransactionQuantities());
+                            logger.info("### storage out ###:(商城出库)操作后的数量"+ originInventory.getValidSku());
                             affected += inventoryMapper.updateById(originInventory);
                         }
                     } else {
@@ -512,11 +521,14 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             if (inventory.getOrderCount() < updateOrderCount.getOrderCount()) {
                 throw new BusinessException(5300, "出货数据有误，请核准并重新提交");
             }
+            item.setBeforeTransactionQuantities(inventory.getValidSku());
+            logger.info("### storage out ###:(商城出库-更新占用库存)操作前的数量"+ inventory.getValidSku()+"\t占用库存:"+inventory.getOrderCount());
             Integer afterOrderCount = inventory.getOrderCount() - updateOrderCount.getOrderCount();
             inventory.setOrderCount(afterOrderCount);
-            //originOutItem.setAfterTransactionQuantities(inventory.getValidSku());
-            outItemMapper.updateById(originOutItem);
+            item.setAfterTransactionQuantities(inventory.getValidSku());
+            outItemMapper.updateById(item);
             affected += inventoryMapper.updateById(inventory);
+            logger.info("### storage out ###:(商城出库-更新占用库存)操作后的数量"+ inventory.getValidSku()+"\t占用库存:"+inventory.getOrderCount());
         }
         originOut.setStatus(StorageOutStatus.Done.toString());
         storageOutMapper.updateById(originOut);

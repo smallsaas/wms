@@ -10,6 +10,7 @@
 		<result column="transaction_sku_price" property="transactionSkuPrice" />
 		<result column="transaction_quantities" property="transactionQuantities" />
 		<result column="after_transaction_quantities" property="afterTransactionQuantities" />
+		<result column="before_transaction_quantities" property="beforeTransactionQuantities" />
 		<result column="transaction_time" property="transactionTime" />
 		<result column="relation_code" property="relationCode" />
 		<result column="demand_quantities" property="demandQuantities" />
@@ -17,7 +18,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, storage_out_id AS storageOutId, demand_quantities as demandQuantities,sku_id AS skuId, transaction_sku_price AS transactionSkuPrice, transaction_quantities AS transactionQuantities, after_transaction_quantities AS afterTransactionQuantities, transaction_time AS transactionTime, relation_code AS relationCode
+        id, storage_out_id AS storageOutId, before_transaction_quantities AS beforeTransactionQuantities,demand_quantities as demandQuantities,sku_id AS skuId, transaction_sku_price AS transactionSkuPrice, transaction_quantities AS transactionQuantities, after_transaction_quantities AS afterTransactionQuantities, transaction_time AS transactionTime, relation_code AS relationCode
     </sql>
 
 </mapper>

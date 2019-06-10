@@ -26,6 +26,8 @@ import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDRefundServic
 import com.jfeat.am.module.warehouse.services.domain.service.StorageOutService;
 import com.jfeat.am.module.warehouse.services.persistence.dao.*;
 import com.jfeat.am.module.warehouse.services.persistence.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,6 +76,9 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     WarehouseMapper warehouseMapper;
     @Resource
     QueryProcurementDao queryProcurementDao;
+
+    Logger logger = LoggerFactory.getLogger(ProcurementServiceImpl.class);
+
 
 
     public Integer createOrUpdate(Long refundId, RefundModel model) {
@@ -264,17 +269,23 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                         originInventory.setValidSku(0);
                     }
                     if (refund.getProductProcurementId() == null) {
+                        item.setBeforeTransactionQuantities(originInventory.getValidSku());
+                        logger.info("### refund ###:操作前的数量"+ originInventory.getValidSku());
                         //操作后的数量
                         Integer afterSkuCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
                         item.setAfterTransactionQuantities(afterSkuCount);
                         originInventory.setValidSku(afterSkuCount);
+                        logger.info("### refund ###:操作后的数量"+ originInventory.getValidSku());
                         affected += inventoryMapper.updateById(originInventory);
                     } else {
+                        item.setBeforeTransactionQuantities(originInventory.getValidSku());
+                        logger.info("### refund ###:操作前的数量"+ originInventory.getValidSku());
                         //操作后的数量
                         Integer afterSkuCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
                         item.setAfterTransactionQuantities(afterSkuCount);
                         originInventory.setValidSku(afterSkuCount);
                         affected += inventoryMapper.updateById(originInventory);
+                        logger.info("### refund ###:操作后的数量"+ originInventory.getValidSku());
                     }
                 }
                 storageOutItemMapper.insert(item);
