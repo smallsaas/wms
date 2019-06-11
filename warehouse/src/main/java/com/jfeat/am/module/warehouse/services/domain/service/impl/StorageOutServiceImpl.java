@@ -497,6 +497,14 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (originOut == null) {
             throw new BusinessException(5300, "未检测到id为" + entity.getOutOrderNum() + "的订单的出库记录，请重新核对");
         }
+        if (originOut.getStatus().compareTo(StorageOutStatus.Closed.toString())==0){
+            throw new BusinessException(5310,"该订单已关闭");
+        }
+        // 未更新库存之前，出库单都是 审核通过的状态
+        if (originOut.getStatus().compareTo(StorageOutStatus.Audit_Passed.toString())!=0){
+            throw new BusinessException(BusinessCode.ErrorStatus);
+        }
+
         for (UpdateOrderCount updateOrderCount : entity.getItems()) {
             StorageOutItem item = new StorageOutItem();
             item.setSkuId(updateOrderCount.getSkuId());
@@ -521,12 +529,12 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             if (inventory.getOrderCount() < updateOrderCount.getOrderCount()) {
                 throw new BusinessException(5300, "出货数据有误，请核准并重新提交");
             }
-            item.setBeforeTransactionQuantities(inventory.getValidSku());
+            //item.setBeforeTransactionQuantities(inventory.getValidSku());
             logger.info("### storage out ###:(商城出库-更新占用库存)操作前的数量"+ inventory.getValidSku()+"\t占用库存:"+inventory.getOrderCount());
             Integer afterOrderCount = inventory.getOrderCount() - updateOrderCount.getOrderCount();
             inventory.setOrderCount(afterOrderCount);
-            item.setAfterTransactionQuantities(inventory.getValidSku());
-            outItemMapper.updateById(item);
+            //item.setAfterTransactionQuantities(inventory.getValidSku());
+            //outItemMapper.updateById(item);
             affected += inventoryMapper.updateById(inventory);
             logger.info("### storage out ###:(商城出库-更新占用库存)操作后的数量"+ inventory.getValidSku()+"\t占用库存:"+inventory.getOrderCount());
         }
