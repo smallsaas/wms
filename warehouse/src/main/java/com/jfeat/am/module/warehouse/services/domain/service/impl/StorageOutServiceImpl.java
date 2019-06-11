@@ -452,7 +452,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                         } else {
                             logger.info("### storage out ###:(商城出库)操作前的数量"+ originInventory.getValidSku());
                             outItem.setBeforeTransactionQuantities(originInventory.getValidSku());
-                            // 是否是直接减少 库存呢
+
                             Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
                             outItem.setAfterTransactionQuantities(afterCount);
                             originInventory.setValidSku(afterCount);
