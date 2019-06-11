@@ -279,11 +279,14 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
             if (entity.getStorageInTime() == null) {
                 entity.setStorageInTime(new Date());
             }
+            entity.setStatus(StorageInStatus.Done.toString());
+            affected += storageInMapper.insert(entity);
             if (entity.getStorageInItems() != null && entity.getStorageInItems().size() > 0) {
                 for (StorageInItem inItem : entity.getStorageInItems()) {
                     if (inItem.getTransactionQuantities() > 0) {
                         inItem.setRelationCode(entity.getTransactionCode());
                         inItem.setType(ItemEnumType.STORAGEIN.toString());
+                        inItem.setStorageInId(entity.getId());
                         inItem.setDemandQuantities(inItem.getTransactionQuantities());
                         inItem.setTransactionTime(entity.getStorageInTime());
                         // 设置产品的入库时间
@@ -321,8 +324,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
             } else {
                 throw new BusinessException(4050, "商品不能为空，请先选择商品！");
             }
-            entity.setStatus(StorageInStatus.Done.toString());
-            affected += storageInMapper.insert(entity);
+
             // 商城未发货，则不创建新的入库单
         } else if (originOut.getStatus().compareTo(StorageOutStatus.Audit_Passed.toString()) == 0) {
             for (StorageInItem inItem : entity.getStorageInItems()) {
