@@ -391,6 +391,9 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                     .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT));
             result += outMapper.deleteById(out.getId());
         }
+
+
+        result += salesMapper.deleteById(id);
         return result;
     }
 
