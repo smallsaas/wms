@@ -20,7 +20,7 @@ CREATE TABLE `wms_storage_in` (
   `field1` varchar(255) DEFAULT NULL COMMENT '保留字段',
   `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
   `out_order_num` varchar(32) DEFAULT null COMMENT '订单号信息',
-  `distributor_customer` varchar(100) DEFAULT null COMMENT '分销商客户',
+  `distributor_customer` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '分销商客户',
   PRIMARY KEY (`id`),
   UNIQUE (`transaction_code`),
   FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
@@ -68,7 +68,7 @@ CREATE TABLE `wms_storage_out` (
   `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
   `sales_id` bigint(20) DEFAULT NULL COMMENT 'sales订单信息，非sales out库时，sales的ID为null',
   `out_order_num` varchar(32) DEFAULT null COMMENT '订单号信息',
-  `distributor_customer` varchar(100) DEFAULT null COMMENT '分销商客户',
+  `distributor_customer` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '分销商客户',
   PRIMARY KEY (`id`),
   UNIQUE (`transaction_code`),
   FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
