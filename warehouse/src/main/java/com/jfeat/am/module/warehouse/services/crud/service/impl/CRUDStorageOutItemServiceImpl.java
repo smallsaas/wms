@@ -1,13 +1,12 @@
 package com.jfeat.am.module.warehouse.services.crud.service.impl;
             
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.jfeat.am.common.crud.impl.CRUDServiceSlaveImpl;
-import com.jfeat.am.module.warehouse.services.persistence.model.StorageInItem;
 import com.jfeat.am.module.warehouse.services.persistence.dao.StorageOutItemMapper;
 
 
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutItemService;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem;
+import com.jfeat.crud.plus.impl.CRUDServiceSlaveImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

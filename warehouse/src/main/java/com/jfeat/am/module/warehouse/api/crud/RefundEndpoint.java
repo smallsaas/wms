@@ -2,11 +2,15 @@ package com.jfeat.am.module.warehouse.api.crud;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jfeat.am.core.jwt.JWTKit;
-import com.jfeat.am.module.log.LogManager;
-import com.jfeat.am.module.log.LogTaskFactory;
+import com.jfeat.am.module.warehouse.log.LogManager;
+import com.jfeat.am.module.warehouse.log.LogTaskFactory;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
 import com.jfeat.am.module.warehouse.services.definition.RefundStatus;
 import com.jfeat.am.module.warehouse.services.persistence.model.Refund;
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.tips.SuccessTip;
+import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,17 +25,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.dao.DuplicateKeyException;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryRefundDao;
-import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.module.log.annotation.BusinessLog;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.warehouse.services.domain.service.RefundService;
 import com.jfeat.am.module.warehouse.services.domain.model.RefundRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.RefundModel;
 
 import org.springframework.web.bind.annotation.RestController;
-import com.jfeat.am.common.controller.BaseController;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -48,7 +47,7 @@ import java.util.Date;
 @RestController
 @Api("WMS-采购退货")
 @RequestMapping("/api/wms/refunds")
-public class RefundEndpoint extends BaseController {
+public class RefundEndpoint   {
 
     @Resource
     RefundService refundService;
@@ -58,8 +57,8 @@ public class RefundEndpoint extends BaseController {
 
 
     private void createRefundLog(Long targetId, String methodName, String operation,String message) {
-        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
-                JWTKit.getAccount(getHttpServletRequest()),
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(),
+                JWTKit.getAccount(),
                 operation,
                 RefundEndpoint.class.getName(),
                 methodName,
@@ -77,9 +76,9 @@ public class RefundEndpoint extends BaseController {
 
         Integer affected = 0;
         try {
-            String userName = JWTKit.getAccount(getHttpServletRequest());
+            String userName = JWTKit.getAccount();
             entity.setOriginatorName(userName);
-            affected += refundService.createRefund(JWTKit.getUserId(getHttpServletRequest()),entity);
+            affected += refundService.createRefund(JWTKit.getUserId( ),entity);
 
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
@@ -130,7 +129,7 @@ public class RefundEndpoint extends BaseController {
     @PutMapping("/{id}/passed")
     @ApiOperation(value = "退货表审核通过")
     public Tip pass(@PathVariable Long id ,@RequestBody RefundModel entity) {
-        Integer affected = refundService.auditPassed(id,JWTKit.getAccount(getHttpServletRequest()),JWTKit.getUserId(getHttpServletRequest()),entity);
+        Integer affected = refundService.auditPassed(id,JWTKit.getAccount(),JWTKit.getUserId( ),entity);
         createRefundLog(id,  "pass", "对退货表进行了审核通过操作",   id + "&");
         return SuccessTip.create(affected);
     }
@@ -139,7 +138,7 @@ public class RefundEndpoint extends BaseController {
     @PostMapping("/{id}/execution")
     @ApiOperation(value = "执行退货")
     public Tip execution (@PathVariable Long id) {
-        Integer affected =  refundService.executionRefund(JWTKit.getAccount(getHttpServletRequest()),JWTKit.getUserId(getHttpServletRequest()),id);
+        Integer affected =  refundService.executionRefund(JWTKit.getAccount( ),JWTKit.getUserId( ),id);
         createRefundLog(id,  "execution", "对退货表进行了执行退货操作",   id + "&");
 
         return SuccessTip.create(affected);

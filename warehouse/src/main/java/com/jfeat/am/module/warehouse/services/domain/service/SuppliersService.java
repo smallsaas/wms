@@ -1,6 +1,5 @@
 package com.jfeat.am.module.warehouse.services.domain.service;
 
-import com.jfeat.am.common.persistence.model.User;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDSuppliersService;
 import com.jfeat.am.module.warehouse.services.domain.model.SuppliersModel;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +15,8 @@ public interface SuppliersService extends CRUDSuppliersService{
      *  3. 为禁止状态的时候，调用次 服务 变为正常状态
      * */
     @Transactional
-    Integer changeSupplierStatus(long id, User user);
+    //Integer changeSupplierStatus(long id, User user);
+    Integer changeSupplierStatus(long id);
 
 
     /**

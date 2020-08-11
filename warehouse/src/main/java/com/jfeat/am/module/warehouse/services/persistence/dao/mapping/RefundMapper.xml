@@ -5,6 +5,8 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Refund">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="product_refund_code" property="productRefundCode" />
 		<result column="product_procurement_id" property="productProcurementId" />
 		<result column="storage_out_id" property="storageOutId" />
@@ -25,7 +27,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, product_refund_code AS productRefundCode, supplier_id as supplierId,product_procurement_id AS productProcurementId, storage_out_id AS storageOutId, product_refund_warehouse_id AS productRefundWarehouseId, product_refund_quantities AS productRefundQuantities, product_refund_time AS productRefundTime, product_refund_status AS productRefundStatus, product_refund_note AS productRefundNote, originator_id AS originatorId, originator_name AS originatorName, transaction_by AS transactionBy, transaction_time AS transactionTime, field1, field2
+        id, org_id AS orgId, org_tag AS orgTag, product_refund_code AS productRefundCode, supplier_id as supplierId,product_procurement_id AS productProcurementId, storage_out_id AS storageOutId, product_refund_warehouse_id AS productRefundWarehouseId, product_refund_quantities AS productRefundQuantities, product_refund_time AS productRefundTime, product_refund_status AS productRefundStatus, product_refund_note AS productRefundNote, originator_id AS originatorId, originator_name AS originatorName, transaction_by AS transactionBy, transaction_time AS transactionTime, field1, field2
     </sql>
 
 </mapper>

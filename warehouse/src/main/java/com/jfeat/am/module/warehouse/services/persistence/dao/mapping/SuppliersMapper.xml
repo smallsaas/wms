@@ -5,6 +5,8 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Suppliers">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="supplier_name" property="supplierName" />
 		<result column="supplier_code" property="supplierCode" />
 		<result column="supplier_PCD" property="supplierPCD" />
@@ -29,7 +31,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, supplier_name AS supplierName, supplier_code AS supplierCode, supplier_PCD AS supplierPCD, supplier_address AS supplierAddress, supplier_postcode AS supplierPostcode, supplier_contact_name AS supplierContactName, supplier_contact_phone AS supplierContactPhone, supplier_contact_fax AS supplierContactFax, supplier_contact_email AS supplierContactEmail, supplier_contact_position AS supplierContactPosition, supplier_contact_cell_phone AS supplierContactCellPhone, supplier_account_name AS supplierAccountName, supplier_account_bank AS supplierAccountBank, supplier_account_bank_no AS supplierAccountBankNo, supplier_invoice_title AS supplierInvoiceTitle, supplier_status AS supplierStatus, supplier_note AS supplierNote, supplier_register_time AS supplierRegisterTime, field1, field2
+        id, org_id AS orgId, org_tag AS orgTag, supplier_name AS supplierName, supplier_code AS supplierCode, supplier_PCD AS supplierPCD, supplier_address AS supplierAddress, supplier_postcode AS supplierPostcode, supplier_contact_name AS supplierContactName, supplier_contact_phone AS supplierContactPhone, supplier_contact_fax AS supplierContactFax, supplier_contact_email AS supplierContactEmail, supplier_contact_position AS supplierContactPosition, supplier_contact_cell_phone AS supplierContactCellPhone, supplier_account_name AS supplierAccountName, supplier_account_bank AS supplierAccountBank, supplier_account_bank_no AS supplierAccountBankNo, supplier_invoice_title AS supplierInvoiceTitle, supplier_status AS supplierStatus, supplier_note AS supplierNote, supplier_register_time AS supplierRegisterTime, field1, field2
     </sql>
 
 </mapper>

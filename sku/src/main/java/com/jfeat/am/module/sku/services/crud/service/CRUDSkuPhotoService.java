@@ -1,8 +1,6 @@
 package com.jfeat.am.module.sku.services.crud.service;
-            import com.jfeat.am.common.crud.CRUDServiceOnly;
-            import com.jfeat.am.common.crud.CRUDServiceSlave;
-            import com.jfeat.am.module.sku.services.persistence.model.SkuPhoto;
-import com.jfeat.am.common.constant.tips.Ids;
+import com.jfeat.am.module.sku.services.persistence.model.SkuPhoto;
+import com.jfeat.crud.plus.CRUDServiceSlave;
 
 /**
  * <p>

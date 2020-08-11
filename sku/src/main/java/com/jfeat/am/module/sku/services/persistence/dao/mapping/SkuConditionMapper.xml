@@ -5,13 +5,15 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.sku.services.persistence.model.SkuCondition">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="condition_name" property="conditionName" />
 		<result column="condition_description" property="conditionDescription" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, condition_name AS conditionName, condition_description AS conditionDescription
+        id, org_id AS orgId, org_tag AS orgTag, condition_name AS conditionName, condition_description AS conditionDescription
     </sql>
 
 </mapper>

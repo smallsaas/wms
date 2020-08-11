@@ -5,6 +5,8 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.sku.services.persistence.model.SkuUnit">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="unit_name" property="unitName" />
 		<result column="is_primary" property="isPrimary" />
 		<result column="sku_id" property="skuId" />
@@ -12,7 +14,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, unit_name AS unitName, is_primary AS isPrimary, sku_id AS skuId
+        id, org_id AS orgId, org_tag AS orgTag, unit_name AS unitName, is_primary AS isPrimary, sku_id AS skuId
     </sql>
 
 </mapper>

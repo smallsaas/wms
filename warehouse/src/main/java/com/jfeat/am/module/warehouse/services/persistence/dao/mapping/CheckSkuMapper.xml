@@ -5,6 +5,8 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.CheckSku">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="check_id" property="checkId" />
 		<result column="sku_id" property="skuId" />
 		<result column="warehouse_id" property="warehouseId" />
@@ -18,7 +20,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, check_id AS checkId, sku_id AS skuId, warehouse_id AS warehouseId, fact_quantities AS factQuantities, before_proof_quantities AS beforeProofQuantities, deserved_quantities AS deservedQuantities, profit_lost AS profitLost, field1, field2
+        id, org_id AS orgId, org_tag AS orgTag, check_id AS checkId, sku_id AS skuId, warehouse_id AS warehouseId, fact_quantities AS factQuantities, before_proof_quantities AS beforeProofQuantities, deserved_quantities AS deservedQuantities, profit_lost AS profitLost, field1, field2
     </sql>
 
 </mapper>

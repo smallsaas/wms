@@ -5,6 +5,8 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Procurement">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="procurement_code" property="procurementCode" />
 		<result column="supplier_id" property="supplierId" />
 		<result column="procurement_others_payment" property="procurementOthersPayment" />
@@ -24,7 +26,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, procurement_code AS procurementCode, supplier_id AS supplierId, procurement_others_payment AS procurementOthersPayment, procurement_discount AS procurementDiscount, procurement_total AS procurementTotal, procurement_time AS procurementTime, procurement_note AS procurementNote, procure_status AS procureStatus, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, buyer, transaction_time AS transactionTime, field1, field2
+        id, org_id AS orgId, org_tag AS orgTag, procurement_code AS procurementCode, supplier_id AS supplierId, procurement_others_payment AS procurementOthersPayment, procurement_discount AS procurementDiscount, procurement_total AS procurementTotal, procurement_time AS procurementTime, procurement_note AS procurementNote, procure_status AS procureStatus, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, buyer, transaction_time AS transactionTime, field1, field2
     </sql>
 
 </mapper>

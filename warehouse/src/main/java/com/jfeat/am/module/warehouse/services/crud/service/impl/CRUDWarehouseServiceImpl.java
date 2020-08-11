@@ -1,7 +1,6 @@
 package com.jfeat.am.module.warehouse.services.crud.service.impl;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.jfeat.am.common.crud.FIELD;
 import com.jfeat.am.module.warehouse.services.persistence.model.Warehouse;
 import com.jfeat.am.module.warehouse.services.persistence.dao.WarehouseMapper;
 import com.jfeat.am.module.warehouse.services.persistence.dao.WarehouseSlotMapper;
@@ -9,15 +8,19 @@ import com.jfeat.am.module.warehouse.services.persistence.model.WarehouseSlot;
 
 
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDWarehouseService;
-import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.request.Ids;
+import com.jfeat.crud.plus.*;
+import com.jfeat.crud.plus.impl.CRUDServiceOverModelImpl;
+import com.jfeat.crud.plus.model.IdVersions;
 import org.springframework.stereotype.Service;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 
 import javax.annotation.Resource;
 
-import com.jfeat.am.common.crud.impl.CRUDServiceOverModelImpl;
 import com.jfeat.am.module.warehouse.services.domain.model.WarehouseModel;
+
+import java.util.List;
 
 /**
  * <p>
@@ -95,7 +98,6 @@ public class CRUDWarehouseServiceImpl extends CRUDServiceOverModelImpl<Warehouse
 
         throw new BusinessException(BusinessCode.BadRequest);
     }
-
 
 }
 

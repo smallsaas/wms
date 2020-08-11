@@ -1,6 +1,6 @@
 package com.jfeat.am.module.sku.services.crud.service;
-            import com.jfeat.am.common.crud.CRUDServiceOnly;
 import com.jfeat.am.module.sku.services.persistence.model.SkuSpecificationGroup;
+import com.jfeat.crud.plus.CRUDServiceOnly;
 
 /**
  * <p>

@@ -128,6 +128,8 @@
     <!--  SalesStorageOutDetails-->
     <resultMap id="SalesDetails" type="com.jfeat.am.module.warehouse.services.domain.model.SalesDetails">
         <id column="id" property="id"/>
+        <result column="org_id" property="orgId" />
+        <result column="org_tag" property="orgTag" />
         <result column="sales_code" property="salesCode"/>
         <result column="trader_id" property="traderId"/>
         <result column="sales_others_payment" property="salesOthersPayment"/>

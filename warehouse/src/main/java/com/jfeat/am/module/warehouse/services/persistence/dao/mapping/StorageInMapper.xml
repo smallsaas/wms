@@ -5,6 +5,8 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.StorageIn">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="transaction_code" property="transactionCode" />
 		<result column="transaction_type" property="transactionType" />
 		<result column="storage_in_time" property="storageInTime" />
@@ -28,7 +30,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, transaction_code AS transactionCode, distributor_customer as distributorCustomer,out_order_num as outOrderNum, transaction_type AS transactionType, storage_in_time AS storageInTime, transaction_time AS transactionTime, batch_no AS batchNo, warehouse_id AS warehouseId, slot_id AS slotId, note, status, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, readjust_cost_price AS readjustCostPrice, procurement_id AS procurementId, field1, field2
+        id, org_id AS orgId, org_tag AS orgTag, transaction_code AS transactionCode, distributor_customer as distributorCustomer,out_order_num as outOrderNum, transaction_type AS transactionType, storage_in_time AS storageInTime, transaction_time AS transactionTime, batch_no AS batchNo, warehouse_id AS warehouseId, slot_id AS slotId, note, status, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, readjust_cost_price AS readjustCostPrice, procurement_id AS procurementId, field1, field2
     </sql>
 
 </mapper>

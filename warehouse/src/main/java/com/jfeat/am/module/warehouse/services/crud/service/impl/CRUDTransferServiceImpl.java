@@ -1,18 +1,19 @@
 package com.jfeat.am.module.warehouse.services.crud.service.impl;
             
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.jfeat.am.common.crud.FIELD;
 import com.jfeat.am.module.warehouse.services.persistence.model.Transfer;
 import com.jfeat.am.module.warehouse.services.persistence.dao.TransferMapper;
 
 
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDTransferService;
-import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
+import com.jfeat.crud.plus.CRUDFilter;
+import com.jfeat.crud.plus.QueryMasterDao;
+import com.jfeat.crud.plus.impl.CRUDServiceOnlyImpl;
+import com.jfeat.crud.plus.model.IdVersions;
 import org.springframework.stereotype.Service;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 import javax.annotation.Resource;
-import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
+
+import java.util.List;
 
 /**
  * <p>
@@ -26,10 +27,6 @@ import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
 @Service
 public class CRUDTransferServiceImpl  extends CRUDServiceOnlyImpl<Transfer> implements CRUDTransferService {
 
-
-
-
-
         @Resource
         private TransferMapper transferMapper;
 
@@ -37,12 +34,6 @@ public class CRUDTransferServiceImpl  extends CRUDServiceOnlyImpl<Transfer> impl
         protected BaseMapper<Transfer> getMasterMapper() {
                 return transferMapper;
         }
-
-
-
-
-
-
 
 }
 

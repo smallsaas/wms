@@ -3,15 +3,10 @@ package com.jfeat.am.module.warehouse.api.crud;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.constant.tips.Ids;
-import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Tip;
-import com.jfeat.am.common.controller.BaseController;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.core.jwt.JWTKit;
-import com.jfeat.am.module.log.LogManager;
-import com.jfeat.am.module.log.LogTaskFactory;
 import com.jfeat.am.module.log.annotation.BusinessLog;
+import com.jfeat.am.module.warehouse.log.LogManager;
+import com.jfeat.am.module.warehouse.log.LogTaskFactory;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
 import com.jfeat.am.module.warehouse.services.definition.SalesStatus;
 import com.jfeat.am.module.warehouse.services.domain.dao.QuerySalesDao;
@@ -19,6 +14,10 @@ import com.jfeat.am.module.warehouse.services.domain.model.SalesModel;
 import com.jfeat.am.module.warehouse.services.domain.model.SalesRecord;
 import com.jfeat.am.module.warehouse.services.domain.service.SalesService;
 import com.jfeat.am.module.warehouse.services.persistence.model.Sales;
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.tips.SuccessTip;
+import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.dao.DuplicateKeyException;
@@ -40,7 +39,7 @@ import java.util.Date;
 @RestController
 @Api("分销商出库")
 @RequestMapping("/api/warehouse/sales")
-public class SalesEndpoint extends BaseController {
+public class SalesEndpoint   {
 
 
     @Resource
@@ -51,8 +50,8 @@ public class SalesEndpoint extends BaseController {
 
 
     private void createSalesLog(Long targetId, String methodName, String operation, String message) {
-        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
-                JWTKit.getAccount(getHttpServletRequest()),
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(),
+                JWTKit.getAccount(),
                 operation,
                 SalesEndpoint.class.getName(),
                 methodName,
@@ -68,9 +67,9 @@ public class SalesEndpoint extends BaseController {
     public Tip createSales(@RequestBody SalesModel entity) {
 
         Integer affected = 0;
-        String userName = JWTKit.getAccount(getHttpServletRequest());
+        String userName = JWTKit.getAccount(  );
         entity.setOriginatorName(userName);
-        Long userId = JWTKit.getUserId(getHttpServletRequest());
+        Long userId = JWTKit.getUserId(  );
         try {
             affected = salesService.createSales(userId, entity);
 
@@ -85,7 +84,7 @@ public class SalesEndpoint extends BaseController {
     @ApiOperation(value = "分销商出库提交 审核")
     public Tip commit(@PathVariable Long id, @RequestBody SalesModel entity) {
         Integer affected = 0;
-        affected += salesService.updateAndCommitSales(JWTKit.getUserId(getHttpServletRequest()), id, entity);
+        affected += salesService.updateAndCommitSales(JWTKit.getUserId(  ), id, entity);
         createSalesLog(entity.getId(), "commit", "对分销商出库进行了提交审核操作", JSONObject.toJSONString(entity) + " &" + id + "&");
 
         return SuccessTip.create(affected);
@@ -125,7 +124,7 @@ public class SalesEndpoint extends BaseController {
     @ApiOperation("update record while record status is Wait for storage out")
     public Tip updateSales(@PathVariable Long id, @RequestBody SalesModel entity) {
         entity.setId(id);
-        Long userId = JWTKit.getUserId(getHttpServletRequest());
+        Long userId = JWTKit.getUserId(  );
         Tip resultTip = SuccessTip.create(salesService.updateSales(userId, id, entity));
 
         createSalesLog(id, "updateSales", "对分销商出库进行了更新操作", JSONObject.toJSONString(entity) + " & " + id + " &");
@@ -137,7 +136,7 @@ public class SalesEndpoint extends BaseController {
     @ApiOperation(value = "出库", response = SalesModel.class)
     public Tip executionProcurement(@PathVariable Long id, @RequestBody SalesModel entity) {
         entity.setId(id);
-        Tip resultTip = SuccessTip.create(salesService.executionStorageOut(JWTKit.getUserId(getHttpServletRequest()), id, entity));
+        Tip resultTip = SuccessTip.create(salesService.executionStorageOut(JWTKit.getUserId(  ), id, entity));
         createSalesLog(id, "executionProcurement", "对分销商出库进行了出库操作", JSONObject.toJSONString(entity) + " & " + id + " &");
         return resultTip;
     }

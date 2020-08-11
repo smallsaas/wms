@@ -1,0 +1,28 @@
+{
+  "productPhoto":[{"photoUrl":"sdafasdfasddfas","isPrimary":"1"}
+  ,{"photoUrl":"asdfeqfadcqwe","isPrimary":"0"},{"photoUrl":"sadfasdcsdacewqeqw","isPrimary":"0"}],
+
+  "productUnit":[{"unitName":"计算单位","isPrimary":"1"}
+  ,{"unitName":"计算单位1支","isPrimary":"0"},{"unitName":"计算单位一瓶","isPrimary":"0"}],
+
+  "productCategoryId":1,
+  "supplierId":10,
+  "productCode":"产品编码",
+  "name":"治肾亏，不含糖",
+  "englishName":"bullshit",
+  "weight":"1T",
+  "readjustCostPrice":"12.123",
+  "productStandard":"ISO9001",
+  "price":"10000",
+  "suggestedPrice":"10000",
+  "costPrice":"1000",
+  "specification":"瓶/支",
+  "quantities":"1000",
+  "stockCost":"1000",
+  "purchaseAdvance":"1000",
+  "status":"onSale",
+  "sortValue":"1000",
+  "searchKeyWord":"不含糖",
+  "barCode":"barcode",
+  "description":"测试来的，不用处理"
+}

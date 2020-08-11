@@ -1,6 +1,5 @@
 package com.jfeat.am.module.sku.services.mq;
 
-import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 public class SkuMessageConfig {
     public static final String STORE_UPDATE_QUEUE = "wms-update-queue";
     public static final String DEFAULT_EXCHANGE = "";
-    @Bean
+   /* @Bean
     public Queue storeUpdateQueue() {
         return new Queue(STORE_UPDATE_QUEUE);
-    }
+    }*/
 }

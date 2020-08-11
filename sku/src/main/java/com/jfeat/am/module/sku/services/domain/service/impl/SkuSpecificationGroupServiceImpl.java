@@ -12,7 +12,6 @@ import com.jfeat.am.module.sku.services.domain.model.CategorySpecModel;
 import com.jfeat.am.module.sku.services.domain.service.SkuSpecificationGroupService;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuSpecificationGroupMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuSpecificationGroup;
-import com.jfinal.json.Json;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

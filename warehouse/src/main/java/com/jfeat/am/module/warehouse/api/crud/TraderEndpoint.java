@@ -2,17 +2,16 @@ package com.jfeat.am.module.warehouse.api.crud;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.jfeat.am.common.constant.tips.Ids;
-import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Tip;
-import com.jfeat.am.common.controller.BaseController;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryTraderDao;
 import com.jfeat.am.module.warehouse.services.domain.model.TraderModel;
 import com.jfeat.am.module.warehouse.services.domain.model.TraderRecord;
 import com.jfeat.am.module.warehouse.services.domain.service.TraderService;
 import com.jfeat.am.module.warehouse.services.persistence.model.Trader;
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.tips.SuccessTip;
+import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.dao.DuplicateKeyException;
@@ -33,7 +32,7 @@ import java.util.Date;
 @RestController
 @Api("分销商")
 @RequestMapping("/api/warehouse/traders")
-public class TraderEndpoint extends BaseController {
+public class TraderEndpoint   {
 
 
     @Resource

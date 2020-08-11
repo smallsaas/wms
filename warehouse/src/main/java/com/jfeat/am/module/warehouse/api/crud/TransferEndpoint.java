@@ -2,14 +2,9 @@ package com.jfeat.am.module.warehouse.api.crud;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Tip;
-import com.jfeat.am.common.controller.BaseController;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.core.jwt.JWTKit;
-import com.jfeat.am.module.log.LogManager;
-import com.jfeat.am.module.log.LogTaskFactory;
+import com.jfeat.am.module.warehouse.log.LogManager;
+import com.jfeat.am.module.warehouse.log.LogTaskFactory;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
 import com.jfeat.am.module.warehouse.services.definition.TransferStatus;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryTransferDao;
@@ -17,6 +12,10 @@ import com.jfeat.am.module.warehouse.services.domain.model.TransferModel;
 import com.jfeat.am.module.warehouse.services.domain.model.TransferRecord;
 import com.jfeat.am.module.warehouse.services.domain.service.TransferService;
 import com.jfeat.am.module.warehouse.services.persistence.model.Transfer;
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.tips.SuccessTip;
+import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.dao.DuplicateKeyException;
@@ -37,7 +36,7 @@ import java.util.Date;
 @RestController
 @Api("WMS-库存调拨")
 @RequestMapping("/api/wms/transfers")
-public class TransferEndpoint extends BaseController {
+public class TransferEndpoint   {
 
 
     @Resource
@@ -47,8 +46,8 @@ public class TransferEndpoint extends BaseController {
     QueryTransferDao queryTransferDao;
 
     private void createPurchasekLog(Long targetId, String methodName, String operation, String message) {
-        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
-                JWTKit.getAccount(getHttpServletRequest()),
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(),
+                JWTKit.getAccount(),
                 operation,
                 TransferEndpoint.class.getName(),
                 methodName,
@@ -65,11 +64,11 @@ public class TransferEndpoint extends BaseController {
 
         Integer affected = 0;
         try {
-            String userName = JWTKit.getAccount(getHttpServletRequest());
-            Long userId = JWTKit.getUserId(getHttpServletRequest());
+            String userName = JWTKit.getAccount();
+            Long userId = JWTKit.getUserId();
             entity.setOriginatorId(userId);
             entity.setOriginatorName(userName);
-            affected += transferService.draftTransfer(entity, JWTKit.getUserId(getHttpServletRequest()), JWTKit.getAccount(getHttpServletRequest()));
+            affected += transferService.draftTransfer(entity, JWTKit.getUserId(), JWTKit.getAccount());
 
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
@@ -126,7 +125,7 @@ public class TransferEndpoint extends BaseController {
     public Tip createTransfer(@PathVariable Long id) {
         Integer affected = 0;
         try {
-            affected += transferService.executionTransfer(id, JWTKit.getUserId(getHttpServletRequest()));
+            affected += transferService.executionTransfer(id, JWTKit.getUserId());
         } catch (DuplicateKeyException e) {
             throw new BusinessException(5100, "编号重复，请重新刷新页面");
         }
@@ -143,7 +142,7 @@ public class TransferEndpoint extends BaseController {
     @PutMapping("/{id}/done")
     @ApiOperation(value = "调拨完成", response = TransferModel.class)
     public Tip doneTransfer(@PathVariable Long id) {
-        Tip resultTip = SuccessTip.create(transferService.doneTransfer(id, JWTKit.getUserId(getHttpServletRequest())));
+        Tip resultTip = SuccessTip.create(transferService.doneTransfer(id, JWTKit.getUserId()));
         createPurchasekLog(id, "doneTransfer", "对调拨单进行了调拨完成操作", id + " &");
         return resultTip;
     }
@@ -151,7 +150,7 @@ public class TransferEndpoint extends BaseController {
     @PutMapping("/{id}/cancel")
     @ApiOperation(value = "调拨作废", response = TransferModel.class)
     public Tip cancelTransfer(@PathVariable Long id) {
-        Tip resultTip = SuccessTip.create(transferService.cancelTransfer(id, JWTKit.getUserId(getHttpServletRequest())));
+        Tip resultTip = SuccessTip.create(transferService.cancelTransfer(id, JWTKit.getUserId()));
         createPurchasekLog(id, "cancelTransfer", "对调拨单进行了调拨作废操作", id + " &");
         return resultTip;
     }

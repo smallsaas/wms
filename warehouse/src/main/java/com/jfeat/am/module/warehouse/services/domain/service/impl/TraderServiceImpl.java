@@ -1,9 +1,5 @@
 package com.jfeat.am.module.warehouse.services.domain.service.impl;
 
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
-import com.jfeat.am.common.persistence.model.User;
-import com.jfeat.am.core.shiro.ShiroKit;
 import com.jfeat.am.module.warehouse.api.permission.TraderPermission;
 import com.jfeat.am.module.warehouse.services.definition.TraderStatus;
 import com.jfeat.am.module.warehouse.services.domain.service.TraderService;
@@ -49,13 +45,13 @@ public class TraderServiceImpl extends CRUDTraderServiceImpl implements TraderSe
     @Transactional
     public Integer changeTraderStatus(Long id){
         Trader trader = traderMapper.selectById(id);
-        if (ShiroKit.hasPermission(TraderPermission.TRADER_EDIT)){
+      /*  if (ShiroKit.hasPermission(TraderPermission.TRADER_EDIT)){*/
             if (trader.getTraderStatus().compareTo(TraderStatus.Forbidden.toString())==0){
                 trader.setTraderStatus(TraderStatus.Normal.toString());
             };
             trader.setTraderStatus(TraderStatus.Forbidden.toString());
             return traderMapper.updateById(trader);
-        }
-        throw new BusinessException(BusinessCode.NoPermission);
+       /* }
+        throw new BusinessException(BusinessCode.NoPermission);*/
     }
 }

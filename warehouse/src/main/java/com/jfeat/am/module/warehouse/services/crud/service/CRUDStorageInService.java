@@ -1,8 +1,8 @@
 package com.jfeat.am.module.warehouse.services.crud.service;
-            import com.jfeat.am.common.crud.CRUDServiceOverModel;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageIn;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageInModel;
 import com.jfeat.am.common.constant.tips.Ids;
+            import com.jfeat.crud.plus.CRUDServiceOverModel;
 
 /**
  * <p>

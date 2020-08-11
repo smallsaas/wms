@@ -11,11 +11,11 @@ import com.jfeat.am.module.sku.services.persistence.model.SkuSpecification;
 
 
 import com.jfeat.am.module.sku.services.crud.service.CRUDSkuSpecificationService;
+import com.jfeat.crud.plus.impl.CRUDServicePeerImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-import com.jfeat.am.common.crud.impl.CRUDServicePeerImpl;
 
 /**
  * <p>

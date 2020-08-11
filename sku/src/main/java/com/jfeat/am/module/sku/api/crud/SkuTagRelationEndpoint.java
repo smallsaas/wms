@@ -1,5 +1,9 @@
 package com.jfeat.am.module.sku.api.crud;
 
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.tips.SuccessTip;
+import com.jfeat.crud.base.tips.Tip;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,12 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.dao.DuplicateKeyException;
 import com.jfeat.am.module.sku.services.domain.dao.QuerySkuTagRelationDao;
-import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Ids;
-import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.module.log.annotation.BusinessLog;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 import java.math.BigDecimal;
 import com.jfeat.am.module.sku.services.domain.service.SkuTagRelationService;
 import com.jfeat.am.module.sku.services.domain.model.SkuTagRelationRecord;
@@ -24,7 +23,6 @@ import com.jfeat.am.module.sku.services.crud.model.SkuTagRelationModel;
 import com.jfeat.am.module.sku.services.persistence.model.SkuTagRelation;
 
 import org.springframework.web.bind.annotation.RestController;
-import com.jfeat.am.common.controller.BaseController;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -41,7 +39,7 @@ import java.util.Date;
 @RestController
 @Deprecated
 @RequestMapping("/api/sku/skuTagRelations")
-public class SkuTagRelationEndpoint extends BaseController {
+public class SkuTagRelationEndpoint   {
 
 
 

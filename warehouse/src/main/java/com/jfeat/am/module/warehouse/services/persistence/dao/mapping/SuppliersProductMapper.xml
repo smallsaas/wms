@@ -5,13 +5,15 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.SuppliersProduct">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="suppliers_id" property="suppliersId" />
 		<result column="product_id" property="productId" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, suppliers_id AS suppliersId, product_id AS productId
+        id, org_id AS orgId, org_tag AS orgTag, suppliers_id AS suppliersId, product_id AS productId
     </sql>
 
 </mapper>

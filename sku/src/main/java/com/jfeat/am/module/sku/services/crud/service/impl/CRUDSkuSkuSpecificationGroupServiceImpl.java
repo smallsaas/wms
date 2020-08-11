@@ -6,7 +6,7 @@ import com.jfeat.am.module.sku.services.persistence.dao.SkuSpecificationGroupMap
 
 
 import com.jfeat.am.module.sku.services.crud.service.CRUDSkuSpecificationGroupService;
-import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
+import com.jfeat.crud.plus.impl.CRUDServiceOnlyImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

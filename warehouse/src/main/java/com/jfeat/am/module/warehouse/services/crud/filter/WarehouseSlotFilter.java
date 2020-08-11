@@ -1,7 +1,7 @@
 package com.jfeat.am.module.warehouse.services.crud.filter;
 
-import com.jfeat.am.common.crud.CRUDFilter;
 import com.jfeat.am.module.warehouse.services.persistence.model.WarehouseSlot;
+import com.jfeat.crud.plus.CRUDFilter;
 
 
 /**

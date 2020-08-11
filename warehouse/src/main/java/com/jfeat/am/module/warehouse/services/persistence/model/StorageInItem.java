@@ -30,6 +30,16 @@ public class StorageInItem extends Model<StorageInItem> {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     /**
+     * 用于隔离的组织id, 由crud-plus维护
+     */
+    @TableField("org_id")
+    private  Long orgId;
+    /**
+     * 用于隔离的组织标识, 参考 docker而定
+     */
+    @TableField("org_tag")
+    private String orgTag;
+    /**
      * 入库ID
      */
     @TableField("storage_in_id")

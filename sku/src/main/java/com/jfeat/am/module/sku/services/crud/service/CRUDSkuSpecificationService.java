@@ -1,8 +1,8 @@
 package com.jfeat.am.module.sku.services.crud.service;
-            import com.jfeat.am.common.crud.CRUDServicePeer;
 import com.jfeat.am.module.sku.services.persistence.model.SkuSpecification;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
-            import com.jfeat.am.module.sku.services.persistence.model.SkuSpecificationGroup;
+import com.jfeat.am.module.sku.services.persistence.model.SkuSpecificationGroup;
+import com.jfeat.crud.plus.CRUDServicePeer;
 
 /**
  * <p>

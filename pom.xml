@@ -17,6 +17,7 @@
   <modules>
     <module>sku</module>
     <module>warehouse</module>
+    <module>wm</module>
   </modules>
 
 </project>

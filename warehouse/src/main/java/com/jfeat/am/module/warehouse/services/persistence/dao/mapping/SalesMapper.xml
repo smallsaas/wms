@@ -5,6 +5,8 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Sales">
         <id column="id" property="id"/>
+        <result column="org_id" property="orgId" />
+        <result column="org_tag" property="orgTag" />
         <result column="sales_code" property="salesCode"/>
         <result column="trader_id" property="traderId"/>
         <result column="sales_others_payment" property="salesOthersPayment"/>
@@ -25,7 +27,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, sales_code AS salesCode, trader_id AS traderId, sales_others_payment AS salesOthersPayment, sales_discount
+        id, org_id AS orgId, org_tag AS orgTag, sales_code AS salesCode, trader_id AS traderId, sales_others_payment AS salesOthersPayment, sales_discount
         AS salesDiscount, sales_total AS salesTotal, sales_time AS salesTime, sales_note AS salesNote, sales_status AS
         salesStatus, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName,
         transaction_time AS transactionTime, field1, field2,delivered_address as deliveredAddress

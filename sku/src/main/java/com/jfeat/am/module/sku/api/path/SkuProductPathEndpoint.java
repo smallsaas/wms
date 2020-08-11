@@ -2,14 +2,13 @@ package com.jfeat.am.module.sku.api.path;
 
 
 import com.baomidou.mybatisplus.plugins.Page;
-import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Tip;
-import com.jfeat.am.common.controller.BaseController;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.product.services.domain.dao.QueryProductDao;
 import com.jfeat.am.module.product.services.domain.model.ProductRecord;
 import com.jfeat.am.module.sku.services.domain.service.SkuProductService;
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.tips.SuccessTip;
+import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +20,7 @@ import java.util.Date;
 @Api("sku-Sku管理")
 @RequestMapping("/api/wms")
 @RestController
-public class SkuProductPathEndpoint extends BaseController {
+public class SkuProductPathEndpoint   {
 
     @Resource
     QueryProductDao queryProductDao;

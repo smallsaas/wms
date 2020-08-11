@@ -5,6 +5,8 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.sku.services.persistence.model.SkuSpecificationGroup">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="group_name" property="groupName" />
 		<result column="type" property="type" />
 		<result column="pid" property="pid" />
@@ -12,7 +14,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, type,group_name AS groupName, pid
+        id, org_id AS orgId, org_tag AS orgTag,type,group_name AS groupName, pid
     </sql>
 
 </mapper>

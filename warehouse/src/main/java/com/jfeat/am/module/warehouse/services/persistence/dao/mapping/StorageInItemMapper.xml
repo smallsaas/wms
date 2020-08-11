@@ -5,12 +5,13 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.StorageInItem">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="storage_in_id" property="storageInId" />
 		<result column="sku_id" property="skuId" />
 		<result column="transaction_sku_price" property="transactionSkuPrice" />
 		<result column="transaction_quantities" property="transactionQuantities" />
 		<result column="after_transaction_quantities" property="afterTransactionQuantities" />
-
 		<result column="before_transaction_quantities" property="beforeTransactionQuantities" />
 		<result column="transaction_time" property="transactionTime" />
 		<result column="type" property="type" />
@@ -20,7 +21,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, storage_in_id AS storageInId, sku_id AS skuId ,  demand_quantities as demandQuantities,transaction_sku_price AS transactionSkuPrice, transaction_quantities AS transactionQuantities, after_transaction_quantities AS afterTransactionQuantities,before_transaction_quantities AS beforeTransactionQuantities, transaction_time AS transactionTime, type, relation_code AS relationCode
+        id, org_id AS orgId, org_tag AS orgTag, storage_in_id AS storageInId, sku_id AS skuId ,  demand_quantities as demandQuantities,transaction_sku_price AS transactionSkuPrice, transaction_quantities AS transactionQuantities, after_transaction_quantities AS afterTransactionQuantities,before_transaction_quantities AS beforeTransactionQuantities, transaction_time AS transactionTime, type, relation_code AS relationCode
     </sql>
 
 </mapper>

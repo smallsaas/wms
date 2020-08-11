@@ -5,13 +5,15 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.sku.services.persistence.model.SkuTag">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="tag_name" property="tagName" />
 		<result column="tag_description" property="tagDescription" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, tag_name AS tagName, tag_description AS tagDescription
+        id, org_id AS orgId, org_tag AS orgTag, tag_name AS tagName, tag_description AS tagDescription
     </sql>
 
 </mapper>

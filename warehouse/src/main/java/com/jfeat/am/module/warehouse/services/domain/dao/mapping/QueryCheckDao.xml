@@ -55,6 +55,8 @@
 
     <resultMap id="SkuRecords" type="com.jfeat.am.module.warehouse.services.domain.model.CheckSkuRecord">
         <id column="id" property="id"/>
+        <result column="org_id" property="orgId" />
+        <result column="org_tag" property="orgTag" />
         <result column="check_id" property="checkId"/>
         <result column="sku_id" property="skuId"/>
         <result column="warehouse_id" property="warehouseId"/>

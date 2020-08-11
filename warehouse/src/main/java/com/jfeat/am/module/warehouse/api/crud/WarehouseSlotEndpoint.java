@@ -1,5 +1,9 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.tips.SuccessTip;
+import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,17 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.dao.DuplicateKeyException;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryWarehouseSlotDao;
-import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.module.log.annotation.BusinessLog;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.warehouse.services.domain.service.WarehouseSlotService;
 import com.jfeat.am.module.warehouse.services.domain.model.WarehouseSlotRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.WarehouseSlotModel;
 
 import org.springframework.web.bind.annotation.RestController;
-import com.jfeat.am.common.controller.BaseController;
 
 import javax.annotation.Resource;
 
@@ -39,7 +38,7 @@ import javax.annotation.Resource;
 @RestController
 @Api("WMS-仓库储位")
 @RequestMapping("/api/wms/warehouses/")
-public class WarehouseSlotEndpoint extends BaseController {
+public class WarehouseSlotEndpoint   {
 
 
     @Resource
@@ -51,7 +50,7 @@ public class WarehouseSlotEndpoint extends BaseController {
     @BusinessLog(name = "WarehouseSlot", value = "create WarehouseSlot")
     @PostMapping("/{warehousesId}/slot")
     @ApiOperation(value = "新建储位")
-    public Tip createWarehouseSlot(@PathVariable long warehousesId,@RequestBody WarehouseSlotModel entity) {
+    public Tip createWarehouseSlot(@PathVariable long warehousesId, @RequestBody WarehouseSlotModel entity) {
 
         Integer affected = 0;
         try {

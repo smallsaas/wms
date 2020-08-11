@@ -1,9 +1,9 @@
 package com.jfeat.am.module.warehouse.services.crud.service;
 
-import com.jfeat.am.common.crud.CRUDServicePeer;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.warehouse.services.persistence.model.CheckSku;
 import com.jfeat.am.module.warehouse.services.persistence.model.Check;
+import com.jfeat.crud.plus.CRUDServicePeer;
 
 /**
  * <p>

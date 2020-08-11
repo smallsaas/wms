@@ -1,7 +1,7 @@
 package com.jfeat.am.module.sku.services.crud.filter;
 
-import com.jfeat.am.common.crud.CRUDFilter;
 import com.jfeat.am.module.sku.services.persistence.model.SkuPriceHistory;
+import com.jfeat.crud.plus.CRUDFilter;
 
 
 /**

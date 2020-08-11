@@ -1,8 +1,6 @@
 package com.jfeat.am.module.warehouse.services.crud.service.impl;
             
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.jfeat.am.common.crud.FIELD;
-import com.jfeat.am.common.crud.impl.CRUDServiceSlaveImpl;
 import com.jfeat.am.module.warehouse.services.persistence.model.WarehouseSlot;
 import com.jfeat.am.module.warehouse.services.persistence.dao.WarehouseSlotMapper;
 import com.jfeat.am.module.warehouse.services.persistence.dao.WarehouseSlotMapper;
@@ -10,12 +8,13 @@ import com.jfeat.am.module.warehouse.services.persistence.model.WarehouseSlot;
 
 
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDWarehouseSlotService;
-import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
+import com.jfeat.crud.base.request.Ids;
+import com.jfeat.crud.plus.CRUDFilter;
+import com.jfeat.crud.plus.impl.CRUDServiceSlaveImpl;
 import org.springframework.stereotype.Service;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 import javax.annotation.Resource;
-import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
+
+import java.util.List;
 
 /**
  * <p>
@@ -28,12 +27,6 @@ import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
 
 @Service
 public class CRUDWarehouseSlotServiceImpl  extends CRUDServiceSlaveImpl<WarehouseSlot> implements CRUDWarehouseSlotService {
-
-
-
-
-
-
 
     private static final String masterField = "warehouse_id";
 
@@ -52,10 +45,6 @@ public class CRUDWarehouseSlotServiceImpl  extends CRUDServiceSlaveImpl<Warehous
         }
         return masterField;
     }
-
-
-
-
 
 }
 

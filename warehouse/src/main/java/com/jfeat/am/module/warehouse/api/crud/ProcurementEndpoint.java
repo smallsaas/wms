@@ -2,15 +2,10 @@ package com.jfeat.am.module.warehouse.api.crud;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Tip;
-import com.jfeat.am.common.controller.BaseController;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.core.jwt.JWTKit;
-import com.jfeat.am.module.log.LogManager;
-import com.jfeat.am.module.log.LogTaskFactory;
 import com.jfeat.am.module.log.annotation.BusinessLog;
+import com.jfeat.am.module.warehouse.log.LogManager;
+import com.jfeat.am.module.warehouse.log.LogTaskFactory;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
 import com.jfeat.am.module.warehouse.services.definition.ProcurementStatus;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryProcurementDao;
@@ -18,6 +13,10 @@ import com.jfeat.am.module.warehouse.services.domain.model.ProcurementModel;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementRecord;
 import com.jfeat.am.module.warehouse.services.domain.service.ProcurementService;
 import com.jfeat.am.module.warehouse.services.persistence.model.Procurement;
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.tips.SuccessTip;
+import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.dao.DuplicateKeyException;
@@ -40,7 +39,7 @@ import java.util.Date;
 @RestController
 @Api("WMS-采购订单")
 @RequestMapping("/api/wms/procurements")
-public class ProcurementEndpoint extends BaseController {
+public class ProcurementEndpoint   {
 
 
     @Resource
@@ -51,8 +50,8 @@ public class ProcurementEndpoint extends BaseController {
 
 
     private void createPurchasekLog(Long targetId, String methodName, String operation,String message) {
-        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
-                JWTKit.getAccount(getHttpServletRequest()),
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(),
+                JWTKit.getAccount(),
                 operation,
                 ProcurementEndpoint.class.getName(),
                 methodName,
@@ -68,9 +67,9 @@ public class ProcurementEndpoint extends BaseController {
     public Tip createProcurement(@RequestBody ProcurementModel entity) {
         Integer affected = 0;
         try {
-            String userName = JWTKit.getAccount(getHttpServletRequest());
+            String userName = JWTKit.getAccount();
             entity.setOriginatorName(userName);
-            affected = procurementService.addProcurement(userName,JWTKit.getUserId(getHttpServletRequest()),entity);
+            affected = procurementService.addProcurement(userName,JWTKit.getUserId(),entity);
         } catch (DuplicateKeyException e) {
             throw new BusinessException(5000,"采购单编号重复");
         }
@@ -91,8 +90,8 @@ public class ProcurementEndpoint extends BaseController {
     @ApiOperation(value = "更新采购单",response = ProcurementModel.class)
     public Tip updateProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
         entity.setId(id);
-        String userName = JWTKit.getAccount(getHttpServletRequest());
-        Tip resultTip = SuccessTip.create(procurementService.updateProcurement(userName,JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        String userName = JWTKit.getAccount();
+        Tip resultTip = SuccessTip.create(procurementService.updateProcurement(userName,JWTKit.getUserId(),id,entity));
         createPurchasekLog(id,  "updateProcurement", "对采购单进行了更新操作", JSONObject.toJSONString(entity) + " & " + id + " &");
         return resultTip;
     }
@@ -101,8 +100,8 @@ public class ProcurementEndpoint extends BaseController {
     @ApiOperation(value = "入库",response = ProcurementModel.class)
     public Tip executionProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
         entity.setId(id);
-        String userName = JWTKit.getAccount(getHttpServletRequest());
-        Tip resultTip = SuccessTip.create(procurementService.executionStorageIn(userName,JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        String userName = JWTKit.getAccount();
+        Tip resultTip = SuccessTip.create(procurementService.executionStorageIn(userName,JWTKit.getUserId(),id,entity));
         createPurchasekLog(id,  "executionProcurement", "对采购单进行了入库操作", JSONObject.toJSONString(entity) + " & " + id + " &");
         return resultTip;
     }
@@ -121,8 +120,8 @@ public class ProcurementEndpoint extends BaseController {
     @ApiOperation(value = "审核",response = ProcurementModel.class)
     public Tip auditProcurement(@PathVariable Long id, @RequestBody ProcurementModel entity) {
         entity.setId(id);
-        String userName = JWTKit.getAccount(getHttpServletRequest());
-        Integer resultTip =procurementService.updateAndAuditProcurement(JWTKit.getUserId(getHttpServletRequest()),id,entity);
+        String userName = JWTKit.getAccount();
+        Integer resultTip =procurementService.updateAndAuditProcurement(JWTKit.getUserId(),id,entity);
         createPurchasekLog(id,  "auditProcurement", "对采购单进行了提交审核操作",  id + " &");
         return  SuccessTip.create(resultTip);
     }

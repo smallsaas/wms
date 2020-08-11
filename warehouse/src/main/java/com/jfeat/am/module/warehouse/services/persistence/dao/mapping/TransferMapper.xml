@@ -5,6 +5,8 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Transfer">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="transaction_code" property="transactionCode" />
 		<result column="from_warehouse_id" property="fromWarehouseId" />
 		<result column="to_warehouse_id" property="toWarehouseId" />
@@ -24,7 +26,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, transaction_code AS transactionCode, from_warehouse_id AS fromWarehouseId, to_warehouse_id AS toWarehouseId, transaction_time AS transactionTime, finish_time AS finishTime, storage_in_id AS storageInId, storage_out_id AS storageOutId, note, status, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, transfer_time AS transferTime, field1, field2
+        id, org_id AS orgId, org_tag AS orgTag, transaction_code AS transactionCode, from_warehouse_id AS fromWarehouseId, to_warehouse_id AS toWarehouseId, transaction_time AS transactionTime, finish_time AS finishTime, storage_in_id AS storageInId, storage_out_id AS storageOutId, note, status, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, transfer_time AS transferTime, field1, field2
     </sql>
 
 </mapper>

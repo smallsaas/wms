@@ -87,6 +87,8 @@
 
     <resultMap id="OutItemMap" type="com.jfeat.am.module.warehouse.services.domain.model.StorageOutItemRecord">
         <id column="id" property="id" />
+        <result column="org_id" property="orgId" />
+        <result column="org_tag" property="orgTag" />
         <result column="storage_out_id" property="storageOutId" />
         <result column="sku_id" property="skuId" />
         <result column="transaction_sku_price" property="transactionSkuPrice" />
@@ -112,6 +114,8 @@
 
     <resultMap id="OutRecordMap" type="com.jfeat.am.module.warehouse.services.domain.model.StorageOutRecord">
         <id column="id" property="id" />
+        <result column="org_id" property="orgId" />
+        <result column="org_tag" property="orgTag" />
         <result column="transaction_code" property="transactionCode" />
         <result column="transaction_type" property="transactionType" />
         <result column="transaction_time" property="transactionTime" />

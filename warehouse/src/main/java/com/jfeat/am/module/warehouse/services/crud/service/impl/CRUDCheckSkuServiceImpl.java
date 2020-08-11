@@ -11,10 +11,10 @@ import com.jfeat.am.module.warehouse.services.persistence.model.CheckSku;
 
 
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDCheckSkuService;
+import com.jfeat.crud.plus.impl.CRUDServicePeerImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import com.jfeat.am.common.crud.impl.CRUDServicePeerImpl;
 
 /**
  * <p>

@@ -8,6 +8,8 @@
 
     <resultMap id="BaseStorageInRecord" type="com.jfeat.am.module.warehouse.services.domain.model.StorageInRecord">
         <id column="id" property="id" />
+        <result column="org_id" property="orgId" />
+        <result column="org_tag" property="orgTag" />
         <result column="transaction_code" property="transactionCode" />
         <result column="transaction_type" property="transactionType" />
         <result column="storage_in_time" property="storageInTime" />

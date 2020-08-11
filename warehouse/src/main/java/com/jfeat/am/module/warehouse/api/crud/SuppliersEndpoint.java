@@ -1,9 +1,11 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
-import com.jfeat.am.common.persistence.model.User;
 import com.jfeat.am.core.jwt.JWTKit;
-import com.jfeat.am.modular.system.service.UserService;
 import com.jfeat.am.module.warehouse.services.persistence.model.Suppliers;
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.tips.SuccessTip;
+import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,17 +19,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.dao.DuplicateKeyException;
 import com.jfeat.am.module.warehouse.services.domain.dao.QuerySuppliersDao;
-import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.module.log.annotation.BusinessLog;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.warehouse.services.domain.service.SuppliersService;
 import com.jfeat.am.module.warehouse.services.domain.model.SuppliersRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.SuppliersModel;
 
 import org.springframework.web.bind.annotation.RestController;
-import com.jfeat.am.common.controller.BaseController;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -44,7 +41,7 @@ import java.util.Date;
 @RestController
 @Api("WMS-供应商")
 @RequestMapping("/api/wms/suppliers")
-public class SuppliersEndpoint extends BaseController {
+public class SuppliersEndpoint   {
 
 
     @Resource
@@ -53,8 +50,8 @@ public class SuppliersEndpoint extends BaseController {
     @Resource
     QuerySuppliersDao querySuppliersDao;
 
-    @Resource
-    UserService userService;
+    //@Resource
+    //UserService userService;
 
     @BusinessLog(name = "Suppliers", value = "create Suppliers")
     @PostMapping
@@ -90,8 +87,9 @@ public class SuppliersEndpoint extends BaseController {
     @PutMapping("/{id}/forbidden")
     @ApiOperation(value = "设为禁用/正常",response = Suppliers.class)
     public Tip forbiddenSuppliers(@PathVariable Long id) {
-        User user = userService.getById(JWTKit.getUserId(getHttpServletRequest()));
-        return SuccessTip.create(suppliersService.changeSupplierStatus(id,user));
+        //User user = userService.getById(JWTKit.getUserId(getHttpServletRequest()));
+        //return SuccessTip.create(suppliersService.changeSupplierStatus(id,user));
+        return SuccessTip.create(suppliersService.changeSupplierStatus(id));
     }
     @BusinessLog(name = "Suppliers", value = "delete Suppliers")
     @DeleteMapping("/{id}")

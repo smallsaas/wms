@@ -5,6 +5,8 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.sku.services.persistence.model.SkuProduct">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="product_id" property="productId" />
 		<result column="sku_code" property="skuCode" />
 		<result column="sku_name" property="skuName" />
@@ -31,7 +33,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, product_id AS productId, sku_code AS skuCode,weight,volume,spec, sku_name AS skuName, status, sort_value AS sortValue, search_key_word AS searchKeyWord, bar_code AS barCode, description, sku_price AS skuPrice, readjust_cost_price AS readjustCostPrice, suggested_price AS suggestedPrice, cost_price AS costPrice, stock_cost AS stockCost, create_time AS createTime, update_time AS updateTime, field1, field2, field3
+        id, org_id AS orgId, org_tag AS orgTag, product_id AS productId, sku_code AS skuCode,weight,volume,spec, sku_name AS skuName, status, sort_value AS sortValue, search_key_word AS searchKeyWord, bar_code AS barCode, description, sku_price AS skuPrice, readjust_cost_price AS readjustCostPrice, suggested_price AS suggestedPrice, cost_price AS costPrice, stock_cost AS stockCost, create_time AS createTime, update_time AS updateTime, field1, field2, field3
     </sql>
 
 </mapper>

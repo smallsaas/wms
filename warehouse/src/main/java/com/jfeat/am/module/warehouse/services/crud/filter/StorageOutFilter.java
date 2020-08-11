@@ -1,9 +1,8 @@
 package com.jfeat.am.module.warehouse.services.crud.filter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.jfeat.am.common.crud.CRUDFilter;
-import com.jfeat.am.common.crud.CRUDFilterResult;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOut;
+import com.jfeat.crud.plus.CRUDFilterResult;
 
 
 /**

@@ -1,8 +1,7 @@
 package com.jfeat.am.module.sku.services.crud.service;
-            import com.jfeat.am.common.crud.CRUDServiceOverModel;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.sku.services.crud.model.SkuProductModel;
-import com.jfeat.am.common.constant.tips.Ids;
+import com.jfeat.crud.plus.CRUDServiceOverModel;
 
 /**
  * <p>

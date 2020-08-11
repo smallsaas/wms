@@ -1,6 +1,5 @@
 package com.jfeat.am.module.warehouse.services.domain.service;
 
-import com.jfeat.am.common.persistence.model.User;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDProcurementService;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementModel;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageInModel;

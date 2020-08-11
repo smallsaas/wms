@@ -5,7 +5,7 @@ import com.jfeat.am.module.sku.services.crud.model.SkuProductModel;
 
 import java.util.List;
 
-public class CreateSkuProductModel extends Product{
+public class CreateSkuProductModel extends Product {
     List<SkuProductModel> skus;
 
     public List<SkuProductModel> getSkus() {

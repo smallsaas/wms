@@ -1,16 +1,14 @@
 package com.jfeat.am.module.sku.api.crud;
 
 import com.jfeat.am.common.constant.tips.Ids;
-import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Tip;
-import com.jfeat.am.common.controller.BaseController;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.log.annotation.BusinessLog;
-import com.jfeat.am.module.product.services.domain.service.ProductCategoryService;
 import com.jfeat.am.module.sku.services.domain.dao.QuerySkuSpecificationGroupDao;
 import com.jfeat.am.module.sku.services.domain.model.CategorySpecModel;
 import com.jfeat.am.module.sku.services.domain.service.SkuSpecificationGroupService;
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.tips.SuccessTip;
+import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.dao.DuplicateKeyException;
@@ -30,13 +28,13 @@ import javax.annotation.Resource;
 @RestController
 @Api("sku-规格")
 @RequestMapping("/api/wms/sku")
-public class SkuSpecificationGroupEndpoint extends BaseController {
+public class SkuSpecificationGroupEndpoint   {
 
 
     @Resource
     SkuSpecificationGroupService skuSpecificationGroupService;
-    @Resource
-    ProductCategoryService productCategoryService;
+    //@Resource
+    //ProductCategoryService productCategoryService;
 
     @Resource
     QuerySkuSpecificationGroupDao querySkuSpecificationGroupDao;
@@ -91,7 +89,7 @@ public class SkuSpecificationGroupEndpoint extends BaseController {
     @ApiOperation("删除产品类别以及 类别下所有的规格信息")
     public Tip deleteProductCategory(@PathVariable Long id) {
         skuSpecificationGroupService.deleteCategory(id);
-        productCategoryService.deleteMaster(id);
+        //productCategoryService.deleteMaster(id);
         return SuccessTip.create();
     }
 

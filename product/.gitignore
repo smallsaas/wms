@@ -1,0 +1,14 @@
+target/
+build/
+.idea/*
+.gradle/
+.svn/
+classes/*
+*.iml
+*.swp
+*.log
+*.db
+logs/
+.DS_Store
+*/target/**
+*/LOG_*

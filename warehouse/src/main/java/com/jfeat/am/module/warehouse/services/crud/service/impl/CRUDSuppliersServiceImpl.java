@@ -1,18 +1,18 @@
 package com.jfeat.am.module.warehouse.services.crud.service.impl;
             
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.jfeat.am.common.crud.FIELD;
 import com.jfeat.am.module.warehouse.services.persistence.model.Suppliers;
 import com.jfeat.am.module.warehouse.services.persistence.dao.SuppliersMapper;
 
 
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDSuppliersService;
-import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
+import com.jfeat.crud.plus.CRUDFilter;
+import com.jfeat.crud.plus.QueryMasterDao;
+import com.jfeat.crud.plus.impl.CRUDServiceOnlyImpl;
+import com.jfeat.crud.plus.model.IdVersions;
 import org.springframework.stereotype.Service;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 import javax.annotation.Resource;
-import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
+import java.util.List;
 
 /**
  * <p>
@@ -26,10 +26,6 @@ import com.jfeat.am.common.crud.impl.CRUDServiceOnlyImpl;
 @Service
 public class CRUDSuppliersServiceImpl  extends CRUDServiceOnlyImpl<Suppliers> implements CRUDSuppliersService {
 
-
-
-
-
         @Resource
         private SuppliersMapper suppliersMapper;
 
@@ -37,11 +33,6 @@ public class CRUDSuppliersServiceImpl  extends CRUDServiceOnlyImpl<Suppliers> im
         protected BaseMapper<Suppliers> getMasterMapper() {
                 return suppliersMapper;
         }
-
-
-
-
-
 
 
 }

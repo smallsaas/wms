@@ -1,6 +1,5 @@
 package com.jfeat.am.module.warehouse.services.domain.service;
 
-import com.jfeat.am.common.persistence.model.User;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDTraderService;
 import com.jfeat.am.common.constant.tips.Ids;
 import org.springframework.transaction.annotation.Transactional;

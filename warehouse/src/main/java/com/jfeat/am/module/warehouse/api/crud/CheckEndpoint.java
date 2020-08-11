@@ -3,14 +3,9 @@ package com.jfeat.am.module.warehouse.api.crud;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Tip;
-import com.jfeat.am.common.controller.BaseController;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.core.jwt.JWTKit;
-import com.jfeat.am.module.log.LogManager;
-import com.jfeat.am.module.log.LogTaskFactory;
+import com.jfeat.am.module.warehouse.log.LogManager;
+import com.jfeat.am.module.warehouse.log.LogTaskFactory;
 import com.jfeat.am.module.warehouse.services.definition.CheckStatus;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryCheckDao;
@@ -18,6 +13,10 @@ import com.jfeat.am.module.warehouse.services.domain.model.CheckModel;
 import com.jfeat.am.module.warehouse.services.domain.model.CheckRecord;
 import com.jfeat.am.module.warehouse.services.domain.service.CheckService;
 import com.jfeat.am.module.warehouse.services.persistence.model.Check;
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.tips.SuccessTip;
+import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.dao.DuplicateKeyException;
@@ -38,7 +37,7 @@ import java.util.Date;
 @RestController
 @Api("WMS-库存盘点")
 @RequestMapping("/api/wms/checks")
-public class CheckEndpoint extends BaseController {
+public class CheckEndpoint   {
 
 
     @Resource
@@ -49,8 +48,8 @@ public class CheckEndpoint extends BaseController {
 
 
     private void createCheckLog(Long targetId, String methodName, String operation, String message) {
-        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
-                JWTKit.getAccount(getHttpServletRequest()),
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(),
+                JWTKit.getAccount(),
                 operation,
                 CheckEndpoint.class.getName(),
                 methodName,
@@ -67,8 +66,8 @@ public class CheckEndpoint extends BaseController {
 
         Integer affected = 0;
         try {
-            String userName = JWTKit.getAccount(getHttpServletRequest());
-            Long userId = JWTKit.getUserId(getHttpServletRequest());
+            String userName = JWTKit.getAccount();
+            Long userId = JWTKit.getUserId();
             entity.setOriginatorName(userName);
             entity.setOriginatorId(userId);
             affected = checkService.createCheckList(userId, entity);
@@ -84,7 +83,7 @@ public class CheckEndpoint extends BaseController {
     @PutMapping("/{id}")
     public Tip updateCheck(@PathVariable Long id, @RequestBody CheckModel entity) {
         Integer affected = 0;
-        Long userId = JWTKit.getUserId(getHttpServletRequest());
+        Long userId = JWTKit.getUserId();
         affected = checkService.updateCheckList(userId, id,entity);
 
         createCheckLog(entity.getId(), "updateCheck", "对库存盘点进行了更新操作", JSON.toJSONString(entity) + " &");

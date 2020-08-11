@@ -5,6 +5,8 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.sku.services.persistence.model.SkuPriceHistory">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="sku_id" property="skuId" />
 		<result column="origin_price" property="originPrice" />
 		<result column="after_price" property="afterPrice" />
@@ -13,7 +15,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, sku_id AS skuId, origin_price AS originPrice, after_price AS afterPrice, update_time AS updateTime
+        id, org_id AS orgId, org_tag AS orgTag, sku_id AS skuId, origin_price AS originPrice, after_price AS afterPrice, update_time AS updateTime
     </sql>
 
 </mapper>

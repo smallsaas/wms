@@ -2,9 +2,7 @@ package com.jfeat.am.module.warehouse.services.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.jfeat.am.common.controller.BaseController;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
+import com.jfeat.am.module.warehouse.api.crud.StorageInEndpoint;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
 import com.jfeat.am.module.warehouse.services.definition.ItemEnumType;
@@ -23,6 +21,8 @@ import com.jfeat.am.module.warehouse.services.persistence.model.Inventory;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageIn;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageInItem;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOut;
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -55,7 +55,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
     @Resource
     StorageOutMapper storageOutMapper;
 
-    protected static final Logger logger = LoggerFactory.getLogger(BaseController.class);
+    protected static final Logger logger = LoggerFactory.getLogger(StorageInEndpoint.class);
 
     public Integer changeStatus(Long userId, Long storageInId, StorageInModel entity) {
         Integer affected = 0;
@@ -342,7 +342,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
                 }
                 logger.info("没有更新占用库存" + "----->更新之前，打印库存信息" + JSON.toJSONString(inventory));
                 if (inventory.getOrderCount() < inItem.getTransactionQuantities()) {
-                    logger.info("没有更新占用库存" + "出货数据有误，请核准并重新提交" + JSON.toJSONString(entity));
+                    //logger.info("没有更新占用库存" + "出货数据有误，请核准并重新提交" + JSON.toJSONString(entity));
                     throw new BusinessException(5300, "出货数据有误，请核准并重新提交");
                 }
                 logger.info("### storage in ###:操作前的数量"+ inventory.getValidSku());

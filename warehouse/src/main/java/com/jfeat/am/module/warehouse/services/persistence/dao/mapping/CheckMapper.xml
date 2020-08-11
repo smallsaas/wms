@@ -5,6 +5,8 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Check">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="check_code" property="checkCode" />
 		<result column="check_time" property="checkTime" />
 		<result column="finish_time" property="finishTime" />
@@ -22,7 +24,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, check_code AS checkCode, check_time AS checkTime, finish_time AS finishTime, begin_time AS beginTime, warehouse_id AS warehouseId, profit_lost AS profitLost, check_note AS checkNote, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, status, field1, field2
+        id, org_id AS orgId, org_tag AS orgTag, check_code AS checkCode, check_time AS checkTime, finish_time AS finishTime, begin_time AS beginTime, warehouse_id AS warehouseId, profit_lost AS profitLost, check_note AS checkNote, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, status, field1, field2
     </sql>
 
 </mapper>

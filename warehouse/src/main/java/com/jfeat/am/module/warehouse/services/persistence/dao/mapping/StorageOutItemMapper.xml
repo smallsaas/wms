@@ -5,6 +5,8 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="storage_out_id" property="storageOutId" />
 		<result column="sku_id" property="skuId" />
 		<result column="transaction_sku_price" property="transactionSkuPrice" />
@@ -18,7 +20,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, storage_out_id AS storageOutId, before_transaction_quantities AS beforeTransactionQuantities,demand_quantities as demandQuantities,sku_id AS skuId, transaction_sku_price AS transactionSkuPrice, transaction_quantities AS transactionQuantities, after_transaction_quantities AS afterTransactionQuantities, transaction_time AS transactionTime, relation_code AS relationCode
+        id, org_id AS orgId, org_tag AS orgTag, storage_out_id AS storageOutId, before_transaction_quantities AS beforeTransactionQuantities,demand_quantities as demandQuantities,sku_id AS skuId, transaction_sku_price AS transactionSkuPrice, transaction_quantities AS transactionQuantities, after_transaction_quantities AS afterTransactionQuantities, transaction_time AS transactionTime, relation_code AS relationCode
     </sql>
 
 </mapper>

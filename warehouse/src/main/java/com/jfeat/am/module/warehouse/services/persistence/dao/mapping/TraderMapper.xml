@@ -5,6 +5,8 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Trader">
         <id column="id" property="id"/>
+        <result column="org_id" property="orgId" />
+        <result column="org_tag" property="orgTag" />
         <result column="trader_name" property="traderName"/>
         <result column="trader_code" property="traderCode"/>
         <result column="trader_PCD" property="traderPCD"/>
@@ -29,7 +31,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, trader_name AS traderName, trader_code AS traderCode, trader_PCD AS traderPCD, trader_address AS
+        id, org_id AS orgId, org_tag AS orgTag, trader_name AS traderName, trader_code AS traderCode, trader_PCD AS traderPCD, trader_address AS
         traderAddress, trader_postcode AS traderPostcode, trader_contact_name AS traderContactName, trader_contact_phone
         AS traderContactPhone, trader_contact_fax AS traderContactFax, trader_contact_email AS traderContactEmail,
         trader_contact_position AS traderContactPosition, trader_contact_cell_phone AS traderContactCellPhone,

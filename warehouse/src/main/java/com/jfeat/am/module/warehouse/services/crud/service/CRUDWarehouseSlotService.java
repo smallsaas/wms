@@ -1,10 +1,9 @@
 package com.jfeat.am.module.warehouse.services.crud.service;
         
         
-    import com.jfeat.am.common.crud.CRUDServiceOnly;
-    import com.jfeat.am.common.crud.CRUDServiceSlave;
     import com.jfeat.am.module.warehouse.services.persistence.model.WarehouseSlot;
 import com.jfeat.am.common.constant.tips.Ids;
+    import com.jfeat.crud.plus.CRUDServiceSlave;
 
 /**
  * <p>

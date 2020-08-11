@@ -1,9 +1,8 @@
 package com.jfeat.am.module.sku.services.crud.filter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.jfeat.am.common.crud.CRUDFilter;
-import com.jfeat.am.common.crud.CRUDFilterResult;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
+import com.jfeat.crud.plus.CRUDFilterResult;
 
 
 /**

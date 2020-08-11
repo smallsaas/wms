@@ -8,6 +8,8 @@
 
     <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.domain.model.SuppliersModel">
         <id column="id" property="id" />
+        <result column="org_id" property="orgId" />
+        <result column="org_tag" property="orgTag" />
         <result column="supplier_name" property="supplierName" />
         <result column="supplier_code" property="supplierCode" />
         <result column="supplier_PCD" property="supplierPCD" />

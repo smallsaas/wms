@@ -6,6 +6,8 @@
     </sql>
     <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.domain.model.TransferRecord">
         <id column="id" property="id" />
+        <result column="org_id" property="orgId" />
+        <result column="org_tag" property="orgTag" />
         <result column="transaction_code" property="transactionCode" />
         <result column="from_warehouse_id" property="fromWarehouseId" />
         <result column="to_warehouse_id" property="toWarehouseId" />

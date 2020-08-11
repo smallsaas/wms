@@ -9,6 +9,8 @@
 
     <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.domain.model.WarehouseRecord">
         <id column="id" property="id" />
+        <result column="org_id" property="orgId" />
+        <result column="org_tag" property="orgTag" />
         <result column="warehouse_code" property="warehouseCode" />
         <result column="warehouse_name" property="warehouseName" />
         <result column="warehouse_PCD" property="warehousePCD" />

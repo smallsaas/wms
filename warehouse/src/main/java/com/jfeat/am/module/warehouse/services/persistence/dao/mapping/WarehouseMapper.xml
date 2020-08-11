@@ -5,6 +5,8 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.Warehouse">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="warehouse_code" property="warehouseCode" />
 		<result column="warehouse_name" property="warehouseName" />
 		<result column="warehouse_PCD" property="warehousePCD" />
@@ -14,7 +16,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, warehouse_code AS warehouseCode, warehouse_name AS warehouseName, warehouse_PCD AS warehousePCD, warehouse_address AS warehouseAddress, warehouse_charger AS warehouseCharger
+        id, org_id AS orgId, org_tag AS orgTag, warehouse_code AS warehouseCode, warehouse_name AS warehouseName, warehouse_PCD AS warehousePCD, warehouse_address AS warehouseAddress, warehouse_charger AS warehouseCharger
     </sql>
 
 </mapper>

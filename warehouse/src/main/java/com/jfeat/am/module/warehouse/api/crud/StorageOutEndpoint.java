@@ -2,15 +2,21 @@ package com.jfeat.am.module.warehouse.api.crud;
 
 import com.alibaba.fastjson.JSON;
 import com.jfeat.am.core.jwt.JWTKit;
-import com.jfeat.am.module.log.LogManager;
-import com.jfeat.am.module.log.LogTaskFactory;
+import com.jfeat.am.module.warehouse.log.LogManager;
+import com.jfeat.am.module.warehouse.log.LogTaskFactory;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.model.BulkUpdateOrderCount;
 import com.jfeat.am.module.warehouse.services.domain.model.UpdateOrderCount;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOut;
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.tips.SuccessTip;
+import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,17 +27,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryStorageOutDao;
-import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.module.log.annotation.BusinessLog;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.warehouse.services.domain.service.StorageOutService;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageOutRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageOutModel;
 
 import org.springframework.web.bind.annotation.RestController;
-import com.jfeat.am.common.controller.BaseController;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -48,7 +49,7 @@ import java.util.Date;
 @RestController
 @Api("WMS-出库单")
 @RequestMapping("/api/wms/storages/out")
-public class StorageOutEndpoint extends BaseController {
+public class StorageOutEndpoint   {
 
 
     @Resource
@@ -57,11 +58,13 @@ public class StorageOutEndpoint extends BaseController {
     @Resource
     QueryStorageOutDao queryStorageOutDao;
 
+    Logger logger = LoggerFactory.getLogger(StorageOutEndpoint.class);
+
 
 
     private void createStorageOutLog(Long targetId, String methodName, String operation, String message) {
-        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
-                JWTKit.getAccount(getHttpServletRequest()),
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(),
+                JWTKit.getAccount(),
                 operation,
                 StorageOutEndpoint.class.getName(),
                 methodName,
@@ -78,12 +81,12 @@ public class StorageOutEndpoint extends BaseController {
     @PostMapping
     @ApiOperation(value = "新建出库单",response = StorageOutModel.class)
     public Tip createStorageOut(@RequestBody StorageOutModel entity) {
-        String userName = JWTKit.getAccount(getHttpServletRequest());
+        String userName = JWTKit.getAccount();
         entity.setOriginatorName(userName);
         if (entity.getWarehouseId()==null){
             entity.setWarehouseId(1L);
         }
-        Integer result  = storageOutService.draftStorageOut(JWTKit.getUserId(getHttpServletRequest()),entity);
+        Integer result  = storageOutService.draftStorageOut(JWTKit.getUserId(),entity);
         createStorageOutLog(entity.getId(),  "createStorageOut", "对出库单进行了新建操作",  entity
                 .getId() + " &");
         return SuccessTip.create(result);
@@ -94,12 +97,12 @@ public class StorageOutEndpoint extends BaseController {
     @PostMapping("/mall")
     @ApiOperation(value = "新建出库单-商城端",response = StorageOutModel.class)
     public Tip salesStorageOut(@RequestBody StorageOutModel entity) {
-        String userName = JWTKit.getAccount(getHttpServletRequest());
+        String userName = JWTKit.getAccount();
         entity.setOriginatorName(userName);
         if (entity.getWarehouseId()==null){
             entity.setWarehouseId(1L);
         }
-        Integer result  = storageOutService.salesStorageOut(JWTKit.getUserId(getHttpServletRequest()),entity);
+        Integer result  = storageOutService.salesStorageOut(JWTKit.getUserId(),entity);
         createStorageOutLog(entity.getId(),  "createStorageOut", "对出库单进行了商城出库操作",  entity
                 .getId() + " &");
         return SuccessTip.create(result);
@@ -128,7 +131,7 @@ public class StorageOutEndpoint extends BaseController {
     @ApiOperation(value = "修改出库单",response = StorageOutModel.class)
     public Tip updateStorageOut(@PathVariable Long id, @RequestBody StorageOutModel entity) {
         entity.setId(id);
-        Integer result = storageOutService.updateStorageIn(JWTKit.getUserId(getHttpServletRequest()),id,entity);
+        Integer result = storageOutService.updateStorageIn(JWTKit.getUserId(),id,entity);
         createStorageOutLog(entity.getId(),  "updateStorageOut", "对出库单进行了修改操作",  entity
                 .getId() + " &" + id + "&");
         return SuccessTip.create(result);
@@ -139,7 +142,7 @@ public class StorageOutEndpoint extends BaseController {
     @ApiOperation(value = "审核",response = StorageOutModel.class)
     public Tip commitToAuditStorageOut(@PathVariable Long id, @RequestBody StorageOutModel entity) {
         entity.setId(id);
-        Tip resultTip = SuccessTip.create(storageOutService.commitStorageOut(JWTKit.getUserId(getHttpServletRequest()),id,entity));
+        Tip resultTip = SuccessTip.create(storageOutService.commitStorageOut(JWTKit.getUserId(),id,entity));
         createStorageOutLog(id,  "commitToAuditStorageOut", "对出库单进行了提交审核操作",  id + " &");
         return resultTip;
     }
@@ -178,11 +181,11 @@ public class StorageOutEndpoint extends BaseController {
         StorageOut out = storageOutService.retrieveMaster(id);
         if ((out.getSalesId()!=null && out.getSalesId()>0)
                 && out.getTransactionType().compareTo(TransactionType.CustomerStorageOut.toString())==0){
-            Tip resultTip = SuccessTip.create(storageOutService.executionSalesStorageOut(JWTKit.getAccount(getHttpServletRequest()),id));
+            Tip resultTip = SuccessTip.create(storageOutService.executionSalesStorageOut(JWTKit.getAccount(),id));
             createStorageOutLog(id,  "executionStorage", "对出库单进行了执行入库操作",  id + " &");
             return resultTip;
         }else {
-            Tip resultTip = SuccessTip.create(storageOutService.executionStorageOut(JWTKit.getAccount(getHttpServletRequest()),id));
+            Tip resultTip = SuccessTip.create(storageOutService.executionStorageOut(JWTKit.getAccount(),id));
             createStorageOutLog(id,  "executionStorage", "对出库单进行了执行入库操作",  id + " &");
             return resultTip;
         }

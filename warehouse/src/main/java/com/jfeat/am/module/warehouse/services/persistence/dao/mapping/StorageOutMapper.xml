@@ -5,6 +5,8 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.persistence.model.StorageOut">
 		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
 		<result column="transaction_code" property="transactionCode" />
 		<result column="transaction_type" property="transactionType" />
 		<result column="transaction_time" property="transactionTime" />
@@ -26,7 +28,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, transaction_code AS transactionCode, sales_id as salesId,out_order_num as outOrderNum, distributor_customer as distributorCustomer,transaction_type AS transactionType, transaction_time AS transactionTime, storage_out_time AS storageOutTime, batch_no AS batchNo, note, status, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, warehouse_id AS warehouseId, slot_id AS slotId, field1, field2
+        id, org_id AS orgId, org_tag AS orgTag, transaction_code AS transactionCode, sales_id as salesId,out_order_num as outOrderNum, distributor_customer as distributorCustomer,transaction_type AS transactionType, transaction_time AS transactionTime, storage_out_time AS storageOutTime, batch_no AS batchNo, note, status, transaction_by AS transactionBy, originator_id AS originatorId, originator_name AS originatorName, warehouse_id AS warehouseId, slot_id AS slotId, field1, field2
     </sql>
 
 </mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.product.services.persistence.dao.ProductMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.jfeat.am.module.product.services.persistence.model.Product">
+		<id column="id" property="id" />
+		<result column="org_id" property="orgId" />
+		<result column="org_tag" property="orgTag" />
+		<result column="product_category_id" property="productCategoryId" />
+		<result column="product_code" property="productCode" />
+		<result column="name" property="name" />
+		<result column="english_name" property="englishName" />
+		<result column="weight" property="weight" />
+		<result column="readjust_cost_price" property="readjustCostPrice" />
+		<result column="product_standard" property="productStandard" />
+		<result column="price" property="price" />
+		<result column="suggested_price" property="suggestedPrice" />
+		<result column="cost_price" property="costPrice" />
+		<result column="specification" property="specification" />
+		<result column="quantities" property="quantities" />
+		<result column="stock_cost" property="stockCost" />
+		<result column="purchase_advance" property="purchaseAdvance" />
+		<result column="status" property="status" />
+		<result column="sort_value" property="sortValue" />
+		<result column="search_key_word" property="searchKeyWord" />
+		<result column="bar_code" property="barCode" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="description" property="description" />
+		<result column="field1" property="field1" />
+		<result column="volume" property="volume" />
+		<result column="spec" property="spec" />
+		<result column="field4" property="field4" />
+		<result column="field5" property="field5" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, org_id AS orgId, org_tag AS orgTag, product_category_id AS productCategoryId, supplier_id AS supplierId, product_code AS productCode, name, english_name AS englishName, weight, readjust_cost_price AS readjustCostPrice, product_standard AS productStandard, price, suggested_price AS suggestedPrice, cost_price AS costPrice, specification, quantities, stock_cost AS stockCost, purchase_advance AS purchaseAdvance, status, sort_value AS sortValue, search_key_word AS searchKeyWord, bar_code AS barCode, create_time AS createTime, update_time AS updateTime, description, field1, volume, spec, field4, field5
+    </sql>
+
+</mapper>

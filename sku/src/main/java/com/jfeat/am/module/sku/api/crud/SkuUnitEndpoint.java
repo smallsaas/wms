@@ -1,16 +1,15 @@
 package com.jfeat.am.module.sku.api.crud;
 
 import com.baomidou.mybatisplus.plugins.Page;
-import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Tip;
-import com.jfeat.am.common.controller.BaseController;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.sku.services.crud.model.SkuUnitModel;
 import com.jfeat.am.module.sku.services.domain.dao.QuerySkuUnitDao;
 import com.jfeat.am.module.sku.services.domain.model.SkuUnitRecord;
 import com.jfeat.am.module.sku.services.domain.service.SkuUnitService;
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.tips.SuccessTip;
+import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.dao.DuplicateKeyException;
@@ -30,7 +29,7 @@ import javax.annotation.Resource;
 @RestController
 @Api("sku-单位")
 @RequestMapping("/api/wms/sku")
-public class SkuUnitEndpoint extends BaseController {
+public class SkuUnitEndpoint   {
 
     @Resource
     SkuUnitService skuUnitService;
@@ -41,7 +40,7 @@ public class SkuUnitEndpoint extends BaseController {
     @BusinessLog(name = "SkuUnit", value = "create SkuUnit")
     @PostMapping("/{skuId}/units")
     @ApiOperation("为 sku 新增 单位")
-    public Tip createSkuUnit(@PathVariable long skuId,@RequestBody SkuUnitModel entity) {
+    public Tip createSkuUnit(@PathVariable long skuId, @RequestBody SkuUnitModel entity) {
 
         Integer affected = 0;
         entity.setSkuId(skuId);

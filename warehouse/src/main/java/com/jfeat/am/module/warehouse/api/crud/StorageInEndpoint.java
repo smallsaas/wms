@@ -2,12 +2,16 @@ package com.jfeat.am.module.warehouse.api.crud;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jfeat.am.core.jwt.JWTKit;
-import com.jfeat.am.module.log.LogManager;
-import com.jfeat.am.module.log.LogTaskFactory;
+import com.jfeat.am.module.warehouse.log.LogManager;
+import com.jfeat.am.module.warehouse.log.LogTaskFactory;
 import com.jfeat.am.module.warehouse.services.definition.FormType;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.service.ProcurementService;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageIn;
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.tips.SuccessTip;
+import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryStorageInDao;
-import com.jfeat.am.common.constant.tips.SuccessTip;
-import com.jfeat.am.common.constant.tips.Tip;
 import com.jfeat.am.module.log.annotation.BusinessLog;
-import com.jfeat.am.common.exception.BusinessCode;
-import com.jfeat.am.common.exception.BusinessException;
 
 import java.math.BigDecimal;
 
@@ -33,7 +33,6 @@ import com.jfeat.am.module.warehouse.services.domain.model.StorageInRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageInModel;
 
 import org.springframework.web.bind.annotation.RestController;
-import com.jfeat.am.common.controller.BaseController;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -50,7 +49,7 @@ import java.util.Date;
 @RestController
 @Api("WMS-入库表")
 @RequestMapping("/api/wms/storages/in")
-public class StorageInEndpoint extends BaseController {
+public class StorageInEndpoint   {
 
 
     @Resource
@@ -65,8 +64,8 @@ public class StorageInEndpoint extends BaseController {
 
 
     private void createStorageInLog(Long targetId, String methodName, String operation, String message) {
-        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(getHttpServletRequest()),
-                JWTKit.getAccount(getHttpServletRequest()),
+        LogManager.me().executeLog(LogTaskFactory.businessLog(JWTKit.getUserId(),
+                JWTKit.getAccount(),
                 operation,
                 StorageInEndpoint.class.getName(),
                 methodName,
@@ -82,28 +81,28 @@ public class StorageInEndpoint extends BaseController {
     @PostMapping
     @ApiOperation(value = "新建入库单", response = StorageInModel.class)
     public Tip createStorageIn(@RequestBody StorageInModel entity) {
-        String userName = JWTKit.getAccount(getHttpServletRequest());
+        String userName = JWTKit.getAccount(  );
         entity.setOriginatorName(userName);
         if (entity.getWarehouseId() == null) {
             entity.setWarehouseId(1L);
         }
         createStorageInLog(entity.getId(), "createStorageIn", "对入库单进行了新建操作", entity
                 .getId() + " &");
-        return SuccessTip.create(storageInService.createStorageIn(JWTKit.getUserId(getHttpServletRequest()), entity));
+        return SuccessTip.create(storageInService.createStorageIn(JWTKit.getUserId(  ), entity));
     }
 
     @BusinessLog(name = "StorageIn", value = "create StorageIn")
     @PostMapping("/mall")
     @ApiOperation(value = "商城新建入库单", response = StorageInModel.class)
     public Tip salesStorageIn(@RequestBody StorageInModel entity) {
-        String userName = JWTKit.getAccount(getHttpServletRequest());
+        String userName = JWTKit.getAccount(  );
         entity.setOriginatorName(userName);
         if (entity.getWarehouseId() == null) {
             entity.setWarehouseId(1L);
         }
         createStorageInLog(entity.getId(), "createStorageIn", "对退货入库单进行了新建操作", entity
                 .getId() + " &");
-        return SuccessTip.create(storageInService.salesStorageIn(JWTKit.getUserId(getHttpServletRequest()), entity));
+        return SuccessTip.create(storageInService.salesStorageIn(JWTKit.getUserId(  ), entity));
     }
 
     @GetMapping("/{id}")
@@ -119,7 +118,7 @@ public class StorageInEndpoint extends BaseController {
     @ApiOperation(value = "修改入库单", response = StorageInModel.class)
     public Tip updateStorageIn(@PathVariable Long id, @RequestBody StorageInModel entity) {
         entity.setId(id);
-        Integer result = storageInService.updateStorageIn(JWTKit.getUserId(getHttpServletRequest()), id, entity);
+        Integer result = storageInService.updateStorageIn(JWTKit.getUserId(  ), id, entity);
         createStorageInLog(entity.getId(), "updateStorageIn", "对入库单进行了修改操作", entity
                 .getId() + " &" + id + "&");
         return SuccessTip.create();
@@ -130,7 +129,7 @@ public class StorageInEndpoint extends BaseController {
     @ApiOperation(value = "审核", response = StorageInModel.class)
     public Tip commitToAuditStorageIn(@PathVariable Long id, @RequestBody StorageInModel entity) {
         entity.setId(id);
-        Tip resultTip = SuccessTip.create(storageInService.commitStorageIn(JWTKit.getUserId(getHttpServletRequest()), id, entity));
+        Tip resultTip = SuccessTip.create(storageInService.commitStorageIn(JWTKit.getUserId(  ), id, entity));
         createStorageInLog(id, "commitToAuditStorageIn", "对入库单进行了提交审核操作", id + " &");
         return resultTip;
     }
@@ -175,7 +174,7 @@ public class StorageInEndpoint extends BaseController {
         if (entity.getTransactionType().compareTo(TransactionType.Procurement.toString()) == 0 && (entity.getProcurementId() != null)) {
             resultTip = SuccessTip.create(procurementService.executionProcurementStorageIn(id));
         } else {
-            resultTip = SuccessTip.create(storageInService.executionStorageIn(JWTKit.getAccount(getHttpServletRequest()), id));
+            resultTip = SuccessTip.create(storageInService.executionStorageIn(JWTKit.getAccount(  ), id));
         }
         createStorageInLog(id, "executionStorage", "对入库单进行了执行入库操作", id + " &");
         return resultTip;

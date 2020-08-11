@@ -7,6 +7,8 @@
 
     <resultMap id="BaseResultMap" type="com.jfeat.am.module.warehouse.services.domain.model.ProcurementRecord">
         <id column="id" property="id"/>
+        <result column="org_id" property="orgId" />
+        <result column="org_tag" property="orgTag" />
         <result column="procurement_code" property="procurementCode"/>
         <result column="supplier_id" property="supplierId"/>
         <result column="procurement_others_payment" property="procurementOthersPayment"/>
