@@ -67,6 +67,24 @@ public class SkuPriceHistory extends Model<SkuPriceHistory> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public SkuPriceHistory setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public SkuPriceHistory setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public Long getSkuId() {
 		return skuId;
 	}
@@ -113,6 +131,10 @@ public class SkuPriceHistory extends Model<SkuPriceHistory> {
 
 	public static final String UPDATE_TIME = "update_time";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -121,11 +143,13 @@ public class SkuPriceHistory extends Model<SkuPriceHistory> {
 	@Override
 	public String toString() {
 		return "SkuPriceHistory{" +
-			"id=" + id +
-			", skuId=" + skuId +
-			", originPrice=" + originPrice +
-			", afterPrice=" + afterPrice +
-			", updateTime=" + updateTime +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", skuId=" + skuId +
+				", originPrice=" + originPrice +
+				", afterPrice=" + afterPrice +
+				", updateTime=" + updateTime +
+				'}';
 	}
 }

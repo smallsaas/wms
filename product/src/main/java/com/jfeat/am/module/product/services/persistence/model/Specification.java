@@ -65,6 +65,24 @@ public class Specification extends Model<Specification> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public Specification setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public Specification setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public String getSpecificationName() {
 		return specificationName;
 	}
@@ -111,6 +129,10 @@ public class Specification extends Model<Specification> {
 
 	public static final String PRODUCT_ID = "product_id";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -119,11 +141,13 @@ public class Specification extends Model<Specification> {
 	@Override
 	public String toString() {
 		return "Specification{" +
-			"id=" + id +
-			", specificationName=" + specificationName +
-			", specificationValue=" + specificationValue +
-			", groupId=" + groupId +
-			", productId=" + productId +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", specificationName='" + specificationName + '\'' +
+				", specificationValue='" + specificationValue + '\'' +
+				", groupId=" + groupId +
+				", productId=" + productId +
+				'}';
 	}
 }

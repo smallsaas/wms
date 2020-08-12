@@ -55,6 +55,24 @@ public class SkuCondition extends Model<SkuCondition> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public SkuCondition setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public SkuCondition setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public String getConditionName() {
 		return conditionName;
 	}
@@ -79,6 +97,10 @@ public class SkuCondition extends Model<SkuCondition> {
 
 	public static final String CONDITION_DESCRIPTION = "condition_description";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -87,9 +109,11 @@ public class SkuCondition extends Model<SkuCondition> {
 	@Override
 	public String toString() {
 		return "SkuCondition{" +
-			"id=" + id +
-			", conditionName=" + conditionName +
-			", conditionDescription=" + conditionDescription +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", conditionName='" + conditionName + '\'' +
+				", conditionDescription='" + conditionDescription + '\'' +
+				'}';
 	}
 }

@@ -133,6 +133,24 @@ public class StorageOut extends Model<StorageOut> {
         return this;
     }
 
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public StorageOut setOrgId(Long orgId) {
+        this.orgId = orgId;
+        return this;
+    }
+
+    public String getOrgTag() {
+        return orgTag;
+    }
+
+    public StorageOut setOrgTag(String orgTag) {
+        this.orgTag = orgTag;
+        return this;
+    }
+
     public String getTransactionCode() {
         return transactionCode;
     }
@@ -316,6 +334,10 @@ public class StorageOut extends Model<StorageOut> {
     public static final String OUT_ORDER_NUM = "out_order_num";
     public static final String DISTRIBUTOR_CUSTOMER = "distributor_customer";
 
+    public static final String ORG_ID = "org_id";
+
+    public static final String ORG_TAG = "org_tag";
+
 
     @Override
     protected Serializable pkVal() {
@@ -326,23 +348,25 @@ public class StorageOut extends Model<StorageOut> {
     public String toString() {
         return "StorageOut{" +
                 "id=" + id +
-                ", transactionCode=" + transactionCode +
-                ", transactionType=" + transactionType +
+                ", orgId=" + orgId +
+                ", orgTag='" + orgTag + '\'' +
+                ", transactionCode='" + transactionCode + '\'' +
+                ", transactionType='" + transactionType + '\'' +
                 ", transactionTime=" + transactionTime +
                 ", storageOutTime=" + storageOutTime +
-                ", batchNo=" + batchNo +
-                ", note=" + note +
-                ", status=" + status +
-                ", transactionBy=" + transactionBy +
+                ", batchNo='" + batchNo + '\'' +
+                ", note='" + note + '\'' +
+                ", status='" + status + '\'' +
+                ", transactionBy='" + transactionBy + '\'' +
                 ", originatorId=" + originatorId +
-                ", originatorName=" + originatorName +
+                ", originatorName='" + originatorName + '\'' +
                 ", warehouseId=" + warehouseId +
                 ", slotId=" + slotId +
-                ", field1=" + field1 +
-                ", field2=" + field2 +
-                ", outOrderNum=" + outOrderNum +
-                ", distributorCustomer=" + distributorCustomer +
-
-                "}";
+                ", field1='" + field1 + '\'' +
+                ", field2='" + field2 + '\'' +
+                ", outOrderNum='" + outOrderNum + '\'' +
+                ", distributorCustomer='" + distributorCustomer + '\'' +
+                ", salesId=" + salesId +
+                '}';
     }
 }

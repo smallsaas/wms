@@ -55,6 +55,24 @@ public class ProductCondition extends Model<ProductCondition> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public ProductCondition setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public ProductCondition setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public Long getProductId() {
 		return productId;
 	}
@@ -79,6 +97,10 @@ public class ProductCondition extends Model<ProductCondition> {
 
 	public static final String CONDITION_ID = "condition_id";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -87,9 +109,11 @@ public class ProductCondition extends Model<ProductCondition> {
 	@Override
 	public String toString() {
 		return "ProductCondition{" +
-			"id=" + id +
-			", productId=" + productId +
-			", conditionId=" + conditionId +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", productId=" + productId +
+				", conditionId=" + conditionId +
+				'}';
 	}
 }

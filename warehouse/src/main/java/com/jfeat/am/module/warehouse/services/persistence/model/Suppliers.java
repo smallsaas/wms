@@ -144,6 +144,24 @@ public class Suppliers extends Model<Suppliers> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public Suppliers setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public Suppliers setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public String getSupplierName() {
 		return supplierName;
 	}
@@ -366,6 +384,10 @@ public class Suppliers extends Model<Suppliers> {
 
 	public static final String FIELD2 = "field2";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -374,27 +396,29 @@ public class Suppliers extends Model<Suppliers> {
 	@Override
 	public String toString() {
 		return "Suppliers{" +
-			"id=" + id +
-			", supplierName=" + supplierName +
-			", supplierCode=" + supplierCode +
-			", supplierPCD=" + supplierPCD +
-			", supplierAddress=" + supplierAddress +
-			", supplierPostcode=" + supplierPostcode +
-			", supplierContactName=" + supplierContactName +
-			", supplierContactPhone=" + supplierContactPhone +
-			", supplierContactFax=" + supplierContactFax +
-			", supplierContactEmail=" + supplierContactEmail +
-			", supplierContactPosition=" + supplierContactPosition +
-			", supplierContactCellPhone=" + supplierContactCellPhone +
-			", supplierAccountName=" + supplierAccountName +
-			", supplierAccountBank=" + supplierAccountBank +
-			", supplierAccountBankNo=" + supplierAccountBankNo +
-			", supplierInvoiceTitle=" + supplierInvoiceTitle +
-			", supplierStatus=" + supplierStatus +
-			", supplierNote=" + supplierNote +
-			", supplierRegisterTime=" + supplierRegisterTime +
-			", field1=" + field1 +
-			", field2=" + field2 +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", supplierName='" + supplierName + '\'' +
+				", supplierCode='" + supplierCode + '\'' +
+				", supplierPCD='" + supplierPCD + '\'' +
+				", supplierAddress='" + supplierAddress + '\'' +
+				", supplierPostcode='" + supplierPostcode + '\'' +
+				", supplierContactName='" + supplierContactName + '\'' +
+				", supplierContactPhone='" + supplierContactPhone + '\'' +
+				", supplierContactFax='" + supplierContactFax + '\'' +
+				", supplierContactEmail='" + supplierContactEmail + '\'' +
+				", supplierContactPosition='" + supplierContactPosition + '\'' +
+				", supplierContactCellPhone='" + supplierContactCellPhone + '\'' +
+				", supplierAccountName='" + supplierAccountName + '\'' +
+				", supplierAccountBank='" + supplierAccountBank + '\'' +
+				", supplierAccountBankNo=" + supplierAccountBankNo +
+				", supplierInvoiceTitle='" + supplierInvoiceTitle + '\'' +
+				", supplierStatus='" + supplierStatus + '\'' +
+				", supplierNote='" + supplierNote + '\'' +
+				", supplierRegisterTime=" + supplierRegisterTime +
+				", field1='" + field1 + '\'' +
+				", field2='" + field2 + '\'' +
+				'}';
 	}
 }

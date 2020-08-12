@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 
 /**
@@ -43,6 +45,7 @@ public class Check extends Model<Check> {
     /**
      * 盘点时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@TableField("check_time")
 	private Date checkTime;
     /**
@@ -105,6 +108,24 @@ public class Check extends Model<Check> {
 
 	public Check setId(Long id) {
 		this.id = id;
+		return this;
+	}
+
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public Check setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public Check setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
 		return this;
 	}
 
@@ -253,6 +274,10 @@ public class Check extends Model<Check> {
 
 	public static final String FIELD2 = "field2";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -261,20 +286,22 @@ public class Check extends Model<Check> {
 	@Override
 	public String toString() {
 		return "Check{" +
-			"id=" + id +
-			", checkCode=" + checkCode +
-			", checkTime=" + checkTime +
-			", finishTime=" + finishTime +
-			", beginTime=" + beginTime +
-			", warehouseId=" + warehouseId +
-			", profitLost=" + profitLost +
-			", checkNote=" + checkNote +
-			", transactionBy=" + transactionBy +
-			", originatorId=" + originatorId +
-			", originatorName=" + originatorName +
-			", status=" + status +
-			", field1=" + field1 +
-			", field2=" + field2 +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", checkCode='" + checkCode + '\'' +
+				", checkTime=" + checkTime +
+				", finishTime=" + finishTime +
+				", beginTime=" + beginTime +
+				", warehouseId=" + warehouseId +
+				", profitLost=" + profitLost +
+				", checkNote='" + checkNote + '\'' +
+				", transactionBy='" + transactionBy + '\'' +
+				", originatorId=" + originatorId +
+				", originatorName='" + originatorName + '\'' +
+				", status='" + status + '\'' +
+				", field1='" + field1 + '\'' +
+				", field2='" + field2 + '\'' +
+				'}';
 	}
 }

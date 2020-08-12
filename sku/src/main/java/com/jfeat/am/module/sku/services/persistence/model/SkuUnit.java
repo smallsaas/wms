@@ -60,6 +60,24 @@ public class SkuUnit extends Model<SkuUnit> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public SkuUnit setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public SkuUnit setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public String getUnitName() {
 		return unitName;
 	}
@@ -95,6 +113,10 @@ public class SkuUnit extends Model<SkuUnit> {
 
 	public static final String SKU_ID = "sku_id";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -103,10 +125,12 @@ public class SkuUnit extends Model<SkuUnit> {
 	@Override
 	public String toString() {
 		return "SkuUnit{" +
-			"id=" + id +
-			", unitName=" + unitName +
-			", isPrimary=" + isPrimary +
-			", skuId=" + skuId +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", unitName='" + unitName + '\'' +
+				", isPrimary=" + isPrimary +
+				", skuId=" + skuId +
+				'}';
 	}
 }

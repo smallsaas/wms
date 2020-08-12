@@ -130,4 +130,16 @@ logging:
 
 am:
   shiro-cache-redis: true
-
+---
+domain:
+  serverName: test.cloud.smallsaas.cn
+  mode: single
+  ##########################################################
+  ###################  etcd-client 配置  ###################
+  ##########################################################
+etcd:
+  etcdEndpoints: http://120.79.77.207:2379   # etcd端口，多个用“,”隔开
+  serviceName: uaas-test                        # 服务名称
+  serviceEndpoint: http://120.79.77.207:8080     # 服务地址
+  provideService: true                      # 是否对外提供服务
+  subscribeServices: uaas                    # 订阅服务，多个用“,”隔开

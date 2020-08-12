@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>wm</artifactId>
+    <artifactId>wms-app</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.jfeat</groupId>
@@ -24,6 +24,11 @@
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>warehouse</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jfeat</groupId>
+            <artifactId>uaas-dev</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>

@@ -60,6 +60,24 @@ public class SkuPhoto extends Model<SkuPhoto> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public SkuPhoto setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public SkuPhoto setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public String getPhotoUrl() {
 		return photoUrl;
 	}
@@ -95,6 +113,10 @@ public class SkuPhoto extends Model<SkuPhoto> {
 
 	public static final String SKU_ID = "sku_id";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -103,10 +125,12 @@ public class SkuPhoto extends Model<SkuPhoto> {
 	@Override
 	public String toString() {
 		return "SkuPhoto{" +
-			"id=" + id +
-			", photoUrl=" + photoUrl +
-			", isPrimary=" + isPrimary +
-			", skuId=" + skuId +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", photoUrl='" + photoUrl + '\'' +
+				", isPrimary=" + isPrimary +
+				", skuId=" + skuId +
+				'}';
 	}
 }

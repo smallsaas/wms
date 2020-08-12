@@ -128,6 +128,24 @@ public class Sales extends Model<Sales> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public Sales setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public Sales setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public String getSalesCode() {
 		return salesCode;
 	}
@@ -300,6 +318,10 @@ public class Sales extends Model<Sales> {
 
 	public static final String FIELD2 = "field2";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -308,21 +330,25 @@ public class Sales extends Model<Sales> {
 	@Override
 	public String toString() {
 		return "Sales{" +
-			"id=" + id +
-			", salesCode=" + salesCode +
-			", traderId=" + traderId +
-			", salesOthersPayment=" + salesOthersPayment +
-			", salesDiscount=" + salesDiscount +
-			", salesTotal=" + salesTotal +
-			", salesTime=" + salesTime +
-			", salesNote=" + salesNote +
-			", salesStatus=" + salesStatus +
-			", transactionBy=" + transactionBy +
-			", originatorId=" + originatorId +
-			", originatorName=" + originatorName +
-			", transactionTime=" + transactionTime +
-			", field1=" + field1 +
-			", field2=" + field2 +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", salesCode='" + salesCode + '\'' +
+				", traderId=" + traderId +
+				", salesOthersPayment=" + salesOthersPayment +
+				", salesDiscount=" + salesDiscount +
+				", salesTotal=" + salesTotal +
+				", salesTime=" + salesTime +
+				", salesNote='" + salesNote + '\'' +
+				", salesStatus='" + salesStatus + '\'' +
+				", transactionBy='" + transactionBy + '\'' +
+				", originatorId=" + originatorId +
+				", originatorName='" + originatorName + '\'' +
+				", transactionTime=" + transactionTime +
+				", field1='" + field1 + '\'' +
+				", field2='" + field2 + '\'' +
+				", totalCount=" + totalCount +
+				", deliveredAddress='" + deliveredAddress + '\'' +
+				'}';
 	}
 }

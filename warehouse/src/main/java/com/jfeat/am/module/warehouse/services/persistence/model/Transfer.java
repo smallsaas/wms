@@ -117,6 +117,24 @@ public class Transfer extends Model<Transfer> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public Transfer setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public Transfer setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public String getTransactionCode() {
 		return transactionCode;
 	}
@@ -284,6 +302,10 @@ public class Transfer extends Model<Transfer> {
 
 	public static final String FIELD2 = "field2";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -292,22 +314,24 @@ public class Transfer extends Model<Transfer> {
 	@Override
 	public String toString() {
 		return "Transfer{" +
-			"id=" + id +
-			", transactionCode=" + transactionCode +
-			", fromWarehouseId=" + fromWarehouseId +
-			", toWarehouseId=" + toWarehouseId +
-			", transactionTime=" + transactionTime +
-			", finishTime=" + finishTime +
-			", storageInId=" + storageInId +
-			", storageOutId=" + storageOutId +
-			", note=" + note +
-			", status=" + status +
-			", transactionBy=" + transactionBy +
-			", originatorId=" + originatorId +
-			", originatorName=" + originatorName +
-			", transferTime=" + transferTime +
-			", field1=" + field1 +
-			", field2=" + field2 +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", transactionCode='" + transactionCode + '\'' +
+				", fromWarehouseId=" + fromWarehouseId +
+				", toWarehouseId=" + toWarehouseId +
+				", transactionTime=" + transactionTime +
+				", finishTime=" + finishTime +
+				", storageInId=" + storageInId +
+				", storageOutId=" + storageOutId +
+				", note='" + note + '\'' +
+				", status='" + status + '\'' +
+				", transactionBy='" + transactionBy + '\'' +
+				", originatorId=" + originatorId +
+				", originatorName='" + originatorName + '\'' +
+				", transferTime=" + transferTime +
+				", field1='" + field1 + '\'' +
+				", field2='" + field2 + '\'' +
+				'}';
 	}
 }

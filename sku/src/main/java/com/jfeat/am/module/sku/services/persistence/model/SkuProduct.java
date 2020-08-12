@@ -147,6 +147,24 @@ public class SkuProduct extends Model<SkuProduct> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public SkuProduct setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public SkuProduct setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public Long getProductId() {
 		return productId;
 	}
@@ -377,6 +395,10 @@ public class SkuProduct extends Model<SkuProduct> {
 
 	public static final String FIELD3 = "field3";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -385,28 +407,30 @@ public class SkuProduct extends Model<SkuProduct> {
 	@Override
 	public String toString() {
 		return "SkuProduct{" +
-			"id=" + id +
-			", productId=" + productId +
-			", skuCode=" + skuCode +
-			", skuName=" + skuName +
-			", status=" + status +
-			", sortValue=" + sortValue +
-			", searchKeyWord=" + searchKeyWord +
-			", barCode=" + barCode +
-			", description=" + description +
-			", skuPrice=" + skuPrice +
-			", readjustCostPrice=" + readjustCostPrice +
-			", suggestedPrice=" + suggestedPrice +
-			", costPrice=" + costPrice +
-			", stockCost=" + stockCost +
-			", createTime=" + createTime +
-			", updateTime=" + updateTime +
-				", weight=" + weight +
-				", volume=" + volume +
-				", spec=" + spec +
-			", field1=" + field1 +
-			", field2=" + field2 +
-			", field3=" + field3 +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", productId=" + productId +
+				", skuCode='" + skuCode + '\'' +
+				", skuName='" + skuName + '\'' +
+				", status='" + status + '\'' +
+				", sortValue=" + sortValue +
+				", searchKeyWord='" + searchKeyWord + '\'' +
+				", barCode='" + barCode + '\'' +
+				", description='" + description + '\'' +
+				", skuPrice=" + skuPrice +
+				", readjustCostPrice=" + readjustCostPrice +
+				", suggestedPrice=" + suggestedPrice +
+				", costPrice=" + costPrice +
+				", stockCost=" + stockCost +
+				", createTime=" + createTime +
+				", updateTime=" + updateTime +
+				", weight='" + weight + '\'' +
+				", volume='" + volume + '\'' +
+				", spec='" + spec + '\'' +
+				", field1='" + field1 + '\'' +
+				", field2='" + field2 + '\'' +
+				", field3='" + field3 + '\'' +
+				'}';
 	}
 }

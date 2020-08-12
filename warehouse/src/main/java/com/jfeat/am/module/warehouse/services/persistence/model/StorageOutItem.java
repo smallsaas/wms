@@ -102,6 +102,24 @@ public class StorageOutItem extends Model<StorageOutItem> {
         return this;
     }
 
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public StorageOutItem setOrgId(Long orgId) {
+        this.orgId = orgId;
+        return this;
+    }
+
+    public String getOrgTag() {
+        return orgTag;
+    }
+
+    public StorageOutItem setOrgTag(String orgTag) {
+        this.orgTag = orgTag;
+        return this;
+    }
+
     public Long getStorageOutId() {
         return storageOutId;
     }
@@ -209,6 +227,10 @@ public class StorageOutItem extends Model<StorageOutItem> {
 
     public static final String BEFORE_TRANSACTION_QUANTITIES = "before_transaction_quantities";
 
+    public static final String ORG_ID = "org_id";
+
+    public static final String ORG_TAG = "org_tag";
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -218,16 +240,18 @@ public class StorageOutItem extends Model<StorageOutItem> {
     public String toString() {
         return "StorageOutItem{" +
                 "id=" + id +
+                ", orgId=" + orgId +
+                ", orgTag='" + orgTag + '\'' +
                 ", storageOutId=" + storageOutId +
                 ", skuId=" + skuId +
                 ", transactionSkuPrice=" + transactionSkuPrice +
                 ", transactionQuantities=" + transactionQuantities +
                 ", afterTransactionQuantities=" + afterTransactionQuantities +
-                ", beforeTransactionQuantities=" + beforeTransactionQuantities +
-
                 ", transactionTime=" + transactionTime +
-                ", relationCode=" + relationCode +
-                ", type=" + type +
-                "}";
+                ", relationCode='" + relationCode + '\'' +
+                ", type='" + type + '\'' +
+                ", demandQuantities=" + demandQuantities +
+                ", beforeTransactionQuantities=" + beforeTransactionQuantities +
+                '}';
     }
 }

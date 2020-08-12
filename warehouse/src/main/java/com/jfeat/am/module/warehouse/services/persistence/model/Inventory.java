@@ -100,6 +100,24 @@ public class Inventory extends Model<Inventory> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public Inventory setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public Inventory setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public Long getSlotId() {
 		return slotId;
 	}
@@ -189,6 +207,10 @@ public class Inventory extends Model<Inventory> {
 
 	public static final String TRANSMIT_QUANTITIES = "transmit_quantities";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -197,15 +219,18 @@ public class Inventory extends Model<Inventory> {
 	@Override
 	public String toString() {
 		return "Inventory{" +
-			"id=" + id +
-			", warehouseId=" + warehouseId +
-			", slotId=" + slotId +
-			", maxInventory=" + maxInventory +
-			", minInventory=" + minInventory +
-			", skuId=" + skuId +
-			", validSku=" + validSku +
-			", advanceQuantities=" + advanceQuantities +
-			", transmitQuantities=" + transmitQuantities +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", warehouseId=" + warehouseId +
+				", slotId=" + slotId +
+				", maxInventory=" + maxInventory +
+				", minInventory=" + minInventory +
+				", skuId=" + skuId +
+				", validSku=" + validSku +
+				", advanceQuantities=" + advanceQuantities +
+				", transmitQuantities=" + transmitQuantities +
+				", orderCount=" + orderCount +
+				'}';
 	}
 }

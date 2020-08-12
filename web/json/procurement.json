@@ -1,0 +1,158 @@
+{
+  "pageName": "采购单列表",
+  "crudAPI": "/api/wms/procurements",
+  "map": {
+    "WaitStorageIn": "等待入库",
+    "SectionStorageIn": "部分入库",
+    "TotalStorageIn":"全部入库",
+    "Draft":"草稿",
+    "WaitConfirm":"待审核",
+    "Approve":"审核通过",
+    "Closed":"关闭"
+  },
+  "searchFields":[
+    {
+      "label": "采购单编号",
+      "field": "procurementCode",
+      "type": "input"
+    },
+    {
+      "label": "状态",
+      "field": "procureStatus",
+      "type": "select",
+	  "options": [
+        {
+          "label": "等待入库",
+          "value": "WaitStorageIn"
+        },
+        {
+          "label": "部分入库",
+          "value": "SectionStorageIn"
+        },
+		{
+          "label": "全部入库",
+          "value": "TotalStorageIn"
+        },
+		{
+          "label": "草稿",
+          "value": "Draft"
+        },
+		{
+          "label": "待审核",
+          "value": "WaitConfirm"
+        },
+		{
+          "label": "审核通过",
+          "value": "Approve"
+        },
+		{
+          "label": "关闭",
+          "value": "Closed"
+        }
+      ]
+    },
+    {
+      "label": "采购时间",
+      "field": "procurementTime",
+      "type": "date"
+    }
+  ],
+  "tableFields": [
+    {
+      "label": "采购单编号",
+      "field": "procurementCode"
+    },
+    {
+      "label": "供应商",
+      "field": "supplierName"
+    },
+    {
+      "label": "总花费",
+      "field": "procurementTotal"
+    },
+    {
+      "label": "采购时间",
+      "field": "procurementTime"
+    },
+    {
+      "label": "状态",
+      "field": "procureStatus",
+      "options": {
+        "color": {
+          "WaitStorageIn": "#2590ff",
+          "SectionStorageIn": "#3931ff",
+		      "TotalStorageIn": "#4931ff",
+		      "Draft": "#5931ff",
+		      "WaitConfirm": "#6931ff",
+		      "Approve": "#7931ff",
+		      "Closed":"#8931ff"
+        }
+      }
+    }
+  ],
+  "formFields": [
+    {
+      "label": "采购单编号",
+      "field": "procurementCode",
+      "type": "input"
+    },
+    {
+      "label": "采购时间",
+      "field": "procurementTime",
+      "type": "date"
+    },
+    {
+      "label": "经办员",
+      "field": "buyer",
+      "type": "input"
+    },
+    {
+      "label": "供应商",
+      "field": "supplierId",
+      "type": "select",
+      "options": [
+        {
+          "label": "佛山市万盈化妆品有限公司",
+          "value": "1"
+        },
+        {
+          "label": "广州市天吻娇颜化妆品有限公司",
+          "value": "2"
+        },
+		{
+          "label": "科丝美诗（广州）化妆品有限公司",
+          "value": "3"
+        },
+		{
+          "label": "广州市美晟美容化妆品有限公司",
+          "value": "4"
+        },
+		{
+          "label": "广州东丰彩色印刷有限公司",
+          "value": "5"
+        },
+		{
+          "label": "广州市阿西娜化妆品制造有限公司",
+          "value": "6"
+        },
+      ]
+    },
+    {
+      "label": "制单人",
+      "field": "originatorName",
+      "type": "input"
+    },
+	    {
+      "label": "采购备注",
+      "field": "procurementNote",
+      "type": "text-area",
+      "span": 20,
+      "props": {
+        "autoSize": {
+          "minRows": 4
+        },
+        "placeholder": "请输入……"
+      }
+    }
+    ]
+}

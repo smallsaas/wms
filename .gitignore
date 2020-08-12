@@ -12,3 +12,4 @@ logs/
 .DS_Store
 */target/**
 */LOG_*
+web/

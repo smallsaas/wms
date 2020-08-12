@@ -165,6 +165,24 @@ public class Product extends Model<Product> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public Product setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public Product setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public Long getProductCategoryId() {
 		return productCategoryId;
 	}
@@ -453,6 +471,10 @@ public class Product extends Model<Product> {
 
 	public static final String FIELD5 = "field5";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -461,33 +483,35 @@ public class Product extends Model<Product> {
 	@Override
 	public String toString() {
 		return "Product{" +
-			"id=" + id +
-			", productCategoryId=" + productCategoryId +
-			", productCode=" + productCode +
-			", name=" + name +
-			", englishName=" + englishName +
-			", weight=" + weight +
-			", readjustCostPrice=" + readjustCostPrice +
-			", productStandard=" + productStandard +
-			", price=" + price +
-			", suggestedPrice=" + suggestedPrice +
-			", costPrice=" + costPrice +
-			", specification=" + specification +
-			", quantities=" + quantities +
-			", stockCost=" + stockCost +
-			", purchaseAdvance=" + purchaseAdvance +
-			", status=" + status +
-			", sortValue=" + sortValue +
-			", searchKeyWord=" + searchKeyWord +
-			", barCode=" + barCode +
-			", createTime=" + createTime +
-			", updateTime=" + updateTime +
-			", description=" + description +
-			", field1=" + field1 +
-			", spec=" + spec +
-			", volume=" + volume +
-			", field4=" + field4 +
-			", field5=" + field5 +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", productCategoryId=" + productCategoryId +
+				", productCode='" + productCode + '\'' +
+				", name='" + name + '\'' +
+				", englishName='" + englishName + '\'' +
+				", weight='" + weight + '\'' +
+				", readjustCostPrice=" + readjustCostPrice +
+				", productStandard='" + productStandard + '\'' +
+				", price=" + price +
+				", suggestedPrice=" + suggestedPrice +
+				", costPrice=" + costPrice +
+				", specification='" + specification + '\'' +
+				", quantities=" + quantities +
+				", stockCost=" + stockCost +
+				", purchaseAdvance=" + purchaseAdvance +
+				", status='" + status + '\'' +
+				", sortValue=" + sortValue +
+				", searchKeyWord='" + searchKeyWord + '\'' +
+				", barCode='" + barCode + '\'' +
+				", createTime=" + createTime +
+				", updateTime=" + updateTime +
+				", description='" + description + '\'' +
+				", field1='" + field1 + '\'' +
+				", volume='" + volume + '\'' +
+				", spec='" + spec + '\'' +
+				", field4='" + field4 + '\'' +
+				", field5='" + field5 + '\'' +
+				'}';
 	}
 }

@@ -70,6 +70,24 @@ public class Warehouse extends Model<Warehouse> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public Warehouse setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public Warehouse setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public String getWarehouseCode() {
 		return warehouseCode;
 	}
@@ -127,6 +145,10 @@ public class Warehouse extends Model<Warehouse> {
 
 	public static final String WAREHOUSE_CHARGER = "warehouse_charger";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -135,12 +157,14 @@ public class Warehouse extends Model<Warehouse> {
 	@Override
 	public String toString() {
 		return "Warehouse{" +
-			"id=" + id +
-			", warehouseCode=" + warehouseCode +
-			", warehouseName=" + warehouseName +
-			", warehousePCD=" + warehousePCD +
-			", warehouseAddress=" + warehouseAddress +
-			", warehouseCharger=" + warehouseCharger +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", warehouseCode='" + warehouseCode + '\'' +
+				", warehouseName='" + warehouseName + '\'' +
+				", warehousePCD='" + warehousePCD + '\'' +
+				", warehouseAddress='" + warehouseAddress + '\'' +
+				", warehouseCharger=" + warehouseCharger +
+				'}';
 	}
 }

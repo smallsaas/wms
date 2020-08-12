@@ -59,6 +59,24 @@ public class SkuSpecification extends Model<SkuSpecification> {
 		return skuId;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public SkuSpecification setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public SkuSpecification setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public SkuSpecification setSkuId(Long skuId) {
 		this.skuId = skuId;
 		return this;
@@ -79,6 +97,10 @@ public class SkuSpecification extends Model<SkuSpecification> {
 
 	public static final String GROUP_ID = "group_id";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -87,9 +109,11 @@ public class SkuSpecification extends Model<SkuSpecification> {
 	@Override
 	public String toString() {
 		return "SkuSpecification{" +
-			"id=" + id +
-			", skuId=" + skuId +
-			", groupId=" + groupId +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", skuId=" + skuId +
+				", groupId=" + groupId +
+				'}';
 	}
 }

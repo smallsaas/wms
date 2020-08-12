@@ -60,6 +60,24 @@ public class ProductUnit extends Model<ProductUnit> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public ProductUnit setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public ProductUnit setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public String getUnitName() {
 		return unitName;
 	}
@@ -95,6 +113,10 @@ public class ProductUnit extends Model<ProductUnit> {
 
 	public static final String PRODUCT_ID = "product_id";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -103,10 +125,12 @@ public class ProductUnit extends Model<ProductUnit> {
 	@Override
 	public String toString() {
 		return "ProductUnit{" +
-			"id=" + id +
-			", unitName=" + unitName +
-			", isPrimary=" + isPrimary +
-			", productId=" + productId +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", unitName='" + unitName + '\'' +
+				", isPrimary=" + isPrimary +
+				", productId=" + productId +
+				'}';
 	}
 }

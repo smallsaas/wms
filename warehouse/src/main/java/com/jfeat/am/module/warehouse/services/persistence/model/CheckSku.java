@@ -88,6 +88,24 @@ public class CheckSku extends Model<CheckSku> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public CheckSku setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public CheckSku setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public Long getCheckId() {
 		return checkId;
 	}
@@ -189,6 +207,10 @@ public class CheckSku extends Model<CheckSku> {
 
 	public static final String FIELD2 = "field2";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -197,16 +219,18 @@ public class CheckSku extends Model<CheckSku> {
 	@Override
 	public String toString() {
 		return "CheckSku{" +
-			"id=" + id +
-			", checkId=" + checkId +
-			", skuId=" + skuId +
-			", warehouseId=" + warehouseId +
-			", factQuantities=" + factQuantities +
-			", beforeProofQuantities=" + beforeProofQuantities +
-			", deservedQuantities=" + deservedQuantities +
-			", profitLost=" + profitLost +
-			", field1=" + field1 +
-			", field2=" + field2 +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", checkId=" + checkId +
+				", skuId=" + skuId +
+				", warehouseId=" + warehouseId +
+				", factQuantities=" + factQuantities +
+				", beforeProofQuantities=" + beforeProofQuantities +
+				", deservedQuantities=" + deservedQuantities +
+				", profitLost=" + profitLost +
+				", field1='" + field1 + '\'' +
+				", field2='" + field2 + '\'' +
+				'}';
 	}
 }

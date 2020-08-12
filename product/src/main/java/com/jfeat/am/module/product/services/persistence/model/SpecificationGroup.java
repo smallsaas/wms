@@ -53,6 +53,24 @@ public class SpecificationGroup extends Model<SpecificationGroup> {
         return this;
     }
 
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public SpecificationGroup setOrgId(Long orgId) {
+        this.orgId = orgId;
+        return this;
+    }
+
+    public String getOrgTag() {
+        return orgTag;
+    }
+
+    public SpecificationGroup setOrgTag(String orgTag) {
+        this.orgTag = orgTag;
+        return this;
+    }
+
     public String getGroupName() {
         return groupName;
     }
@@ -65,6 +83,10 @@ public class SpecificationGroup extends Model<SpecificationGroup> {
     public static final String ID = "id";
 
     public static final String GROUP_NAME = "group_name";
+
+    public static final String ORG_ID = "org_id";
+
+    public static final String ORG_TAG = "org_tag";
 
     public Long getPid() {
         return pid;
@@ -83,8 +105,10 @@ public class SpecificationGroup extends Model<SpecificationGroup> {
     public String toString() {
         return "SpecificationGroup{" +
                 "id=" + id +
-                ", groupName=" + groupName +
-                "pid=" + pid +
-                "}";
+                ", orgId=" + orgId +
+                ", orgTag='" + orgTag + '\'' +
+                ", groupName='" + groupName + '\'' +
+                ", pid=" + pid +
+                '}';
     }
 }

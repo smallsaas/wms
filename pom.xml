@@ -16,8 +16,9 @@
 
   <modules>
     <module>sku</module>
+    <module>product</module>
     <module>warehouse</module>
-    <module>wm</module>
+    <module>wms-app</module>
   </modules>
 
 </project>

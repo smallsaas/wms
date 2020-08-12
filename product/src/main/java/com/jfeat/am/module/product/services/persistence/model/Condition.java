@@ -59,6 +59,24 @@ public class Condition extends Model<Condition> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public Condition setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public Condition setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public String getConditionName() {
 		return conditionName;
 	}
@@ -94,6 +112,10 @@ public class Condition extends Model<Condition> {
 
 	public static final String CONDITION_DESCRIPTION = "condition_description";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -102,10 +124,12 @@ public class Condition extends Model<Condition> {
 	@Override
 	public String toString() {
 		return "Condition{" +
-			"id=" + id +
-			", conditionName=" + conditionName +
-			", pid=" + pid +
-			", conditionDescription=" + conditionDescription +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", conditionName='" + conditionName + '\'' +
+				", pid=" + pid +
+				", conditionDescription='" + conditionDescription + '\'' +
+				'}';
 	}
 }

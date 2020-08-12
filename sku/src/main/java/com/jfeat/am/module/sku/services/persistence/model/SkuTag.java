@@ -55,6 +55,24 @@ public class SkuTag extends Model<SkuTag> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public SkuTag setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public SkuTag setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public String getTagName() {
 		return tagName;
 	}
@@ -79,6 +97,10 @@ public class SkuTag extends Model<SkuTag> {
 
 	public static final String TAG_DESCRIPTION = "tag_description";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -87,9 +109,11 @@ public class SkuTag extends Model<SkuTag> {
 	@Override
 	public String toString() {
 		return "SkuTag{" +
-			"id=" + id +
-			", tagName=" + tagName +
-			", tagDescription=" + tagDescription +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", tagName='" + tagName + '\'' +
+				", tagDescription='" + tagDescription + '\'' +
+				'}';
 	}
 }

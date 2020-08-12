@@ -139,6 +139,24 @@ public class StorageIn extends Model<StorageIn> {
         return this;
     }
 
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public StorageIn setOrgId(Long orgId) {
+        this.orgId = orgId;
+        return this;
+    }
+
+    public String getOrgTag() {
+        return orgTag;
+    }
+
+    public StorageIn setOrgTag(String orgTag) {
+        this.orgTag = orgTag;
+        return this;
+    }
+
     public String getTransactionCode() {
         return transactionCode;
     }
@@ -337,6 +355,10 @@ public class StorageIn extends Model<StorageIn> {
 
     public static final String OUT_ORDER_NUM = "out_order_num";
 
+    public static final String ORG_ID = "org_id";
+
+    public static final String ORG_TAG = "org_tag";
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -346,24 +368,26 @@ public class StorageIn extends Model<StorageIn> {
     public String toString() {
         return "StorageIn{" +
                 "id=" + id +
-                ", transactionCode=" + transactionCode +
-                ", transactionType=" + transactionType +
+                ", orgId=" + orgId +
+                ", orgTag='" + orgTag + '\'' +
+                ", transactionCode='" + transactionCode + '\'' +
+                ", transactionType='" + transactionType + '\'' +
                 ", storageInTime=" + storageInTime +
                 ", transactionTime=" + transactionTime +
-                ", batchNo=" + batchNo +
+                ", batchNo='" + batchNo + '\'' +
                 ", warehouseId=" + warehouseId +
                 ", slotId=" + slotId +
-                ", note=" + note +
-                ", status=" + status +
-                ", transactionBy=" + transactionBy +
+                ", note='" + note + '\'' +
+                ", status='" + status + '\'' +
+                ", transactionBy='" + transactionBy + '\'' +
                 ", originatorId=" + originatorId +
-                ", originatorName=" + originatorName +
+                ", originatorName='" + originatorName + '\'' +
                 ", readjustCostPrice=" + readjustCostPrice +
                 ", procurementId=" + procurementId +
-                ", field1=" + field1 +
-                ", field2=" + field2 +
-                ", distributorCustomer=" + distributorCustomer +
-                ", outOrderNum=" + outOrderNum +
-                "}";
+                ", field1='" + field1 + '\'' +
+                ", field2='" + field2 + '\'' +
+                ", distributorCustomer='" + distributorCustomer + '\'' +
+                ", outOrderNum='" + outOrderNum + '\'' +
+                '}';
     }
 }

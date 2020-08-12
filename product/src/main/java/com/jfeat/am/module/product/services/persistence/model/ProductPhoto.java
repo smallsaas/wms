@@ -60,6 +60,24 @@ public class ProductPhoto extends Model<ProductPhoto> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public ProductPhoto setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public ProductPhoto setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public String getPhotoUrl() {
 		return photoUrl;
 	}
@@ -95,6 +113,10 @@ public class ProductPhoto extends Model<ProductPhoto> {
 
 	public static final String PRODUCT_ID = "product_id";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -103,10 +125,12 @@ public class ProductPhoto extends Model<ProductPhoto> {
 	@Override
 	public String toString() {
 		return "ProductPhoto{" +
-			"id=" + id +
-			", photoUrl=" + photoUrl +
-			", isPrimary=" + isPrimary +
-			", productId=" + productId +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", photoUrl='" + photoUrl + '\'' +
+				", isPrimary=" + isPrimary +
+				", productId=" + productId +
+				'}';
 	}
 }

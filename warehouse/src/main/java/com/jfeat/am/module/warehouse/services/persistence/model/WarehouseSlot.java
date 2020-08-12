@@ -65,6 +65,24 @@ public class WarehouseSlot extends Model<WarehouseSlot> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public WarehouseSlot setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public WarehouseSlot setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public String getSlotCode() {
 		return slotCode;
 	}
@@ -111,6 +129,10 @@ public class WarehouseSlot extends Model<WarehouseSlot> {
 
 	public static final String SLOT_NOTE = "slot_note";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -119,11 +141,13 @@ public class WarehouseSlot extends Model<WarehouseSlot> {
 	@Override
 	public String toString() {
 		return "WarehouseSlot{" +
-			"id=" + id +
-			", slotCode=" + slotCode +
-			", slotName=" + slotName +
-			", warehouseId=" + warehouseId +
-			", slotNote=" + slotNote +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", slotCode='" + slotCode + '\'' +
+				", slotName='" + slotName + '\'' +
+				", warehouseId=" + warehouseId +
+				", slotNote='" + slotNote + '\'' +
+				'}';
 	}
 }

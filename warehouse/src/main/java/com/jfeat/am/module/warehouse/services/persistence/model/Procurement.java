@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 
 /**
@@ -64,6 +66,7 @@ public class Procurement extends Model<Procurement> {
     /**
      * 采购时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd")
 	@TableField("procurement_time")
 	private Date procurementTime;
     /**
@@ -116,6 +119,24 @@ public class Procurement extends Model<Procurement> {
 
 	public Procurement setId(Long id) {
 		this.id = id;
+		return this;
+	}
+
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public Procurement setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public Procurement setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
 		return this;
 	}
 
@@ -286,6 +307,10 @@ public class Procurement extends Model<Procurement> {
 
 	public static final String FIELD2 = "field2";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -294,22 +319,24 @@ public class Procurement extends Model<Procurement> {
 	@Override
 	public String toString() {
 		return "Procurement{" +
-			"id=" + id +
-			", procurementCode=" + procurementCode +
-			", supplierId=" + supplierId +
-			", procurementOthersPayment=" + procurementOthersPayment +
-			", procurementDiscount=" + procurementDiscount +
-			", procurementTotal=" + procurementTotal +
-			", procurementTime=" + procurementTime +
-			", procurementNote=" + procurementNote +
-			", procureStatus=" + procureStatus +
-			", transactionBy=" + transactionBy +
-			", originatorId=" + originatorId +
-			", originatorName=" + originatorName +
-			", buyer=" + buyer +
-			", transactionTime=" + transactionTime +
-			", field1=" + field1 +
-			", field2=" + field2 +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", procurementCode='" + procurementCode + '\'' +
+				", supplierId=" + supplierId +
+				", procurementOthersPayment=" + procurementOthersPayment +
+				", procurementDiscount=" + procurementDiscount +
+				", procurementTotal=" + procurementTotal +
+				", procurementTime=" + procurementTime +
+				", procurementNote='" + procurementNote + '\'' +
+				", procureStatus='" + procureStatus + '\'' +
+				", transactionBy='" + transactionBy + '\'' +
+				", originatorId=" + originatorId +
+				", originatorName='" + originatorName + '\'' +
+				", buyer='" + buyer + '\'' +
+				", transactionTime=" + transactionTime +
+				", field1='" + field1 + '\'' +
+				", field2='" + field2 + '\'' +
+				'}';
 	}
 }

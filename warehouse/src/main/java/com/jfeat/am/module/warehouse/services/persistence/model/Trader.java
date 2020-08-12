@@ -144,6 +144,24 @@ public class Trader extends Model<Trader> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public Trader setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public Trader setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public String getTraderName() {
 		return traderName;
 	}
@@ -366,6 +384,10 @@ public class Trader extends Model<Trader> {
 
 	public static final String FIELD2 = "field2";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -374,27 +396,29 @@ public class Trader extends Model<Trader> {
 	@Override
 	public String toString() {
 		return "Trader{" +
-			"id=" + id +
-			", traderName=" + traderName +
-			", traderCode=" + traderCode +
-			", traderPCD=" + traderPCD +
-			", traderAddress=" + traderAddress +
-			", traderPostcode=" + traderPostcode +
-			", traderContactName=" + traderContactName +
-			", traderContactPhone=" + traderContactPhone +
-			", traderContactFax=" + traderContactFax +
-			", traderContactEmail=" + traderContactEmail +
-			", traderContactPosition=" + traderContactPosition +
-			", traderContactCellPhone=" + traderContactCellPhone +
-			", traderAccountName=" + traderAccountName +
-			", traderAccountBank=" + traderAccountBank +
-			", traderAccountBankNo=" + traderAccountBankNo +
-			", traderInvoiceTitle=" + traderInvoiceTitle +
-			", traderStatus=" + traderStatus +
-			", traderNote=" + traderNote +
-			", traderRegisterTime=" + traderRegisterTime +
-			", field1=" + field1 +
-			", field2=" + field2 +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", traderName='" + traderName + '\'' +
+				", traderCode='" + traderCode + '\'' +
+				", traderPCD='" + traderPCD + '\'' +
+				", traderAddress='" + traderAddress + '\'' +
+				", traderPostcode='" + traderPostcode + '\'' +
+				", traderContactName='" + traderContactName + '\'' +
+				", traderContactPhone='" + traderContactPhone + '\'' +
+				", traderContactFax='" + traderContactFax + '\'' +
+				", traderContactEmail='" + traderContactEmail + '\'' +
+				", traderContactPosition='" + traderContactPosition + '\'' +
+				", traderContactCellPhone='" + traderContactCellPhone + '\'' +
+				", traderAccountName='" + traderAccountName + '\'' +
+				", traderAccountBank='" + traderAccountBank + '\'' +
+				", traderAccountBankNo=" + traderAccountBankNo +
+				", traderInvoiceTitle='" + traderInvoiceTitle + '\'' +
+				", traderStatus='" + traderStatus + '\'' +
+				", traderNote='" + traderNote + '\'' +
+				", traderRegisterTime=" + traderRegisterTime +
+				", field1='" + field1 + '\'' +
+				", field2='" + field2 + '\'' +
+				'}';
 	}
 }

@@ -123,6 +123,24 @@ public class Refund extends Model<Refund> {
         return this;
     }
 
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public Refund setOrgId(Long orgId) {
+        this.orgId = orgId;
+        return this;
+    }
+
+    public String getOrgTag() {
+        return orgTag;
+    }
+
+    public Refund setOrgTag(String orgTag) {
+        this.orgTag = orgTag;
+        return this;
+    }
+
     public String getProductRefundCode() {
         return productRefundCode;
     }
@@ -290,6 +308,10 @@ public class Refund extends Model<Refund> {
 
     public static final String SUPPLIER_ID = "supplier_id";
 
+    public static final String ORG_ID = "org_id";
+
+    public static final String ORG_TAG = "org_tag";
+
 
     @Override
     protected Serializable pkVal() {
@@ -300,21 +322,23 @@ public class Refund extends Model<Refund> {
     public String toString() {
         return "Refund{" +
                 "id=" + id +
-                ", productRefundCode=" + productRefundCode +
+                ", orgId=" + orgId +
+                ", orgTag='" + orgTag + '\'' +
+                ", productRefundCode='" + productRefundCode + '\'' +
                 ", productProcurementId=" + productProcurementId +
                 ", storageOutId=" + storageOutId +
                 ", productRefundWarehouseId=" + productRefundWarehouseId +
                 ", productRefundQuantities=" + productRefundQuantities +
                 ", productRefundTime=" + productRefundTime +
-                ", productRefundStatus=" + productRefundStatus +
-                ", productRefundNote=" + productRefundNote +
+                ", productRefundStatus='" + productRefundStatus + '\'' +
+                ", productRefundNote='" + productRefundNote + '\'' +
                 ", originatorId=" + originatorId +
-                ", originatorName=" + originatorName +
-                ", transactionBy=" + transactionBy +
+                ", originatorName='" + originatorName + '\'' +
+                ", transactionBy='" + transactionBy + '\'' +
                 ", transactionTime=" + transactionTime +
-                ", field1=" + field1 +
-                ", field2=" + field2 +
+                ", field1='" + field1 + '\'' +
+                ", field2='" + field2 + '\'' +
                 ", supplierId=" + supplierId +
-                "}";
+                '}';
     }
 }

@@ -55,6 +55,24 @@ public class SuppliersProduct extends Model<SuppliersProduct> {
 		return this;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public SuppliersProduct setOrgId(Long orgId) {
+		this.orgId = orgId;
+		return this;
+	}
+
+	public String getOrgTag() {
+		return orgTag;
+	}
+
+	public SuppliersProduct setOrgTag(String orgTag) {
+		this.orgTag = orgTag;
+		return this;
+	}
+
 	public Long getSuppliersId() {
 		return suppliersId;
 	}
@@ -79,6 +97,10 @@ public class SuppliersProduct extends Model<SuppliersProduct> {
 
 	public static final String PRODUCT_ID = "product_id";
 
+	public static final String ORG_ID = "org_id";
+
+	public static final String ORG_TAG = "org_tag";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -87,9 +109,11 @@ public class SuppliersProduct extends Model<SuppliersProduct> {
 	@Override
 	public String toString() {
 		return "SuppliersProduct{" +
-			"id=" + id +
-			", suppliersId=" + suppliersId +
-			", productId=" + productId +
-			"}";
+				"id=" + id +
+				", orgId=" + orgId +
+				", orgTag='" + orgTag + '\'' +
+				", suppliersId=" + suppliersId +
+				", productId=" + productId +
+				'}';
 	}
 }

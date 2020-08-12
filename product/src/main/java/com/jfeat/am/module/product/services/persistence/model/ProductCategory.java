@@ -65,6 +65,24 @@ public class ProductCategory extends Model<ProductCategory> {
         return this;
     }
 
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public ProductCategory setOrgId(Long orgId) {
+        this.orgId = orgId;
+        return this;
+    }
+
+    public String getOrgTag() {
+        return orgTag;
+    }
+
+    public ProductCategory setOrgTag(String orgTag) {
+        this.orgTag = orgTag;
+        return this;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }
@@ -110,6 +128,10 @@ public class ProductCategory extends Model<ProductCategory> {
 
     public static final String CATEGORY_DESCRIPTION = "category_description";
 
+    public static final String ORG_ID = "org_id";
+
+    public static final String ORG_TAG = "org_tag";
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -119,11 +141,12 @@ public class ProductCategory extends Model<ProductCategory> {
     public String toString() {
         return "ProductCategory{" +
                 "id=" + id +
-                ", categoryName=" + categoryName +
-                ", categoryCode=" + categoryCode +
-
+                ", orgId=" + orgId +
+                ", orgTag='" + orgTag + '\'' +
+                ", categoryName='" + categoryName + '\'' +
+                ", categoryCode='" + categoryCode + '\'' +
                 ", pid=" + pid +
-                ", categoryDescription=" + categoryDescription +
-                "}";
+                ", categoryDescription='" + categoryDescription + '\'' +
+                '}';
     }
 }
