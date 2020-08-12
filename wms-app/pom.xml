@@ -15,16 +15,34 @@
             <groupId>com.jfeat</groupId>
             <artifactId>product</artifactId>
             <version>1.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.jfeat</groupId>
+                    <artifactId>crud-dev</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>sku</artifactId>
             <version>1.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.jfeat</groupId>
+                    <artifactId>crud-dev</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>warehouse</artifactId>
             <version>1.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.jfeat</groupId>
+                    <artifactId>crud-dev</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.jfeat</groupId>
