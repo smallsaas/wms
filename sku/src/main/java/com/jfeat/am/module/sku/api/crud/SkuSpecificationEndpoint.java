@@ -1,5 +1,6 @@
 package com.jfeat.am.module.sku.api.crud;
 
+import com.jfeat.am.module.sku.services.persistence.model.SkuSpecification;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
@@ -23,6 +24,8 @@ import com.jfeat.am.module.sku.services.crud.model.SkuSpecificationModel;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -38,8 +41,6 @@ import javax.annotation.Resource;
 @RequestMapping("/api/sku/skus/specifications")
 public class SkuSpecificationEndpoint   {
 
-
-
     @Resource
     SkuSpecificationService skuSpecificationService;
 
@@ -52,7 +53,9 @@ public class SkuSpecificationEndpoint   {
 
         Integer affected = 0;
         try{
-                    affected = skuSpecificationService.addRelation(entity);
+            List<SkuSpecification> list = new ArrayList<>();
+            list.add(entity);
+            affected = skuSpecificationService.bulkAddRelations(list);
         
         }catch (DuplicateKeyException e){
             throw new BusinessException(BusinessCode.DuplicateKey);

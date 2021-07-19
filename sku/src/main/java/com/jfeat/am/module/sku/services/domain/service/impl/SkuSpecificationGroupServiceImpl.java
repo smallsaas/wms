@@ -2,6 +2,7 @@ package com.jfeat.am.module.sku.services.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.am.module.product.services.persistence.dao.ProductCategoryMapper;
 import com.jfeat.am.module.sku.services.crud.model.SkuSpecificationGroupModel;
@@ -11,6 +12,7 @@ import com.jfeat.am.module.sku.services.domain.service.SkuSpecificationGroupServ
 import com.jfeat.am.module.sku.services.persistence.dao.SkuSpecificationGroupMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuSpecificationGroup;
 import com.jfeat.crud.base.request.Ids;
+import com.sun.org.apache.bcel.internal.generic.LMUL;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,7 +49,7 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
             for (SkuSpecificationGroupModel group : entity.getGroups()) {
                 group.setPid(entity.getId());
                 group.setType("Category");
-                SkuSpecificationGroup isExist = skuSpecificationGroupMapper.selectOne(group);
+                SkuSpecificationGroup isExist = skuSpecificationGroupMapper.selectOne(new LambdaQueryWrapper<>(group));
                 if (isExist == null) {
                     // 父级 为空
                     affect += skuSpecificationGroupMapper.insert(group);
@@ -90,7 +92,7 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
             for (SkuSpecificationGroupModel group : entity.getGroups()) {
                 group.setPid(categoryId);
                 group.setType("Category");
-                SkuSpecificationGroup isExist = skuSpecificationGroupMapper.selectOne(group);
+                SkuSpecificationGroup isExist = skuSpecificationGroupMapper.selectOne(new LambdaQueryWrapper<>(group));
                 if (isExist == null) {
                     // 父级 为空
                     affect += skuSpecificationGroupMapper.insert(group);
@@ -108,7 +110,7 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
                             // 子节点  不为空
                             child.setPid(isExist.getId());
                             child.setType("Spec");
-                            SkuSpecificationGroup originChild = skuSpecificationGroupMapper.selectOne(child);
+                            SkuSpecificationGroup originChild = skuSpecificationGroupMapper.selectOne(new LambdaQueryWrapper<>(child));
                             if (originChild==null){
                                 affect += skuSpecificationGroupMapper.insert(child);
                             }else {

@@ -2,6 +2,7 @@ package com.jfeat.am.module.sku.services.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.am.module.product.services.persistence.dao.ProductMapper;
 import com.jfeat.am.module.product.services.persistence.model.Product;
@@ -116,8 +117,8 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                     history.setSkuId(skuProductFilter.result().get("id") == null ? null : (Long) skuProductFilter.result().get("id"));
                     history.setAfterPrice(BigDecimal.valueOf(0L));
                     history.setUpdateTime(new Date());
-                    affect += skuPriceHistoryMapper.insertAllColumn(history);
-
+                    //affect += skuPriceHistoryMapper.insertAllColumn(history);
+                    affect += skuPriceHistoryMapper.insert(history);
                 }
             }
         } else {
@@ -398,7 +399,8 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
 
                 SkuPriceHistory history = new SkuPriceHistory();
                 history.setSkuId(entity.getId());
-                SkuPriceHistory originHistory = skuPriceHistoryMapper.selectOne(history);
+                SkuPriceHistory originHistory = skuPriceHistoryMapper.selectOne(new LambdaQueryWrapper<>(history));
+
                 if (entity.getSkuPrice() != null && entity.getSkuPrice().compareTo(originHistory.getAfterPrice()) != 0) {
                     SkuPriceHistory updateHistory = new SkuPriceHistory();
                     updateHistory.setSkuId(entity.getId());
