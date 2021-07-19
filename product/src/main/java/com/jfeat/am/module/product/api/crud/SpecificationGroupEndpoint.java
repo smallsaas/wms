@@ -1,5 +1,6 @@
 package com.jfeat.am.module.product.api.crud;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
@@ -7,7 +8,6 @@ import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -91,12 +91,12 @@ public class SpecificationGroupEndpoint   {
         @GetMapping
         @ApiOperation("组列表")
         public Tip querySpecificationGroups(Page<SpecificationGroupRecord> page,
-                @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-                @RequestParam(name = "id", required = false) Long id,
-                @RequestParam(name = "groupName", required = false) String groupName,
-                @RequestParam(name = "orderBy", required = false) String orderBy,
-                @RequestParam(name = "sort", required = false) String sort) {
+                                            @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                                            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                                            @RequestParam(name = "id", required = false) Long id,
+                                            @RequestParam(name = "groupName", required = false) String groupName,
+                                            @RequestParam(name = "orderBy", required = false) String orderBy,
+                                            @RequestParam(name = "sort", required = false) String sort) {
             if (orderBy != null && orderBy.length() > 0) {
                 if (sort != null && sort.length() > 0) {
                     String pattern = "(ASC|DESC|asc|desc)";

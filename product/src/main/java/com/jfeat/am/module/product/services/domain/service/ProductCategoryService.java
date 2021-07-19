@@ -1,6 +1,7 @@
 package com.jfeat.am.module.product.services.domain.service;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.product.services.crud.service.CRUDProductCategoryService;
 import com.jfeat.am.module.product.services.domain.model.ProductCategoryModel;
 import com.jfeat.am.module.product.services.persistence.model.ProductCategory;
@@ -22,8 +23,8 @@ public interface ProductCategoryService extends CRUDProductCategoryService{
     List<Map<String, Object>> findAllGrouping();
     List<ProductCategory> queryPcdByName(String name);
     List<ProductCategory> queryPcdByPid(Long pid);
-    List<ProductCategory> queryByName(Page<ProductCategory> page,String categoryName);
+    IPage<ProductCategory> queryByName(Page<ProductCategory> page, String categoryName);
 
-    List<ProductCategory> categories(Page<ProductCategory> page);
+    IPage<ProductCategory> categories(Page<ProductCategory> page);
     
 }

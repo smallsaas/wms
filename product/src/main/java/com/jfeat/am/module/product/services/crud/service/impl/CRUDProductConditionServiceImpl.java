@@ -1,14 +1,13 @@
 package com.jfeat.am.module.product.services.crud.service.impl;
             
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.product.services.persistence.model.Product;
 import com.jfeat.am.module.product.services.persistence.model.Condition;
 import com.jfeat.am.module.product.services.persistence.dao.ProductConditionMapper;
 import com.jfeat.am.module.product.services.persistence.dao.ProductMapper;
 import com.jfeat.am.module.product.services.persistence.dao.ConditionMapper;
 import com.jfeat.am.module.product.services.persistence.model.ProductCondition;
-import com.jfeat.am.module.product.services.persistence.dao.ProductConditionMapper;
 
 
 import com.jfeat.am.module.product.services.crud.service.CRUDProductConditionService;

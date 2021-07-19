@@ -1,6 +1,6 @@
 package com.jfeat.am.module.product.services.crud.service.impl;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.product.services.crud.service.CRUDProductService;
 import com.jfeat.am.module.product.services.domain.model.ProductModel;
 import com.jfeat.am.module.product.services.persistence.dao.ProductConditionMapper;
@@ -13,10 +13,8 @@ import com.jfeat.am.module.product.services.persistence.model.ProductPhoto;
 import com.jfeat.am.module.product.services.persistence.model.ProductUnit;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
-import com.jfeat.crud.base.request.Ids;
 import com.jfeat.crud.plus.*;
 import com.jfeat.crud.plus.impl.CRUDServiceOverModelImpl;
-import com.jfeat.crud.plus.model.IdVersions;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

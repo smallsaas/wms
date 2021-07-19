@@ -5,7 +5,7 @@
     <parent>
         <artifactId>wms</artifactId>
         <groupId>com.jfeat</groupId>
-        <version>1.0.0</version>
+        <version>2.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -14,11 +14,12 @@
     </properties>
 
     <artifactId>wms-app</artifactId>
+    
     <dependencies>
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>product</artifactId>
-            <version>1.0.0</version>
+            <version>2.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.jfeat</groupId>
@@ -30,18 +31,12 @@
             <artifactId>warehouse</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.jfeat</groupId>
-            <artifactId>uaas-dev</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>1.1.6</version>
-        </dependency>
+        </dependency> -->
     </dependencies>
-
 
     <build>
         <plugins>
@@ -76,26 +71,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>com.jfeat</groupId>
-                <artifactId>sb-code-generator</artifactId>
-                <version>1.2.1</version>
-                <configuration>
-                    <!-- change to your module name -->
-                    <moduleName>warehouse</moduleName>
-                    <dbUrl>jdbc:mysql://120.79.77.207:3306/mall</dbUrl>
-                    <username>root</username>
-                    <password>root</password>
-                    <tables>
 
-                        <table>wms_trader</table>
-                        <table>wms_sales</table>
-                    </tables>
-
-                    <outputDir>/root/Desktop/project/repo/wms/warehouse/src/main/java</outputDir>
-                    <parentPackage>com.jfeat.am.module</parentPackage>
-                </configuration>
-            </plugin>
 
             <plugin>
                 <groupId>com.github.kongchen</groupId>

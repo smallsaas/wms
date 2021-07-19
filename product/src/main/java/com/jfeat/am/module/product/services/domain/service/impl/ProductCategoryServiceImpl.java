@@ -1,7 +1,8 @@
 package com.jfeat.am.module.product.services.domain.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.product.services.domain.model.ProductCategoryModel;
 import com.jfeat.am.module.product.services.domain.service.ProductCategoryService;
 
@@ -46,14 +47,13 @@ public class ProductCategoryServiceImpl extends CRUDProductCategoryServiceImpl i
 
     @Override
     public List<Map<String, Object>> findAllToMap() {
-        return productCategoryMapper.selectMaps(new EntityWrapper<>());
+        return productCategoryMapper.selectMaps(new QueryWrapper<>());
     }
 
     @Override
-    public List<ProductCategory> categories(Page<ProductCategory> page) {
-        return productCategoryMapper.selectPage(page,new EntityWrapper<>());
+    public IPage<ProductCategory> categories(Page<ProductCategory> page) {
+        return productCategoryMapper.selectPage(page, new QueryWrapper<>());
     }
-
 
     @Override
     public List<Map<String, Object>> findAllGrouping() {
@@ -72,16 +72,16 @@ public class ProductCategoryServiceImpl extends CRUDProductCategoryServiceImpl i
 
     @Override
     public List<ProductCategory> queryPcdByName(String name) {
-        return productCategoryMapper.selectList(new EntityWrapper<ProductCategory>().eq("categoryName",name));
+        return productCategoryMapper.selectList(new QueryWrapper<ProductCategory>().eq("categoryName",name));
     }
 
     @Override
-    public List<ProductCategory> queryByName(Page<ProductCategory> page,String categoryName) {
-        return productCategoryMapper.selectPage(page,new EntityWrapper<ProductCategory>().eq("category_name",categoryName));
+    public IPage<ProductCategory> queryByName(Page<ProductCategory> page, String categoryName) {
+        return productCategoryMapper.selectPage(page,new QueryWrapper<ProductCategory>().eq("category_name",categoryName));
     }
 
     @Override
     public List<ProductCategory> queryPcdByPid(Long pid) {
-        return productCategoryMapper.selectList(new EntityWrapper<ProductCategory>().eq("pid",pid));
+        return productCategoryMapper.selectList(new QueryWrapper<ProductCategory>().eq("pid",pid));
     }
 }

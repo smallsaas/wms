@@ -7,13 +7,6 @@
   <packaging>pom</packaging>
   <name>wms</name>
 
-  <parent>
-    <groupId>com.jfeat</groupId>
-    <artifactId>sb-parent</artifactId>
-    <version>1.0.0</version>
-    <relativePath/>
-  </parent>
-
   <modules>
     <module>sku</module>
     <module>product</module>

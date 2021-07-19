@@ -13,3 +13,9 @@ logs/
 */target/**
 */LOG_*
 web/
+.project
+.settings/
+.vscode/
+.classpath
+.factorypath
+

@@ -1,6 +1,6 @@
 package com.jfeat.am.module.product.api.crud;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.product.services.domain.model.ProductCategoryModel;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
@@ -74,13 +74,13 @@ public class ProductCategoryEndpoint   {
         if (categoryName!=null && categoryName.length()>0){
             page.setCurrent(pageNum);
             page.setSize(pageSize);
-            page.setRecords(productCategoryService.queryByName(page,categoryName));
+            page.setRecords(productCategoryService.queryByName(page,categoryName).getRecords());
             return SuccessTip.create(page);
         }
 
         page.setCurrent(pageNum);
         page.setSize(pageSize);
-        page.setRecords(productCategoryService.categories(page));
+        page.setRecords(productCategoryService.categories(page).getRecords());
         return SuccessTip.create(page);
     }
 
