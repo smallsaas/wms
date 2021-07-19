@@ -1,8 +1,8 @@
 package com.jfeat.am.module.sku.services.crud.model;
 
-import java.util.List;
-
 import com.jfeat.am.module.sku.services.persistence.model.*;
+
+import java.util.List;
 
 /**
  * Created by Code Generator on 2018-07-18

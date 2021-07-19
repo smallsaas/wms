@@ -2,11 +2,10 @@ package com.jfeat.am.module.warehouse.services.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
-import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
-import com.jfeat.am.module.warehouse.services.crud.filter.StorageOutFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutService;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDTransferService;
@@ -78,7 +77,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
     public Integer draftOutItem(List<StorageOutItemRecord> items, Long fromWarehouseId, Long transferId) {
         int affected = 0;
         // 删除之前的子项，避免多次插入
-        affected += storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID, transferId)
+        affected += storageOutItemMapper.delete(new QueryWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID, transferId)
                 .eq(StorageOutItem.TYPE, ItemEnumType.TRANSFER));
         if (items != null && items.size() > 0) {
             for (StorageOutItemRecord outItem : items) {
@@ -88,7 +87,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(outItem.getSkuId());
                     isExistInventory.setWarehouseId(fromWarehouseId);
-                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    Inventory originInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(isExistInventory));
                     if (originInventory != null) {
                         if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
                             throw new BusinessException(4050,
@@ -227,7 +226,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         if (transfer == null) {
             throw new BusinessException(5400, "无ID为" + transferId + "的调拨单！");
         }
-        List<StorageOutItem> items = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID, transferId)
+        List<StorageOutItem> items = storageOutItemMapper.selectList(new QueryWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID, transferId)
                 .eq(StorageOutItem.TYPE, ItemEnumType.TRANSFER));
         if (items == null && items.size() <= 0) {
             throw new BusinessException(4050, "商品不能为空，请先选择商品！");
@@ -256,7 +255,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
             Inventory isExistInventory = new Inventory();
             isExistInventory.setSkuId(outItem.getSkuId());
             isExistInventory.setWarehouseId(transfer.getFromWarehouseId());
-            Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+            Inventory originInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(isExistInventory));
 
             logger.info("### transfer ###:(发送方)操作前的数量"+originInventory.getValidSku());
             outItem.setBeforeTransactionQuantities(originInventory.getValidSku());
@@ -270,7 +269,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
             Inventory inventory = new Inventory();
             inventory.setSkuId(outItem.getSkuId());
             inventory.setWarehouseId(transfer.getToWarehouseId());
-            Inventory toInventory = inventoryMapper.selectOne(inventory);
+            Inventory toInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(inventory));
             if (toInventory == null) {
                 logger.info("### transfer ###:(接收方无库存,则操作前为0)操作前的数量");
                 inventory.setValidSku(0);
@@ -284,7 +283,8 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 int originCount = toInventory.getTransmitQuantities();
                 originCount += outItem.getTransactionQuantities();
                 toInventory.setTransmitQuantities(originCount);
-                affected += inventoryMapper.updateAllColumnById(toInventory); //有 则是在途数
+                //affected += inventoryMapper.updateAllColumnById(toInventory); //有 则是在途数
+                affected += inventoryMapper.updateById(toInventory); //有 则是在途数
             }
             storageOutItemMapper.insert(outItem);
         }
@@ -322,7 +322,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         storageInMapper.insert(storageIn);
 
         StorageOut storageOut = storageOutMapper.selectById(transfer.getStorageOutId());
-        List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
+        List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new QueryWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, storageOut.getId())
                 .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT));
         if (storageOutItems != null && storageOutItems.size() > 0) {
@@ -334,7 +334,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());
                 isExistInventory.setWarehouseId(transfer.getToWarehouseId());
-                Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                Inventory originInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(isExistInventory));
 
                 if (originInventory != null) {
                     logger.info("### transfer ###:(接收方入库)操作前的数量" + originInventory.getValidSku());
@@ -405,7 +405,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         storageIn.setStatus(StorageInStatus.Done.toString());
         storageInMapper.insert(storageIn);
         StorageOut storageOut = storageOutMapper.selectById(transfer.getStorageOutId());
-        List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
+        List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new QueryWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, storageOut.getId())
                 .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT));
         if (storageOutItems != null && storageOutItems.size() > 0) {
@@ -414,10 +414,12 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 StorageInItem inItem = new StorageInItem();
                 inItem.setRelationCode(transfer.getTransactionCode());
                 inItem.setTransactionTime(storageIn.getStorageInTime());
+
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());
                 isExistInventory.setWarehouseId(transfer.getFromWarehouseId());
-                Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                Inventory originInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(isExistInventory));
+
                 logger.info("### transfer ###:(接收方拒绝入库-调出库)操作前的数量" + originInventory.getValidSku());
                 inItem.setBeforeTransactionQuantities(originInventory.getValidSku());
                 logger.info("### transfer ###:(接收方拒绝入库-调出库)操作前在途数的数量" + originInventory.getTransmitQuantities());
@@ -432,7 +434,7 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
                 Inventory inventory = new Inventory();
                 inventory.setSkuId(outItem.getSkuId());
                 inventory.setWarehouseId(transfer.getToWarehouseId());
-                Inventory toInventory = inventoryMapper.selectOne(inventory);
+                Inventory toInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(isExistInventory));
                 logger.info("### transfer ###:(接收方入库-调入库)操作前的数量" + toInventory.getValidSku());
 
                 logger.info("### transfer ###:(接收方入库-调入库)操作前在途数的数量" + toInventory.getTransmitQuantities());
@@ -495,16 +497,16 @@ public class TransferServiceImpl extends CRUDTransferServiceImpl implements Tran
         if (transfer.getStatus().compareTo(TransferStatus.Draft.toString())!=0){
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-        storageInItemMapper.delete(new EntityWrapper<StorageInItem>()
+        storageInItemMapper.delete(new QueryWrapper<StorageInItem>()
                 .eq(StorageInItem.STORAGE_IN_ID, transfer.getStorageInId())
                 .eq(StorageInItem.TYPE, ItemEnumType.STORAGEIN));
-        storageInMapper.delete(new EntityWrapper<StorageIn>()
+        storageInMapper.delete(new QueryWrapper<StorageIn>()
                 .eq(StorageIn.ID, transfer.getStorageInId()));
-        storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>()
+        storageOutItemMapper.delete(new QueryWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, transfer.getStorageOutId())
                 .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT));
         affected += crudTransferService.deleteMaster(id);
-        storageOutMapper.delete(new EntityWrapper<StorageOut>()
+        storageOutMapper.delete(new QueryWrapper<StorageOut>()
                 .eq(StorageOut.ID, transfer.getStorageOutId()));
         return affected;
     }

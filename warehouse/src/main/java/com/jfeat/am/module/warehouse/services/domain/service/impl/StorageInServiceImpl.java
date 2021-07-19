@@ -1,9 +1,9 @@
 package com.jfeat.am.module.warehouse.services.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.am.module.warehouse.api.crud.StorageInEndpoint;
-import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
 import com.jfeat.am.module.warehouse.services.definition.ItemEnumType;
 import com.jfeat.am.module.warehouse.services.definition.StorageInStatus;
@@ -60,7 +60,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
     public Integer changeStatus(Long userId, Long storageInId, StorageInModel entity) {
         Integer affected = 0;
         // 对多子项的更新，先删除原来的。
-        affected += inItemMapper.delete(new EntityWrapper<StorageInItem>()
+        affected += inItemMapper.delete(new QueryWrapper<StorageInItem>()
                 .eq(StorageInItem.STORAGE_IN_ID, storageInId)
                 .eq(StorageInItem.TYPE, ItemEnumType.STORAGEIN.toString()));
 //        entity.setOriginatorId(userId);
@@ -211,7 +211,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
 
-        List<StorageInItem> items = inItemMapper.selectList(new EntityWrapper<StorageInItem>()
+        List<StorageInItem> items = inItemMapper.selectList(new QueryWrapper<StorageInItem>()
                 .eq(StorageInItem.STORAGE_IN_ID, storageInId)
                 .eq(StorageInItem.TYPE, ItemEnumType.STORAGEIN.toString()));
 
@@ -224,7 +224,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(inItem.getSkuId());
                     isExistInventory.setWarehouseId(in.getWarehouseId());
-                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    Inventory originInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(isExistInventory));
                     if (originInventory != null) {
                         logger.info("### storage in ###:操作前的数量(原来的库存)"+ originInventory.getValidSku());
                         inItem.setBeforeTransactionQuantities(originInventory.getValidSku());
@@ -267,7 +267,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
         StorageOut out = new StorageOut();
         out.setOutOrderNum(entity.getOutOrderNum());
         out.setTransactionType(TransactionType.SalesOut.toString());
-        StorageOut originOut = storageOutMapper.selectOne(out);
+        StorageOut originOut = storageOutMapper.selectOne(new LambdaQueryWrapper<>(out));
         if (originOut == null) {
             throw new BusinessException(5320, "未找到订单号为" + entity.getOutOrderNum() + "的出库单，请核对后再次提交");
         }
@@ -298,7 +298,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
                         } else {
                             isExistInventory.setWarehouseId(entity.getWarehouseId());
                         }
-                        Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                        Inventory originInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(isExistInventory));
                         if (originInventory != null) {
                             logger.info("### storage in ###:(商城退货)操作前的数量(原来的库存)"+ originInventory.getValidSku());
                             inItem.setBeforeTransactionQuantities(originInventory.getValidSku());
@@ -335,7 +335,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
                 } else {
                     origin.setWarehouseId(entity.getWarehouseId());
                 }
-                Inventory inventory = inventoryMapper.selectOne(origin);
+                Inventory inventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(origin));
                 if (inventory == null) {
                     logger.info("没有更新占用库存" + "无该商品库存记录!请核准然后重新提交!" + JSON.toJSONString(entity));
                     throw new BusinessException(5300, "无该商品库存记录!请核准然后重新提交!");
@@ -369,7 +369,7 @@ public class StorageInServiceImpl extends CRUDStorageInServiceImpl implements St
     public Integer deleteStorageIn(Long id) {
 
         Integer affected = 0;
-        affected += inItemMapper.delete(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, id).eq(StorageInItem.TYPE, ItemEnumType.STORAGEIN));
+        affected += inItemMapper.delete(new QueryWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, id).eq(StorageInItem.TYPE, ItemEnumType.STORAGEIN));
         affected += storageInMapper.deleteById(id);
         return affected;
     }

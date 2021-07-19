@@ -1,9 +1,9 @@
 package com.jfeat.am.module.warehouse.services.domain.service;
 
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDSalesService;
-import com.jfeat.am.common.constant.tips.Ids;
 import com.jfeat.am.module.warehouse.services.domain.model.SalesDetails;
 import com.jfeat.am.module.warehouse.services.domain.model.SalesModel;
+import com.jfeat.crud.base.request.Ids;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

@@ -2,16 +2,15 @@ package com.jfeat.am.module.sku.services.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.jfeat.am.common.constant.tips.Ids;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.am.module.product.services.persistence.dao.ProductCategoryMapper;
-import com.jfeat.am.module.product.services.persistence.model.ProductCategory;
 import com.jfeat.am.module.sku.services.crud.model.SkuSpecificationGroupModel;
 import com.jfeat.am.module.sku.services.crud.service.impl.CRUDSkuSkuSpecificationGroupServiceImpl;
 import com.jfeat.am.module.sku.services.domain.model.CategorySpecModel;
 import com.jfeat.am.module.sku.services.domain.service.SkuSpecificationGroupService;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuSpecificationGroupMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuSpecificationGroup;
+import com.jfeat.crud.base.request.Ids;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -120,10 +119,10 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
                 }
             }
         } else {
-            List<SkuSpecificationGroup> groups = skuSpecificationGroupMapper.selectList(new EntityWrapper<SkuSpecificationGroup>()
+            List<SkuSpecificationGroup> groups = skuSpecificationGroupMapper.selectList(new QueryWrapper<SkuSpecificationGroup>()
                     .eq("pid", categoryId).like("type", "Category"));
             for (SkuSpecificationGroup group : groups) {
-                affect += skuSpecificationGroupMapper.delete(new EntityWrapper<SkuSpecificationGroup>()
+                affect += skuSpecificationGroupMapper.delete(new QueryWrapper<SkuSpecificationGroup>()
                         .eq("pid", group.getId()).like("type", "Spec"));
                 affect += skuSpecificationGroupMapper.deleteById(group.getId());
             }
@@ -136,7 +135,7 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
     public Integer deleteCategory(Long categoryId) {
 
         int affect = 0;
-        List<SkuSpecificationGroup> groups = skuSpecificationGroupMapper.selectList(new EntityWrapper<SkuSpecificationGroup>()
+        List<SkuSpecificationGroup> groups = skuSpecificationGroupMapper.selectList(new QueryWrapper<SkuSpecificationGroup>()
                 .eq("pid", categoryId).like("type", "Category"));
         if (groups == null || groups.size() == 0) {
             affect += categoryMapper.deleteById(categoryId);
@@ -144,7 +143,7 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
         }
 
         for (SkuSpecificationGroup group : groups) {
-            skuSpecificationGroupMapper.delete(new EntityWrapper<SkuSpecificationGroup>()
+            skuSpecificationGroupMapper.delete(new QueryWrapper<SkuSpecificationGroup>()
                     .eq("pid", group.getId()).like("type", "Spec"));
             affect += skuSpecificationGroupMapper.deleteById(group.getId());
         }
@@ -158,7 +157,7 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
      */
     public List<SkuSpecificationGroupModel> getSpecChildren(Long categoryId) {
 
-        List<SkuSpecificationGroup> groups = skuSpecificationGroupMapper.selectList(new EntityWrapper<SkuSpecificationGroup>()
+        List<SkuSpecificationGroup> groups = skuSpecificationGroupMapper.selectList(new QueryWrapper<SkuSpecificationGroup>()
                 .eq("pid",categoryId).like("type","Category"));
 
         if (groups != null && groups.size() > 0) {
@@ -166,7 +165,7 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
             List<SkuSpecificationGroupModel> models = new ArrayList<>();
 
             for (SkuSpecificationGroup group : groups) {
-                List<SkuSpecificationGroup> children = skuSpecificationGroupMapper.selectList(new EntityWrapper<SkuSpecificationGroup>()
+                List<SkuSpecificationGroup> children = skuSpecificationGroupMapper.selectList(new QueryWrapper<SkuSpecificationGroup>()
                         .eq("pid",group.getId()).like("type","Spec"));
                 JSONObject json = JSON.parseObject(JSON.toJSONString(group));
                 json.put("items",children);
@@ -189,12 +188,12 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
 
         List<SkuSpecificationGroup> specifications =
                 skuSpecificationGroupMapper.selectList(
-                        new EntityWrapper<SkuSpecificationGroup>().like("type", "Category"));
+                        new QueryWrapper<SkuSpecificationGroup>().like("type", "Category"));
         // Fix: if no category
         //
         if (specifications != null && specifications.size() > 0) {
             for (SkuSpecificationGroup skuSpecificationGroup : specifications) {
-                List<SkuSpecificationGroup> children = skuSpecificationGroupMapper.selectList(new EntityWrapper<SkuSpecificationGroup>()
+                List<SkuSpecificationGroup> children = skuSpecificationGroupMapper.selectList(new QueryWrapper<SkuSpecificationGroup>()
                         .eq("pid",skuSpecificationGroup.getId()).like("type","Spec"));
                 JSONObject json = JSON.parseObject(JSON.toJSONString(skuSpecificationGroup));
                 json.put("items",children);
@@ -205,7 +204,7 @@ public class SkuSpecificationGroupServiceImpl extends CRUDSkuSkuSpecificationGro
             /// get all spec group
             SkuSpecificationGroupModel model = new SkuSpecificationGroupModel();
             List<SkuSpecificationGroup> children = skuSpecificationGroupMapper.selectList(
-                    new EntityWrapper<SkuSpecificationGroup>().like("type", "Spec"));
+                    new QueryWrapper<SkuSpecificationGroup>().like("type", "Spec"));
             model.setItems(children);
             /// add single spec group
             models.add(model);

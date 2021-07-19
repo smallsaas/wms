@@ -1,7 +1,8 @@
 package com.jfeat.am.module.warehouse.services.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.warehouse.api.crud.StorageOutEndpoint;
@@ -74,7 +75,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     public Integer changeStatus(Long userId, Long storageOutId, StorageOutModel entity) {
         Integer affected = 0;
         // 先执行删除，避免重复添加数据
-        affected += outItemMapper.delete(new EntityWrapper<StorageOutItem>()
+        affected += outItemMapper.delete(new QueryWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, storageOutId)
                 .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT.toString()));
 //        entity.setOriginatorId(userId);
@@ -96,7 +97,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(outItem.getSkuId());
                     isExistInventory.setWarehouseId(entity.getWarehouseId());
-                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    Inventory originInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(isExistInventory));
                     if (originInventory != null) {
                         if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
                             throw new BusinessException(4050, "\""
@@ -314,7 +315,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (out.getStorageOutTime() == null) {
             out.setStorageOutTime(new Date());
         }
-        List<StorageOutItem> items = outItemMapper.selectList(new EntityWrapper<StorageOutItem>()
+        List<StorageOutItem> items = outItemMapper.selectList(new QueryWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, storageOutId)
                 .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT));
         if (items != null && items.size() > 0) {
@@ -323,7 +324,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(outItem.getSkuId());
                     isExistInventory.setWarehouseId(out.getWarehouseId());
-                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    Inventory originInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(isExistInventory));
                     logger.info("### storage out ###:操作前的数量"+ originInventory.getValidSku());
                     outItem.setBeforeTransactionQuantities(originInventory.getValidSku());
                     Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
@@ -367,7 +368,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         if (out.getStorageOutTime() == null) {
             out.setStorageOutTime(new Date());
         }
-        List<StorageOutItem> items = outItemMapper.selectList(new EntityWrapper<StorageOutItem>()
+        List<StorageOutItem> items = outItemMapper.selectList(new QueryWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, storageOutId)
                 .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT));
         Integer totalCount = querySalesDao.totalCount(sales.getId());
@@ -381,7 +382,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(outItem.getSkuId());
                     isExistInventory.setWarehouseId(out.getWarehouseId());
-                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    Inventory originInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(isExistInventory) );
                     logger.info("### storage out ###:(分销商出库)操作前的数量"+ originInventory.getValidSku());
                     outItem.setBeforeTransactionQuantities(originInventory.getValidSku());
                     Integer afterCount = originInventory.getValidSku() - outItem.getTransactionQuantities();
@@ -440,7 +441,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(outItem.getSkuId());
                     isExistInventory.setWarehouseId(entity.getWarehouseId());
-                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    Inventory originInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(isExistInventory));
                     if (originInventory != null) {
                         if (outItem.getTransactionQuantities() > originInventory.getValidSku()) {
                             throw new BusinessException(4050, "\""
@@ -492,8 +493,9 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
         out.setOutOrderNum(entity.getOutOrderNum());
         out.setTransactionType(TransactionType.SalesOut.toString());
         logger.info("出库单查找的初始化值" + JSON.toJSONString(out));
-        StorageOut originOut = storageOutMapper.selectOne(out);
+        StorageOut originOut = storageOutMapper.selectOne(new LambdaQueryWrapper<>(out));
         logger.info("打出来，证明有值" + JSON.toJSONString(out));
+
         if (originOut == null) {
             throw new BusinessException(5300, "未检测到id为" + entity.getOutOrderNum() + "的订单的出库记录，请重新核对");
         }
@@ -510,8 +512,9 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             item.setSkuId(updateOrderCount.getSkuId());
             item.setType(ItemEnumType.STORAGEOUT.toString());
             item.setStorageOutId(originOut.getId());
-            StorageOutItem originOutItem = outItemMapper.selectOne(item);
+            StorageOutItem originOutItem = outItemMapper.selectOne(new LambdaQueryWrapper<>(item));
             logger.info("打出来，证明商品有值" + JSON.toJSONString(originOutItem));
+
             if (originOutItem == null) {
                 throw new BusinessException(5310, "该订单下无SKUID为" + updateOrderCount.getSkuId() + "的商品购买记录");
             }
@@ -522,7 +525,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
             } else {
                 origin.setWarehouseId(updateOrderCount.getWarehouseId());
             }
-            Inventory inventory = inventoryMapper.selectOne(origin);
+            Inventory inventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(origin));
             if (inventory == null) {
                 throw new BusinessException(5300, "无该商品库存记录!请核准然后重新提交!");
             }
@@ -549,7 +552,7 @@ public class StorageOutServiceImpl extends CRUDStorageOutServiceImpl implements 
     @Transactional
     public Integer deleteStorageOut(Long id){
         Integer affected = 0;
-        affected += outItemMapper.delete(new EntityWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,id).eq(StorageOutItem.TYPE,ItemEnumType.STORAGEOUT));
+        affected += outItemMapper.delete(new QueryWrapper<StorageOutItem>().eq(StorageOutItem.STORAGE_OUT_ID,id).eq(StorageOutItem.TYPE,ItemEnumType.STORAGEOUT));
         affected += storageOutMapper.deleteById(id);
         return affected;
     }

@@ -2,12 +2,11 @@ package com.jfeat.am.module.warehouse.services.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.jfeat.am.core.jwt.JWTKit;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.warehouse.services.crud.filter.StorageInFilter;
-import com.jfeat.am.module.warehouse.services.crud.filter.StorageOutFilter;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDRefundService;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageInService;
 import com.jfeat.am.module.warehouse.services.definition.ItemEnumType;
@@ -85,7 +84,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         int affected = 0;
         if (model.getItems() != null && model.getItems().size() > 0) {
             // execution delete before insert
-            affected += storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>()
+            affected += storageOutItemMapper.delete(new QueryWrapper<StorageOutItem>()
                     .eq(StorageOutItem.STORAGE_OUT_ID, refundId)
                     .eq(StorageOutItem.TYPE, ItemEnumType.REFUND));
             for (StorageOutItemRecord outItem : model.getItems()) {
@@ -102,7 +101,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(outItem.getSkuId());
                     isExistInventory.setWarehouseId(model.getProductRefundWarehouseId());
-                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    Inventory originInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(isExistInventory));
                     if (originInventory != null) {
                         // 退货数量不能大于库存量
                         if (originInventory.getValidSku() == null) {
@@ -226,7 +225,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
 
-        List<StorageOutItem> items = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
+        List<StorageOutItem> items = storageOutItemMapper.selectList(new QueryWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, refundId)
                 .eq(StorageOutItem.TYPE, ItemEnumType.REFUND));
 
@@ -262,7 +261,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
                 Inventory isExistInventory = new Inventory();
                 isExistInventory.setSkuId(outItem.getSkuId());
                 isExistInventory.setWarehouseId(refund.getProductRefundWarehouseId());
-                Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                Inventory originInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(isExistInventory));
                 if (originInventory != null) {
                     // 退货数量不能大于库存量
                     if (originInventory.getValidSku() == null) {
@@ -331,7 +330,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
         }
         List<StorageOutItemRecord> outItemRecords = new ArrayList<>();
 
-        List<StorageOutItem> outItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
+        List<StorageOutItem> outItems = storageOutItemMapper.selectList(new QueryWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, refund.getId())
                 .eq(StorageOutItem.TYPE, ItemEnumType.REFUND));
 
@@ -353,10 +352,10 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
     @Transactional
     public Integer deleteRefund(Long id) {
         Refund refund = refundService.retrieveMaster(id);
-        storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>()
+        storageOutItemMapper.delete(new QueryWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, id)
                 .eq(StorageOutItem.TYPE,ItemEnumType.REFUND));
-        storageOutItemMapper.delete(new EntityWrapper<StorageOutItem>()
+        storageOutItemMapper.delete(new QueryWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, refund.getStorageOutId())
                 .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT));
         storageOutMapper.deleteById(refund.getStorageOutId());
@@ -377,7 +376,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
 
         StorageOut out = storageOutMapper.selectById(refund.getStorageOutId());
         List<StorageInItem> storageInItems = new ArrayList<>();
-        List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new EntityWrapper<StorageOutItem>()
+        List<StorageOutItem> storageOutItems = storageOutItemMapper.selectList(new QueryWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, out.getId()).eq(StorageOutItem.RELATION_CODE, refund.getProductRefundCode()));
         if (storageOutItems == null && storageOutItems.size() == 0) {
             throw new BusinessException(5000, "未知错误");
@@ -386,7 +385,7 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
             Inventory isExistInventory = new Inventory();
             isExistInventory.setSkuId(outItem.getSkuId());
             isExistInventory.setWarehouseId(refund.getProductRefundWarehouseId());
-            Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+            Inventory originInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(isExistInventory));
             if (originInventory == null) {
                 // 应该不会出现吧 出现就是数据库异常吧
                 throw new BusinessException(BusinessCode.DatabaseConnectFailure);
@@ -408,7 +407,8 @@ public class RefundServiceImpl extends CRUDRefundServiceImpl implements RefundSe
             item.setTransactionTime(new Date());
             storageInItems.add(item);
 
-            affected += inventoryMapper.updateAllColumnById(originInventory);
+            //affected += inventoryMapper.updateAllColumnById(originInventory);
+            affected += inventoryMapper.updateById(originInventory);
         }
         storageIn.setTransactionType(TransactionType.OthersStorageIn.toString());
         storageIn.setWarehouseId(refund.getProductRefundWarehouseId());

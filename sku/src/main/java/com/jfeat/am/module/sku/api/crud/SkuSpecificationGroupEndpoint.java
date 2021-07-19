@@ -1,12 +1,12 @@
 package com.jfeat.am.module.sku.api.crud;
 
-import com.jfeat.am.common.constant.tips.Ids;
 import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.sku.services.domain.dao.QuerySkuSpecificationGroupDao;
 import com.jfeat.am.module.sku.services.domain.model.CategorySpecModel;
 import com.jfeat.am.module.sku.services.domain.service.SkuSpecificationGroupService;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.request.Ids;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;

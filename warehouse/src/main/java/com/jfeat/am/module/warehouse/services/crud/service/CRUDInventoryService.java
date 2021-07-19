@@ -1,6 +1,5 @@
 package com.jfeat.am.module.warehouse.services.crud.service;
 import com.jfeat.am.module.warehouse.services.persistence.model.Inventory;
-import com.jfeat.am.common.constant.tips.Ids;
 import com.jfeat.crud.plus.CRUDServiceOnly;
 
 /**

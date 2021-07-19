@@ -2,8 +2,8 @@ package com.jfeat.am.module.warehouse.services.domain.dao;
 
 import com.jfeat.am.module.warehouse.services.domain.model.RefundRecord;
 
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageOutItemRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.StorageOutRecord;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem;

@@ -2,9 +2,9 @@ package com.jfeat.am.module.warehouse.services.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.AmApplication;
-import com.jfeat.am.common.constant.tips.Ids;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDStorageOutService;
@@ -29,6 +29,7 @@ import com.jfeat.am.module.warehouse.services.persistence.model.StorageOut;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageOutItem;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.request.Ids;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -119,7 +120,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                 throw new BusinessException(5002, "请至少选择一种需要出库的商品");
             } else {
                 // 执行删除，防止重复插入
-                outItemMapper.delete(new EntityWrapper<StorageOutItem>()
+                outItemMapper.delete(new QueryWrapper<StorageOutItem>()
                         .eq(StorageOutItem.STORAGE_OUT_ID, salesId)
                         .eq(StorageOutItem.TYPE, ItemEnumType.TRADER));
                 for (StorageOutItem item : model.getOutItems()) {
@@ -164,7 +165,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
             if (model.getOutItems() == null || model.getOutItems().size() == 0) {
                 throw new BusinessException(5002, "请至少选择一种需要出库的商品");
             } else {
-                outItemMapper.delete(new EntityWrapper<StorageOutItem>()
+                outItemMapper.delete(new QueryWrapper<StorageOutItem>()
                         .eq(StorageOutItem.STORAGE_OUT_ID, salesId)
                         .eq(StorageOutItem.TYPE, ItemEnumType.TRADER));
                 for (StorageOutItem item : model.getOutItems()) {
@@ -277,7 +278,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
                     Inventory isExistInventory = new Inventory();
                     isExistInventory.setSkuId(item.getSkuId());
                     isExistInventory.setWarehouseId(Long.valueOf(model.getField1()));
-                    Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+                    Inventory originInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(isExistInventory));
                     if (originInventory != null) {
                         logger.info("### sales ###:单签的数量"+ originInventory.getValidSku());
                         if (originInventory.getValidSku() < item.getTransactionQuantities()) {
@@ -358,7 +359,7 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
         }
         salesDetails.setOutItems(itemRecords);
         JSONObject details = JSON.parseObject(JSON.toJSONString(salesDetails));
-        List<StorageOut> outs = outMapper.selectList(new EntityWrapper<StorageOut>()
+        List<StorageOut> outs = outMapper.selectList(new QueryWrapper<StorageOut>()
                 .eq("sales_id", salesDetails.getId())
                 .eq(StorageOut.TRANSACTION_TYPE, TransactionType.CustomerStorageOut));
         List<StorageOutRecord> records = new ArrayList<>();
@@ -379,14 +380,14 @@ public class SalesServiceImpl extends CRUDSalesServiceImpl implements SalesServi
     @Transactional
     public Integer deleteSales(Long id) {
         Integer result = 0;
-        result += outItemMapper.delete(new EntityWrapper<StorageOutItem>()
+        result += outItemMapper.delete(new QueryWrapper<StorageOutItem>()
                 .eq(StorageOutItem.STORAGE_OUT_ID, id)
                 .eq(StorageOutItem.TYPE, ItemEnumType.TRADER));
-        List<StorageOut> outs = outMapper.selectList(new EntityWrapper<StorageOut>()
+        List<StorageOut> outs = outMapper.selectList(new QueryWrapper<StorageOut>()
                 .eq("sales_id", id)
                 .eq(StorageOut.TRANSACTION_TYPE, TransactionType.CustomerStorageOut));
         for (StorageOut out : outs) {
-            result += outItemMapper.delete(new EntityWrapper<StorageOutItem>()
+            result += outItemMapper.delete(new QueryWrapper<StorageOutItem>()
                     .eq(StorageOutItem.STORAGE_OUT_ID, out.getId())
                     .eq(StorageOutItem.TYPE, ItemEnumType.STORAGEOUT));
             result += outMapper.deleteById(out.getId());

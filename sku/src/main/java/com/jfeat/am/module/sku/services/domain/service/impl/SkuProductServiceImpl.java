@@ -2,9 +2,7 @@ package com.jfeat.am.module.sku.services.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.jfeat.am.common.constant.tips.Ids;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.am.module.product.services.persistence.dao.ProductMapper;
 import com.jfeat.am.module.product.services.persistence.model.Product;
 import com.jfeat.am.module.sku.services.crud.filter.SkuProductFilter;
@@ -18,6 +16,7 @@ import com.jfeat.am.module.sku.services.mq.SkuMessage;
 import com.jfeat.am.module.sku.services.mq.SkuUpdateSender;
 import com.jfeat.am.module.sku.services.persistence.dao.*;
 import com.jfeat.am.module.sku.services.persistence.model.*;
+import com.jfeat.crud.base.request.Ids;
 import com.jfeat.crud.plus.CRUDObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -200,9 +199,9 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
             affect += crudSkuProductService.updateMaster(model.getSkus().get(0));
 
             if (model.getSkus().get(0).getSpecId() == null || model.getSkus().get(0).getSpecId().size() == 0) {
-                skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
+                skuSpecificationMapper.delete(new QueryWrapper<SkuSpecification>().eq("sku_id", skuId));
             } else {
-                skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
+                skuSpecificationMapper.delete(new QueryWrapper<SkuSpecification>().eq("sku_id", skuId));
                 for (Long id : model.getSkus().get(0).getSpecId()) {
                     SkuSpecification specification = new SkuSpecification();
                     specification.setSkuId(skuId);
@@ -263,13 +262,13 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
     @Transactional
     public Integer deleteSkus(Long productId) {
         int affect = 0;
-        List<SkuProduct> skus = skuProductMapper.selectList(new EntityWrapper<SkuProduct>().eq("product_id", productId));
+        List<SkuProduct> skus = skuProductMapper.selectList(new QueryWrapper<SkuProduct>().eq("product_id", productId));
         for (SkuProduct sku : skus) {
-            affect += skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", sku.getId()));
-            affect += skuPriceHistoryMapper.delete(new EntityWrapper<SkuPriceHistory>().eq("sku_id", sku.getId()));
-            affect += skuPhotoMapper.delete(new EntityWrapper<SkuPhoto>().eq("sku_id", sku.getId()));
-            affect += skuTagRelationMapper.delete(new EntityWrapper<SkuTagRelation>().eq("sku_id", sku.getId()));
-            affect += skuUnitMapper.delete(new EntityWrapper<SkuUnit>().eq("sku_id", sku.getId()));
+            affect += skuSpecificationMapper.delete(new QueryWrapper<SkuSpecification>().eq("sku_id", sku.getId()));
+            affect += skuPriceHistoryMapper.delete(new QueryWrapper<SkuPriceHistory>().eq("sku_id", sku.getId()));
+            affect += skuPhotoMapper.delete(new QueryWrapper<SkuPhoto>().eq("sku_id", sku.getId()));
+            affect += skuTagRelationMapper.delete(new QueryWrapper<SkuTagRelation>().eq("sku_id", sku.getId()));
+            affect += skuUnitMapper.delete(new QueryWrapper<SkuUnit>().eq("sku_id", sku.getId()));
             affect += crudSkuProductService.deleteMaster(sku.getId());
         }
         return affect;
@@ -282,11 +281,11 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
     @Transactional
     public Integer deleteSku(Long skuId) {
         int affect = 0;
-        affect += skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
-        affect += skuPriceHistoryMapper.delete(new EntityWrapper<SkuPriceHistory>().eq("sku_id", skuId));
-        affect += skuPhotoMapper.delete(new EntityWrapper<SkuPhoto>().eq("sku_id", skuId));
-        affect += skuTagRelationMapper.delete(new EntityWrapper<SkuTagRelation>().eq("sku_id", skuId));
-        affect += skuUnitMapper.delete(new EntityWrapper<SkuUnit>().eq("sku_id", skuId));
+        affect += skuSpecificationMapper.delete(new QueryWrapper<SkuSpecification>().eq("sku_id", skuId));
+        affect += skuPriceHistoryMapper.delete(new QueryWrapper<SkuPriceHistory>().eq("sku_id", skuId));
+        affect += skuPhotoMapper.delete(new QueryWrapper<SkuPhoto>().eq("sku_id", skuId));
+        affect += skuTagRelationMapper.delete(new QueryWrapper<SkuTagRelation>().eq("sku_id", skuId));
+        affect += skuUnitMapper.delete(new QueryWrapper<SkuUnit>().eq("sku_id", skuId));
         affect += crudSkuProductService.deleteMaster(skuId);
 
         return affect;
@@ -312,11 +311,11 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
     public Integer bulkDeleteSku(Ids ids) {
         int affect = 0;
         for (Long skuId : ids.getIds()) {
-            affect += skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", skuId));
-            affect += skuPriceHistoryMapper.delete(new EntityWrapper<SkuPriceHistory>().eq("sku_id", skuId));
-            affect += skuPhotoMapper.delete(new EntityWrapper<SkuPhoto>().eq("sku_id", skuId));
-            affect += skuTagRelationMapper.delete(new EntityWrapper<SkuTagRelation>().eq("sku_id", skuId));
-            affect += skuUnitMapper.delete(new EntityWrapper<SkuUnit>().eq("sku_id", skuId));
+            affect += skuSpecificationMapper.delete(new QueryWrapper<SkuSpecification>().eq("sku_id", skuId));
+            affect += skuPriceHistoryMapper.delete(new QueryWrapper<SkuPriceHistory>().eq("sku_id", skuId));
+            affect += skuPhotoMapper.delete(new QueryWrapper<SkuPhoto>().eq("sku_id", skuId));
+            affect += skuTagRelationMapper.delete(new QueryWrapper<SkuTagRelation>().eq("sku_id", skuId));
+            affect += skuUnitMapper.delete(new QueryWrapper<SkuUnit>().eq("sku_id", skuId));
             affect += crudSkuProductService.deleteMaster(skuId);
         }
         return affect;
@@ -335,17 +334,17 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
         }
         JSONObject object = JSON.parseObject(JSON.toJSONString(model));
 
-        List<SkuPhoto> photos = skuPhotoMapper.selectList(new EntityWrapper<SkuPhoto>().eq("sku_id", id));
+        List<SkuPhoto> photos = skuPhotoMapper.selectList(new QueryWrapper<SkuPhoto>().eq("sku_id", id));
         object.put("skuPhotos", photos==null?null:photos);
 
-        List<SkuPriceHistory> histories = skuPriceHistoryMapper.selectList(new EntityWrapper<SkuPriceHistory>().eq("sku_id", id));
+        List<SkuPriceHistory> histories = skuPriceHistoryMapper.selectList(new QueryWrapper<SkuPriceHistory>().eq("sku_id", id));
         object.put("priceHistories", histories);
 
 
-        List<SkuUnit> units = skuUnitMapper.selectList(new EntityWrapper<SkuUnit>().eq("sku_id", id));
+        List<SkuUnit> units = skuUnitMapper.selectList(new QueryWrapper<SkuUnit>().eq("sku_id", id));
         object.put("skuUnits", units);
 
-        /*List<SkuSpecification> specifications = skuSpecificationMapper.selectList((new EntityWrapper<SkuSpecification>().eq("sku_id", id)));
+        /*List<SkuSpecification> specifications = skuSpecificationMapper.selectList((new QueryWrapper<SkuSpecification>().eq("sku_id", id)));
         List<SkuSpecificationGroupModel> groups = new ArrayList<>();
         for (SkuSpecification skuSpecification : specifications) {
             SkuSpecificationGroup group = skuSpecificationGroupMapper.selectById(skuSpecification.getGroupId());
@@ -409,10 +408,10 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
                     affect += skuPriceHistoryMapper.insert(history);
                 }
                 if (entity.getSpecId() == null || entity.getSpecId().size() == 0) {
-                    affect += skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", entity.getId()));
+                    affect += skuSpecificationMapper.delete(new QueryWrapper<SkuSpecification>().eq("sku_id", entity.getId()));
                 } else {
                     for (Long id : entity.getSpecId()) {
-                        affect += skuSpecificationMapper.delete(new EntityWrapper<SkuSpecification>().eq("sku_id", entity.getId()));
+                        affect += skuSpecificationMapper.delete(new QueryWrapper<SkuSpecification>().eq("sku_id", entity.getId()));
                         SkuSpecification specification = new SkuSpecification();
                         specification.setSkuId(entity.getId());
                         specification.setGroupId(id);

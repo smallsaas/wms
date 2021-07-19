@@ -1,6 +1,6 @@
 package com.jfeat.am.module.sku.api.crud;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.sku.services.crud.model.SkuUnitModel;
 import com.jfeat.am.module.sku.services.domain.dao.QuerySkuUnitDao;

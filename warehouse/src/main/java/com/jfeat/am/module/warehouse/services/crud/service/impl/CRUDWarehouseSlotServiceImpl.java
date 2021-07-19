@@ -1,6 +1,6 @@
 package com.jfeat.am.module.warehouse.services.crud.service.impl;
             
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.warehouse.services.persistence.model.WarehouseSlot;
 import com.jfeat.am.module.warehouse.services.persistence.dao.WarehouseSlotMapper;
 import com.jfeat.am.module.warehouse.services.persistence.dao.WarehouseSlotMapper;

@@ -1,9 +1,8 @@
 package com.jfeat.am.module.sku.services.domain.service;
 
-import com.jfeat.am.common.constant.tips.Ids;
-import com.jfeat.am.module.sku.services.crud.model.SkuProductModel;
 import com.jfeat.am.module.sku.services.crud.service.CRUDSkuProductService;
 import com.jfeat.am.module.sku.services.domain.model.CreateSkuProductModel;
+import com.jfeat.crud.base.request.Ids;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

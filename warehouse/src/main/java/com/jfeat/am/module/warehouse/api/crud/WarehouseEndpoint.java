@@ -7,7 +7,7 @@ import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -129,7 +129,8 @@ public class WarehouseEndpoint   {
 
         Tip resultTip;
         if(all == true) {
-            resultTip = SuccessTip.create(warehouseService.retrieveMasterList());
+            throw new BusinessException(BusinessCode.BadRequest, "do not support all parameter!");
+            //resultTip = SuccessTip.create(warehouseService.retrieveMasterList());
         } else {
             resultTip = SuccessTip.create(page);
         }

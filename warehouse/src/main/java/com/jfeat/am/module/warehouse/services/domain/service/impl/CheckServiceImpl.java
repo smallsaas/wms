@@ -2,7 +2,8 @@ package com.jfeat.am.module.warehouse.services.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDCheckServiceImpl;
 import com.jfeat.am.module.warehouse.services.definition.CheckStatus;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryCheckDao;
@@ -88,7 +89,7 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
 
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-        checkSkuMapper.delete(new EntityWrapper<CheckSku>().eq(CheckSku.CHECK_ID, checkId));
+        checkSkuMapper.delete(new QueryWrapper<CheckSku>().eq(CheckSku.CHECK_ID, checkId));
 
         model.setOriginatorId(userId);
         model.setProfitLost(0); //新建默认缺失值为0
@@ -133,7 +134,7 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
                 sku.setProfitLost(0);
             }
             totalProfitLostValue += sku.getProfitLost();
-            affected += checkSkuMapper.updateAllColumnById(sku);
+            //affected += checkSkuMapper.updateAllColumnById(sku);
         }
         affected += checkMapper.updateById(model);
         return affected;
@@ -151,7 +152,7 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
         if (check.getStatus().compareTo(CheckStatus.Checking.toString()) != 0) {
             throw new BusinessException(5002, "请先进行盘点");
         }
-        List<CheckSku> checkSkus = checkSkuMapper.selectList(new EntityWrapper<CheckSku>().eq(CheckSku.CHECK_ID, checkId));
+        List<CheckSku> checkSkus = checkSkuMapper.selectList(new QueryWrapper<CheckSku>().eq(CheckSku.CHECK_ID, checkId));
         for (CheckSku sku : checkSkus) {
             if (sku.getFactQuantities() == null) {
                 throw new BusinessException(5001, "请先对未完成盘点的商品进行盘点");
@@ -163,7 +164,8 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
             sku.setDeservedQuantities(sku.getFactQuantities());
             totalProfitLostValue += sku.getProfitLost();
 
-            affected += checkSkuMapper.updateAllColumnById(sku);//校对数据
+            //affected += checkSkuMapper.updateAllColumnById(sku);//校对数据
+            affected += checkSkuMapper.updateById(sku);//校对数据
         }
 
         check.setId(checkId);
@@ -185,7 +187,7 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
         if (check.getStatus().compareTo(CheckStatus.CheckOut.toString()) != 0) {
             throw new BusinessException(5002, "请先完成盘点");
         }
-        List<CheckSku> checkSkus = checkSkuMapper.selectList(new EntityWrapper<CheckSku>().eq(CheckSku.CHECK_ID, checkId));
+        List<CheckSku> checkSkus = checkSkuMapper.selectList(new QueryWrapper<CheckSku>().eq(CheckSku.CHECK_ID, checkId));
         for (CheckSku sku : checkSkus) {
             if (sku.getFactQuantities() == null) {
                 throw new BusinessException(5001, "请先对未完成盘点的商品进行盘点");
@@ -198,12 +200,13 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
             Inventory inventory = new Inventory();
             inventory.setWarehouseId(sku.getWarehouseId());
             inventory.setSkuId(sku.getSkuId());
-            Inventory originInventory = inventoryMapper.selectOne(inventory);
+            Inventory originInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(inventory));
             if (originInventory == null) {
                 throw new BusinessException(10000, "未知错误，请联系专业人员");
             }
             originInventory.setValidSku(sku.getFactQuantities());
-            affected += inventoryMapper.updateAllColumnById(originInventory);
+            //affected += inventoryMapper.updateAllColumnById(originInventory);
+            affected += inventoryMapper.updateById(originInventory);
         }
         check.setStatus(CheckStatus.Done.toString());
         check.setId(checkId);
@@ -248,7 +251,7 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
         if (check.getStatus().compareTo(CheckStatus.Draft.toString()) != 0) {
             throw new BusinessException(BusinessCode.ErrorStatus);
         }
-        affected += checkSkuMapper.delete(new EntityWrapper<CheckSku>().eq(CheckSku.CHECK_ID, checkId));
+        affected += checkSkuMapper.delete(new QueryWrapper<CheckSku>().eq(CheckSku.CHECK_ID, checkId));
         affected += checkMapper.deleteById(checkId);
         return affected;
     }

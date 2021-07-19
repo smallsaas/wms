@@ -1,8 +1,7 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.jfeat.am.common.constant.tips.Ids;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.warehouse.log.LogManager;
@@ -16,6 +15,7 @@ import com.jfeat.am.module.warehouse.services.domain.service.SalesService;
 import com.jfeat.am.module.warehouse.services.persistence.model.Sales;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.request.Ids;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
@@ -39,7 +39,7 @@ import java.util.Date;
 @RestController
 @Api("分销商出库")
 @RequestMapping("/api/warehouse/sales")
-public class SalesEndpoint   {
+public class SalesEndpoint {
 
 
     @Resource
@@ -67,9 +67,9 @@ public class SalesEndpoint   {
     public Tip createSales(@RequestBody SalesModel entity) {
 
         Integer affected = 0;
-        String userName = JWTKit.getAccount(  );
+        String userName = JWTKit.getAccount();
         entity.setOriginatorName(userName);
-        Long userId = JWTKit.getUserId(  );
+        Long userId = JWTKit.getUserId();
         try {
             affected = salesService.createSales(userId, entity);
 
@@ -84,7 +84,7 @@ public class SalesEndpoint   {
     @ApiOperation(value = "分销商出库提交 审核")
     public Tip commit(@PathVariable Long id, @RequestBody SalesModel entity) {
         Integer affected = 0;
-        affected += salesService.updateAndCommitSales(JWTKit.getUserId(  ), id, entity);
+        affected += salesService.updateAndCommitSales(JWTKit.getUserId(), id, entity);
         createSalesLog(entity.getId(), "commit", "对分销商出库进行了提交审核操作", JSONObject.toJSONString(entity) + " &" + id + "&");
 
         return SuccessTip.create(affected);
@@ -108,7 +108,7 @@ public class SalesEndpoint   {
     @ApiOperation(value = "分销商出库审核通过")
     public Tip pass(@PathVariable Long id, @RequestBody SalesModel entity) {
 
-        Integer affected = salesService.auditPass(id,entity);
+        Integer affected = salesService.auditPass(id, entity);
         createSalesLog(id, "pass", "对分销商出库进行了审核通过操作", id + " &");
         return SuccessTip.create(affected);
     }
@@ -124,7 +124,7 @@ public class SalesEndpoint   {
     @ApiOperation("update record while record status is Wait for storage out")
     public Tip updateSales(@PathVariable Long id, @RequestBody SalesModel entity) {
         entity.setId(id);
-        Long userId = JWTKit.getUserId(  );
+        Long userId = JWTKit.getUserId();
         Tip resultTip = SuccessTip.create(salesService.updateSales(userId, id, entity));
 
         createSalesLog(id, "updateSales", "对分销商出库进行了更新操作", JSONObject.toJSONString(entity) + " & " + id + " &");
@@ -136,7 +136,7 @@ public class SalesEndpoint   {
     @ApiOperation(value = "出库", response = SalesModel.class)
     public Tip executionProcurement(@PathVariable Long id, @RequestBody SalesModel entity) {
         entity.setId(id);
-        Tip resultTip = SuccessTip.create(salesService.executionStorageOut(JWTKit.getUserId(  ), id, entity));
+        Tip resultTip = SuccessTip.create(salesService.executionStorageOut(JWTKit.getUserId(), id, entity));
         createSalesLog(id, "executionProcurement", "对分销商出库进行了出库操作", JSONObject.toJSONString(entity) + " & " + id + " &");
         return resultTip;
     }

@@ -3,8 +3,8 @@ package com.jfeat.am.module.warehouse.services.domain.dao;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementItemRecord;
 import com.jfeat.am.module.warehouse.services.domain.model.ProcurementRecord;
 
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageInItem;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;

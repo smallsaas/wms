@@ -2,7 +2,7 @@ package com.jfeat.am.module.warehouse.services.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDWarehouseService;
@@ -47,7 +47,7 @@ public class WarehouseServiceImpl extends CRUDWarehouseServiceImpl implements Wa
 
         JSONObject warehouse = crudWarehouseService.retrieveMaster(id, null, null, null).toJSONObject();
 
-        List<Inventory> inventories = inventoryMapper.selectList(new EntityWrapper<Inventory>().eq(Inventory.WAREHOUSE_ID, id));
+        List<Inventory> inventories = inventoryMapper.selectList(new QueryWrapper<Inventory>().eq(Inventory.WAREHOUSE_ID, id));
 
         List<SkuProduct> skus = new ArrayList<>();
         if (inventories != null && inventories.size() > 0) {

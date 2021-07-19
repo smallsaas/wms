@@ -2,7 +2,7 @@ package com.jfeat.am.module.warehouse.api.crud;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.warehouse.log.LogManager;
 import com.jfeat.am.module.warehouse.log.LogTaskFactory;

@@ -1,6 +1,6 @@
 package com.jfeat.am.module.warehouse.services.domain.task;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.warehouse.services.persistence.dao.InventoryMapper;
@@ -25,7 +25,7 @@ public class InventoryWarning {
     @Scheduled(cron = "0 0 0 * * ?")
     public void task(){
 
-        List<Inventory> all = inventoryMapper.selectList(new EntityWrapper<>());
+        List<Inventory> all = inventoryMapper.selectList(new QueryWrapper<>());
         if (all == null || all.size()<=0){
             return;
         }

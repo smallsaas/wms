@@ -1,7 +1,7 @@
 package com.jfeat.am.module.sku.api.path;
 
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.product.services.domain.dao.QueryProductDao;
 import com.jfeat.am.module.product.services.domain.model.ProductRecord;
 import com.jfeat.am.module.sku.services.domain.service.SkuProductService;

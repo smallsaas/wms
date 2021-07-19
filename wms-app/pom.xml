@@ -7,6 +7,7 @@
         <groupId>com.jfeat</groupId>
         <version>2.0.0</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
@@ -24,12 +25,12 @@
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>sku</artifactId>
-            <version>1.0.0</version>
+            <version>2.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>warehouse</artifactId>
-            <version>1.0.0</version>
+            <version>2.0.0</version>
         </dependency>
         <!-- <dependency>
             <groupId>com.alibaba</groupId>

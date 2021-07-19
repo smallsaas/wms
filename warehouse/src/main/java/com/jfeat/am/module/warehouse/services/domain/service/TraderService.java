@@ -1,8 +1,7 @@
 package com.jfeat.am.module.warehouse.services.domain.service;
 
 import com.jfeat.am.module.warehouse.services.crud.service.CRUDTraderService;
-import com.jfeat.am.common.constant.tips.Ids;
-import org.springframework.transaction.annotation.Transactional;
+import com.jfeat.crud.base.request.Ids;
 
 /**
  * Created by vincent on 2017/10/19.

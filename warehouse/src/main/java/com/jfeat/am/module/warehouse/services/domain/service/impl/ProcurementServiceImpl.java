@@ -2,7 +2,8 @@ package com.jfeat.am.module.warehouse.services.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuPriceHistoryMapper;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuProductMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
@@ -131,7 +132,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 throw new BusinessException(5002, "请至少选择一种需要采购的商品");
             } else {
                 // 先执行delete，避免重复插入
-                storageInItemMapper.delete(new EntityWrapper<StorageInItem>()
+                storageInItemMapper.delete(new QueryWrapper<StorageInItem>()
                         .eq(StorageInItem.STORAGE_IN_ID, procurementId)
                         .eq(StorageInItem.TYPE, ItemEnumType.PROCUREMENT));
                 BigDecimal totalSpend = BigDecimal.valueOf(0);
@@ -178,7 +179,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 throw new BusinessException(5002, "请至少选择一种需要采购的商品");
             } else {
                 //先执行delete，避免重复插入
-                storageInItemMapper.delete(new EntityWrapper<StorageInItem>()
+                storageInItemMapper.delete(new QueryWrapper<StorageInItem>()
                         .eq(StorageInItem.STORAGE_IN_ID, procurementId)
                         .eq(StorageInItem.TYPE, ItemEnumType.PROCUREMENT));
                 BigDecimal totalSpend = BigDecimal.valueOf(0);
@@ -396,7 +397,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             throw new BusinessException(5300, "状态错误，非\"审核通过\"状态无法进行审核");
         }
 
-        List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, id)
+        List<StorageInItem> items = storageInItemMapper.selectList(new QueryWrapper<StorageInItem>().eq(StorageInItem.STORAGE_IN_ID, id)
                 .eq(StorageInItem.TYPE, ItemEnumType.STORAGEIN));
 
         for (StorageInItem item : items) {
@@ -404,7 +405,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
             Inventory isExistInventory = new Inventory();
             isExistInventory.setSkuId(item.getSkuId());
             isExistInventory.setWarehouseId(in.getWarehouseId());
-            Inventory originInventory = inventoryMapper.selectOne(isExistInventory);
+            Inventory originInventory = inventoryMapper.selectOne(new LambdaQueryWrapper<>(isExistInventory));
             if (originInventory != null) {
                 // 操作前的数量
 
@@ -474,11 +475,11 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
         object.put("supplierName", suppliers == null ? null : suppliers.getSupplierName());
 
         //采购的商品
-        List<StorageInItem> items = storageInItemMapper.selectList(new EntityWrapper<StorageInItem>()
+        List<StorageInItem> items = storageInItemMapper.selectList(new QueryWrapper<StorageInItem>()
                 .eq(StorageInItem.TYPE, ItemEnumType.PROCUREMENT).eq(StorageInItem.STORAGE_IN_ID, procurementId));
 
         // 入库记录
-        List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>()
+        List<StorageIn> ins = storageInMapper.selectList(new QueryWrapper<StorageIn>()
                 .eq(StorageIn.PROCUREMENT_ID, procurementId)
                 .eq(StorageIn.TRANSACTION_TYPE, TransactionType.Procurement.toString())
                 .eq(StorageIn.STATUS, StorageInStatus.Done));
@@ -594,15 +595,15 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
     public Integer deleteProcurement(Long id) {
         int affected = 0;
         // 先删除 入库的产品
-        affected += storageInItemMapper.delete(new EntityWrapper<StorageInItem>()
+        affected += storageInItemMapper.delete(new QueryWrapper<StorageInItem>()
                 .eq(StorageInItem.STORAGE_IN_ID,id)
                 .eq(StorageInItem.TYPE,ItemEnumType.PROCUREMENT.toString()));
-        List<StorageIn> ins = storageInMapper.selectList(new EntityWrapper<StorageIn>()
+        List<StorageIn> ins = storageInMapper.selectList(new QueryWrapper<StorageIn>()
                 .eq(StorageIn.PROCUREMENT_ID, id)
                 .eq(StorageIn.TRANSACTION_TYPE, TransactionType.Procurement.toString()));
         if (ins != null && ins.size() > 0) {
             for (StorageIn in : ins) {
-                affected += storageInItemMapper.delete(new EntityWrapper<StorageInItem>()
+                affected += storageInItemMapper.delete(new QueryWrapper<StorageInItem>()
                         .eq(StorageInItem.STORAGE_IN_ID, in.getId())
                         .eq(StorageInItem.TYPE,ItemEnumType.STORAGEIN));
                 affected += storageInMapper.deleteById(in.getId());

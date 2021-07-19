@@ -23,8 +23,6 @@
     </properties>
 
     <dependencies>
-
-        <!-- dev only option-->
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>crud-app-bundle</artifactId>

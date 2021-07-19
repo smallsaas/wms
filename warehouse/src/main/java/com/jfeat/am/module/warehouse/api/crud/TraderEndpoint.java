@@ -1,7 +1,6 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
-import com.baomidou.mybatisplus.plugins.Page;
-import com.jfeat.am.common.constant.tips.Ids;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryTraderDao;
 import com.jfeat.am.module.warehouse.services.domain.model.TraderModel;
@@ -10,6 +9,7 @@ import com.jfeat.am.module.warehouse.services.domain.service.TraderService;
 import com.jfeat.am.module.warehouse.services.persistence.model.Trader;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.request.Ids;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
@@ -32,7 +32,7 @@ import java.util.Date;
 @RestController
 @Api("分销商")
 @RequestMapping("/api/warehouse/traders")
-public class TraderEndpoint   {
+public class TraderEndpoint {
 
 
     @Resource
@@ -51,7 +51,7 @@ public class TraderEndpoint   {
             affected = traderService.createMaster(entity);
 
         } catch (DuplicateKeyException e) {
-            throw new BusinessException(5000,"分销商编号重复");
+            throw new BusinessException(5000, "分销商编号重复");
         }
 
         return SuccessTip.create(affected);
@@ -80,7 +80,7 @@ public class TraderEndpoint   {
 
     @BusinessLog(name = "Suppliers", value = "update Suppliers")
     @PutMapping("/{id}/status")
-    @ApiOperation(value = "设为禁用/正常",response = Trader.class)
+    @ApiOperation(value = "设为禁用/正常", response = Trader.class)
     public Tip forbiddenTrader(@PathVariable Long id) {
         return SuccessTip.create(traderService.changeTraderStatus(id));
     }

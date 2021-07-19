@@ -1,7 +1,7 @@
 package com.jfeat.am.module.sku.services.crud.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuProduct;
 import com.jfeat.am.module.sku.services.persistence.model.SkuSpecificationGroup;
 import com.jfeat.am.module.sku.services.persistence.dao.SkuSpecificationMapper;

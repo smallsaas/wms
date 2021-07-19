@@ -6,8 +6,8 @@ import com.jfeat.am.module.warehouse.services.domain.service.TraderService;
 
 import com.jfeat.am.module.warehouse.services.crud.service.impl.CRUDTraderServiceImpl;
 import com.jfeat.am.module.warehouse.services.persistence.model.Trader;
+import com.jfeat.crud.base.request.Ids;
 import org.springframework.stereotype.Service;
-import com.jfeat.am.common.constant.tips.Ids;
 
 import javax.annotation.Resource;
 

@@ -5,7 +5,7 @@
 
     <groupId>com.jfeat</groupId>
     <artifactId>warehouse</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0</version>
     <packaging>jar</packaging>
 
     <name>Warehouse</name>
@@ -13,131 +13,26 @@
 
     <parent>
         <groupId>com.jfeat</groupId>
-        <artifactId>sb-parent</artifactId>
+        <artifactId>pom-parent</artifactId>
         <version>1.0.0</version>
         <relativePath/>
     </parent>
 
     <properties>
         <skipStandalone>false</skipStandalone>
-        <crud-plus.version>0.0.8</crud-plus.version>
-        <crud-core.version>0.0.2</crud-core.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>sku</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jfeat</groupId>
+            <artifactId>crud-app-bundle</artifactId>
             <version>1.0.0</version>
         </dependency>
-
-        <!-- dev only option-->
-        <dependency>
-            <groupId>com.jfeat</groupId>
-            <artifactId>crud-dev</artifactId>
-            <version>0.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.jfeat</groupId>
-            <artifactId>crud-plus</artifactId>
-            <version>${crud-plus.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.jfeat</groupId>
-            <artifactId>crud-core</artifactId>
-            <version>${crud-core.version}</version>
-        </dependency>
-
-        <!--  upgrade mysql to 8.0.15 -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.15</version> <!--old version 5.1.43-->
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatisplus-spring-boot-starter</artifactId>
-            <version>${mybatisplus-spring-boot-starter.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${h2.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- springboot cache -->
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache-core</artifactId>
-            <version>2.6.11</version>
-        </dependency>
-        <dependency>
-            <groupId>org.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>${ehcache.version}</version>
-        </dependency>
-
-        <!--springboot test-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${h2.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-
-        <!--log4j logGER-->
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.29</version>
-        </dependency>
-
-
-        <!--allow swagger support java 11 (above java9)-->
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-core</artifactId>
-            <version>2.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>2.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>activation</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>1.9.4</version>
-        </dependency>
-
-
-
     </dependencies>
 
     <build>
@@ -173,27 +68,6 @@
                 <artifactId>maven-deploy-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>com.jfeat</groupId>
-                <artifactId>sb-code-generator</artifactId>
-                <version>1.2.1</version>
-                <configuration>
-                    <!-- change to your module name -->
-                    <moduleName>warehouse</moduleName>
-                    <dbUrl>jdbc:mysql://120.79.77.207:3306/mall</dbUrl>
-                    <username>root</username>
-                    <password>root</password>
-                    <tables>
-
-                        <table>wms_trader</table>
-                        <table>wms_sales</table>
-                    </tables>
-
-                    <outputDir>/root/Desktop/project/repo/wms/warehouse/src/main/java</outputDir>
-                    <parentPackage>com.jfeat.am.module</parentPackage>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <groupId>com.github.kongchen</groupId>
                 <artifactId>swagger-maven-plugin</artifactId>
                 <version>3.1.5</version>
@@ -222,7 +96,6 @@
                     </execution>
                 </executions>
             </plugin>
-
 
         </plugins>
         <resources>
