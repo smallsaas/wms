@@ -12,7 +12,6 @@ import com.jfeat.am.module.sku.services.domain.service.SkuSpecificationGroupServ
 import com.jfeat.am.module.sku.services.persistence.dao.SkuSpecificationGroupMapper;
 import com.jfeat.am.module.sku.services.persistence.model.SkuSpecificationGroup;
 import com.jfeat.crud.base.request.Ids;
-import com.sun.org.apache.bcel.internal.generic.LMUL;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

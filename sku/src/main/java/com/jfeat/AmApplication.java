@@ -31,6 +31,6 @@ public class AmApplication extends WebMvcConfigurerAdapter{
 
     public static void main(String[] args) {
         SpringApplication.run(AmApplication.class, args);
-        logger.info("SB sku is success!");
+        logger.info("WMS sku is success!");
     }
 }

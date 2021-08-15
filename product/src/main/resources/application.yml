@@ -80,7 +80,7 @@ spring:
 
 logging:
   level: debug
-  file: logs/sbmessage.log
+  file: logs/access.log
 
 am:
   shiro-cache-redis: false
@@ -102,7 +102,7 @@ spring:
 
 logging:
   level: debug
-  file: logs/sbmessage.log
+  file: logs/access.log
 
 am:
   shiro-cache-redis: false
@@ -121,7 +121,7 @@ spring:
 
 logging:
   level: warn
-  file: logs/sbmessage.log
+  file: logs/access.log
 
 am:
   shiro-cache-redis: true
