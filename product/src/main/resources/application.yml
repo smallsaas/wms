@@ -1,7 +1,11 @@
-##########################################################
-##################  所有profile共有的配置  #################
-##########################################################
+###################  项目启动配置  ###################
+server:
+  port: 8081
 
+###################  jwt配置  ###################
+jwt:
+  encoded-key: L7A/6zARSkK1j7Vd5SDD9pSSqZlqF7mAhiOgRbgv9Smce6tf4cJnvKOjtKPxNNnWQj+2lQEScm3XIUjhW+YVZg==
+  normal-encoded-key: bm9ybWFsLWVuY29kZWQta2V5
 ###################  am配置  ###################
 am:
   swagger-open: true #是否开启swagger (true/false)
@@ -11,24 +15,8 @@ am:
   worker-id: 0 # id gen service machine id 0~1023
   redis-host: 127.0.0.1
   redis-port: 6379
-
-###################  jwt配置  ###################
-jwt:
-  encoded-key: L7A/6zARSkK1j7Vd5SDD9pSSqZlqF7mAhiOgRbgv9Smce6tf4cJnvKOjtKPxNNnWQj+2lQEScm3XIUjhW+YVZg==
-  #tll-mills:
-  #token-type: Bearer
-
-###################  项目启动端口  ###################
-server:
-  port: 8089
-
-###################  beetl配置  ###################
-beetl:
-  delimiter-statement-start: \@   #开始结束标签(yaml不允许@开头)
-  delimiter-statement-end: null
-  resource-tagroot: common/tags   #自定义标签文件Root目录和后缀
-  resource-tagsuffix: tag
-
+  #fastjson 格式化时间的格式，如不配置，默认用yyyy-MM-dd HH:mm:ss
+  #json-serialize-date-format: MM/dd/yyyy HH:mm:ss
 
 ###################  spring配置  ###################
 spring:
@@ -37,11 +25,17 @@ spring:
   mvc:
     static-path-pattern: /static/**
     view:
-      prefix: /WEB-INF/view
+      prefix: /WEB-INF/view/
+      suffix: .html
   http:
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
     converters:
       preferred-json-mapper: fastjson
-
+#  jackson:
+#    date-format: yyyy-MM-dd HH:mm:ss
 
 ###################  mybatis-plus配置  ###################
 mybatis-plus:
@@ -53,13 +47,18 @@ mybatis-plus:
     refresh-mapper: true
     logic-delete-value: -1
     logic-not-delete-value: 1
-    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: true #配置的缓存的全局开关
     lazyLoadingEnabled: true #延时加载的开关
     multipleResultSetsEnabled: true #开启的话，延时加载一个属性时会加载该对象全部属性，否则按需加载属性
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印sql语句,调试用
+
+###################  日志配置  ###################
+logging:
+  level:
+    org.springframework.security: DEBUG
+#    com.jfeat.am.module.kehai.services.domain.dao: debug
 
 ---
 
@@ -95,10 +94,12 @@ spring:
       url: jdbc:mysql://localhost:3306/wms?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
       username: root
       password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
       filters: log4j,wall,mergeStat
+      sql-script-encoding: UTF-8
+      schema: classpath*:sql/**/*-schema.sql
+      data: classpath*:sql/**/*-data.sql
       initialize: false
-      schema: classpath*:sql/*-schema.sql
-      data: classpath*:sql/*-data.sql
 
 logging:
   level: debug

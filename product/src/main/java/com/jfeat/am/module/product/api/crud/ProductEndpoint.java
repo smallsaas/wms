@@ -1,10 +1,8 @@
 package com.jfeat.am.module.product.api.crud;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.product.services.domain.model.ProductModel;
 import com.jfeat.am.module.product.services.domain.service.ProductCategoryService;
-import com.jfeat.am.module.product.services.persistence.model.ProductCategory;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
@@ -22,15 +20,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.dao.DuplicateKeyException;
 import com.jfeat.am.module.product.services.domain.dao.QueryProductDao;
 import com.jfeat.am.module.log.annotation.BusinessLog;
-
 import java.math.BigDecimal;
-
 import com.jfeat.am.module.product.services.domain.service.ProductService;
 import com.jfeat.am.module.product.services.domain.model.ProductRecord;
-import com.jfeat.am.module.product.services.persistence.model.Product;
-
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
 import java.util.Date;
 
