@@ -1,11 +1,11 @@
 package com.jfeat.am.module.sku.api.crud;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.sku.services.crud.model.SkuUnitModel;
 import com.jfeat.am.module.sku.services.domain.dao.QuerySkuUnitDao;
 import com.jfeat.am.module.sku.services.domain.model.SkuUnitRecord;
 import com.jfeat.am.module.sku.services.domain.service.SkuUnitService;
+import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;

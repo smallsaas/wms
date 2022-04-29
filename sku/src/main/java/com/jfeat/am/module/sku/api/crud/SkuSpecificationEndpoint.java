@@ -1,6 +1,7 @@
 package com.jfeat.am.module.sku.api.crud;
 
 import com.jfeat.am.module.sku.services.persistence.model.SkuSpecification;
+import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.dao.DuplicateKeyException;
 import com.jfeat.am.module.sku.services.domain.dao.QuerySkuSpecificationDao;
-import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.sku.services.domain.service.SkuSpecificationService;
 import com.jfeat.am.module.sku.services.domain.model.SkuSpecificationRecord;
 import com.jfeat.am.module.sku.services.crud.model.SkuSpecificationModel;

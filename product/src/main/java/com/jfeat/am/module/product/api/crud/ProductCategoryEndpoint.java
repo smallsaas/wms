@@ -2,6 +2,7 @@ package com.jfeat.am.module.product.api.crud;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.product.services.domain.model.ProductCategoryModel;
+import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
@@ -10,7 +11,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.dao.DuplicateKeyException;
-import com.jfeat.am.module.log.annotation.BusinessLog;
 
 import com.jfeat.am.module.product.services.domain.service.ProductCategoryService;
 import com.jfeat.am.module.product.services.persistence.model.ProductCategory;

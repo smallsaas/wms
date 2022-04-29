@@ -1,12 +1,12 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryTraderDao;
 import com.jfeat.am.module.warehouse.services.domain.model.TraderModel;
 import com.jfeat.am.module.warehouse.services.domain.model.TraderRecord;
 import com.jfeat.am.module.warehouse.services.domain.service.TraderService;
 import com.jfeat.am.module.warehouse.services.persistence.model.Trader;
+import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.request.Ids;

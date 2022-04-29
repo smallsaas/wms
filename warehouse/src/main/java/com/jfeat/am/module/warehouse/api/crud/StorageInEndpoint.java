@@ -1,6 +1,5 @@
 package com.jfeat.am.module.warehouse.api.crud;
 
-import com.alibaba.fastjson.JSONObject;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.warehouse.log.LogManager;
 import com.jfeat.am.module.warehouse.log.LogTaskFactory;
@@ -8,6 +7,7 @@ import com.jfeat.am.module.warehouse.services.definition.FormType;
 import com.jfeat.am.module.warehouse.services.definition.TransactionType;
 import com.jfeat.am.module.warehouse.services.domain.service.ProcurementService;
 import com.jfeat.am.module.warehouse.services.persistence.model.StorageIn;
+import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.jfeat.am.module.warehouse.services.domain.dao.QueryStorageInDao;
-import com.jfeat.am.module.log.annotation.BusinessLog;
 
 import java.math.BigDecimal;
 
