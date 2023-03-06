@@ -16,10 +16,10 @@ Date: 2018-06-30 15:01:56
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for t_product
+-- Table structure for wms_product
 -- ----------------------------
-DROP TABLE IF EXISTS `t_product`;
-CREATE TABLE `t_product` (
+DROP TABLE IF EXISTS `wms_product`;
+CREATE TABLE `wms_product` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `product_category_id` bigint(20) not NULL COMMENT '产品类别',
   `product_code` varchar(255) not NULL COMMENT '编码',
@@ -52,10 +52,10 @@ CREATE TABLE `t_product` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for t_product_category
+-- Table structure for wms_product_category
 -- ----------------------------
-DROP TABLE IF EXISTS `t_product_category`;
-CREATE TABLE `t_product_category` (
+DROP TABLE IF EXISTS `wms_product_category`;
+CREATE TABLE `wms_product_category` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `category_name` varchar(26) NOT NULL COMMENT '类型名称',
   `category_code` varchar(26) NOT NULL COMMENT '类型名称',
@@ -64,5 +64,5 @@ CREATE TABLE `t_product_category` (
   PRIMARY KEY (`id`),
   UNIQUE KEY (`category_name`,`pid`),
   unique key (`category_code`),
-  foreign key (`pid`) references `t_product_category`(`id`) on delete cascade
+  foreign key (`pid`) references `wms_product_category`(`id`) on delete cascade
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;

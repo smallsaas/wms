@@ -20,7 +20,7 @@ import java.io.Serializable;
  * @author Code Generator
  * @since 2018-06-19
  */
-@TableName("t_specification_group")
+@TableName("wms_specification_group")
 public class SpecificationGroup extends Model<SpecificationGroup> {
 
     private static final long serialVersionUID = 1L;

@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @author Code Generator
  * @since 2018-06-19
  */
-@TableName("t_specification")
+@TableName("wms_specification")
 public class Specification extends Model<Specification> {
 
     private static final long serialVersionUID = 1L;

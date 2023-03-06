@@ -10,7 +10,7 @@ import com.jfeat.crud.plus.CRUDServiceOverModel;
  *
  * @author Code Generator
  * @since 2018-07-18
- * Master: t_sku_product
+ * Master: wms_sku_product
    */
 public interface CRUDSkuProductService  extends CRUDServiceOverModel<SkuProduct,SkuProductModel> {
 

@@ -48,7 +48,7 @@ CREATE TABLE `wms_storage_in_item` (
 --`sku_total_tax_price` decimal(12,4) DEFAULT NULL COMMENT '含税总价',
    `before_transaction_quantities`  int(11) NOT NULL DEFAULT '0' COMMENT '操作前数量',
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`sku_id`) REFERENCES `t_sku_product` (`id`)
+  FOREIGN KEY (`sku_id`) REFERENCES `wms_sku_product` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -231,7 +231,7 @@ CREATE TABLE `wms_inventory` (
   `order_count` int(11) NOT NULL DEFAULT '0' COMMENT '占用库存量',
   PRIMARY KEY (`id`),
   UNIQUE(`warehouse_id`,`sku_id`),
-  FOREIGN KEY (`sku_id`) REFERENCES `t_sku_product` (`id`) ON DELETE RESTRICT,
+  FOREIGN KEY (`sku_id`) REFERENCES `wms_sku_product` (`id`) ON DELETE RESTRICT,
   FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -307,7 +307,7 @@ CREATE TABLE `wms_check_sku` (
   `field2` varchar(255) DEFAULT NULL COMMENT '保留字段',
   PRIMARY KEY (`id`),
   UNIQUE (`check_id`,`sku_id`),
-  FOREIGN KEY (`sku_id`) REFERENCES `t_sku_product` (`id`) ON DELETE RESTRICT,
+  FOREIGN KEY (`sku_id`) REFERENCES `wms_sku_product` (`id`) ON DELETE RESTRICT,
   FOREIGN KEY (`check_id`) REFERENCES `wms_check` (`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

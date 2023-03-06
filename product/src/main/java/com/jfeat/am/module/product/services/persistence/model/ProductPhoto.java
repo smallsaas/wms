@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @author Code Generator
  * @since 2018-06-19
  */
-@TableName("t_product_photo")
+@TableName("wms_product_photo")
 public class ProductPhoto extends Model<ProductPhoto> {
 
     private static final long serialVersionUID = 1L;

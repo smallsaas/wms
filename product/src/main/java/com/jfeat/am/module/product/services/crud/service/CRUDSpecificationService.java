@@ -11,7 +11,7 @@ import com.jfeat.crud.plus.CRUDServiceGroupBy;
  * @author Code Generator
  * @since 2018-06-19
  * Master: ${cfg.masterModel}
-  * Slave : t_specification
+  * Slave : wms_specification
   */
 public interface CRUDSpecificationService  extends CRUDServiceGroupBy<SpecificationGroup,Specification> {
 

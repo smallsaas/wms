@@ -2,23 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.product.services.domain.dao.QueryProductUnitDao">
     <sql id="Base_Column_List">
-        t_product_unit.*
+        wms_product_unit.*
     </sql>
     <select id="findProductUnitPage" resultType="ProductUnitRecord" parameterType="ProductUnitRecord">
-        SELECT t_product_unit.*
-        FROM t_product_unit
+        SELECT wms_product_unit.*
+        FROM wms_product_unit
         WHERE 1=1
         <if test="record.id != null and record.id>0 ">
-            AND t_product_unit.id LIKE CONCAT('%',#{record.id},'%')
+            AND wms_product_unit.id LIKE CONCAT('%',#{record.id},'%')
         </if>
         <if test="record.unitName != null and record.unitName!= ''">
-            AND t_product_unit.unit_name LIKE CONCAT('%',#{record.unitName},'%')
+            AND wms_product_unit.unit_name LIKE CONCAT('%',#{record.unitName},'%')
         </if>
         <if test="record.isPrimary != null and record.isPrimary>0 ">
-            AND t_product_unit.is_primary LIKE CONCAT('%',#{record.isPrimary},'%')
+            AND wms_product_unit.is_primary LIKE CONCAT('%',#{record.isPrimary},'%')
         </if>
         <if test="record.productId != null and record.productId>0 ">
-            AND t_product_unit.product_id LIKE CONCAT('%',#{record.productId},'%')
+            AND wms_product_unit.product_id LIKE CONCAT('%',#{record.productId},'%')
         </if>
     </select>
 </mapper>

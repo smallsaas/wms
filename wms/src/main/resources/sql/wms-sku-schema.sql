@@ -17,10 +17,10 @@ Date: 2018-06-30 15:01:56
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for t_condition
+-- Table structure for wms_condition
 -- ----------------------------
-DROP TABLE IF EXISTS `t_sku_condition`;
-CREATE TABLE `t_sku_condition` (
+DROP TABLE IF EXISTS `wms_sku_condition`;
+CREATE TABLE `wms_sku_condition` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `org_id` bigint(20) default 0 comment 'org_id',
   `org_tag` varchar(50)   DEFAULT NULL COMMENT '隔离字段',
@@ -31,10 +31,10 @@ CREATE TABLE `t_sku_condition` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for t_product
+-- Table structure for wms_product
 -- ----------------------------
-DROP TABLE IF EXISTS `t_sku_product`;
-CREATE TABLE `t_sku_product` (
+DROP TABLE IF EXISTS `wms_sku_product`;
+CREATE TABLE `wms_sku_product` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `org_id` bigint(20) default 0 comment 'org_id',
   `org_tag` varchar(50)   DEFAULT NULL COMMENT '隔离字段',
@@ -65,16 +65,16 @@ CREATE TABLE `t_sku_product` (
   UNIQUE(`bar_code`),
   PRIMARY KEY (`id`),
   KEY (`product_id`),
-  CONSTRAINT `productName` FOREIGN KEY (`product_id`) REFERENCES `t_product` (`id`) ON DELETE CASCADE
+  CONSTRAINT `productName` FOREIGN KEY (`product_id`) REFERENCES `wms_product` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
 -- ----------------------------
--- Table structure for t_product_condition
+-- Table structure for wms_producwms_condition
 -- ----------------------------
-DROP TABLE IF EXISTS `t_sku_condition_relation`;
-CREATE TABLE `t_sku_condition_relation` (
+DROP TABLE IF EXISTS `wms_sku_condition_relation`;
+CREATE TABLE `wms_sku_condition_relation` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `org_id` bigint(20) default 0 comment 'org_id',
   `org_tag` varchar(50)   DEFAULT NULL COMMENT '隔离字段',
@@ -85,10 +85,10 @@ CREATE TABLE `t_sku_condition_relation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for t_product_photo
+-- Table structure for wms_product_photo
 -- ----------------------------
-DROP TABLE IF EXISTS `t_sku_photo`;
-CREATE TABLE `t_sku_photo` (
+DROP TABLE IF EXISTS `wms_sku_photo`;
+CREATE TABLE `wms_sku_photo` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `org_id` bigint(20) default 0 comment 'org_id',
   `org_tag` varchar(50)   DEFAULT NULL COMMENT '隔离字段',
@@ -100,10 +100,10 @@ CREATE TABLE `t_sku_photo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for t_product_tag
+-- Table structure for wms_product_tag
 -- ----------------------------
-DROP TABLE IF EXISTS `t_sku_tag`;
-CREATE TABLE `t_sku_tag` (
+DROP TABLE IF EXISTS `wms_sku_tag`;
+CREATE TABLE `wms_sku_tag` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `org_id` bigint(20) default 0 comment 'org_id',
   `org_tag` varchar(50)   DEFAULT NULL COMMENT '隔离字段',
@@ -114,10 +114,10 @@ CREATE TABLE `t_sku_tag` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for t_product_tag_relation
+-- Table structure for wms_product_tag_relation
 -- ----------------------------
-DROP TABLE IF EXISTS `t_sku_tag_relation`;
-CREATE TABLE `t_sku_tag_relation` (
+DROP TABLE IF EXISTS `wms_sku_tag_relation`;
+CREATE TABLE `wms_sku_tag_relation` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `org_id` bigint(20) default 0 comment 'org_id',
   `org_tag` varchar(50)   DEFAULT NULL COMMENT '隔离字段',
@@ -128,10 +128,10 @@ CREATE TABLE `t_sku_tag_relation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for t_product_unit
+-- Table structure for wms_product_unit
 -- ----------------------------
-DROP TABLE IF EXISTS `t_sku_unit`;
-CREATE TABLE `t_sku_unit` (
+DROP TABLE IF EXISTS `wms_sku_unit`;
+CREATE TABLE `wms_sku_unit` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `org_id` bigint(20) default 0 comment 'org_id',
   `org_tag` varchar(50)   DEFAULT NULL COMMENT '隔离字段',
@@ -143,10 +143,10 @@ CREATE TABLE `t_sku_unit` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for t_specification
+-- Table structure for wms_specification
 -- ----------------------------
-DROP TABLE IF EXISTS `t_sku_specification`;
-CREATE TABLE `t_sku_specification` (
+DROP TABLE IF EXISTS `wms_sku_specification`;
+CREATE TABLE `wms_sku_specification` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `org_id` bigint(20) default 0 comment 'org_id',
   `org_tag` varchar(50)   DEFAULT NULL COMMENT '隔离字段',
@@ -157,10 +157,10 @@ CREATE TABLE `t_sku_specification` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for t_specification_group
+-- Table structure for wms_specification_group
 -- ----------------------------
-DROP TABLE IF EXISTS `t_specification_group`;
-CREATE TABLE `t_specification_group` (
+DROP TABLE IF EXISTS `wms_specification_group`;
+CREATE TABLE `wms_specification_group` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `org_id` bigint(20) default 0 comment 'org_id',
   `org_tag` varchar(50)   DEFAULT NULL COMMENT '隔离字段',
@@ -168,7 +168,7 @@ CREATE TABLE `t_specification_group` (
   `pid` bigint(20) default null comment '父级ID',
   `type` varchar(26) default null comment '类型',
   PRIMARY KEY (`id`),
-  foreign key (`pid`) references `t_specification_group` (`id`) on delete cascade
+  foreign key (`pid`) references `wms_specification_group` (`id`) on delete cascade
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

@@ -12,7 +12,7 @@ import com.jfeat.crud.plus.CRUDServicePeer;
  * @author Code Generator
  * @since 2018-06-19
  * Master: ${cfg.masterModel}
-  * Slave : t_product_condition
+  * Slave : wms_producwms_condition
   */
 public interface CRUDProductConditionService  extends CRUDServicePeer<Product,Condition,ProductCondition> {
 

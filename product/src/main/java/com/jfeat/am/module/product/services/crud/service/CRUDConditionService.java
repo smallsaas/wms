@@ -10,7 +10,7 @@ import com.jfeat.am.module.product.services.persistence.model.Condition;
  * @author Code Generator
  * @since 2018-06-19
  * Master: ${cfg.masterModel}
-  * Slave : t_condition
+  * Slave : wms_condition
   */
 public interface CRUDConditionService  extends CRUDServiceOnly<Condition> {
 

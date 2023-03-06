@@ -2,26 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.product.services.domain.dao.QuerySpecificationDao">
     <sql id="Base_Column_List">
-            t_specification.*
+            wms_specification.*
         </sql>
     <select id="findSpecificationPage" resultType="SpecificationRecord" parameterType="SpecificationRecord">
-      SELECT t_specification.*
-            FROM t_specification
+      SELECT wms_specification.*
+            FROM wms_specification
             WHERE 1=1
                                     <if test="record.id != null and record.id>0 ">
-                 AND t_specification.id LIKE CONCAT('%',#{record.id},'%')
+                 AND wms_specification.id LIKE CONCAT('%',#{record.id},'%')
         </if>
                                                 <if test="record.specificationName != null and record.specificationName!= ''">
-                 AND t_specification.specification_name LIKE CONCAT('%',#{record.specificationName},'%')
+                 AND wms_specification.specification_name LIKE CONCAT('%',#{record.specificationName},'%')
         </if>
                                                 <if test="record.specificationValue != null and record.specificationValue!= ''">
-                 AND t_specification.specification_value LIKE CONCAT('%',#{record.specificationValue},'%')
+                 AND wms_specification.specification_value LIKE CONCAT('%',#{record.specificationValue},'%')
         </if>
                                                 <if test="record.groupId != null and record.groupId>0 ">
-                 AND t_specification.group_id LIKE CONCAT('%',#{record.groupId},'%')
+                 AND wms_specification.group_id LIKE CONCAT('%',#{record.groupId},'%')
         </if>
                                                 <if test="record.productId != null and record.productId>0 ">
-                 AND t_specification.product_id LIKE CONCAT('%',#{record.productId},'%')
+                 AND wms_specification.product_id LIKE CONCAT('%',#{record.productId},'%')
         </if>
              </select>
 </mapper>

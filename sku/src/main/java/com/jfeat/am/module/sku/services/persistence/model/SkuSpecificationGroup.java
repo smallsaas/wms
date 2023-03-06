@@ -16,7 +16,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @author Code Generator
  * @since 2018-07-18
  */
-@TableName("t_specification_group")
+@TableName("wms_specification_group")
 public class SkuSpecificationGroup extends Model<SkuSpecificationGroup> {
 
     private static final long serialVersionUID = 1L;

@@ -10,7 +10,7 @@ import com.jfeat.crud.plus.CRUDServiceGroup;
  * @author Code Generator
  * @since 2018-06-19
  * Master: ${cfg.masterModel}
-  * Slave : t_specification_group
+  * Slave : wms_specification_group
   */
 public interface CRUDSpecificationGroupService  extends CRUDServiceGroup<SpecificationGroup> {
 

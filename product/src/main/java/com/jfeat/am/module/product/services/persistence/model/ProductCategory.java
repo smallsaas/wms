@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @author Code Generator
  * @since 2018-06-19
  */
-@TableName("t_product_category")
+@TableName("wms_product_category")
 public class ProductCategory extends Model<ProductCategory> {
 
     private static final long serialVersionUID = 1L;

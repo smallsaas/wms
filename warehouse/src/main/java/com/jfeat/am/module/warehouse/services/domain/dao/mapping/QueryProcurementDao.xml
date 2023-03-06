@@ -138,13 +138,13 @@
     <select id="storageInHistories" resultMap="ProcurementRecord" parameterType="long">
         SELECT
         wms_storage_in_item.*,
-        t_sku_product.sku_code AS skuCode,
-        t_sku_product.sku_name as skuName,
-        t_sku_product.bar_code as skuBarcode,
-        t_sku_product.field1 AS skuUnit
+        wms_sku_product.sku_code AS skuCode,
+        wms_sku_product.sku_name as skuName,
+        wms_sku_product.bar_code as skuBarcode,
+        wms_sku_product.field1 AS skuUnit
         FROM
         wms_storage_in_item
-        LEFT JOIN t_sku_product on t_sku_product.id = wms_storage_in_item.sku_id
+        LEFT JOIN wms_sku_product on wms_sku_product.id = wms_storage_in_item.sku_id
         LEFT JOIN wms_storage_in ON wms_storage_in.id = wms_storage_in_item.storage_in_id
         LEFT JOIN wms_procurement ON (
         wms_procurement.id = wms_storage_in.procurement_id

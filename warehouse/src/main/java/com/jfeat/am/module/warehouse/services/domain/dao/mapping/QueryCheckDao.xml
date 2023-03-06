@@ -79,10 +79,10 @@
     <select id="skuRecords" resultMap="SkuRecords" parameterType="long">
         SELECT
         wms_check_sku.*,
-        t_sku_product.sku_name as skuName,
-        t_sku_product.bar_code as skuBarcode,
-        t_sku_product.sku_code as skuCode,
-        t_sku_product.field1 as skuUnit,
+        wms_sku_product.sku_name as skuName,
+        wms_sku_product.bar_code as skuBarcode,
+        wms_sku_product.sku_code as skuCode,
+        wms_sku_product.field1 as skuUnit,
         wms_warehouse.warehouse_name as warehouseName,
         CASE
             WHEN
@@ -99,7 +99,7 @@
                 )
             ELSE wms_check_sku.deserved_quantities END AS deservedQuantities
         FROM wms_check_sku
-        left join t_sku_product on t_sku_product.id = wms_check_sku.sku_id
+        left join wms_sku_product on wms_sku_product.id = wms_check_sku.sku_id
         left join wms_warehouse on wms_warehouse.id = wms_check_sku.warehouse_id
         left join wms_check on wms_check.id = wms_check_sku.check_id
         WHERE 1=1

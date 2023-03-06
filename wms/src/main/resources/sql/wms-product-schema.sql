@@ -16,10 +16,10 @@ Date: 2018-06-30 15:01:56
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for t_product
+-- Table structure for wms_product
 -- ----------------------------
-DROP TABLE IF EXISTS `t_product`;
-CREATE TABLE `t_product` (
+DROP TABLE IF EXISTS `wms_product`;
+CREATE TABLE `wms_product` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `org_id` bigint(20) default 0 comment 'org_id',
   `org_tag` varchar(50)   DEFAULT NULL COMMENT '隔离字段',
@@ -54,10 +54,10 @@ CREATE TABLE `t_product` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for t_product_category
+-- Table structure for wms_product_category
 -- ----------------------------
-DROP TABLE IF EXISTS `t_product_category`;
-CREATE TABLE `t_product_category` (
+DROP TABLE IF EXISTS `wms_product_category`;
+CREATE TABLE `wms_product_category` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `org_id` bigint(20) default 0 comment 'org_id',
   `org_tag` varchar(50)   DEFAULT NULL COMMENT '隔离字段',
@@ -68,15 +68,15 @@ CREATE TABLE `t_product_category` (
   PRIMARY KEY (`id`),
   UNIQUE KEY (`category_name`,`pid`),
   unique key (`category_code`),
-  foreign key (`pid`) references `t_product_category`(`id`) on delete cascade
+  foreign key (`pid`) references `wms_product_category`(`id`) on delete cascade
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
 -- ----------------------------
--- Table structure for t_condition
+-- Table structure for wms_condition
 -- ----------------------------
-DROP TABLE IF EXISTS `t_condition`;
-CREATE TABLE `t_condition`  (
+DROP TABLE IF EXISTS `wms_condition`;
+CREATE TABLE `wms_condition`  (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `org_id` bigint(20) default 0 comment 'org_id',
   `org_tag` varchar(50)   DEFAULT NULL COMMENT '隔离字段',
@@ -89,10 +89,10 @@ CREATE TABLE `t_condition`  (
 
 
 -- ----------------------------
--- Table structure for t_product_condition
+-- Table structure for wms_producwms_condition
 -- ----------------------------
-DROP TABLE IF EXISTS `t_product_condition`;
-CREATE TABLE `t_product_condition`  (
+DROP TABLE IF EXISTS `wms_producwms_condition`;
+CREATE TABLE `wms_producwms_condition`  (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `org_id` bigint(20) default 0 comment 'org_id',
   `org_tag` varchar(50)   DEFAULT NULL COMMENT '隔离字段',
@@ -105,10 +105,10 @@ CREATE TABLE `t_product_condition`  (
 
 
 -- ----------------------------
--- Table structure for t_product_photo
+-- Table structure for wms_product_photo
 -- ----------------------------
-DROP TABLE IF EXISTS `t_product_photo`;
-CREATE TABLE `t_product_photo`  (
+DROP TABLE IF EXISTS `wms_product_photo`;
+CREATE TABLE `wms_product_photo`  (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `org_id` bigint(20) default 0 comment 'org_id',
   `org_tag` varchar(50)   DEFAULT NULL COMMENT '隔离字段',
@@ -123,10 +123,10 @@ CREATE TABLE `t_product_photo`  (
 
 
 -- ----------------------------
--- Table structure for t_product_unit
+-- Table structure for wms_product_unit
 -- ----------------------------
-DROP TABLE IF EXISTS `t_product_unit`;
-CREATE TABLE `t_product_unit`  (
+DROP TABLE IF EXISTS `wms_product_unit`;
+CREATE TABLE `wms_product_unit`  (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `org_id` bigint(20) default 0 comment 'org_id',
   `org_tag` varchar(50)   DEFAULT NULL COMMENT '隔离字段',
@@ -139,10 +139,10 @@ CREATE TABLE `t_product_unit`  (
 
 
 -- ----------------------------
--- Table structure for t_specification
+-- Table structure for wms_specification
 -- ----------------------------
-DROP TABLE IF EXISTS `t_specification`;
-CREATE TABLE `t_specification`  (
+DROP TABLE IF EXISTS `wms_specification`;
+CREATE TABLE `wms_specification`  (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `org_id` bigint(20) default 0 comment 'org_id',
   `org_tag` varchar(50)   DEFAULT NULL COMMENT '隔离字段',
@@ -157,10 +157,10 @@ CREATE TABLE `t_specification`  (
 
 
 -- ----------------------------
--- Table structure for t_specification_group
+-- Table structure for wms_specification_group
 -- ----------------------------
-DROP TABLE IF EXISTS `t_specification_group`;
-CREATE TABLE `t_specification_group`  (
+DROP TABLE IF EXISTS `wms_specification_group`;
+CREATE TABLE `wms_specification_group`  (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `group_name` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '规格名称',
   `pid` bigint NULL DEFAULT NULL COMMENT '父级ID',

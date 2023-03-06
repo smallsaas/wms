@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @author Code Generator
  * @since 2018-07-18
  */
-@TableName("t_sku_photo")
+@TableName("wms_sku_photo")
 public class SkuPhoto extends Model<SkuPhoto> {
 
     private static final long serialVersionUID = 1L;

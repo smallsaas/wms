@@ -521,7 +521,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                 record.setSkuId(item.getSkuId());
                 record.setTransactionTime(item.getTransactionTime());
                 record.setTransactionQuantities(item.getTransactionQuantities());
-                // 使用 t_sku_product 表中的field1 来接收 单个单位，多单位使用多单位表
+                // 使用 wms_sku_product 表中的field1 来接收 单个单位，多单位使用多单位表
                 record.setSkuUnit(sku.getField1());
                 record.setTransactionSkuPrice(item.getTransactionSkuPrice());
 
@@ -551,7 +551,7 @@ public class ProcurementServiceImpl extends CRUDProcurementServiceImpl implement
                                     procurementItem.setBuyer(procurement.getBuyer());
                                     procurementItem.setProcurementCode(procurement.getProcurementCode());
                                     procurementItem.setProcurementDate(procurement.getProcurementTime());
-                                    // 使用 t_sku_product 表中的field1 来接收 单个单位，多单位使用多单位表
+                                    // 使用 wms_sku_product 表中的field1 来接收 单个单位，多单位使用多单位表
                                     procurementItem.setSkuUnit(sku.getField1());
                                     procurementItem.setTransactionQuantities(originItem.getTransactionQuantities());
                                     procurementItem.setTransactionSkuPrice(originItem.getTransactionSkuPrice());

@@ -9,8 +9,8 @@ import com.jfeat.crud.plus.CRUDServiceSlave;
  *
  * @author Code Generator
  * @since 2018-06-19
- * Master: t_product
-  * Slave : t_product_photo
+ * Master: wms_product
+  * Slave : wms_product_photo
   */
 public interface CRUDProductPhotoService extends CRUDServiceSlave<ProductPhoto> {
 

@@ -48,10 +48,10 @@
 
     <!--collection Master-->
     <select id="allProducts" parameterType="long" resultType="com.jfeat.am.module.product.services.persistence.model.Product">
-        SELECT t_product.*
+        SELECT wms_product.*
         FROM
-        t_product
-        LEFT JOIN wms_suppliers_product ON wms_suppliers_product.product_id = t_product.id
+        wms_product
+        LEFT JOIN wms_suppliers_product ON wms_suppliers_product.product_id = wms_product.id
         LEFT JOIN wms_suppliers ON wms_suppliers_product.suppliers_id = wms_suppliers.id
         WHERE
         wms_suppliers.id = #{id}

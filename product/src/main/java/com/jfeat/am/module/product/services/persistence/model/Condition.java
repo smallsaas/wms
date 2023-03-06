@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @author Code Generator
  * @since 2018-06-19
  */
-@TableName("t_condition")
+@TableName("wms_condition")
 public class Condition extends Model<Condition> {
 
     private static final long serialVersionUID = 1L;

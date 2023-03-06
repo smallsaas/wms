@@ -10,7 +10,7 @@ import com.jfeat.am.module.product.services.persistence.model.ProductCategory;
  * @author Code Generator
  * @since 2018-06-19
  * Master: ${cfg.masterModel}
-  * Slave : t_product_category
+  * Slave : wms_product_category
   */
 public interface CRUDProductCategoryService  extends CRUDServiceOnly<ProductCategory> {
 

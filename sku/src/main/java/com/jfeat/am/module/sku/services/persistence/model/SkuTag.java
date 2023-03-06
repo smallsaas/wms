@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @author Code Generator
  * @since 2018-07-18
  */
-@TableName("t_sku_tag")
+@TableName("wms_sku_tag")
 public class SkuTag extends Model<SkuTag> {
 
     private static final long serialVersionUID = 1L;

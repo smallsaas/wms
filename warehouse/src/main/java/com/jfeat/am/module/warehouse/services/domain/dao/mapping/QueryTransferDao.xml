@@ -101,12 +101,12 @@
         <result column="demand_quantities" property="demandQuantities" />
     </resultMap>
     <select id="outItemRecords" resultMap="OutItemMap" parameterType="long">
-        SELECT wms_storage_out_item.*,t_sku_product.sku_code as skuCode,
-        t_sku_product.sku_name as skuName,
-        t_sku_product.bar_code as skuBarcode,
-        t_sku_product.field1 as skuUnit
+        SELECT wms_storage_out_item.*,wms_sku_product.sku_code as skuCode,
+        wms_sku_product.sku_name as skuName,
+        wms_sku_product.bar_code as skuBarcode,
+        wms_sku_product.field1 as skuUnit
         FROM wms_storage_out_item
-        left join t_sku_product on t_sku_product.id = wms_storage_out_item.sku_id
+        left join wms_sku_product on wms_sku_product.id = wms_storage_out_item.sku_id
         left join wms_storage_out on (wms_storage_out.id = wms_storage_out_item.storage_out_id
                                         and wms_storage_out_item.type='TRANSFER')
         WHERE 1=1
@@ -117,10 +117,10 @@
     <select id="draftOutItemRecords" resultMap="OutItemMap" parameterType="long">
         SELECT
         wms_storage_out_item.*,
-        t_sku_product.sku_code as skuCode,
-        t_sku_product.sku_name as skuName,
-        t_sku_product.bar_code as skuBarcode,
-        t_sku_product.field1 as skuUnit,
+        wms_sku_product.sku_code as skuCode,
+        wms_sku_product.sku_name as skuName,
+        wms_sku_product.bar_code as skuBarcode,
+        wms_sku_product.field1 as skuUnit,
         CASE
             WHEN (wms_transfer.`status` = 'Draft')
             THEN
@@ -136,7 +136,7 @@
             ELSE 0 END AS canRefundCount
         FROM wms_storage_out_item
         LEFT JOIN wms_transfer ON (wms_transfer.id = wms_storage_out_item.storage_out_id AND wms_storage_out_item.type='TRANSFER')
-        left join t_sku_product on t_sku_product.id = wms_storage_out_item.sku_id
+        left join wms_sku_product on wms_sku_product.id = wms_storage_out_item.sku_id
 
         WHERE 1=1
         and wms_storage_out_item.storage_out_id = #{outItemId}

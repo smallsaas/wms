@@ -10,7 +10,7 @@ import com.jfeat.crud.plus.CRUDServiceOnly;
  * @author Code Generator
  * @since 2018-07-18
  * Master: ${cfg.masterModel}
-  * Slave : t_specification_group
+  * Slave : wms_specification_group
   */
 public interface CRUDSkuSpecificationGroupService extends CRUDServiceOnly<SkuSpecificationGroup> {
 

@@ -32,13 +32,13 @@
         SELECT
 
                 wms_inventory.*,
-                t_sku_product.sku_name as skuName,
-                t_sku_product.bar_code as skuBarcode,
-                t_sku_product.sku_code as skuCode,
-                t_sku_product.field1 as skuUnit,
+                wms_sku_product.sku_name as skuName,
+                wms_sku_product.bar_code as skuBarcode,
+                wms_sku_product.sku_code as skuCode,
+                wms_sku_product.field1 as skuUnit,
                 wms_warehouse.warehouse_name
         FROM wms_inventory
-        left join t_sku_product on t_sku_product.id = wms_inventory.sku_id
+        left join wms_sku_product on wms_sku_product.id = wms_inventory.sku_id
         left join wms_warehouse on wms_warehouse.id = wms_inventory.warehouse_id
         WHERE 1=1
         <if test="record.id != null and record.id>0 ">
@@ -50,7 +50,7 @@
         </if>
 
         <if test="skuName != null and skuName!= '' ">
-            AND t_sku_product.sku_name LIKE CONCAT('%',#{skuName},'%')
+            AND wms_sku_product.sku_name LIKE CONCAT('%',#{skuName},'%')
         </if>
 
 <!--        <if test="search != null and search!= '' ">
@@ -64,18 +64,18 @@
             <if test="search != null">
                 AND wms_inventory.warehouse_id = #{record.warehouseId}
                 AND(
-                t_sku_product.sku_name LIKE CONCAT('%',#{search},'%')
-                or t_sku_product.bar_code LIKE CONCAT('%',#{search},'%')
-                OR t_sku_product.sku_code LIKE CONCAT('%',#{search},'%')
+                wms_sku_product.sku_name LIKE CONCAT('%',#{search},'%')
+                or wms_sku_product.bar_code LIKE CONCAT('%',#{search},'%')
+                OR wms_sku_product.sku_code LIKE CONCAT('%',#{search},'%')
                 )
             </if>
 
         </if>
         <if test="search != null">
             AND(
-            t_sku_product.sku_name LIKE CONCAT('%',#{search},'%')
-            or t_sku_product.bar_code LIKE CONCAT('%',#{search},'%')
-            OR t_sku_product.sku_code LIKE CONCAT('%',#{search},'%')
+            wms_sku_product.sku_name LIKE CONCAT('%',#{search},'%')
+            or wms_sku_product.bar_code LIKE CONCAT('%',#{search},'%')
+            OR wms_sku_product.sku_code LIKE CONCAT('%',#{search},'%')
             )
         </if>
 
@@ -148,10 +148,10 @@
                 sin.transaction_time AS transactionTime,
                 sin.after_transaction_quantities AS validValue,
                 sin.before_transaction_quantities AS beforeTransactionQuantities,
-                t_sku_product.sku_name AS skuName,
-                t_sku_product.bar_code AS skuBarcode,
-                t_sku_product.sku_code AS skuCode,
-                t_sku_product.field1 AS skuUnit,
+                wms_sku_product.sku_name AS skuName,
+                wms_sku_product.bar_code AS skuBarcode,
+                wms_sku_product.sku_code AS skuCode,
+                wms_sku_product.field1 AS skuUnit,
                 wms_warehouse.warehouse_name AS warehouseName,
                 wms_storage_in.transaction_type AS transactionType,
                 wms_storage_in.transaction_code AS transactionCode,
@@ -168,12 +168,12 @@
                 FROM
                 wms_storage_in_item sin
                 LEFT JOIN wms_storage_in ON sin.storage_in_id = wms_storage_in.id
-                LEFT JOIN t_sku_product ON t_sku_product.id = sin.sku_id
+                LEFT JOIN wms_sku_product ON wms_sku_product.id = sin.sku_id
                 LEFT JOIN wms_warehouse ON wms_warehouse.id = wms_storage_in.warehouse_id
 
                 WHERE
                 1 = 1
-                AND t_sku_product.id = #{skuId}
+                AND wms_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
                 AND (sin.type = 'StorageIn' and wms_storage_in.`status`in ('Done','Closed'))
                 and wms_storage_in.transaction_type = #{transactionType}
@@ -199,10 +199,10 @@
                 sout.transaction_time AS transactionTime,
                 sout.after_transaction_quantities AS validValue,
                 sout.before_transaction_quantities AS beforeTransactionQuantities,
-                t_sku_product.sku_name AS skuName,
-                t_sku_product.bar_code AS skuBarcode,
-                t_sku_product.sku_code AS skuCode,
-                t_sku_product.field1 AS skuUnit,
+                wms_sku_product.sku_name AS skuName,
+                wms_sku_product.bar_code AS skuBarcode,
+                wms_sku_product.sku_code AS skuCode,
+                wms_sku_product.field1 AS skuUnit,
                 wms_warehouse.warehouse_name AS warehouseName,
                 wms_storage_out.transaction_type AS transactionType,
                 wms_storage_out.transaction_code AS transactionCode,
@@ -220,12 +220,12 @@
                 FROM
                 wms_storage_out_item sout
                 LEFT JOIN wms_storage_out ON sout.storage_out_id = wms_storage_out.id
-                LEFT JOIN t_sku_product ON t_sku_product.id = sout.sku_id
+                LEFT JOIN wms_sku_product ON wms_sku_product.id = sout.sku_id
                 LEFT JOIN wms_warehouse ON wms_warehouse.id = wms_storage_out.warehouse_id
 
                 WHERE
                 1 = 1
-                AND t_sku_product.id = #{skuId}
+                AND wms_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
                 and (sout.type='STORAGEOUT' and wms_storage_out.`status` in ('Done','Closed'))
                 and wms_storage_out.transaction_type = #{transactionType}
@@ -254,10 +254,10 @@
 
                 csku.fact_quantities AS validValue,
                 null as beforeTransactionQuantities,
-                t_sku_product.sku_name AS skuName,
-                t_sku_product.bar_code AS skuBarcode,
-                t_sku_product.sku_code AS skuCode,
-                t_sku_product.field1 AS skuUnit,
+                wms_sku_product.sku_name AS skuName,
+                wms_sku_product.bar_code AS skuBarcode,
+                wms_sku_product.sku_code AS skuCode,
+                wms_sku_product.field1 AS skuUnit,
                 wms_warehouse.warehouse_name AS warehouseName,
                 'checkUpdate' transactionType,
                 NULL AS transactionCode,
@@ -275,13 +275,13 @@
                 wms_check_sku csku
                 LEFT JOIN wms_check ON (csku.check_id = wms_check.id )
                 LEFT JOIN wms_warehouse ON csku.warehouse_id = wms_warehouse.id
-                LEFT JOIN t_sku_product ON t_sku_product.id = csku.sku_id
+                LEFT JOIN wms_sku_product ON wms_sku_product.id = csku.sku_id
 
                 WHERE
                 1 = 1
 
                 AND csku.profit_lost != 0
-                AND t_sku_product.id = #{skuId}
+                AND wms_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
                 and wms_check.`status` = 'Done'
                 <if test="startTime != null and endTime != null">
@@ -307,10 +307,10 @@
                 sin.transaction_time AS transactionTime,
                 sin.after_transaction_quantities AS validValue,
                 sin.before_transaction_quantities AS beforeTransactionQuantities,
-                t_sku_product.sku_name AS skuName,
-                t_sku_product.bar_code AS skuBarcode,
-                t_sku_product.sku_code AS skuCode,
-                t_sku_product.field1 AS skuUnit,
+                wms_sku_product.sku_name AS skuName,
+                wms_sku_product.bar_code AS skuBarcode,
+                wms_sku_product.sku_code AS skuCode,
+                wms_sku_product.field1 AS skuUnit,
                 wms_warehouse.warehouse_name AS warehouseName,
                 wms_storage_in.transaction_type AS transactionType,
                 wms_storage_in.transaction_code AS transactionCode,
@@ -327,12 +327,12 @@
                 FROM
                 wms_storage_in_item sin
                 LEFT JOIN wms_storage_in ON sin.storage_in_id = wms_storage_in.id
-                LEFT JOIN t_sku_product ON t_sku_product.id = sin.sku_id
+                LEFT JOIN wms_sku_product ON wms_sku_product.id = sin.sku_id
                 LEFT JOIN wms_warehouse ON wms_warehouse.id = wms_storage_in.warehouse_id
 
                 WHERE
                 1 = 1
-                AND t_sku_product.id = #{skuId}
+                AND wms_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
                 AND (sin.type = 'STORAGEIN' and wms_storage_in.`status` in ('Done','Closed'))
                 <if test="startTime != null and endTime != null">
@@ -356,10 +356,10 @@
                 sout.transaction_time AS transactionTime,
                 sout.after_transaction_quantities AS validValue,
                 sout.before_transaction_quantities AS beforeTransactionQuantities,
-                t_sku_product.sku_name AS skuName,
-                t_sku_product.bar_code AS skuBarcode,
-                t_sku_product.sku_code AS skuCode,
-                t_sku_product.field1 AS skuUnit,
+                wms_sku_product.sku_name AS skuName,
+                wms_sku_product.bar_code AS skuBarcode,
+                wms_sku_product.sku_code AS skuCode,
+                wms_sku_product.field1 AS skuUnit,
                 wms_warehouse.warehouse_name AS warehouseName,
                 wms_storage_out.transaction_type AS transactionType,
                 wms_storage_out.transaction_code AS transactionCode,
@@ -375,12 +375,12 @@
                 FROM
                 wms_storage_out_item sout
                 LEFT JOIN wms_storage_out ON sout.storage_out_id = wms_storage_out.id
-                LEFT JOIN t_sku_product ON t_sku_product.id = sout.sku_id
+                LEFT JOIN wms_sku_product ON wms_sku_product.id = sout.sku_id
                 LEFT JOIN wms_warehouse ON wms_warehouse.id = wms_storage_out.warehouse_id
 
                 WHERE
                 1 = 1
-                AND t_sku_product.id = #{skuId}
+                AND wms_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
                 and (sout.type='STORAGEOUT' and wms_storage_out.`status` in ('Done','Closed'))
                 <if test="startTime != null and endTime != null">
@@ -405,10 +405,10 @@
 
                 csku.fact_quantities AS validValue,
                 null as beforeTransactionQuantities,
-                t_sku_product.sku_name AS skuName,
-                t_sku_product.bar_code AS skuBarcode,
-                t_sku_product.sku_code AS skuCode,
-                t_sku_product.field1 AS skuUnit,
+                wms_sku_product.sku_name AS skuName,
+                wms_sku_product.bar_code AS skuBarcode,
+                wms_sku_product.sku_code AS skuCode,
+                wms_sku_product.field1 AS skuUnit,
                 wms_warehouse.warehouse_name AS warehouseName,
                 'checkUpdate' transactionType,
                 NULL AS transactionCode,
@@ -428,13 +428,13 @@
                 wms_check_sku csku
                 LEFT JOIN wms_check ON (csku.check_id = wms_check.id  and wms_check.`status` = 'Done')
                 LEFT JOIN wms_warehouse ON csku.warehouse_id = wms_warehouse.id
-                LEFT JOIN t_sku_product ON t_sku_product.id = csku.sku_id
+                LEFT JOIN wms_sku_product ON wms_sku_product.id = csku.sku_id
 
                 WHERE
                 1 = 1
 
                 AND csku.profit_lost != 0
-                AND t_sku_product.id = #{skuId}
+                AND wms_sku_product.id = #{skuId}
                 AND wms_warehouse.warehouse_name = #{warehouseName}
                 and wms_check.`status` = 'Done'
 
@@ -468,22 +468,22 @@
         sout.transaction_quantities AS transactionQuantities,
         sout.transaction_time AS transactionTime,
         sout.after_transaction_quantities AS validValue,
-        t_sku_product.sku_name AS skuName,
-        t_sku_product.bar_code AS skuBarcode,
-        t_sku_product.sku_code AS skuCode,
-        t_sku_product.field1 AS skuUnit,
+        wms_sku_product.sku_name AS skuName,
+        wms_sku_product.bar_code AS skuBarcode,
+        wms_sku_product.sku_code AS skuCode,
+        wms_sku_product.field1 AS skuUnit,
         wms_warehouse.warehouse_name AS warehouseName,
         wms_storage_out.transaction_type AS transactionType,
         wms_storage_out.transaction_code AS transactionCode
         FROM
         wms_storage_out_item sout
         LEFT JOIN wms_storage_out ON sout.storage_out_id = wms_storage_out.id
-        LEFT JOIN t_sku_product ON t_sku_product.id = sout.sku_id
+        LEFT JOIN wms_sku_product ON wms_sku_product.id = sout.sku_id
         LEFT JOIN wms_warehouse ON wms_warehouse.id = wms_storage_out.warehouse_id
 
         WHERE
         1 = 1
-        AND t_sku_product.id = #{skuId}
+        AND wms_sku_product.id = #{skuId}
         AND wms_warehouse.warehouse_name = #{warehouseName}
         and sout.type='Others'
 
@@ -503,10 +503,10 @@
         sin.transaction_quantities AS transactionQuantities,
         sin.transaction_time AS transactionTime,
         sin.after_transaction_quantities AS validValue,
-        t_sku_product.sku_name AS skuName,
-        t_sku_product.bar_code AS skuBarcode,
-        t_sku_product.sku_code AS skuCode,
-        t_sku_product.field1 AS skuUnit,
+        wms_sku_product.sku_name AS skuName,
+        wms_sku_product.bar_code AS skuBarcode,
+        wms_sku_product.sku_code AS skuCode,
+        wms_sku_product.field1 AS skuUnit,
         wms_warehouse.warehouse_name AS warehouseName,
         wms_storage_in.transaction_type AS transactionType,
         wms_storage_in.transaction_code AS transactionCode
@@ -514,12 +514,12 @@
         FROM
         wms_storage_in_item sin
         LEFT JOIN wms_storage_in ON sin.storage_in_id = wms_storage_in.id
-        LEFT JOIN t_sku_product ON t_sku_product.id = sin.sku_id
+        LEFT JOIN wms_sku_product ON wms_sku_product.id = sin.sku_id
         LEFT JOIN wms_warehouse ON wms_warehouse.id = wms_storage_in.warehouse_id
 
         WHERE
         1 = 1
-        AND t_sku_product.id = #{skuId}
+        AND wms_sku_product.id = #{skuId}
         AND wms_warehouse.warehouse_name = #{warehouseName}
         AND sin.type = 'Others'
 

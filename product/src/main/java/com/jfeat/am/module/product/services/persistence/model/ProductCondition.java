@@ -15,7 +15,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
  * @author Code Generator
  * @since 2018-06-19
  */
-@TableName("t_product_condition")
+@TableName("wms_producwms_condition")
 public class ProductCondition extends Model<ProductCondition> {
 
     private static final long serialVersionUID = 1L;

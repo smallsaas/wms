@@ -2,23 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.product.services.domain.dao.QueryConditionDao">
     <sql id="Base_Column_List">
-            t_condition.*
+            wms_condition.*
         </sql>
     <select id="findConditionPage" resultType="ConditionRecord" parameterType="ConditionRecord">
-      SELECT t_condition.*
-            FROM t_condition
+      SELECT wms_condition.*
+            FROM wms_condition
             WHERE 1=1
                                     <if test="record.id != null and record.id>0 ">
-                 AND t_condition.id LIKE CONCAT('%',#{record.id},'%')
+                 AND wms_condition.id LIKE CONCAT('%',#{record.id},'%')
         </if>
                                                 <if test="record.conditionName != null and record.conditionName!= ''">
-                 AND t_condition.condition_name LIKE CONCAT('%',#{record.conditionName},'%')
+                 AND wms_condition.condition_name LIKE CONCAT('%',#{record.conditionName},'%')
         </if>
                                 <if test="record.pid != null and record.pid>0 ">
-                 AND t_condition.pid LIKE CONCAT('%',#{record.pid},'%')
+                 AND wms_condition.pid LIKE CONCAT('%',#{record.pid},'%')
         </if>
                                                 <if test="record.conditionDescription != null and record.conditionDescription!= ''">
-                 AND t_condition.condition_description LIKE CONCAT('%',#{record.conditionDescription},'%')
+                 AND wms_condition.condition_description LIKE CONCAT('%',#{record.conditionDescription},'%')
         </if>
              </select>
 </mapper>

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.product.services.domain.dao.QueryProductDao">
     <sql id="Base_Column_List">
-        t_product.*
+        wms_product.*
     </sql>
 
 
@@ -65,71 +65,71 @@
 
     <select id="productDetails" resultMap="BaseProductDetailsModel" parameterType="long">
         SELECT
-            t_product.*,
-            t_product_category.category_name as productCategoryName
-        FROM t_product
-            left join t_product_category on t_product_category.id = t_product.product_category_id
+            wms_product.*,
+            wms_product_category.category_name as productCategoryName
+        FROM wms_product
+            left join wms_product_category on wms_product_category.id = wms_product.product_category_id
         WHERE 1=1
-            and t_product.id = #{id}
+            and wms_product.id = #{id}
     </select>
 
     <!--查找状态表-->
     <select id="productConditions" resultType="com.jfeat.am.module.product.services.persistence.model.Condition"
             parameterType="long">
         SELECT
-            t_condition.*
-        FROM t_condition
-            left join t_product_condition on t_product_condition.condition_id = t_condition.id
-            left join t_product on t_product_condition.product_id = t_product.id
+            wms_condition.*
+        FROM wms_condition
+            left join wms_producwms_condition on wms_producwms_condition.condition_id = wms_condition.id
+            left join wms_product on wms_producwms_condition.product_id = wms_product.id
         WHERE 1=1
-            and t_product.id = #{id}
+            and wms_product.id = #{id}
     </select>
 
     <!--查找图片表-->
     <select id="productPhotos" resultType="com.jfeat.am.module.product.services.persistence.model.ProductPhoto"
             parameterType="long">
         SELECT
-            t_product_photo.*
-        FROM t_product_photo
-            left join t_product on t_product_photo.product_id = t_product.id
+            wms_product_photo.*
+        FROM wms_product_photo
+            left join wms_product on wms_product_photo.product_id = wms_product.id
         WHERE 1=1
-            and t_product.id = #{id}
-        order by t_product_photo.is_primary desc
+            and wms_product.id = #{id}
+        order by wms_product_photo.is_primary desc
     </select>
 
     <!--查找标签表-->
     <!--<select id="productTags" resultType="com.jfeat.am.module.product.services.persistence.model.ProductTag"
             parameterType="long">
         SELECT
-            t_product_tag.*
-        FROM t_product_tag
-            left join t_product_tag_relation on t_product_tag_relation.tag_id = t_product_tag.id
-            left join t_product on t_product_tag_relation.product_id = t_product.id
+            wms_product_tag.*
+        FROM wms_product_tag
+            left join wms_product_tag_relation on wms_product_tag_relation.tag_id = wms_product_tag.id
+            left join wms_product on wms_product_tag_relation.product_id = wms_product.id
         WHERE 1=1
-            and t_product.id = #{id}
+            and wms_product.id = #{id}
     </select>-->
 
     <!--查找单位表-->
     <select id="productUnits" resultType="com.jfeat.am.module.product.services.persistence.model.ProductUnit"
             parameterType="long">
         SELECT
-            t_product_unit.*
-        FROM t_product_unit
-            left join t_product on t_product_unit.product_id = t_product.id
+            wms_product_unit.*
+        FROM wms_product_unit
+            left join wms_product on wms_product_unit.product_id = wms_product.id
         WHERE 1=1
-            and t_product.id = #{id}
-        order by t_product_unit.is_primary desc
+            and wms_product.id = #{id}
+        order by wms_product_unit.is_primary desc
     </select>
 
     <!--查找单位表-->
     <select id="productSpecifications" resultType="com.jfeat.am.module.product.services.persistence.model.Specification"
             parameterType="long">
         SELECT
-            t_specification.*
-        FROM t_specification
-            left join t_product on t_specification.product_id = t_product.id
+            wms_specification.*
+        FROM wms_specification
+            left join wms_product on wms_specification.product_id = wms_product.id
         WHERE 1=1
-            and t_product.id = #{id}
+            and wms_product.id = #{id}
     </select>
 
 
@@ -169,90 +169,90 @@
 
     <select id="findProductPage" resultMap="BaseResultMap" parameterType="ProductRecord">
         SELECT
-        t_product.*
-        FROM t_product
+        wms_product.*
+        FROM wms_product
 
         WHERE 1=1
         <if test="record.id != null and record.id>0 ">
-            AND t_product.id LIKE CONCAT('%',#{record.id},'%')
+            AND wms_product.id LIKE CONCAT('%',#{record.id},'%')
         </if>
         <if test="record.productCategoryId != null and record.productCategoryId>0 ">
-            AND t_product.product_category_id LIKE CONCAT('%',#{record.productCategoryId},'%')
+            AND wms_product.product_category_id LIKE CONCAT('%',#{record.productCategoryId},'%')
         </if>
         <if test="record.productCode != null and record.productCode!= ''">
-            AND t_product.product_code LIKE CONCAT('%',#{record.productCode},'%')
+            AND wms_product.product_code LIKE CONCAT('%',#{record.productCode},'%')
         </if>
         <if test="record.name != null and record.name!= ''">
-            AND t_product.name LIKE CONCAT('%',#{record.name},'%')
+            AND wms_product.name LIKE CONCAT('%',#{record.name},'%')
         </if>
         <if test="record.englishName != null and record.englishName!= ''">
-            AND t_product.english_name LIKE CONCAT('%',#{record.englishName},'%')
+            AND wms_product.english_name LIKE CONCAT('%',#{record.englishName},'%')
         </if>
         <if test="record.weight != null and record.weight!= ''">
-            AND t_product.weight LIKE CONCAT('%',#{record.weight},'%')
+            AND wms_product.weight LIKE CONCAT('%',#{record.weight},'%')
         </if>
         <if test="record.readjustCostPrice != null and record.readjustCostPrice>0 ">
-            AND t_product.readjust_cost_price LIKE CONCAT('%',#{record.readjustCostPrice},'%')
+            AND wms_product.readjust_cost_price LIKE CONCAT('%',#{record.readjustCostPrice},'%')
         </if>
         <if test="record.productStandard != null and record.productStandard!= ''">
-            AND t_product.product_standard LIKE CONCAT('%',#{record.productStandard},'%')
+            AND wms_product.product_standard LIKE CONCAT('%',#{record.productStandard},'%')
         </if>
         <if test="record.price != null and record.price>0 ">
-            AND t_product.price LIKE CONCAT('%',#{record.price},'%')
+            AND wms_product.price LIKE CONCAT('%',#{record.price},'%')
         </if>
         <if test="record.suggestedPrice != null and record.suggestedPrice>0 ">
-            AND t_product.suggested_price LIKE CONCAT('%',#{record.suggestedPrice},'%')
+            AND wms_product.suggested_price LIKE CONCAT('%',#{record.suggestedPrice},'%')
         </if>
         <if test="record.costPrice != null and record.costPrice>0 ">
-            AND t_product.cost_price LIKE CONCAT('%',#{record.costPrice},'%')
+            AND wms_product.cost_price LIKE CONCAT('%',#{record.costPrice},'%')
         </if>
         <if test="record.specification != null and record.specification!= ''">
-            AND t_product.specification LIKE CONCAT('%',#{record.specification},'%')
+            AND wms_product.specification LIKE CONCAT('%',#{record.specification},'%')
         </if>
         <if test="record.quantities != null and record.quantities>0 ">
-            AND t_product.quantities LIKE CONCAT('%',#{record.quantities},'%')
+            AND wms_product.quantities LIKE CONCAT('%',#{record.quantities},'%')
         </if>
         <if test="record.stockCost != null and record.stockCost>0 ">
-            AND t_product.stock_cost LIKE CONCAT('%',#{record.stockCost},'%')
+            AND wms_product.stock_cost LIKE CONCAT('%',#{record.stockCost},'%')
         </if>
         <if test="record.purchaseAdvance != null and record.purchaseAdvance>0 ">
-            AND t_product.purchase_advance LIKE CONCAT('%',#{record.purchaseAdvance},'%')
+            AND wms_product.purchase_advance LIKE CONCAT('%',#{record.purchaseAdvance},'%')
         </if>
         <if test="record.status != null and record.status!= ''">
-            AND t_product.status LIKE CONCAT('%',#{record.status},'%')
+            AND wms_product.status LIKE CONCAT('%',#{record.status},'%')
         </if>
         <if test="record.sortValue != null and record.sortValue>0 ">
-            AND t_product.sort_value LIKE CONCAT('%',#{record.sortValue},'%')
+            AND wms_product.sort_value LIKE CONCAT('%',#{record.sortValue},'%')
         </if>
         <if test="record.searchKeyWord != null and record.searchKeyWord!= ''">
-            AND t_product.search_key_word LIKE CONCAT('%',#{record.searchKeyWord},'%')
+            AND wms_product.search_key_word LIKE CONCAT('%',#{record.searchKeyWord},'%')
         </if>
         <if test="record.barCode != null and record.barCode!= ''">
-            AND t_product.bar_code LIKE CONCAT('%',#{record.barCode},'%')
+            AND wms_product.bar_code LIKE CONCAT('%',#{record.barCode},'%')
         </if>
         <if test="record.createTime != null and record.createTime>0 ">
-            AND t_product.create_time LIKE CONCAT('%',#{record.createTime},'%')
+            AND wms_product.create_time LIKE CONCAT('%',#{record.createTime},'%')
         </if>
         <if test="record.updateTime != null and record.updateTime>0 ">
-            AND t_product.update_time LIKE CONCAT('%',#{record.updateTime},'%')
+            AND wms_product.update_time LIKE CONCAT('%',#{record.updateTime},'%')
         </if>
         <if test="record.description != null and record.description!= ''">
-            AND t_product.description LIKE CONCAT('%',#{record.description},'%')
+            AND wms_product.description LIKE CONCAT('%',#{record.description},'%')
         </if>
         <if test="record.field1 != null and record.field1!= ''">
-            AND t_product.field1 LIKE CONCAT('%',#{record.field1},'%')
+            AND wms_product.field1 LIKE CONCAT('%',#{record.field1},'%')
         </if>
         <if test="record.volume != null and record.volume!= ''">
-            AND t_product.volume LIKE CONCAT('%',#{record.volume},'%')
+            AND wms_product.volume LIKE CONCAT('%',#{record.volume},'%')
         </if>
         <if test="record.spec != null and record.spec!= ''">
-            AND t_product.spec LIKE CONCAT('%',#{record.spec},'%')
+            AND wms_product.spec LIKE CONCAT('%',#{record.spec},'%')
         </if>
         <if test="record.field4 != null and record.field4!= ''">
-            AND t_product.field4 LIKE CONCAT('%',#{record.field4},'%')
+            AND wms_product.field4 LIKE CONCAT('%',#{record.field4},'%')
         </if>
         <if test="record.field5 != null and record.field5!= ''">
-            AND t_product.field5 LIKE CONCAT('%',#{record.field5},'%')
+            AND wms_product.field5 LIKE CONCAT('%',#{record.field5},'%')
         </if>
     </select>
 </mapper>

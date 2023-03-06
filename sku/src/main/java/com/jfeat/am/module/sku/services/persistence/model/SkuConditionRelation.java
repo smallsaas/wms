@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @author Code Generator
  * @since 2018-07-18
  */
-@TableName("t_sku_condition_relation")
+@TableName("wms_sku_condition_relation")
 public class SkuConditionRelation extends Model<SkuConditionRelation> {
 
     private static final long serialVersionUID = 1L;
