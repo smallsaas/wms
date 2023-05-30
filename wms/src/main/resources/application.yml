@@ -84,11 +84,14 @@ am:
 spring:
   profiles: dev
   datasource:
-      url: jdbc:mysql://localhost:3306/wms?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+#      url: jdbc:mysql://localhost:3306/wms?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+#      username: root
+#      password: root
+      url: jdbc:mysql://sh-cynosdbmysql-grp-mlyunquo.sql.tencentcdb.com:25133/smallsaas_dev?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
       username: root
-      password: root
+      password: zb2014@8888
       filters: log4j,wall,mergeStat
-      initialize: true
+      initialize: false
       schema: classpath*:sql/*-schema.sql
       data: classpath*:sql/*-data.sql
   rabbitmq:
