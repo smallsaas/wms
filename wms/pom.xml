@@ -26,6 +26,7 @@
             <groupId>com.jfeat</groupId>
             <artifactId>sku</artifactId>
             <version>2.0.0</version>
+            <!-- slf4j-simple会和logback冲突 -->
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
