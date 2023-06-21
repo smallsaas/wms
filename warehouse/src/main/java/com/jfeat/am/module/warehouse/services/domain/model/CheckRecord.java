@@ -12,6 +12,8 @@ public class CheckRecord extends Check{
     List<CheckSkuRecord> skuRecords;
     String warehouseName;
 
+    List<CheckSkuRecord> checkSkus;
+
 
     public List<CheckSkuRecord> getSkuRecords() {
         return skuRecords;
@@ -27,6 +29,15 @@ public class CheckRecord extends Check{
 
     public void setWarehouseName(String warehouseName) {
         this.warehouseName = warehouseName;
+    }
+
+
+    public List<CheckSkuRecord> getCheckSkus() {
+        return checkSkus;
+    }
+
+    public void setCheckSkus(List<CheckSkuRecord> checkSkus) {
+        this.checkSkus = checkSkus;
     }
 
 }

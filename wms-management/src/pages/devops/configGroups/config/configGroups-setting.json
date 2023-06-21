@@ -1,0 +1,188 @@
+{
+  "pageName": {
+    "table": "配置分组",
+    "new": "添加分组",
+    "edit": "编辑分组",
+    "view": "查看详情"
+  },
+  "listAPI": "/api/adm/config/groups",
+  "createAPI": "/api/adm/config/groups",
+  "getAPI": "/api/adm/config/groups/[id]",
+  "updateAPI": "/api/adm/config/groups/[id]",
+  "deleteAPI": "/api/adm/config/groups/(id)",
+  "columns": 1,
+  "createFields": [
+    {
+      "label": "分组名称",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "title",
+      "align": "center"
+    },
+    {
+      "label": "类型",
+      "type": "select",
+      "props": {
+        "placeholder": "请选择",
+        "style":{
+          "width": 240
+        }
+      },
+      "options":[
+        {"label":"OPTION","value": "OPTION"},
+        {"label":"CONFIG","value": "CONFIG"}
+      ],
+      "rules": [
+        {
+          "type": "required"
+        }
+      ],
+      "field": "type"
+    }
+  ],
+  "updateFields": [
+    {
+      "label": "分组名称",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "name",
+      "align": "center"
+    },
+    {
+      "label": "类型",
+      "type": "select",
+      "props": {
+        "placeholder": "请选择",
+        "style":{
+          "width": 240
+        }
+      },
+      "options":[
+        {"label":"OPTION","value": "OPTION"},
+        {"label":"CONFIG","value": "CONFIG"}
+      ],
+      "rules": [
+        {
+          "type": "required"
+        }
+      ],
+      "field": "type"
+    },
+    {
+      "label": "配置项",
+      "props": {
+        "placeholder": "请选择配置项",
+        "style":{
+          "width": 800,
+          "marginTop": "8px",
+          "textAlign": "left"
+        }
+      },
+      "rules": [
+        {
+          "type": "required"
+        }
+      ],
+      "options": {
+        "API": "/api/adm/config/fields",
+        "label": "name",
+        "value": "id",
+        "formatField": "id"
+      },
+      "type": "checkbox-fetch",
+      "field": "items"
+    }
+  ],
+  "map": {},
+  "layout": {
+    "table": "Content",
+    "form": "TitleContent"
+  },
+  "tableActions": [
+    {
+      "title": "添加分组",
+      "type": "path",
+      "options": {
+        "style": "primary",
+        "path": "configGroups/configGroups-add"
+      }
+    }
+  ],
+  "tableOperation": [
+    {
+      "title": "编辑",
+      "type": "path",
+      "options": {
+        "style": "path",
+        "path": "configGroups/configGroups-edit",
+        "outside": true
+      }
+    },
+    {
+      "title": "删除",
+      "type": "delete",
+      "options": {
+        "outside": false,
+        "API": "/api/crud/oms/wisp/wisps/(id)",
+        "method": "delete"
+      },
+      "expect": {
+        "permission": ""
+      }
+    }
+  ],
+  "searchFields": [
+    {
+      "label": "分组名称",
+      "field": "name",
+      "type": "search",
+      "props": {
+        "placeholder": "请输入"
+      }
+    }
+  ],
+  "tableFields": [
+    {
+      "label": "序号",
+      "field": "id",
+      "align": "center"
+    },
+    {
+      "label": "分组名称",
+      "field": "name"
+    },
+    {
+      "label": "类型",
+      "field": "type",
+      "align": "center"
+    }
+  ],
+  "viewConfig": [
+    {
+      "label": "场次号",
+      "field": "title",
+      "type": "plain",
+      "span": 24
+    },
+    {
+      "label": "场次名称",
+      "field": "type",
+      "type": "plain",
+      "span": 24
+    }
+  ]
+}

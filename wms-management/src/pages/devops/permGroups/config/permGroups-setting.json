@@ -1,0 +1,215 @@
+{
+  "pageName": {
+    "table": "权限分组",
+    "new": "添加权限分组",
+    "edit": "编辑权限分组",
+    "view": "查看详情"
+  },
+  "listAPI": "/api/adm/perm/groups",
+  "createAPI": "/api/adm/perm/groups",
+  "getAPI": "/api/adm/perm/groups/[id]",
+  "updateAPI": "/api/adm/perm/groups/[id]",
+  "deleteAPI": "/api/adm/perm/groups/(id)",
+  "columns": 1,
+  "createFields": [
+    {
+      "label": "分组名称",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "name",
+      "align": "center"
+    },
+    {
+      "label": "识别字符",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "type": "input",
+      "field": "identifier",
+      "align": "center",
+      "rules": [
+        {
+          "type": "required"
+        }
+      ]
+    },
+    {
+      "label": "父级权限组",
+      "type": "select-fetch",
+      "props": {
+        "placeholder": "请选择",
+        "style": {
+          "width": 240
+        }
+      },
+      "rules": [],
+      "options": {
+        "API": "/api/adm/perm/groups",
+        "label": "name",
+        "value": "id"
+      },
+      "field": "pid"
+    },
+    {
+      "type": "hidden",
+      "field": "org_id",
+      "value": 1
+    }
+  ],
+  "updateFields": [
+    {
+      "label": "分组名称",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "name",
+      "align": "center"
+    },
+    {
+      "label": "识别字符",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "type": "input",
+      "field": "identifier",
+      "align": "center",
+      "rules": [
+        {
+          "type": "required"
+        }
+      ]
+    },
+    {
+      "label": "权限",
+      "props": {
+        "placeholder": "请选择权限",
+        "style":{
+          "width": 800,
+          "marginTop": "8px",
+          "textAlign": "left"
+        }
+      },
+      "rules": [],
+      "options": {
+        "API": "/api/adm/perm/perms",
+        "label": "name",
+        "value": "id",
+        "formatField": "id"
+      },
+      "type": "checkbox-fetch",
+      "field": "perms"
+    },
+    {
+      "label": "父级权限组",
+      "type": "select-fetch",
+      "props": {
+        "placeholder": "请选择",
+        "style": {
+          "width": 240
+        }
+      },
+      "rules": [],
+      "options": {
+        "API": "/api/adm/perm/groups",
+        "label": "name",
+        "value": "id"
+      },
+      "field": "pid"
+    },
+    {
+      "type": "hidden",
+      "field": "org_id",
+      "value": 1
+    }
+  ],
+  "map": {},
+  "layout": {
+    "table": "Content",
+    "form": "TitleContent"
+  },
+  "tableActions": [
+    {
+      "title": "添加分组",
+      "type": "path",
+      "options": {
+        "style": "primary",
+        "path": "permGroups/permGroups-add"
+      }
+    }
+  ],
+  "tableOperation": [
+    {
+      "title": "编辑",
+      "type": "path",
+      "options": {
+        "style": "path",
+        "path": "permGroups/permGroups-edit",
+        "outside": true
+      }
+    },
+    {
+      "title": "删除",
+      "type": "delete",
+      "options": {
+        "outside": false,
+        "API": "/api/adm/perm/groups/(id)",
+        "method": "delete"
+      },
+      "expect": {
+        "permission": ""
+      }
+    }
+  ],
+  "searchFields": [
+    {
+      "label": "分组名称",
+      "field": "name",
+      "type": "input",
+      "props": {
+        "placeholder": "请输入"
+      }
+    }
+  ],
+  "tableFields": [
+    {
+      "label": "编号",
+      "field": "id",
+      "align": "center"
+    },
+    {
+      "label": "分组名称",
+      "field": "name"
+    },
+    {
+      "label": "识别字符",
+      "field": "identifier"
+    }
+  ],
+  "viewConfig": [
+    {
+      "label": "分组名称",
+      "field": "name",
+      "type": "plain",
+      "span": 24
+    },
+    {
+      "label": "识别字符",
+      "field": "identifier",
+      "type": "plain",
+      "span": 24
+    }
+  ]
+}

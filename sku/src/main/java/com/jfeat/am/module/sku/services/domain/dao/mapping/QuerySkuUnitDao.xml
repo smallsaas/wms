@@ -5,23 +5,27 @@
         wms_sku_unit.*
     </sql>
     <select id="findSkuUnitPage" resultType="SkuUnitRecord" parameterType="SkuUnitRecord">
-        SELECT wms_sku_unit.*
+        SELECT wms_sku_unit.*,
+        wms_sku_product.sku_name
         FROM wms_sku_unit
-        WHERE 1=1
-        <if test="record.id != null and record.id>0 ">
-            AND wms_sku_unit.id LIKE CONCAT('%',#{record.id},'%')
-        </if>
+        LEFT JOIN wms_sku_product ON wms_sku_product.product_id = wms_sku_unit.sku_id
+        <where>
+            <if test="record.id != null and record.id>0 ">
+                AND wms_sku_unit.id LIKE CONCAT('%',#{record.id},'%')
+            </if>
 
-        <if test="record.unitName != null and record.unitName!= ''">
-            AND wms_sku_unit.unit_name LIKE CONCAT('%',#{record.unitName},'%')
-        </if>
+            <if test="record.unitName != null and record.unitName!= ''">
+                AND wms_sku_unit.unit_name LIKE CONCAT('%',#{record.unitName},'%')
+            </if>
 
-        <if test="record.isPrimary != null and record.isPrimary>0 ">
-            AND wms_sku_unit.is_primary LIKE CONCAT('%',#{record.isPrimary},'%')
-        </if>
+            <if test="record.isPrimary != null and record.isPrimary>0 ">
+                AND wms_sku_unit.is_primary LIKE CONCAT('%',#{record.isPrimary},'%')
+            </if>
 
-        <if test="record.skuId != null and record.skuId>0 ">
-            AND wms_sku_unit.sku_id LIKE CONCAT('%',#{record.skuId},'%')
-        </if>
+            <if test="record.skuId != null and record.skuId>0 ">
+                AND wms_sku_unit.sku_id LIKE CONCAT('%',#{record.skuId},'%')
+            </if>
+        </where>
+
     </select>
 </mapper>

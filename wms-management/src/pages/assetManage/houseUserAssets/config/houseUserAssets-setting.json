@@ -1,0 +1,316 @@
+{
+  "columns": 1,
+  "listAPI": "/api/crud/house/houseUserAsset/houseUserAssets",
+  "createAPI": "/api/crud/house/houseUserAsset/houseUserAssets",
+  "getAPI": "/api/crud/house/houseUserAsset/houseUserAssets/[id]",
+  "updateAPI": "/api/crud/house/houseUserAsset/houseUserAssets/[id]",
+  "deleteAPI": "/api/crud/house/houseUserAsset/houseUserAssets/(id)",
+  "searchType": "MoreSearch",
+  "searchButtonType": "text",
+  "pageName": {
+    "table": "用户资产",
+    "new": "新增",
+    "edit": "编辑",
+    "name": "用户资产管理",
+    "view": "用户资产详情"
+  },
+  "createFields": [
+    {
+      "label": "选择用户",
+      "field": "userId",
+      "span": 24,
+      "type": "modal-radio",
+      "props": {},
+      "rules": [],
+      "options": {
+        "title": "选择用户",
+        "label": "name",
+        "editLabel": "perm",
+        "value": "id",
+        "pagination": true,
+        "API": "/api/crud/house/endUser/endUsers",
+        "fields": [
+          {
+            "label": "名字",
+            "field": "name",
+            "valueType": "ellipsis"
+          },
+          {
+            "label": "电话",
+            "field": "phone",
+            "valueType": "ellipsis"
+          }
+        ]
+      }
+    },
+    {
+      "label": "选择资产",
+      "field": "assetId",
+      "span": 24,
+      "type": "modal-radio",
+      "props": {},
+      "rules": [],
+      "options": {
+        "title": "选择资产",
+        "label": "name",
+        "editLabel": "perm",
+        "value": "id",
+        "pagination": true,
+        "API": "/api/crud/house/houseAsset/houseAssets",
+        "fields": [
+          {
+            "label": "社区",
+            "field": "communityName",
+            "valueType": "ellipsis"
+          },
+          {
+            "label": "楼栋编号",
+            "field": "buildingCode",
+            "valueType": "ellipsis"
+          },
+          {
+            "label": "楼层",
+            "field": "floor",
+            "valueType": "ellipsis"
+          },
+          {
+            "label": "门牌地址",
+            "field": "number",
+            "valueType": "ellipsis"
+          }
+        ]
+      }
+    }
+  ],
+  "updateFields": [
+    {
+      "label": "选择用户",
+      "field": "userId",
+      "span": 24,
+      "type": "modal-radio",
+      "props": {},
+      "rules": [],
+      "options": {
+        "title": "选择用户",
+        "label": "name",
+        "editLabel": "perm",
+        "value": "id",
+        "pagination": true,
+        "API": "/api/crud/house/endUser/endUsers",
+        "fields": [
+          {
+            "label": "名字",
+            "field": "name",
+            "valueType": "ellipsis"
+          },
+          {
+            "label": "电话",
+            "field": "phone",
+            "valueType": "ellipsis"
+          }
+        ]
+      }
+    },
+    {
+      "label": "选择资产",
+      "field": "assetId",
+      "span": 24,
+      "type": "modal-radio",
+      "props": {},
+      "rules": [],
+      "options": {
+        "title": "选择权限",
+        "label": "name",
+        "editLabel": "perm",
+        "value": "id",
+        "pagination": true,
+        "API": "/api/crud/house/houseAsset/houseAssets",
+        "fields": [
+          {
+            "label": "社区",
+            "field": "communityName",
+            "valueType": "ellipsis"
+          },
+          {
+            "label": "楼栋编号",
+            "field": "buildingCode",
+            "valueType": "ellipsis"
+          },
+          {
+            "label": "楼层",
+            "field": "floor",
+            "valueType": "ellipsis"
+          },
+          {
+            "label": "门牌地址",
+            "field": "number",
+            "valueType": "ellipsis"
+          }
+        ]
+      }
+    }
+  ],
+  "layout": {
+    "table": "Content",
+    "form": "TitleContent"
+  },
+  "tableActions": [
+    {
+      "title": "新增",
+      "type": "path",
+      "options": {
+        "path": "/assetManage/houseUserAssets/houseUserAssets-add"
+      }
+    }
+  ],
+  "tableOperation": [
+    {
+      "title": "查看",
+      "type": "path",
+      "options": {
+        "outside": true,
+        "path": "/assetManage/houseUserAssets/houseUserAssets-view"
+      }
+    },
+    {
+      "title": "编辑",
+      "type": "path",
+      "options": {
+        "outside": true,
+        "path": "/assetManage/houseUserAssets/houseUserAssets-edit"
+      }
+    },
+    {
+      "title": "取消订单", "type": "request",
+      "options": {
+        "API": "/api/crud/order/orders/(id)/CLOSED_CANCELED",
+        "method": "post",
+        "tips": "确定要取消该订单吗"
+      }
+    },
+    {
+      "title": "删除",
+      "type": "delete"
+    }
+  ],
+  "searchFields": [
+    {
+      "label": "用户名",
+      "field": "username",
+      "type": "search",
+      "props": {
+        "placeholder": "用户名"
+      }
+    },
+    {
+      "label": "地址",
+      "field": "search",
+      "type": "search",
+      "props": {
+        "placeholder": "小区、楼栋编号、户型、门牌地址"
+      }
+    } 
+  ],
+  "tableFields": [
+    {
+      "label": "用户",
+      "options": {
+        "align":"left",
+        "fields": [
+          {
+            "field": "userAvatar",
+            "type": "image",
+            "options": {
+              "circle":true,
+              "style": {
+                "width": "55px",
+                "height": "55px"
+              }
+            }
+          },
+          {
+            "field": "username",
+            "type": "plain",
+            "options": {
+              "format": [
+                "<username>",
+                "<userPhone>"
+              ]
+            }
+           
+          }
+        ]
+      },
+      "field": "userAvatar",
+      "align": "left",
+      "valueType": "complex"
+    },
+    {
+      "field": "communityName",
+      "label": "小区",
+      "align": "left"
+    },
+    {
+      "field": "buildingCode",
+      "label": "楼栋编号",
+      "align": "left"
+    },
+    {
+      "field": "houseType",
+      "label": "户型",
+      "align": "left"
+    },
+    {
+      "field": "roomNumber",
+      "label": "门牌地址",
+      "align": "left"
+    },
+    {
+      "field": "unitArea",
+      "label": "面积",
+      "align": "left"
+    }
+  ],
+  "viewConfig": [
+    {
+      "field": "userAvatar",
+      "label": "头像",
+      "type": "image"
+    },
+    {
+      "field": "username",
+      "label": "用户名",
+      "type": "plain"
+    },
+    {
+      "field": "userPhone",
+      "label": "用户电话",
+      "type": "plain"
+    },
+    {
+      "field": "communityName",
+      "label": "小区",
+      "type": "plain"
+    },
+    {
+      "field": "buildingCode",
+      "label": "楼栋编号",
+      "type": "plain"
+    },
+    {
+      "field": "houseType",
+      "label": "户型",
+      "type": "plain"
+    },
+    {
+      "field": "roomNumber",
+      "label": "门牌地址",
+      "type": "plain"
+    },
+    {
+      "field": "unitArea",
+      "label": "面积",
+      "type": "plain"
+    }
+  ]
+}

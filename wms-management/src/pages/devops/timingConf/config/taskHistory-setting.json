@@ -1,0 +1,89 @@
+{
+  "pageName": {
+    "table": "执行列表",
+    "new": "",
+    "edit": ""
+  },
+  "listAPI": "/api/crud/schedule/allJobAndRecord",
+  "actionAPI": "/api/crud/oms/manager/managers/view/schedule?type= {jobName} & sessionId={sessionId}",
+  "createAPI": "/api",
+  "getAPI": "/api/[id]",
+  "updateAPI": "/api/[id]",
+  "deleteAPI": "/api/(id)",
+  "columns": 1,
+  "createFields": [],
+  "updateFields": [],
+  "map": {},
+  "layout": {
+    "table": "Content",
+    "form": "TitleContent"
+  },
+  "tableActions": [],
+  "tableOperation": [],
+  "searchFields": [],
+  "tableFields": [{
+      "label": "描述",
+      "field": "duplicateTask",
+      "align": "center"
+    },
+    {
+      "label": "任务名",
+      "field": "jobName",
+      "align": "center"
+    },
+    {
+      "label": "创建时间",
+      "options": {
+        "direction": "vertical",
+        "size": 0,
+        "fields": [{
+          "field": "scheduleRecord.createTime",
+          "type": "plain"
+        }]
+      },
+      "field": "names",
+      "align": "left",
+      "valueType": "complex"
+    },
+
+    {
+      "label": "结束时间",
+      "options": {
+        "direction": "vertical",
+        "size": 0,
+        "fields": [{
+          "field": "scheduleRecord.endTime",
+          "type": "plain"
+        }]
+      },
+      "field": "names",
+      "align": "left",
+      "valueType": "complex"
+    },
+    {
+      "label": "运行时间",
+      "options": {},
+      "field": "scheduleRecord.useTime",
+      "align": "left",
+      "valueType": "Time_format"
+    }
+
+
+  ],
+  "tableOperation": [{
+    "title": "执行",
+    "type": "request",
+    "options": {
+      "tips": "确定执行吗?",
+      "outside": true,
+      "API": "/api/crud/oms/manager/managers/view/schedule?type=(jobName)&sessionId=(seq)",
+      "method": "get"
+    },
+    "expect": {
+      "field": "",
+      "value": ""
+    }
+  }]
+
+
+}

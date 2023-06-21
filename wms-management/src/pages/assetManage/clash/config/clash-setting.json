@@ -1,0 +1,362 @@
+{
+    "columns": 1,
+    "listAPI": "/api/crud/house/houseUserAsset/houseUserAssets/clash",
+    "createAPI": "/api/crud/house/houseUserAsset/houseUserAssets/clash",
+    "getAPI": "/api/crud/house/houseUserAsset/houseUserAssets/clash/[id]",
+    "updateAPI": "/api/crud/house/houseUserAsset/houseUserAssets/clash/[id]",
+    "deleteAPI": "",
+    "searchType": "MoreSearch",
+    "searchButtonType": "text",
+    "pageName": {
+        "table": "产权申诉",
+        "new": "新增",
+        "edit": "编辑",
+        "name": "产权申诉",
+        "view": "产权申诉详情"
+    },
+    "createFields": [
+        {
+            "field": "address",
+            "label": "地址",
+            "type": "input"
+        },
+        {
+            "field": "buildingCode",
+            "label": "楼栋",
+            "type": "input"
+        },
+        {
+            "field": "clashCertificate",
+            "label": "证明材料",
+            "type": "upload-image",
+            "options":{
+                "headers": {
+                     "X-FS-APPID": "house", "X-FS-BUCKET": "images"
+                }
+            }
+        },
+        {
+            "field": "clashDescribe",
+            "label": "描述信息",
+            "type": "input"
+        },
+        {
+            "field": "clashUserName",
+            "label": "冲突用户姓名",
+            "type": "input"
+        },
+        {
+            "field": "clashUserPhone",
+            "label": "冲突用户电话",
+            "type": "input"
+        },
+        {
+            "field": "communityName",
+            "label": "小区名",
+            "type": "input"
+        },
+        {
+            "field": "createTime",
+            "label": "时间",
+            "type": "input"
+        },
+        {
+            "field": "houseType",
+            "label": "户型",
+            "type": "input"
+        },
+        {
+            "field": "roomNumber",
+            "label": "门牌地址",
+            "type": "input"
+        },
+        {
+            "field": "unitArea",
+            "label": "面积",
+            "type": "input"
+        },
+        {
+            "field": "userPhone",
+            "label": "初始用户电话",
+            "type": "input"
+        },
+        {
+            "field": "username",
+            "label": "初始用户姓名",
+            "type": "input"
+        }
+    ],
+    "updateFields": [
+        {
+            "field": "address",
+            "label": "地址",
+            "type": "input"
+        },
+        {
+            "field": "buildingCode",
+            "label": "楼栋",
+            "type": "input"
+        },
+        {
+            "field": "clashCertificate",
+            "label": "证明材料",
+            "type": "upload-image",
+            "options":{
+                "headers": {
+                     "X-FS-APPID": "house", "X-FS-BUCKET": "images"
+                }
+            }
+        },
+        {
+            "field": "clashDescribe",
+            "label": "描述信息",
+            "type": "input"
+        },
+        {
+            "field": "clashUserName",
+            "label": "冲突用户姓名",
+            "type": "input"
+        },
+        {
+            "field": "clashUserPhone",
+            "label": "冲突用户电话",
+            "type": "input"
+        },
+        {
+            "field": "communityName",
+            "label": "小区名",
+            "type": "input"
+        },
+        {
+            "field": "createTime",
+            "label": "时间",
+            "type": "input"
+        },
+        {
+            "field": "houseType",
+            "label": "户型",
+            "type": "input"
+        },
+        {
+            "field": "roomNumber",
+            "label": "门牌地址",
+            "type": "input"
+        },
+        {
+            "field": "unitArea",
+            "label": "面积",
+            "type": "input"
+        },
+        {
+            "field": "userPhone",
+            "label": "初始用户电话",
+            "type": "input"
+        },
+        {
+            "field": "username",
+            "label": "初始用户姓名",
+            "type": "input"
+        }
+    ],
+    "layout": {
+        "table": "Content",
+        "form": "TitleContent"
+    },
+    "tableActions": [],
+    "tableOperation": [
+        {
+          "title": "查看",
+          "type": "path",
+          "options": {
+            "outside": true,
+            "path": "/assetManage/clash/clash-view"
+          }
+        },
+        {
+            "title": "认证", 
+            "type": "request",
+            "options": {
+              "tips": "确定认证吗？",
+              "outside": "true",
+              "API": "/api/crud/house/houseUserAsset/houseUserAssets/clash/confirm/(id)",
+              "method": "put"
+            }
+        },
+        {
+            "title": "取消", 
+            "type": "request",
+            "options": {
+              "tips": "确定取消认证吗？",
+              "outside": "true",
+              "API": "/api/crud/house/houseUserAsset/houseUserAssets/clash/cancel/(id)",
+              "method": "put"
+            }
+        },
+        {
+            "title": "拒绝", 
+            "type": "request",
+            "options": {
+              "tips": "确定拒绝认证吗？",
+              "outside": "true",
+              "API": "/api/crud/house/houseUserAsset/houseUserAssets/clash/refuse/(id)",
+              "method": "put"
+            }
+        }
+    ],
+    "searchFields": [
+        {
+          "label": "用户名",
+          "field": "username",
+          "type": "search",
+          "props": {
+            "placeholder": "用户名"
+          }
+        },
+        {
+          "label": "地址",
+          "field": "search",
+          "type": "search",
+          "props": {
+            "placeholder": "小区、楼栋编号、门牌地址"
+          }
+        } 
+      ],
+    "tableFields": [
+        {
+            "label": "用户",
+            "options": {
+              "direction": "left",
+              "fields": [
+                {
+                  "field": "userAvatar",
+                  "type": "image",
+                  "options": {
+                    "circle":true,
+                    "style": {
+                      "width": "55px",
+                      "height": "55px"
+                    }
+                  }
+                },
+                {
+                  "field": "username",
+                  "type": "plain-test",
+                  "options": {
+                    "format": [
+                      "<userName>",
+                      "<userPhone>"
+                    ]
+                  }
+                 
+                }
+              ]
+            },
+            "field": "userAvatar",
+            "align": "left",
+            "valueType": "complex"
+        },
+
+        {
+            "field": "houseAssetModel.communityName", "valueType": "plain-test",
+            "label": "小区名",
+            "align": "left"
+        },
+        {
+            "field": "houseAssetModel.buildingCode", "valueType": "plain-test",
+            "label": "楼栋",
+            "align": "left"
+        },
+        {
+            "field": "houseAssetModel.number", "valueType": "plain-test",
+            "label": "门牌号",
+            "align": "left"
+        },
+        {
+            "field": "unitArea",
+            "label": "面积",
+            "align": "left"
+        },
+        {
+            "field": "clashDescribe",
+            "label": "描述信息",
+            "width":400,
+            "align": "left"
+        },
+       
+        {
+            "field": "clashCertificate",
+            "valueType": "image",
+            "label": "证明材料",
+            "align": "left"
+        },
+
+        {
+            "label": "状态",
+            "field": "solveStatusStr",
+            "valueType": "tag",
+            "options": {
+              "map": {
+                "0": "申诉",
+                "1": "已确认",
+                "2": "拒绝"
+              },
+              "color": {
+                "0": "#17d349",
+                "1": "#DDAF5B",
+                "2": "#D80000"
+              }
+            }
+        },
+        
+        {
+            "field": "createTime",
+            "label": "时间",
+            "align": "left"
+        }
+    ],
+    "viewConfig": [
+        {
+            "field": "userName",
+            "label": "用户姓名",
+            "type": "plain"
+        },
+        {
+            "field": "userPhone",
+            "label": "用户电话",
+            "type": "plain"
+        },
+        
+        {
+            "field": "houseAssetModel.communityName",
+            "label": "小区名",
+            "type": "plain-test"
+        },
+        
+        {
+            "field": "houseAssetModel.buildingCode",
+            "label": "楼栋",
+            "type": "plain-test"
+        },
+        
+        {
+            "field": "houseAssetModel.number",
+            "label": "门牌号",
+            "type": "plain-test"
+        },
+        {
+            "field": "clashCertificate",
+            "label": "证明材料",
+            "type": "image"
+        },
+        {
+            "field": "clashDescribe",
+            "label": "描述信息",
+            "type": "plain"
+        },
+        {
+            "field": "createTime",
+            "label": "时间",
+            "type": "plain"
+        }
+    ]
+}

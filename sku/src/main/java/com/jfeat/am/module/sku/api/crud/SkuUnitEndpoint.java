@@ -1,10 +1,15 @@
 package com.jfeat.am.module.sku.api.crud;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.sku.services.crud.model.SkuUnitModel;
 import com.jfeat.am.module.sku.services.domain.dao.QuerySkuUnitDao;
+import com.jfeat.am.module.sku.services.domain.model.CreateSkuProductModel;
 import com.jfeat.am.module.sku.services.domain.model.SkuUnitRecord;
+import com.jfeat.am.module.sku.services.domain.service.SkuProductService;
 import com.jfeat.am.module.sku.services.domain.service.SkuUnitService;
+import com.jfeat.am.module.sku.services.persistence.model.SkuUnit;
 import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
@@ -37,14 +42,18 @@ public class SkuUnitEndpoint   {
     @Resource
     QuerySkuUnitDao querySkuUnitDao;
 
+    @Resource
+    SkuProductService skuProductService;
+
     @BusinessLog(name = "SkuUnit", value = "create SkuUnit")
-    @PostMapping("/{skuId}/units")
+    @PostMapping("/units")
     @ApiOperation("为 sku 新增 单位")
-    public Tip createSkuUnit(@PathVariable long skuId, @RequestBody SkuUnitModel entity) {
+    public Tip createSkuUnit(@RequestBody SkuUnitModel entity) {
 
         Integer affected = 0;
-        entity.setSkuId(skuId);
+//        entity.setSkuId(skuId);
         try {
+            entity.setSkuId(Long.valueOf(entity.getSkuIdString()));
             affected = skuUnitService.addSlaveItem(entity);
 
         } catch (DuplicateKeyException e) {
@@ -58,7 +67,16 @@ public class SkuUnitEndpoint   {
     @GetMapping("/units/{id}")
     @ApiOperation("查看Sku 单位")
     public Tip getSkuUnit(@PathVariable Long id) {
-        return SuccessTip.create(skuUnitService.getSlaveItem(id));
+
+        SkuUnit skuUnit = skuUnitService.getSlaveItem(id);
+        CreateSkuProductModel skuProductModel = skuProductService.skuTotalDetails(id);
+
+        JSONObject obj = JSON.parseObject(JSON.toJSONString(skuUnit));
+        //临时值
+        obj.put("skuIdString", skuUnit.getSkuId().toString());
+        SkuUnitModel skuUnitModel = JSON.parseObject(JSON.toJSONString(obj), SkuUnitModel.class);
+        skuUnitModel.setSkuName(skuProductModel.getName());
+        return SuccessTip.create(skuUnitModel);
     }
 
     @BusinessLog(name = "SkuUnit", value = "update SkuUnit")
@@ -67,6 +85,8 @@ public class SkuUnitEndpoint   {
     @ApiOperation("修改")
     public Tip updateSkuUnit(@PathVariable Long id, @RequestBody SkuUnitModel entity) {
         entity.setId(id);
+        //临时值
+        entity.setSkuId(Long.valueOf(entity.getSkuIdString()));
         return SuccessTip.create(skuUnitService.updateSlaveItem(entity));
     }
 

@@ -1,0 +1,277 @@
+{
+    "updateAPI": "/api/crud/house/houseAssetExchangeRequest/houseAssetExchangeRequests/[id]",
+    "tableFields": [
+        {
+            "label": "用户",
+            "options": {
+              "align":"left",
+              "fields": [
+                {
+                  "field": "userAvatar",
+                  "type": "image",
+                  "options": {
+                    "circle":true,
+                    "style": {
+                      "width": "55px",
+                      "height": "55px"
+                    }
+                  }
+                },
+                {
+                  "field": "username",
+                  "type": "plain",
+                  "options": {
+                    "format": [
+                      "<username>",
+                      "<userPhone>"
+                    ]
+                  }
+                 
+                }
+              ]
+            },
+            "field": "userAvatar",
+            "align": "left",
+            "valueType": "complex"
+          },
+        {
+            "field": "targetAssetRange",
+            "label": "目标房屋",
+            "align": "left"
+        },
+
+        {
+            "field": "address",
+            "label": "地址",
+            "align": "left"
+        },
+        {
+            "field": "communityName",
+            "label": "小区名",
+            "align": "left"
+        },
+        {
+            "field": "buildingCode",
+            "label": "楼栋编号",
+            "align": "left"
+        },
+        {
+            "field": "houseType",
+            "label": "户型",
+            "align": "left"
+        },
+        {
+            "field": "houseTypePicture",
+            "valueType": "image",
+            "label": "户型图",
+            "align": "left"
+        },
+        {
+            "field": "floor",
+            "label": "楼层",
+            "align": "left"
+        },
+        {
+            "field": "number",
+            "label": "地址门牌号",
+            "align": "left"
+        },
+        {
+            "field": "area",
+            "label": "面积",
+            "align": "left"
+        }
+    ],
+    "listAPI": "/api/crud/house/houseAssetExchangeRequest/houseAssetExchangeRequests",
+    "searchType": "MoreSearch",
+    "columns": 1,
+    "updateFields": [
+        {
+            "field": "address",
+            "label": "地址",
+            "type": "input"
+        },
+        {
+            "field": "area",
+            "label": "面积",
+            "type": "input"
+        },
+        {
+            "field": "buildingCode",
+            "label": "楼栋编号",
+            "type": "input"
+        },
+        {
+            "field": "communityName",
+            "label": "小区名",
+            "type": "input"
+        },
+        {
+            "field": "floor",
+            "label": "楼层",
+            "type": "input"
+        },
+        {
+            "field": "houseType",
+            "label": "户型",
+            "type": "input"
+        },
+        {
+            "field": "houseTypePicture",
+            "label": "户型图",
+            "type": "input"
+        },
+        {
+            "field": "targetAssetRange",
+            "label": "目标房屋",
+            "type": "input"
+        },
+        {
+            "field": "userAvatar",
+            "label": "userAvatar",
+            "type": "input"
+        },
+        {
+            "field": "userPhone",
+            "label": "userPhone",
+            "type": "input"
+        },
+        {
+            "field": "username",
+            "label": "username",
+            "type": "input"
+        }
+    ],
+    "viewConfig": [
+        {
+            "field": "address",
+            "label": "地址",
+            "type": "plain"
+        },
+        {
+            "field": "area",
+            "label": "面积",
+            "type": "plain"
+        },
+        {
+            "field": "buildingCode",
+            "label": "楼栋编号",
+            "type": "plain"
+        },
+        {
+            "field": "communityName",
+            "label": "小区名",
+            "type": "plain"
+        },
+        {
+            "field": "floor",
+            "label": "楼层",
+            "type": "plain"
+        },
+        {
+            "field": "houseType",
+            "label": "户型",
+            "type": "plain"
+        },
+        {
+            "field": "houseTypePicture",
+            "label": "户型图",
+            "type": "plain"
+        },
+        {
+            "field": "targetAssetRange",
+            "label": "目标房屋",
+            "type": "plain"
+        },
+        {
+            "field": "userAvatar",
+            "label": "userAvatar",
+            "type": "plain"
+        },
+        {
+            "field": "userPhone",
+            "label": "userPhone",
+            "type": "plain"
+        },
+        {
+            "field": "username",
+            "label": "username",
+            "type": "plain"
+        }
+    ],
+    "getAPI": "/api/crud/house/houseAssetExchangeRequest/houseAssetExchangeRequests/[id]",
+    "pageName": {
+        "new": "新增",
+        "view": "资产需求详情",
+        "edit": "编辑",
+        "name": "资产需求管理",
+        "table": "资产需求"
+    },
+    "createFields": [
+        {
+            "field": "address",
+            "label": "地址",
+            "type": "input"
+        },
+        {
+            "field": "area",
+            "label": "面积",
+            "type": "input"
+        },
+        {
+            "field": "buildingCode",
+            "label": "楼栋编号",
+            "type": "input"
+        },
+        {
+            "field": "communityName",
+            "label": "小区名",
+            "type": "input"
+        },
+        {
+            "field": "floor",
+            "label": "楼层",
+            "type": "input"
+        },
+        {
+            "field": "houseType",
+            "label": "户型",
+            "type": "input"
+        },
+        {
+            "field": "houseTypePicture",
+            "label": "户型图",
+            "type": "input"
+        },
+        {
+            "field": "targetAssetRange",
+            "label": "目标房屋",
+            "type": "input"
+        },
+        {
+            "field": "userAvatar",
+            "label": "userAvatar",
+            "type": "input"
+        },
+        {
+            "field": "userPhone",
+            "label": "userPhone",
+            "type": "input"
+        },
+        {
+            "field": "username",
+            "label": "username",
+            "type": "input"
+        }
+    ],
+    "layout": {
+        "form": "TitleContent",
+        "table": "Content"
+    },
+    "deleteAPI": "/api/crud/house/houseAssetExchangeRequest/houseAssetExchangeRequests/(id)",
+    "tableOperation": [],
+    "searchButtonType": "text",
+    "createAPI": "/api/crud/house/houseAssetExchangeRequest/houseAssetExchangeRequests",
+    "searchFields": [],
+    "tableActions": []
+}

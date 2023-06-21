@@ -1,0 +1,244 @@
+{
+  "pageName": {
+    "table": "配置项",
+    "new": "添加配置",
+    "edit": "编辑配置",
+    "view": "查看详情"
+  },
+  "listAPI": "/api/adm/config/fields",
+  "createAPI": "/api/adm/config/fields",
+  "getAPI": "/api/adm/config/fields/[id]",
+  "updateAPI": "/api/adm/config/fields/[id]",
+  "deleteAPI": "/api/adm/config/fields/(id)",
+  "columns": 1,
+  "createFields": [
+    {
+      "label": "配置项名",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "title",
+      "align": "center"
+    },
+    {
+      "label": "字段名",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "type": "input",
+      "field": "field",
+      "align": "center",
+      "rules": [
+        {
+          "type": "required"
+        }
+      ]
+    },
+    {
+      "label": "数据类型",
+      "type": "select",
+      "props": {
+        "placeholder": "请选择",
+        "style":{
+          "width": 240
+        }
+      },
+      "options":[
+        {"label":"NUMBER","value": "NUMBER"},
+        {"label":"STRING","value": "STRING"},
+        {"label":"FLOAT","value": "FLOAT"}
+      ],
+      "rules": [
+        {
+          "type": "required"
+        }
+      ],
+      "field": "dataType"
+    },
+    {
+      "label": "描述",
+      "props": {
+        "placeholder": "请输入",
+        "autoSize": {
+          "minRows": 3
+        },
+        "style":{
+          "width": 240
+        }
+      },
+      "type": "text-area",
+      "field": "description",
+      "align": "center"
+    }
+  ],
+  "updateFields": [
+    {
+      "label": "配置项名",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "title",
+      "align": "center"
+    },
+    {
+      "label": "字段名",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "type": "input",
+      "field": "field",
+      "align": "center",
+      "rules": [
+        {
+          "type": "required"
+        }
+      ]
+    },
+    {
+      "label": "数据类型",
+      "type": "select",
+      "props": {
+        "placeholder": "请选择",
+        "style":{
+          "width": 240
+        }
+      },
+      "options":[
+        {"label":"NUMBER","value": "NUMBER"},
+        {"label":"STRING","value": "STRING"},
+        {"label":"FLOAT","value": "FLOAT"}
+      ],
+      "rules": [
+        {
+          "type": "required"
+        }
+      ],
+      "field": "dataType"
+    },
+    {
+      "label": "描述",
+      "props": {
+        "placeholder": "请输入",
+        "autoSize": {
+          "minRows": 3
+        },
+        "style":{
+          "width": 240
+        }
+      },
+      "type": "text-area",
+      "field": "description",
+      "align": "center"
+    }
+  ],
+  "map": {},
+  "layout": {
+    "table": "Content",
+    "form": "TitleContent"
+  },
+  "tableActions": [
+    {
+      "title": "添加配置",
+      "type": "path",
+      "options": {
+        "style": "primary",
+        "path": "configItems/configItems-add"
+      }
+    }
+  ],
+  "tableOperation": [
+    {
+      "title": "编辑",
+      "type": "path",
+      "options": {
+        "style": "path",
+        "path": "configItems/configItems-edit",
+        "outside": true
+      }
+    },
+    {
+      "title": "删除",
+      "type": "delete",
+      "options": {
+        "outside": false,
+        "API": "/api/adm/config/fields/(id)",
+        "method": "delete"
+      },
+      "expect": {
+        "permission": ""
+      }
+    }
+  ],
+  "searchFields": [
+    {
+      "label": "配置项名",
+      "field": "title",
+      "type": "search",
+      "props": {
+        "placeholder": "请输入"
+      }
+    }
+  ],
+  "tableFields": [
+    {
+      "label": "序号",
+      "field": "id",
+      "align": "center"
+    },
+    {
+      "label": "配置项名",
+      "field": "title"
+    },
+    {
+      "label": "字段名",
+      "field": "field"
+    },
+    {
+      "label": "数据类型",
+      "field": "dataType",
+      "align": "center"
+    },
+    {
+      "label": "描述",
+      "field": "description"
+    }
+  ],
+  "viewConfig": [
+    {
+      "label": "配置项名",
+      "field": "title",
+      "type": "plain",
+      "span": 24
+    },
+    {
+      "label": "字段名",
+      "field": "field",
+      "type": "plain",
+      "span": 24
+    },
+    {
+      "label": "数据类型",
+      "field": "dataType",
+      "type": "plain",
+      "span": 24
+    },
+    {
+      "label": "描述",
+      "field": "description",
+      "type": "plain",
+      "span": 24
+    }
+  ]
+}

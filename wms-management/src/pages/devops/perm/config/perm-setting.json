@@ -1,0 +1,157 @@
+{
+  "pageName": {
+    "table": "权限管理",
+    "new": "添加权限",
+    "edit": "编辑权限",
+    "view": "查看详情"
+  },
+  "listAPI": "/api/adm/perm/perms",
+  "createAPI": "/api/adm/perm/perms",
+  "getAPI": "/api/adm/perm/perms/[id]",
+  "updateAPI": "/api/adm/perm/perms/[id]",
+  "deleteAPI": "/api/adm/perm/perms/(id)",
+  "columns": 1,
+  "createFields": [
+    {
+      "label": "权限名称",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "name",
+      "align": "center"
+    },
+    {
+      "label": "识别字符",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "type": "input",
+      "field": "identifier",
+      "align": "center",
+      "rules": [
+        {
+          "type": "required"
+        }
+      ]
+    }
+  ],
+  "updateFields": [
+    {
+      "label": "权限名称",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "name",
+      "align": "center"
+    },
+    {
+      "label": "识别字符",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "type": "input",
+      "field": "identifier",
+      "align": "center",
+      "rules": [
+        {
+          "type": "required"
+        }
+      ]
+    }
+  ],
+  "map": {},
+  "layout": {
+    "table": "Content",
+    "form": "TitleContent"
+  },
+  "tableActions": [
+    {
+      "title": "添加权限",
+      "type": "path",
+      "options": {
+        "style": "primary",
+        "path": "perm/perm-add"
+      }
+    }
+  ],
+  "tableOperation": [
+    {
+      "title": "编辑",
+      "type": "path",
+      "options": {
+        "style": "path",
+        "path": "perm/perm-edit",
+        "outside": true
+      }
+    },
+    {
+      "title": "删除",
+      "type": "delete",
+      "options": {
+        "outside": false,
+        "API": "/api/adm/prem/perms/(id)",
+        "method": "delete"
+      },
+      "expect": {
+        "permission": ""
+      }
+    }
+  ],
+  "searchFields": [
+    {
+      "label": "权限名称",
+      "field": "name",
+      "type": "input",
+      "props": {
+        "placeholder": "请输入"
+      }
+    }
+  ],
+  "tableFields": [
+    {
+      "label": "编号",
+      "field": "id",
+      "align": "center"
+    },
+    {
+      "label": "权限名称",
+      "field": "name"
+    },
+    {
+      "label": "识别字符",
+      "field": "identifier"
+    }
+  ],
+  "viewConfig": [
+    {
+      "label": "编号",
+      "field": "id",
+      "type": "plain",
+      "span": 24
+    },
+    {
+      "label": "权限名称",
+      "field": "name",
+      "type": "plain",
+      "span": 24
+    },
+    {
+      "label": "识别字符",
+      "field": "identifier",
+      "type": "plain",
+      "span": 24
+    }
+  ]
+}

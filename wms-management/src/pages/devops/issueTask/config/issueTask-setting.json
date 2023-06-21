@@ -1,0 +1,792 @@
+{
+  "pageName": {
+    "table": "问题列表",
+    "new": "新增",
+    "view": "问题详情",
+    "edit": "编辑"
+  },
+  "listAPI": "/api/crud/issueTask/issueTasks",
+  "createAPI": "/api/crud/issueTask/issueTasks",
+  "getAPI": "/api/crud/issueTask/issueTasks/[id]",
+  "updateAPI": "/api/crud/issueTask/issueTasks/[id]",
+  "deleteAPI": "/api/crud/issueTask/issueTasks/(id)",
+  "columns": 2,
+  "createFields": [
+    {
+      "label": "标题",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "message": "请输入",
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "title"
+    },
+    {
+      "label": "缺陷名称",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "message": "请输入",
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "name"
+    },
+    {
+      "label": "发起人",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "message": "请输入",
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "originator"
+    },
+    {
+      "label": "跟进人",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "message": "请输入",
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "follower"
+    },
+    {
+      "label": "所属模块",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "message": "请输入",
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "module_name"
+    },
+    {
+      "label": "优先级",
+      "props": {
+        "placeholder": "请选择"
+      },
+      "rules": [
+        {
+          "message": "请选择",
+          "type": "required"
+        }
+      ],
+      "options": [
+        {
+          "label": "最高",
+          "value": "1"
+        },
+        {
+          "label": "较高",
+          "value": "2"
+        },
+        {
+          "label": "高",
+          "value": "3"
+        },
+        {
+          "label": "一般",
+          "value": "4"
+        },
+        {
+          "label": "低",
+          "value": "5"
+        }
+      ],
+      "type": "select",
+      "field": "priority"
+    },
+    {
+      "label": "问题详情",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "message": "请输入正确的网址",
+          "type": "url"
+        }
+      ],
+      "type": "input",
+      "field": "reference_url"
+    },
+    {
+      "label": "问题类型",
+      "rules": [
+        {
+          "message": "请选择",
+          "type": "required"
+        }
+      ],
+      "options": [
+        {
+          "label": "前端问题",
+          "value": "10"
+        },
+        {
+          "label": "后端问题",
+          "value": "11"
+        }
+      ],
+      "type": "radio",
+      "field": "type"
+    },
+    {
+      "label": "状态",
+      "props": {
+        "placeholder": "请选择"
+      },
+      "rules": [
+        {
+          "message": "请选择",
+          "type": "required"
+        }
+      ],
+      "options": [
+        {
+          "label": "无状态",
+          "value": "Undefined"
+        },
+        {
+          "label": "打开",
+          "value": "Open"
+        },
+        {
+          "label": "已修复",
+          "value": "Fixed"
+        },
+        {
+          "label": "已验证",
+          "value": "Verifed"
+        },
+        {
+          "label": "已关闭",
+          "value": "Closed"
+        },
+        {
+          "label": "重复问题",
+          "value": "Duplicated"
+        },
+        {
+          "label": "无计划修改",
+          "value": "NFP"
+        },
+        {
+          "label": "验证失败",
+          "value": "Failure"
+        }
+      ],
+      "type": "select",
+      "field": "status"
+    },
+    {
+      "label": "缺陷简要",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "message": "请输入",
+          "type": "required"
+        }
+      ],
+      "type": "text-area",
+      "field": "brief"
+    },
+    {
+      "label": "备注",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "type": "text-area",
+      "field": "remark",
+      "span": 24
+    }
+  ],
+  "updateFields": [
+    {
+      "label": "标题",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "message": "请输入",
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "title"
+    },
+    {
+      "label": "缺陷名称",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "message": "请输入",
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "name"
+    },
+    {
+      "label": "发起人",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "message": "请输入",
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "originator"
+    },
+    {
+      "label": "跟进人",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "message": "请输入",
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "follower"
+    },
+    {
+      "label": "所属模块",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "message": "请输入",
+          "type": "required"
+        }
+      ],
+      "type": "input",
+      "field": "module_name"
+    },
+    {
+      "label": "优先级",
+      "props": {
+        "placeholder": "请选择"
+      },
+      "rules": [
+        {
+          "message": "请选择",
+          "type": "required"
+        }
+      ],
+      "options": [
+        {
+          "label": "最高",
+          "value": "1"
+        },
+        {
+          "label": "较高",
+          "value": "2"
+        },
+        {
+          "label": "高",
+          "value": "3"
+        },
+        {
+          "label": "一般",
+          "value": "4"
+        },
+        {
+          "label": "低",
+          "value": "5"
+        }
+      ],
+      "type": "select",
+      "field": "priority"
+    },
+    {
+      "label": "问题详情",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "message": "请输入正确的网址",
+          "type": "url"
+        }
+      ],
+      "type": "input",
+      "field": "reference_url"
+    },
+    {
+      "label": "问题类型",
+      "rules": [
+        {
+          "message": "请选择",
+          "type": "required"
+        }
+      ],
+      "options": [
+        {
+          "label": "前端问题",
+          "value": "10"
+        },
+        {
+          "label": "后端问题",
+          "value": "11"
+        }
+      ],
+      "type": "radio",
+      "field": "type"
+    },
+    {
+      "label": "状态",
+      "props": {
+        "placeholder": "请选择"
+      },
+      "rules": [
+        {
+          "message": "请选择",
+          "type": "required"
+        }
+      ],
+      "options": [
+        {
+          "label": "无状态",
+          "value": "Undefined"
+        },
+        {
+          "label": "打开",
+          "value": "Open"
+        },
+        {
+          "label": "已修复",
+          "value": "Fixed"
+        },
+        {
+          "label": "已验证",
+          "value": "Verifed"
+        },
+        {
+          "label": "已关闭",
+          "value": "Closed"
+        },
+        {
+          "label": "重复问题",
+          "value": "Duplicated"
+        },
+        {
+          "label": "无计划修改",
+          "value": "NFP"
+        },
+        {
+          "label": "验证失败",
+          "value": "Failure"
+        }
+      ],
+      "type": "select",
+      "field": "status"
+    },
+    {
+      "label": "缺陷简要",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "rules": [
+        {
+          "message": "请输入",
+          "type": "required"
+        }
+      ],
+      "type": "text-area",
+      "field": "brief"
+    },
+    {
+      "label": "备注",
+      "props": {
+        "placeholder": "请输入"
+      },
+      "type": "text-area",
+      "field": "remark",
+      "span": 24
+    }
+  ],
+  "map": {
+    "priority": {
+      "map": {
+        "1": "最高",
+        "2": "较高",
+        "3": "高",
+        "4": "一般",
+        "5": "低"
+      },
+      "options": [
+        {
+          "label": {
+            "label": "最高"
+          },
+          "value": "1"
+        },
+        {
+          "label": {
+            "label": "较高"
+          },
+          "value": "2"
+        },
+        {
+          "label": {
+            "label": "高"
+          },
+          "value": "3"
+        },
+        {
+          "label": {
+            "label": "一般"
+          },
+          "value": "4"
+        },
+        {
+          "label": {
+            "label": "低"
+          },
+          "value": "5"
+        }
+      ],
+      "color": {}
+    },
+    "type": {
+      "map": {
+        "10": "前端问题",
+        "11": "后端问题"
+      },
+      "options": [
+        {
+          "label": {
+            "label": "前端问题"
+          },
+          "value": "10"
+        },
+        {
+          "label": {
+            "label": "后端问题"
+          },
+          "value": "11"
+        }
+      ],
+      "color": {}
+    },
+    "status": {
+      "map": {
+        "Undefined": "无状态",
+        "Open": "打开",
+        "Fixed": "已修复",
+        "Verifed": "已验证",
+        "Closed": "已关闭",
+        "Duplicated": "重复问题",
+        "NFP": "无计划修改",
+        "Failure": "验证失败"
+      },
+      "options": [
+        {
+          "label": {
+            "label": "无状态",
+            "color": "#FDF5E6"
+          },
+          "value": "Undefined"
+        },
+        {
+          "label": {
+            "label": "打开",
+            "color": "#0000FF"
+          },
+          "value": "Open"
+        },
+        {
+          "label": {
+            "label": "已修复",
+            "color": "#B0C4DE"
+          },
+          "value": "Fixed"
+        },
+        {
+          "label": {
+            "label": "已验证",
+            "color": "#FF8247"
+          },
+          "value": "Verifed"
+        },
+        {
+          "label": {
+            "label": "已关闭",
+            "color": "#C1CDC1"
+          },
+          "value": "Closed"
+        },
+        {
+          "label": {
+            "label": "重复问题",
+            "color": "#8B8B83"
+          },
+          "value": "Duplicated"
+        },
+        {
+          "label": {
+            "label": "无计划修改",
+            "color": "#00FF00"
+          },
+          "value": "NFP"
+        },
+        {
+          "label": {
+            "label": "验证失败",
+            "color": "#FF0000"
+          },
+          "value": "Failure"
+        }
+      ],
+      "color": {
+        "Undefined": "#FDF5E6",
+        "Open": "#0000FF",
+        "Fixed": "#B0C4DE",
+        "Verifed": "#FF8247",
+        "Closed": "#C1CDC1",
+        "Duplicated": "#8B8B83",
+        "NFP": "#00FF00",
+        "Failure": "#FF0000"
+      }
+    }
+  },
+  "layout": {
+    "table": "Content",
+    "form": "TitleContent"
+  },
+  "tableActions": [
+    {
+      "title": "添加",
+      "type": "path",
+      "options": {
+        "style": "primary",
+        "outside": true,
+        "path": "issueTask/issueTask-add"
+      }
+    },
+    {
+      "title": "检查",
+      "type": "request",
+      "options": {
+        "method": "get",
+        "API": "/api/issue/check"
+      }
+    }
+  ],
+  "tableOperation": [
+    {
+      "title": "详情",
+      "type": "path",
+      "options": {
+        "outside": true,
+        "path": "issueTask/issueTask-view"
+      }
+    },
+    {
+      "title": "编辑",
+      "type": "path",
+      "options": {
+        "outside": true,
+        "path": "issueTask/issueTask-edit"
+      }
+    },
+    {
+      "title": "删除",
+      "type": "delete",
+      "options": {
+        "outside": false
+      }
+    }
+  ],
+  "searchFields": [
+    {
+      "label": "问题内容",
+      "field": "search",
+      "type": "input",
+      "props": {
+        "placeholder": "请输入标题/编号"
+      }
+    }
+  ],
+  "tableFields": [
+    {
+      "label": "编号",
+      "field": "ticket"
+    },
+    {
+      "label": "标题",
+      "field": "title"
+    },
+    {
+      "label": "缺陷名称",
+      "field": "name"
+    },
+    {
+      "label": "发起人",
+      "field": "originator"
+    },
+    {
+      "label": "跟进人",
+      "field": "follower"
+    },
+    {
+      "label": "所属模块",
+      "field": "module_name"
+    },
+    {
+      "label": "优先级",
+      "field": "priority",
+      "options": {
+        "map": {
+          "1": "最高",
+          "2": "较高",
+          "3": "高",
+          "4": "一般",
+          "5": "低"
+        }
+      }
+    },
+    {
+      "label": "问题详情",
+      "field": "reference_url"
+    },
+    {
+      "label": "问题类型",
+      "field": "type",
+      "options": {
+        "map": {
+          "10": "前端问题",
+          "11": "后端问题"
+        }
+      }
+    },
+    {
+      "label": "创建时间",
+      "field": "create_time"
+    },
+    {
+      "label": "状态",
+      "field": "status",
+      "valueType": "tag",
+      "options": {
+        "map": {
+          "Undefined": "无状态",
+          "Open": "打开",
+          "Fixed": "已修复",
+          "Verifed": "已验证",
+          "Closed": "已关闭",
+          "Duplicated": "重复问题",
+          "NFP": "无计划修改",
+          "Failure": "验证失败"
+        },
+        "color": {
+          "Undefined": "#FDF5E6",
+          "Open": "#0000FF",
+          "Fixed": "#B0C4DE",
+          "Verifed": "#FF8247",
+          "Closed": "#C1CDC1",
+          "Duplicated": "#8B8B83",
+          "NFP": "#00FF00",
+          "Failure": "#FF0000"
+        }
+      }
+    },
+    {
+      "label": "缺陷简要",
+      "field": "brief"
+    },
+    {
+      "label": "备注",
+      "field": "remark",
+      "valueType": "ellipsis"
+    }
+  ],
+  "viewConfig": {
+    "left": [
+      {
+        "title": "问题详情",
+        "type": "plain",
+        "fields": [
+          {
+            "label": "编号",
+            "field": "ticket"
+          },
+          {
+            "label": "标题",
+            "field": "title"
+          },
+          {
+            "label": "缺陷名称",
+            "field": "name"
+          },
+          {
+            "label": "缺陷简要",
+            "field": "brief"
+          },
+          {
+            "label": "发起人",
+            "field": "originator"
+          },
+          {
+            "label": "跟进人",
+            "field": "follower"
+          },
+          {
+            "label": "所属模块",
+            "field": "module_name"
+          },
+          {
+            "label": "优先级",
+            "field": "priority"
+          },
+          {
+            "label": "问题详情",
+            "field": "reference_url"
+          },
+          {
+            "label": "问题类型",
+            "field": "type"
+          },
+          {
+            "label": "备注",
+            "field": "remark"
+          }
+        ]
+      }
+    ]
+  }
+}

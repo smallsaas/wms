@@ -1,0 +1,327 @@
+{
+    "updateAPI": "/api/crud/house/houseAssetMatchLog/houseAssetMatchLogs/[id]",
+    "tableFields": [
+       
+        {
+            "field": "ownerCommunity",
+            "label": "社区",
+            "align": "left"
+        },
+        {
+            "label": "业主用户",
+            "options": {
+              "direction": "left",
+              "fields": [
+                {
+                  "field": "ownerAvatar",
+                  "type": "image",
+                  "options": {
+                    "circle":true,
+                    "style": {
+                      "width": "55px",
+                      "height": "55px"
+                    }
+                  }
+                },
+                {
+                  "field": "username",
+                  "type": "plain",
+                  "options": {
+                    "format": [
+                      "<ownerName>",
+                      "<ownerPhone>"
+                    ]
+                  }
+                 
+                }
+              ]
+            },
+            "field": "userAvatar",
+            "align": "left",
+            "valueType": "complex"
+          },
+        {
+            "field": "ownerBuilding",
+            "label": "业主楼栋编号",
+            "align": "left"
+        },
+        
+        {
+            "field": "ownerNumber",
+            "label": "业主门牌地址",
+            "align": "left"
+        },
+
+        {
+            "label": "目标用户",
+            "options": {
+              "direction": "left",
+              
+              "fields": [
+                {
+                  "field": "matchedAvatar",
+                  "type": "image",
+                  "options": {
+                    "circle":true,
+                    "style": {
+                      "width": "55px",
+                      "height": "55px"
+                    }
+                  }
+                },
+                {
+                  "field": "username",
+                  "type": "plain",
+                  "options": {
+                    "style": {
+                        "justifyContent": "left" 
+                      },
+                    "format": [
+                      "<matchedName>",
+                      "<matchedPhone>"
+                    ]
+                  }
+                 
+                }
+              ]
+            },
+            "field": "userAvatar",
+            "align": "left",
+            "valueType": "complex"
+          },
+        {
+            "field": "matchedBuilding",
+            "label": "目标楼栋编号",
+            "align": "left"
+        },
+        
+        {
+            "field": "matchedNumber",
+            "label": "目标门牌地址",
+            "align": "left"
+        },
+        {
+            "field": "createTime",
+            "label": "匹配成功时间",
+            "align": "left"
+        }
+    ],
+    "listAPI": "/api/crud/house/houseAssetMatchLog/houseAssetMatchLogs",
+    "searchType": "MoreSearch",
+    "columns": 1,
+    "updateFields": [
+        {
+            "field": "createTime",
+            "label": "匹配成功时间",
+            "type": "input"
+        },
+        {
+            "field": "matchedBuilding",
+            "label": "匹配楼栋编号",
+            "type": "input"
+        },
+        {
+            "field": "matchedCommunity",
+            "label": "匹配社区",
+            "type": "input"
+        },
+        {
+            "field": "matchedName",
+            "label": "匹配用户名",
+            "type": "input"
+        },
+        {
+            "field": "matchedNumber",
+            "label": "匹配资产名",
+            "type": "input"
+        },
+        {
+            "field": "matchedPhone",
+            "label": "匹配电话",
+            "type": "input"
+        },
+        {
+            "field": "ownerBuilding",
+            "label": "业主楼栋编号",
+            "type": "input"
+        },
+        {
+            "field": "ownerCommunity",
+            "label": "业主社区",
+            "type": "input"
+        },
+        {
+            "field": "ownerName",
+            "label": "业主名",
+            "type": "input"
+        },
+        {
+            "field": "ownerNumber",
+            "label": "业主门牌地址",
+            "type": "input"
+        },
+        {
+            "field": "ownerPhone",
+            "label": "业主电话",
+            "type": "input"
+        }
+    ],
+    "viewConfig": [
+        {
+            "field": "createTime",
+            "label": "匹配成功时间",
+            "type": "plain"
+        },
+        {
+            "field": "matchedBuilding",
+            "label": "匹配楼栋编号",
+            "type": "plain"
+        },
+        {
+            "field": "matchedCommunity",
+            "label": "匹配社区",
+            "type": "plain"
+        },
+        {
+            "field": "matchedName",
+            "label": "匹配用户名",
+            "type": "plain"
+        },
+        {
+            "field": "matchedNumber",
+            "label": "匹配资产名",
+            "type": "plain"
+        },
+        {
+            "field": "matchedPhone",
+            "label": "匹配电话",
+            "type": "plain"
+        },
+        {
+            "field": "ownerBuilding",
+            "label": "业主楼栋编号",
+            "type": "plain"
+        },
+        {
+            "field": "ownerCommunity",
+            "label": "业主社区",
+            "type": "plain"
+        },
+        {
+            "field": "ownerName",
+            "label": "业主名",
+            "type": "plain"
+        },
+        {
+            "field": "ownerNumber",
+            "label": "业主门牌地址",
+            "type": "plain"
+        },
+        {
+            "field": "ownerPhone",
+            "label": "业主电话",
+            "type": "plain"
+        }
+    ],
+    "getAPI": "/api/crud/house/houseAssetMatchLog/houseAssetMatchLogs/[id]",
+    "pageName": {
+        "new": "新增",
+        "view": "资产置换",
+        "edit": "编辑",
+        "name": "资产置换",
+        "table": "资产置换"
+    },
+    "createFields": [
+        {
+            "field": "ownerCommunity",
+            "label": "社区",
+            "type": "input"
+        },
+        {
+            "field": "ownerName",
+            "label": "业主名",
+            "type": "input"
+        },
+        {
+            "field": "ownerPhone",
+            "label": "业主电话",
+            "type": "input"
+        },
+        {
+            "field": "ownerBuilding",
+            "label": "业主楼栋编号",
+            "type": "input"
+        },
+        {
+            "field": "ownerNumber",
+            "label": "业主门牌地址",
+            "type": "input"
+        },
+        
+        
+        {
+            "field": "matchedBuilding",
+            "label": "匹配楼栋编号",
+            "type": "input"
+        },
+        {
+            "field": "matchedCommunity",
+            "label": "匹配社区",
+            "type": "input"
+        },
+        {
+            "field": "matchedName",
+            "label": "匹配用户名",
+            "type": "input"
+        },
+        {
+            "field": "matchedNumber",
+            "label": "匹配资产名",
+            "type": "input"
+        },
+        {
+            "field": "matchedPhone",
+            "label": "匹配电话",
+            "type": "input"
+        },{
+            "field": "createTime",
+            "label": "匹配成功时间",
+            "type": "input"
+        }
+    ],
+    "layout": {
+        "form": "TitleContent",
+        "table": "Content"
+    },
+    "deleteAPI": "/api/crud/house/houseAssetMatchLog/houseAssetMatchLogs/(id)",
+    "tableOperation": [],
+    "searchButtonType": "text",
+    "createAPI": "/api/crud/house/houseAssetMatchLog/houseAssetMatchLogs",
+    "searchFields": [
+        {
+          "label": "用户名",
+          "field": "username",
+          "type": "search",
+          "props": {
+            "placeholder": "用户名"
+          }
+        }
+      ],
+    "tableActions": [{
+        "title": "EXCEL下载", 
+        "type": "export",
+        "options": {
+          "outside": true,
+          "API": "/api/io/excel/export/t_house_asset"
+        }
+      }, {
+        "title": "PDF下载", 
+        "type": "request",
+        "options": {
+          "outside": true,
+          "API": "http://demo.smallsaas.cn/api/io/pdf/export/exchange?api=http://demo.smallsaas.cn/api/crud/house/houseAssetMatchLog/houseAssetMatchLogs",
+          "method": "download"
+        }
+      }
+    ]
+}

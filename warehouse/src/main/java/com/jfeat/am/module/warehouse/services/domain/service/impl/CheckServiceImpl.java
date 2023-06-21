@@ -237,7 +237,11 @@ public class CheckServiceImpl extends CRUDCheckServiceImpl implements CheckServi
         JSONObject checkObj = JSON.parseObject(JSON.toJSONString(check));
         List<CheckSkuRecord> records = queryCheckDao.skuRecords(checkId);
         checkObj.put("warehouseName", queryWarehouseDao.warehouseName(check.getWarehouseId()));
-        checkObj.put("skuRecords", records);
+
+        //旧代码
+//        checkObj.put("skuRecords", records);
+        //新代码
+        checkObj.put("checkSkus", records);
         CheckRecord record = JSON.parseObject(JSON.toJSONString(checkObj), CheckRecord.class);
         return record;
     }

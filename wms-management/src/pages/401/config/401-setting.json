@@ -1,0 +1,30 @@
+{
+  "pageName": {
+    "table": "401",
+    "new": "",
+    "edit": ""
+  },
+  "listAPI": "",
+  "createAPI": "",
+  "getAPI": "",
+  "updateAPI": "",
+  "deleteAPI": "",
+  "columns": 1,
+  "createFields": [
+  ],
+  "updateFields": [
+  ],
+  "map": {},
+  "layout": {
+    "table": "Content",
+    "form": "TitleContent"
+  },
+  "tableActions": [ ],
+  "tableOperation": [
+  ],
+  "searchFields": [
+  ],
+  "tableFields": [
+  ],
+  "viewConfig": []
+}
