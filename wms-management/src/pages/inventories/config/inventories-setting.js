@@ -5,7 +5,7 @@ module.exports =  {
   "getSkuAPI": "/api/wms/products/[id]",
   "getAPI": "/api/wms/inventories/skus/[id]?warehouseName=[warehouseName]",
   "updateAPI": "/api/wms/inventories/[id]",
-  "deleteAPI": "/api/wms/warehouses/(id)",
+  "deleteAPI": "/api/wms/inventories/(id)",
   "searchType": "MoreSearch",
   "searchButtonType": "text",
   "pageName": {
@@ -135,122 +135,123 @@ module.exports =  {
       
   ],
   "updateFields": [
-    {
-      "label": "仓库",
-      "field": "warehouseId",
-      "span": 24,
-      "type": "modal-radio",
-      "props": {},
-      "rules": [ "required" ],
-      "options": {
-        "title": "选择仓库",
-        "label": "warehouseName",
-        "editLabel": "warehouseName",
-        "value": "id",
-        "pagination": true,
-        "API": "/api/wms/warehouses",
-        "fields": [
-          {
-            "label": "名称",
-            "field": "warehouseName"
-          }
-        ]
-      }
-    },
     
-    {
-      "label": "商品",
-      "field": "skuId",
-      "span": 24,
-      "type": "modal-radio",
-      "props": {},
-      "rules": [ "required" ],
-      "options": {
-        "title": "选择商品",
-        "label": "skuName",
-        "editLabel": "skuName",
-        "value": "id",
-        "pagination": true,
-        "API": "/api/wms/skus",
-        "fields": [
-          {
-            "label": "名称",
-            "field": "skuName"
-          }
-        ]
-      }
-    },
-    {
-      "label": "最大库存",
-      "type": "number",
-      "field": "maxInventory",
-      "props":{
-          "placeholder":"请输入",
-          "style": {
-            "width": "240px"
-          },
-          "min":0
-      }
-    },
-    {
-      "label": "最小库存",
-      "type": "number",
-      "field": "minInventory",
-      "props":{
-          "placeholder":"请输入",
-          "style": {
-            "width": "240px"
-          },
-          "min":0
-      }
-    },
-    {
-      "label": "有效SKU",
-      "type": "number",
-      "field": "validSku",
-      "props":{
-          "placeholder":"请输入",
-          "style": {
-            "width": "240px"
-          },
-          "min":0
-      }
-    },
-    {
-      "label": "预购数量",
-      "type": "number",
-      "field": "advanceQuantities",
-      "props":{
-          "placeholder":"请输入",
-          "style": {
-            "width": "240px"
-          },
-          "min":0
-      }
-    },
-    {
-      "label": "传输数量",
-      "type": "number",
-      "field": "transmitQuantities",
-      "props":{
-          "placeholder":"请输入",
-          "style": {
-            "width": "240px"
-          },
-          "min":0
-      }
-    },
-    // {
-    //   "label": "盘点时间",
-    //   "type": "date",
-    //   "field": "createTime",
-    //   "props":{
-    //       "placeholder":"请输入",
-    //       "style": {
-    //         "width": "240px"
-    //       }
-    //   }
-    // },
+      {
+        "label": "仓库",
+        "field": "warehouseId",
+        "span": 24,
+        "type": "modal-radio",
+        "props": {},
+        "rules": [ "required" ],
+        "options": {
+          "title": "选择仓库",
+          "label": "warehouseName",
+          "editLabel": "warehouseName",
+          "value": "id",
+          "pagination": true,
+          "API": "/api/wms/warehouses",
+          "fields": [
+            {
+              "label": "名称",
+              "field": "warehouseName"
+            }
+          ]
+        }
+      },
+      
+      {
+        "label": "商品",
+        "field": "skuId",
+        "span": 24,
+        "type": "modal-radio",
+        "props": {},
+        "rules": [ "required" ],
+        "options": {
+          "title": "选择商品",
+          "label": "skuName",
+          "editLabel": "skuName",
+          "value": "id",
+          "pagination": true,
+          "API": "/api/wms/skus",
+          "fields": [
+            {
+              "label": "名称",
+              "field": "skuName"
+            }
+          ]
+        }
+      },
+      {
+        "label": "最大库存",
+        "type": "number",
+        "field": "maxInventory",
+        "props":{
+            "placeholder":"请输入",
+            "style": {
+              "width": "240px"
+            },
+            "min":0
+        }
+      },
+      {
+        "label": "最小库存",
+        "type": "number",
+        "field": "minInventory",
+        "props":{
+            "placeholder":"请输入",
+            "style": {
+              "width": "240px"
+            },
+            "min":0
+        }
+      },
+      {
+        "label": "有效SKU",
+        "type": "number",
+        "field": "validSku",
+        "props":{
+            "placeholder":"请输入",
+            "style": {
+              "width": "240px"
+            },
+            "min":0
+        }
+      },
+      {
+        "label": "预购数量",
+        "type": "number",
+        "field": "advanceQuantities",
+        "props":{
+            "placeholder":"请输入",
+            "style": {
+              "width": "240px"
+            },
+            "min":0
+        }
+      },
+      {
+        "label": "传输数量",
+        "type": "number",
+        "field": "transmitQuantities",
+        "props":{
+            "placeholder":"请输入",
+            "style": {
+              "width": "240px"
+            },
+            "min":0
+        }
+      },
+      // {
+      //   "label": "盘点时间",
+      //   "type": "date",
+      //   "field": "createTime",
+      //   "props":{
+      //       "placeholder":"请输入",
+      //       "style": {
+      //         "width": "240px"
+      //       }
+      //   }
+      // },
   ],
   "layout": {
     "table": "Content",
@@ -290,10 +291,10 @@ module.exports =  {
     //     "path": "/inventories/inventories-edit"
     //   }
     // },
-    // {
-    //   "title": "删除",
-    //   "type": "delete"
-    // }
+    {
+      "title": "删除",
+      "type": "delete"
+    }
   ],
   "searchFields": [
     {
@@ -329,9 +330,8 @@ module.exports =  {
         title: '商品编号', field: 'skuCode', valueType: 'path',
         options: {
           path: '/skus/skus-view',
-          queryData: {
-            type: 'query',
-            id: '{skuId}',
+          query: {
+            id: 'skuId',
           }
         }
       },

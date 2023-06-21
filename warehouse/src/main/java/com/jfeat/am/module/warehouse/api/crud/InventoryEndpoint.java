@@ -4,6 +4,7 @@ import com.jfeat.am.module.warehouse.services.domain.model.SkuStorageDetails;
 import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.tips.ErrorTip;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
@@ -106,7 +107,12 @@ public class InventoryEndpoint   {
 
         Integer affected = 0;
         try {
-            affected += inventoryService.createMaster(entity);
+            Integer count = inventoryService.getInventoryCount(entity.getWarehouseId(), entity.getSkuId());
+            if(count == 0){
+                affected += inventoryService.createMaster(entity);
+            }else{
+                return ErrorTip.create(BusinessCode.DuplicateKey, "仓库已存在此商品, 请重新选择");
+            }
 
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);

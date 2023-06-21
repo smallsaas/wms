@@ -101,7 +101,7 @@ module.exports =  {
           "fields": [
             {
               "label": "商品条码",
-              "field": "skuBarcode"
+              "field": "barCode"
             },
             {
               "label": "商品编号",
@@ -113,7 +113,7 @@ module.exports =  {
             },
             {
               "label": "单位",
-              "field": "skuUnit"
+              "field": "field1"
             }
           ]
         },
@@ -203,7 +203,7 @@ module.exports =  {
         "fields": [
           {
             "label": "商品条码",
-            "field": "skuBarcode"
+            "field": "barCode"
           },
           {
             "label": "商品编号",
@@ -215,7 +215,7 @@ module.exports =  {
           },
           {
             "label": "单位",
-            "field": "skuUnit"
+            "field": "field1"
           }
         ]
       },

@@ -146,11 +146,7 @@ module.exports =  {
     {
       "title": "盘点编号", "field": "checkCode", "valueType": "path",
       "options": {
-        "path": "/checks/checks-view",
-        "queryData": {
-          "type": "query",
-          "id": "{id}"
-        }
+        "path": "/checks/checks-view"
       }
     },
     { "title": "盘点仓库", "field": "warehouseName" },

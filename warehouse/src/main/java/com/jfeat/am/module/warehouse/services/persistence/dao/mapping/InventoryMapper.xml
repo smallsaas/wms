@@ -23,4 +23,8 @@
         id, org_id AS orgId, org_tag AS orgTag, warehouse_id AS warehouseId, order_count as orderCount,slot_id AS slotId, max_inventory AS maxInventory, min_inventory AS minInventory, sku_id AS skuId, valid_sku AS validSku, advance_quantities AS advanceQuantities, transmit_quantities AS transmitQuantities
     </sql>
 
+	<select id="getInventoryCount" resultType="Integer">
+		SELECT count(*) FROM wms_inventory WHERE wms_inventory.warehouse_id = #{warehouseId} AND wms_inventory.sku_id = #{skuId}
+	</select>
+
 </mapper>
