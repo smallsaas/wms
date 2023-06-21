@@ -98,6 +98,15 @@ public class ProductCategoryEndpoint   {
         return SuccessTip.create(productCategoryService.updateMaster(entity));
     }
 
+    @BusinessLog(name = "ProductCategory", value = "delete ProductCategory")
+    @DeleteMapping("/{id}")
+    @Deprecated
+    @ApiOperation("删除 商品分类")
+    public Tip deleteSkuUnit(@PathVariable Long id) {
+        return SuccessTip.create(productCategoryService.deleteMaster(id));
+    }
+
+
 
 
 }

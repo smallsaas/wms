@@ -2,7 +2,7 @@ module.exports = [
     
     {
         "label": "商品编号",
-        "field": "procurementCode",
+        "field": "productCode",
         "type": "serial-code",
         "rules": [ "required" ],
         "props":{
@@ -63,7 +63,7 @@ module.exports = [
         },
         "options":{
           "API":"/api/wms/sku/units",
-          "label":"name",
+          "label":"unitName",
           "value":"id"
         }
       },
@@ -74,6 +74,7 @@ module.exports = [
         "rules": [ "required" ],
         "props":{
             step: 0.01,
+            min: 0,
             "placeholder":"请输入",
             "style":{
               "width":"240px"

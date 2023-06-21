@@ -6,7 +6,7 @@ import config from './config/index';
 export default function () {
   useBreadcrumb([
     { title: '主页', path: '/' },
-    { title: '分销单管理' },
+    { title: '商品库存管理' },
   ]);
 	return <ZEle namespace="skus" config={config} />
   }

@@ -8,10 +8,10 @@ module.exports =  {
   "searchType": "MoreSearch",
   "searchButtonType": "text",
   "pageName": {
-    "table": "单位管理",
+    "table": "商品单位管理",
     "new": "新增",
     "edit": "编辑",
-    "name": "单位管理",
+    "name": "商品单位管理",
     "view": "详情"
   },
   "createFields": [],
@@ -86,72 +86,72 @@ module.exports =  {
     }
   ],
   "tableOperation": [
-    // {
-    //   "title": "编辑",
-    //   "type": "modal",
-    //   "options": {
-    //     "style": "primary",
-    //     "modalTitle": "添加",
-    //     "modalWidth": 600,
-    //     "outside": true,
-    //     "items": [
-    //       {
-    //         "component": 'Form',
-    //         "config": {
-    //           "layout": "Grid",
-    //           "API": {
-    //             "getAPI": '/api/wms/sku/units/(id)',
-    //             "updateAPI": "/api/wms/sku/units/(id)"
-    //           },
-    //           "fields": [
-    //             {
-    //               "label": "商品",
-    //               "field": "skuIdString",
-    //               "type": "modal-radio",
-    //               "rules": [ "required" ],
-    //               "options": {
-    //                 "title": "选择商品",
-    //                 "label": "skuName",
-    //                 "value": "productId",
-    //                 "editLabel": "skuName",
-    //                 "pagination": true,
-    //                 "API": "/api/wms/skus",
-    //                 "fields": [
-    //                   {
-    //                     "label": "商品条码",
-    //                     "field": "barCode"
-    //                   },
-    //                   {
-    //                     "label": "商品编号",
-    //                     "field": "skuCode"
-    //                   },
-    //                   {
-    //                     "label": "商品名称",
-    //                     "field": "skuName"
-    //                   },
-    //                   // {
-    //                   //   "label": "单位",
-    //                   //   "field": "field1"
-    //                   // }
-    //                 ]
-    //               },
-    //               "expect": {}
-    //             },
-    //             {
-    //               field: 'unitName', label: '单位名称', 
-    //               type: 'input', rules: ['required'],
-    //               props: {
-    //                 placeholder: "请输入"
-    //               }
-    //             },
-    //           ]
-    //         }
-    //       }
-    //     ]
-    //   },
-    //   "expect": {
-    //   }
-    // },
+    {
+      "title": "编辑",
+      "type": "modal",
+      "options": {
+        "style": "primary",
+        "modalTitle": "添加",
+        "modalWidth": 600,
+        "outside": true,
+        "items": [
+          {
+            "component": 'Form',
+            "config": {
+              "layout": "Grid",
+              "API": {
+                "getAPI": '/api/wms/sku/units/(id)',
+                "updateAPI": "/api/wms/sku/units/(id)"
+              },
+              "fields": [
+                {
+                  "label": "商品",
+                  "field": "skuIdString",
+                  "type": "modal-radio",
+                  "rules": [ "required" ],
+                  "options": {
+                    "title": "选择商品",
+                    "label": "skuName",
+                    "value": "productId",
+                    "editLabel": "skuName",
+                    "pagination": true,
+                    "API": "/api/wms/skus",
+                    "fields": [
+                      {
+                        "label": "商品条码",
+                        "field": "barCode"
+                      },
+                      {
+                        "label": "商品编号",
+                        "field": "skuCode"
+                      },
+                      {
+                        "label": "商品名称",
+                        "field": "skuName"
+                      },
+                      // {
+                      //   "label": "单位",
+                      //   "field": "field1"
+                      // }
+                    ]
+                  },
+                  "expect": {}
+                },
+                {
+                  field: 'unitName', label: '单位名称', 
+                  type: 'input', rules: ['required'],
+                  props: {
+                    placeholder: "请输入"
+                  }
+                },
+              ]
+            }
+          }
+        ]
+      },
+      "expect": {
+      }
+    },
     {
       "title": "删除",
       "type": "delete",

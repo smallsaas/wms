@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.jfeat.am.module.product.services.domain.service.ProductCategoryService;
 import com.jfeat.am.module.product.services.persistence.dao.ProductMapper;
 import com.jfeat.am.module.product.services.persistence.model.Product;
+import com.jfeat.am.module.product.services.persistence.model.ProductCategory;
 import com.jfeat.am.module.sku.services.crud.filter.SkuProductFilter;
 import com.jfeat.am.module.sku.services.crud.model.SkuProductModel;
 import com.jfeat.am.module.sku.services.crud.service.CRUDSkuProductService;
@@ -65,6 +67,8 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
     QuerySkuProductDao querySkuProductDao;
     @Resource
     SkuUpdateSender skuUpdateSender;
+    @Resource
+    ProductCategoryService productCategoryService;
 
 
     @Transactional
@@ -373,12 +377,17 @@ public class SkuProductServiceImpl extends CRUDSkuProductServiceImpl implements 
 
         SkuProductModel skuProductModel = JSONObject.parseObject(JSONObject.toJSONString(object), SkuProductModel.class);
 
+        //商品信息
         Product product = productMapper.selectById(skuProductModel.getProductId());
         JSONObject productObject = JSON.parseObject(JSON.toJSONString(product));
+
+        //商品分类信息
+        ProductCategory productCategory = productCategoryService.retrieveMaster(product.getProductCategoryId());
 
         List<SkuProductModel> skuProductModels = new ArrayList<>();
         skuProductModels.add(skuProductModel);
         productObject.put("skus", skuProductModels == null ? null : skuProductModels);
+        productObject.put("categoryName", productCategory.getCategoryName());
 
         CreateSkuProductModel productModel = JSONObject.parseObject(JSONObject.toJSONString(productObject), CreateSkuProductModel.class);
         return productModel;

@@ -7,6 +7,10 @@ import java.util.List;
 
 public class CreateSkuProductModel extends Product {
     List<SkuProductModel> skus;
+    /**
+     * 产品类别名称
+     */
+    private String categoryName;
 
     public List<SkuProductModel> getSkus() {
         return skus;
@@ -16,4 +20,11 @@ public class CreateSkuProductModel extends Product {
         this.skus = skus;
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 }

@@ -1,7 +1,7 @@
 module.exports =  {
   "columns": 1,
   "listAPI": "/api/product/categories",
-  "createAPI": "/api",
+  "createAPI": "/api/product/categories",
   "getAPI": "/api/product/categories/[id]",
   "updateAPI": "/api/product/categories/[id]",
   "deleteAPI": "/api/product/categories/(id)",
@@ -16,12 +16,29 @@ module.exports =  {
   },
   "createFields": [
     {
+      "label": "类别编号",
+      "type": "input",
+      "field": "categoryCode",
+      "rules": [ "required" ],
+      "props":{
+          "placeholder":"请输入",
+      },
+    },
+    
+    {
       "label": "类别名称",
       "type": "input",
       "field": "categoryName",
-      "rules": [
-        { "type": "required" }
-      ],
+      "rules": [ "required" ],
+      "props":{
+          "placeholder":"请输入",
+      },
+    },
+    
+    {
+      "label": "类别描述",
+      "type": "input",
+      "field": "categoryDescription",
       "props":{
           "placeholder":"请输入",
       },
@@ -86,7 +103,10 @@ module.exports =  {
     },
     {
       "title": "删除",
-      "type": "delete"
+      "type": "delete",
+      "options": {
+        "outside": true,
+      }
     }
   ],
   "searchFields": [

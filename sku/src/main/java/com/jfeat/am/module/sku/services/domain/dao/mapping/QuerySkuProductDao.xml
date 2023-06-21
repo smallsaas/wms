@@ -34,7 +34,8 @@
 
 
     <select id="findSkuProductPage" resultType="SkuProductRecord" parameterType="SkuProductRecord">
-        SELECT wms_sku_product.*
+        SELECT wms_sku_product.*,
+        wms_product_category.category_name AS  categoryName
         FROM wms_sku_product
 
         left join wms_sku_tag_relation on wms_sku_tag_relation.sku_id = wms_sku_product.id
