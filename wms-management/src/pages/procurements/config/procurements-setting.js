@@ -4,6 +4,8 @@ module.exports =  {
   "createAPI": "/api/wms/procurements",
   "getAPI": "/api/wms/procurements/[id]",
   "updateAPI": "/api/wms/procurements/[id]",
+  "passAPI": "/api/wms/procurements/[id]/passed",
+  "refuseAPI": "/api/wms/procurements/[id]/closed",
   "deleteAPI": "/api/wms/procurements/(id)",
   "searchType": "MoreSearch",
   "searchButtonType": "text",
@@ -222,6 +224,124 @@ module.exports =  {
       "expect": {}
     },
   ],
+  "warehousingFields":[
+    {
+      "label": "入库仓库",
+      "field": "field1",
+      "span": 24,
+      "type": "modal-radio",
+      "props": {},
+      "rules": [ "required" ],
+      "options": {
+        "title": "选择商品",
+        "label": "warehouseName",
+        "editLabel": "warehouseName",
+        "value": "id",
+        "pagination": true,
+        "API": "/api/wms/warehouses",
+        "fields": [
+          {
+            "label": "名称",
+            "field": "warehouseName"
+          }
+        ]
+      }
+    },
+    {
+      "label": "入库单号",
+      "field": "field2",
+      "type": "serial-code",
+      "rules": [ "required" ],
+      "props":{
+          "placeholder":"请输入",
+          "prefixValue": "IN"
+      },
+    },
+    {
+      "label": "操作时间",
+      "field": "transactionTime",
+      "type": "date",
+      "rules": [],
+      "props":{
+          "placeholder":"请选择",
+          "style":{
+            "width": "240px"
+          }
+      },
+    },
+    {
+      "label": "经办员",
+      "field": "transactionBy",
+      "type": "input",
+      "rules": [],
+      "props":{
+          "placeholder":"请输入",
+      },
+    },
+    {
+      "label": "制单人ID",
+      "field": "originatorId",
+      "type": "input",
+      "rules": ["required"],
+      "props":{
+          "placeholder":"请输入",
+      },
+    },
+    {
+      "label": "制单人",
+      "field": "originatorName",
+      "type": "input",
+      "rules": ["required"],
+      "props":{
+          "placeholder":"请输入",
+      },
+    },
+    {
+      "label": "入库商品",
+      "field": "items",
+      "type": "modal-checkbox",
+      "rules": [ "required" ],
+      "options": {
+        "title": "选择商品",
+        "label": "skuName",
+        "value": "id",
+        "pagination": true,
+        "API": "/api/wms/inventories",
+        "fields": [
+          {
+            "label": "商品条码",
+            "field": "skuBarcode"
+          },
+          {
+            "label": "商品编号",
+            "field": "skuCode"
+          },
+          {
+            "label": "商品名称",
+            "field": "skuName"
+          },
+          {
+            "label": "数量",
+            "field": "validSku"
+          },
+          {
+            "label": "单位",
+            "field": "skuUnit"
+          }
+        ]
+      },
+      "expect": {}
+    },
+    {
+      "label": "备注",
+      "field": "note",
+      "type": "input",
+      "rules": [],
+      "props":{
+          "placeholder":"请输入",
+      },
+    },
+  ],
   "layout": {
     "table": "Content",
     "form": "TitleContent"
@@ -241,25 +361,73 @@ module.exports =  {
   ],
   "tableOperation": [
     {
-      "title": "查看",
+      "title": "入库",
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/procurements/procurements-view"
+        "path": "/procurements/procurements-warehousing",
+      },
+      "expect":{
+        "field": "procureStatus",
+        "value": "/(Audit_Passed|SectionStorageIn)/"
+      }
+    },
+    
+    {
+      "title": "提交审核",
+      "type": "path",
+      "options": {
+        "outside": true,
+        "path": "/procurements/procurements-submitAudit",
+      },
+      "expect":{
+        "field": "procureStatus",
+        "value": "Draft"
+      }
+    },
+        
+    {
+      "title": "审核",
+      "type": "path",
+      "options": {
+        "outside": true,
+        "path": "/procurements/procurements-audit",
+      },
+      "expect":{
+        "field": "procureStatus",
+        "value": "Wait_To_Audit"
+      }
+    },
+    {
+      "title": "查看",
+      "type": "path",
+      "options": {
+        "path": "/procurements/procurements-view",
+        "query": {
+          "id": "id",
+          "procureStatus": "procureStatus"
+        }
       }
     },
     {
       "title": "编辑",
       "type": "path",
       "options": {
-        "outside": true,
         "path": "/procurements/procurements-edit"
+      },
+      "expect":{
+        "field": "procureStatus",
+        "value": "Draft"
       }
     },
-    // {
-    //   "title": "删除",
-    //   "type": "delete"
-    // }
+    {
+      "title": "删除",
+      "type": "delete",
+      "expect":{
+        "field": "procureStatus",
+        "value": "Wait_To_Audit"
+      }
+    }
   ],
   "searchFields": [
     {
@@ -297,11 +465,10 @@ module.exports =  {
     {
       title: '采购单编号', field: 'procurementCode', valueType: 'path',
       options: {
-        path: '/procurements',
-        queryData: {
-          type: 'query',
-          id: '{id}',
-          tabs: '1',
+        path: '/procurements/procurements-view',
+        query: {
+          id: "id",
+          procureStatus: "procureStatus"
         }
       }
     },
@@ -316,15 +483,65 @@ module.exports =  {
         "theme":"status",
         "options": {
           "map": {
-            'Audit_Passed': '待入库',
+            'WaitForStorageIn': '等待入库',
             'SectionStorageIn': '部分入库',
             'TotalStorageIn': '全部入库',
-            'Closed': '关闭'
+            'Draft': '草稿',
+            'Wait_To_Audit': '待审核',
+            'Audit_Passed': '审核通过',
+            'Closed': '关闭',
           }
         }
     }
   ],
   "viewConfig": [
-    
+    { "label": "采购单编号", "field": "procurementCode", "type": "plain" },
+    { "label": "供应商", "field": "supplierName", "type": "plain" },
+    { "label": "采购员", "field": "transactionBy", "type": "plain" },
+    { "label": "采购日期", "field": "procurementTime", "type": "plain"},
+    { "label": "制单人", "field": "originatorName", "type": "plain" },
+    { "label": "备注", "field": "procurementNote", "type": "plain"},
+
+    {
+      "field": "items",
+      "label": "",
+      "type": "one-mary",
+      "options": {
+        "fields": [
+            { "title": "商品条码", "field": "skuBarcode" },
+            { "title": "商品编号", "field": "skuCode" },
+            { "title": "商品名称", "field": "skuName" },
+            { "title": "需求数量", "field": "demandQuantities" },
+            { "title": "采购数量", "field": "transactionQuantities" },
+            { "title": "已入库数量", "field": "sectionInCount" },
+            { "title": "采购单价", "field": "transactionSkuPrice", "valueType": "currency" },
+            // { "title": "采购总价", "field": "transactionTotalSkuPrice", "valueType": "currency" },
+            { "title": "单位", "field": "skuUnit" },
+        ]
+      }
+    }
+  ],
+  "inHistoriesViewConfig": [
+    { "label": "采购单编号", "field": "procurementCode", "type": "plain" },
+    { "label": "供应商", "field": "supplierName", "type": "plain" },
+    { "label": "创建时间：", "field": "transactionTime", "type": "plain"},
+    { "label": "制单人", "field": "originatorName", "type": "plain" },
+    { "label": "备注", "field": "procurementNote", "type": "plain"},
+    {
+      "field": "inHistories",
+      "label": "",
+      "type": "one-mary",
+      "options": {
+        "fields": [
+            { "title": "商品条码", "field": "skuBarcode" },
+            { "title": "入库时间", "field": "transactionTime" },
+            { "title": "商品编号", "field": "skuCode" },
+            { "title": "商品名称", "field": "skuName" },
+            { "title": "入库数量", "field": "transactionQuantities" },
+            { "title": "入库价格", "field": "transactionSkuPrice", "valueType": "currency" },
+            { "title": "单位", "field": "skuUnit" }
+        ]
+      }
+    }
   ]
 }

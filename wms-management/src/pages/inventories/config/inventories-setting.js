@@ -361,26 +361,26 @@ module.exports =  {
       "type": "one-mary",
       "options": {
         "fields": [
-            { "title": "仓库名", "field": "warehouseName" },
-            { "title": "类型", "field": "transactionType", "valueType": "tag",
-                "theme":"status",
-                "options": {
-                  "map": {
-                    'Procurement': '采购',
-                    'Refund': '退货',
-                    'SalesIn': '销售入库',
-                    'SalesOut': '销售出库',
-                    'TransferIn': '调拨出库',
-                    'TransferOut': '调拨入库',
-                    'StorageIn': '入库',
-                    'StorageOut': '出库',
-                    'OthersStorageOut': '其他出库',
-                    'OthersStorageIn': '其他入库',
-                    'CustomerStorageOut': '分销商出库',
-                    'checkUpdate': '盘点更新'
-                  }
+          { "title": "仓库名", "field": "warehouseName" },
+          { "title": "类型", "field": "transactionType", "valueType": "tag",
+              "theme":"status",
+              "options": {
+                "map": {
+                  'Procurement': '采购',
+                  'Refund': '退货',
+                  'SalesIn': '销售入库',
+                  'SalesOut': '销售出库',
+                  'TransferIn': '调拨出库',
+                  'TransferOut': '调拨入库',
+                  'StorageIn': '入库',
+                  'StorageOut': '出库',
+                  'OthersStorageOut': '其他出库',
+                  'OthersStorageIn': '其他入库',
+                  'CustomerStorageOut': '分销商出库',
+                  'checkUpdate': '盘点更新'
                 }
-            }
+              }
+          }
         ]
       }
     }

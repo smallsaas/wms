@@ -234,7 +234,7 @@ export default function BaseForm(props) {
 
         apiPath = apiPath.replace('[id]', currentId)
 
-        promiseAjax(getEndpoint()+apiPath,{}, {method: 'PUT'}).then(handleResponse)
+        promiseAjax(getEndpoint()+apiPath, initData.current, {method: 'PUT'}).then(handleResponse)
         // form.submit();
     }
 
