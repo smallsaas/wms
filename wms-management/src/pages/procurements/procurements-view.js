@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import ZEle from 'zero-element';
 import { history } from 'umi';
 import useBreadcrumb from '@/framework/useBreadcrumb';
-import { useDidMount, useWillUnmount, useForceUpdate } from 'zero-element/lib/utils/hooks/lifeCycle';
+import { get as getEndpoint } from 'zero-element/lib/utils/request/endpoint';
 
-import { viewConf, logsConf } from './config/procurements-view';
-import historyConf from './config/procurements-inHistories-view';
+import { viewConf, logsConf, warehousingConf } from './config/procurements-view';
 
 import { Tabs, Button, Space } from 'antd'
 
@@ -17,13 +16,12 @@ export default function (props) {
 
     const { id, procureStatus } = props.location.query;
     const [ tabIndex, setTabIndex ] = useState('1')
-    const [ logStatus, setLogStatus ] = useState(false)
     
 
     //显示日志
-    const showLogs = () => {
+    const ShowLogs = () => {
       logsConf.items[1].config.API.listAPI = `/api/logs?targetType=purchase&targetId=${id}`
-      setLogStatus(true)
+      return <ZEle namespace="procurements-logs" config={logsConf} />
     }
     
     //获取tab index
@@ -36,6 +34,7 @@ export default function (props) {
       history.goBack()
     }
 
+    //跳转至入库操作页面
     function showWarehousingForm () {
       history.push({
         pathname: "/procurements/procurements-warehousing",
@@ -44,10 +43,29 @@ export default function (props) {
         }
       })
     }
+
+    const print = () => {
+      const link = document.createElement('a');
+      link.target = '_blank';
+      link.href = `${getEndpoint()}/api/pub/cloud/io/pdf/out/deliver?identifier=${id}&key=94a08da1fecbb6e8b46990538c7b50b2`;
+      link.click();
+  
+    }
+    const exportAction = () => {
+      const link = document.createElement('a');
+      link.target = '_blank';
+      link.href = `${getEndpoint()}/api/pub/poi/agent/export/wms/procurement/${id}?key=94a08da1fecbb6e8b46990538c7b50b2`;
+      link.click();
+    }
     
     //右边按钮
     const operations = <Space>
-      { tabIndex === '1' ? <Button type='primary' onClick={()=>showLogs()} >日志记录</Button> : null}
+      { tabIndex === '1' ? (
+        <>
+          <Button type="primary" onClick={exportAction}>导出</Button>
+          <Button type="primary" onClick={print}>打印</Button>
+        </>
+      ):null}
       { tabIndex === '2' && ( procureStatus === 'Audit_Passed' || procureStatus === 'SectionStorageIn') ? <Button type='primary' onClick={() => showWarehousingForm()} >入库</Button> : null}
       <Button onClick={back}>返回</Button>
     </Space>
@@ -64,12 +82,12 @@ export default function (props) {
           <Tabs.TabPane tab="订单详情" key="1">
             <ZEle namespace="procurements-view" config={viewConf} />
             
-            { tabIndex === "1" && logStatus ? (
-              <ZEle namespace="procurements-logs" config={logsConf} />
+            { tabIndex === "1" ? (
+              <ShowLogs/>
             ): <></>}
           </Tabs.TabPane>
           <Tabs.TabPane tab="商品入库" key="2">
-            <ZEle namespace="procurements-history-view" config={historyConf} />
+            <ZEle namespace="procurements-history-view" config={warehousingConf} />
           </Tabs.TabPane>
         </Tabs>
       </div>

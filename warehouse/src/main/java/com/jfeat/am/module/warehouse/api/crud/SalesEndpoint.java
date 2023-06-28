@@ -125,6 +125,8 @@ public class SalesEndpoint {
     public Tip updateSales(@PathVariable Long id, @RequestBody SalesModel entity) {
         entity.setId(id);
         Long userId = JWTKit.getUserId();
+        String userName = JWTKit.getAccount();
+        entity.setOriginatorName(userName);
         Tip resultTip = SuccessTip.create(salesService.updateSales(userId, id, entity));
 
         createSalesLog(id, "updateSales", "对分销商出库进行了更新操作", JSONObject.toJSONString(entity) + " & " + id + " &");

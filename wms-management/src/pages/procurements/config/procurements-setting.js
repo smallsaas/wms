@@ -520,7 +520,7 @@ module.exports =  {
       }
     }
   ],
-  "inHistoriesViewConfig": [
+  "warehousingViewConfig": [
     { "label": "采购单编号", "field": "procurementCode", "type": "plain" },
     { "label": "供应商", "field": "supplierName", "type": "plain" },
     { "label": "创建时间：", "field": "transactionTime", "type": "plain"},

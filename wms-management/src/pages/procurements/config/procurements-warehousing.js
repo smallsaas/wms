@@ -8,7 +8,8 @@ module.exports = {
       component: 'Form',
       config: {
         API: {
-            createAPI: "/api/wms/procurements/[id]/execution",
+          getAPI: setting.getAPI,
+          updateAPI: "/api/wms/procurements/[id]/execution",
         },
         layout: 'Grid',
         layoutConfig: {

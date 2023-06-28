@@ -55,7 +55,31 @@ const logsConf = {
   ],
 }
 
+const warehousingConf = {
+  layout: setting.layout.form,
+  title: '',
+  items: [
+    {
+      component: 'Form',
+      config: {
+        API: {
+          getAPI: setting.getAPI,
+        },
+        layout: 'Grid',
+        layoutConfig: {
+          value: Array(setting.columns).fill(~~(24 / setting.columns)),
+        },
+        fields: setting.warehousingViewConfig || setting.formFields,
+        otherProps: {
+          footerButton: false
+        }
+      },
+    },
+  ],
+}
+
 export {
   viewConf,
-  logsConf
+  logsConf,
+  warehousingConf
 }
