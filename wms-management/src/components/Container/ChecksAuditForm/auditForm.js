@@ -222,6 +222,12 @@ export default function BaseForm(props) {
   //   forceUpdate();
   // }
 
+  function changeValue(data){
+    Object.keys(data).map(key => {
+      initData.current[key] = data[key]
+    })
+  }
+
   function renderFooter() {
     function onSubmit(status) {
         let apiPath = '';
@@ -259,7 +265,7 @@ export default function BaseForm(props) {
           labelCol={defaultLabelCol}
           wrapperCol={defaultWrapperCol}
           initialValues={initData.current}
-          onValuesChange={onValuesChange}
+          onValuesChange={changeValue}
           onFinish={handleSubmitForm}
         >
           <Render n={layout} {...layoutConfig}>

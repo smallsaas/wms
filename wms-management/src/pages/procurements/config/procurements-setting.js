@@ -23,7 +23,6 @@ module.exports =  {
         "type": "serial-code",
         "rules": [ "required" ],
         "props":{
-            "placeholder":"请输入",
             "prefixValue": "PUR"
         },
       },
