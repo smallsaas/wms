@@ -110,6 +110,14 @@ module.exports =  {
     }
   ],
   "searchFields": [
+    {
+      "field": "categoryName",
+      "label": "类别名称",
+      "type": "input",
+      "props": {
+        "placeholder": "请输入"
+      }
+    },
   ],
   "tableFields": [
     { title: '类别编号', field: 'categoryCode' },

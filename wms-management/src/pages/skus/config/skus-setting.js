@@ -33,19 +33,19 @@ module.exports =  {
   ],
   "tableOperation": [
     {
-      "title": "详情",
-      "type": "path",
-      "options": {
-        "outside": true,
-        "path": "/skus/skus-view"
-      }
-    },
-    {
       "title": "编辑",
       "type": "path",
       "options": {
         "outside": true,
         "path": "/skus/skus-edit"
+      }
+    },
+    {
+      "title": "详情",
+      "type": "path",
+      "options": {
+        "outside": true,
+        "path": "/skus/skus-view"
       }
     },
     {
@@ -76,26 +76,22 @@ module.exports =  {
     {
       title: "商品编号", field: "skuCode", valueType: "path",
       options: {
-        path: "/skus/skus-view",
-        queryData: {
-          type: "query",
-          id: "{id}",
-        }
+        path: "/skus/skus-view"
       }
     },
     { title: "商品名称", field: "skuName" },
     { title: "商品分类", field: "categoryName" },
-    // { title: "价格", field: "skuPrice", valueType: "currency" },
     { title: "条形码", field: "barCode" },
     { title: "单位", field: "field1" },
-    { title: "参考成本价", field: "costPrice" },
+    { title: "价格", field: "skuPrice", valueType: "currency" },
+    { title: "参考成本价", field: "costPrice", valueType: "currency" },
     {  title: "创建时间", field: "createTime" }
   ],
   "viewConfig": [
     { "label": "商品编号", "field": "productCode", "type": "plain" },
+    { "label": "商品名称", "field": "name", "type": "plain" },
     { "label": "商品分类", "field": "categoryName", "type": "plain" },
     { "label": "条形码", "field": "barCode", "type": "plain" },
-    { "label": "商品名称", "field": "name", "type": "plain" },
     { "label": "单位", "field": "field1", "type": "plain" },
     { "label": "参考成本价格", "field": "costPrice", "type": "plain" },
     { "label": "商品规格", "field": "spec", "type": "plain" },
