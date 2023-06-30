@@ -31,6 +31,10 @@ module.exports = [
   {
     name: "商品单位管理",
     path: "/units"
+  },
+  {
+    name: "入库管理",
+    path: "/storagesIn"
   }
 
 ]
