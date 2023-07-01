@@ -33,7 +33,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "style":"primary",
-        "path": "/checks/checks-add"
+        "path": "/wms/checks/checks-add"
       },
       "expect": {
         "permission": ""
@@ -46,7 +46,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": false,
-        "path": "/checks/checks-view"
+        "path": "/wms/checks/checks-view"
       }
     },
     {
@@ -54,7 +54,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/checks/checks-edit"
+        "path": "/wms/checks/checks-edit"
       },
       expect: {
         field: "status",
@@ -66,7 +66,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": false,
-        "path": "/checks/checks-checking"
+        "path": "/wms/checks/checks-checking"
       },
       expect:{
         field: "status",
@@ -78,7 +78,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": false,
-        "path": "/checks/checks-checkGoOn"
+        "path": "/wms/checks/checks-checkGoOn"
       },
       expect:{
         field: "status",
@@ -105,7 +105,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": false,
-        "path": "/checks/checks-audit"
+        "path": "/wms/checks/checks-audit"
       },
       expect:{
         field: "status",
@@ -146,7 +146,7 @@ module.exports =  {
     {
       "title": "盘点编号", "field": "checkCode", "valueType": "path",
       "options": {
-        "path": "/checks/checks-view"
+        "path": "/wms/checks/checks-view"
       }
     },
     { "title": "盘点仓库", "field": "warehouseName" },

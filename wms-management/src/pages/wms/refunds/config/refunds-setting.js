@@ -317,7 +317,7 @@ module.exports =  {
       "title":"添加","type":"path",
       "options":{
           "style":"primary", 
-          "path":"/refunds/refunds-add"
+          "path":"/wms/refunds/refunds-add"
       }
     }
   ],
@@ -328,7 +328,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/refunds/refunds-submitAudit",
+        "path": "/wms/refunds/refunds-submitAudit",
       },
       "expect":{
         "field": "productRefundStatus",
@@ -340,7 +340,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/refunds/refunds-audit",
+        "path": "/wms/refunds/refunds-audit",
       },
       "expect":{
         "field": "productRefundStatus",
@@ -352,7 +352,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/refunds/refunds-edit"
+        "path": "/wms/refunds/refunds-edit"
       },
       "expect":{
         "field": "productRefundStatus",
@@ -363,7 +363,7 @@ module.exports =  {
       "title": "详情",
       "type": "path",
       "options": {
-        "path": "/refunds/refunds-view"
+        "path": "/wms/refunds/refunds-view"
       }
     },
     {
@@ -406,11 +406,7 @@ module.exports =  {
     {
       title: '退货单编号', field: 'productRefundCode', valueType: 'path',
       options: {
-        path: '/refunds/refunds-view',
-        queryData: {
-          type: 'query',
-          id: '{id}',
-        }
+        path: '/wms/refunds/refunds-view'
       }
     },
     { title: '退货数量', field: 'productRefundQuantities' },

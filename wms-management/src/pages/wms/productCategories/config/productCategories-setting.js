@@ -88,7 +88,7 @@ module.exports =  {
       "title":"添加","type":"path",
       "options":{
           "style":"primary",
-          "path":"/productCategories/productCategories-add"
+          "path":"/wms/productCategories/productCategories-add"
       }
     }
   ],
@@ -98,7 +98,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/productCategories/productCategories-edit"
+        "path": "/wms/productCategories/productCategories-edit"
       }
     },
     {

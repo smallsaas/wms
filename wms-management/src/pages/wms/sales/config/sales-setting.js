@@ -397,7 +397,7 @@ module.exports =  {
       "title":"添加","type":"path",
       "options":{
           "style":"primary",
-          "path":"/sales/sales-add"
+          "path":"/wms/sales/sales-add"
       }
     }
   ],
@@ -407,7 +407,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/sales/sales-warehouseOut"
+        "path": "/wms/sales/sales-warehouseOut"
       },
       "expect":{
         "field": "salesStatus",
@@ -419,7 +419,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/sales/sales-audit"
+        "path": "/wms/sales/sales-audit"
       },
       "expect":{
         "field": "salesStatus",
@@ -431,7 +431,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/sales/sales-edit"
+        "path": "/wms/sales/sales-edit"
       },
       "expect":{
         "field": "salesStatus",
@@ -443,7 +443,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/sales/sales-view",
+        "path": "/wms/sales/sales-view",
         "query": {
           "id": "id",
           "salesStatus": "salesStatus"
@@ -488,7 +488,7 @@ module.exports =  {
     {
       title: '订单编号', field: 'salesCode', valueType: 'path',
       options: {
-        path: '/sales/sales-view',
+        path: '/wms/sales/sales-view',
       }
     },
     { title: '分销商', field: 'traderName' },

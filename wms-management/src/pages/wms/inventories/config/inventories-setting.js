@@ -263,7 +263,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "style":"primary",
-        "path": "/inventories/inventories-add"
+        "path": "/wms/inventories/inventories-add"
       },
       "expect": {
         "permission": ""
@@ -276,7 +276,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/inventories/inventories-view",
+        "path": "/wms/inventories/inventories-view",
         "query":{
           "id": "skuId",
           "warehouseName": "warehouseName"

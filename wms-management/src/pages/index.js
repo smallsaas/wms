@@ -19,7 +19,7 @@ export default function () {
   // console.log('getToken =', window.location.href)
 
   setTimeout(() => {
-      history.push('/checks');
+      history.push('/home');
     // if (getToken()) {
     //   history.push('/home');
     // } else {

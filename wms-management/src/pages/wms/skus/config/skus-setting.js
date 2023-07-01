@@ -27,7 +27,7 @@ module.exports =  {
       "title":"添加","type":"path",
       "options":{
           "style":"primary",
-          "path":"/skus/skus-add"
+          "path":"/wms/skus/skus-add"
       }
     }
   ],
@@ -37,7 +37,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/skus/skus-edit"
+        "path": "/wms/skus/skus-edit"
       }
     },
     {
@@ -45,7 +45,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/skus/skus-view"
+        "path": "/wms/skus/skus-view"
       }
     },
     {
@@ -76,7 +76,7 @@ module.exports =  {
     {
       title: "商品编号", field: "skuCode", valueType: "path",
       options: {
-        path: "/skus/skus-view"
+        path: "/wms/skus/skus-view"
       }
     },
     { title: "商品名称", field: "skuName" },

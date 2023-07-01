@@ -351,7 +351,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "style":"primary",
-        "path": "/procurements/procurements-add"
+        "path": "/wms/procurements/procurements-add"
       },
       "expect": {
         "permission": ""
@@ -364,7 +364,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/procurements/procurements-warehousing",
+        "path": "/wms/procurements/procurements-warehousing",
       },
       "expect":{
         "field": "procureStatus",
@@ -377,7 +377,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/procurements/procurements-submitAudit",
+        "path": "/wms/procurements/procurements-submitAudit",
       },
       "expect":{
         "field": "procureStatus",
@@ -390,7 +390,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/procurements/procurements-audit",
+        "path": "/wms/procurements/procurements-audit",
       },
       "expect":{
         "field": "procureStatus",
@@ -401,7 +401,7 @@ module.exports =  {
       "title": "查看",
       "type": "path",
       "options": {
-        "path": "/procurements/procurements-view",
+        "path": "/wms/procurements/procurements-view",
         "query": {
           "id": "id",
           "procureStatus": "procureStatus"
@@ -412,7 +412,7 @@ module.exports =  {
       "title": "编辑",
       "type": "path",
       "options": {
-        "path": "/procurements/procurements-edit"
+        "path": "/wms/procurements/procurements-edit"
       },
       "expect":{
         "field": "procureStatus",
@@ -464,7 +464,7 @@ module.exports =  {
     {
       title: '采购单编号', field: 'procurementCode', valueType: 'path',
       options: {
-        path: '/procurements/procurements-view',
+        path: '/wms/procurements/procurements-view',
         query: {
           id: "id",
           procureStatus: "procureStatus"

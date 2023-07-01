@@ -260,7 +260,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "style":"primary",
-        "path": "/storagesIn/storagesIn-add"
+        "path": "/wms/storagesIn/storagesIn-add"
       },
       "expect": {
         "permission": ""
@@ -273,7 +273,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/storagesIn/storagesIn-edit"
+        "path": "/wms/storagesIn/storagesIn-edit"
       },
       "expect":{
         "field": "status",
@@ -285,7 +285,7 @@ module.exports =  {
       "type": "path",
       "options": {
         "outside": true,
-        "path": "/storagesIn/storagesIn-audit"
+        "path": "/wms/storagesIn/storagesIn-audit"
       },
       "expect":{
         "field": "status",
@@ -351,7 +351,7 @@ module.exports =  {
     {
       title: '入库单编号', field: 'transactionCode', valueType: 'path',
       options: {
-        path: '/storagesIn/storagesIn-view',
+        path: '/wms/storagesIn/storagesIn-view',
       }
     },
     { title: '入库时间', field: 'transactionTime' },
