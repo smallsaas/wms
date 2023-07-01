@@ -38,6 +38,10 @@ module.exports = [
       {
         name: "入库管理",
         path: "/wms/storagesIn"
+      },
+      {
+        name: "出库管理",
+        path: "/wms/storagesOut"
       }
     ]
   },
