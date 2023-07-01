@@ -62,6 +62,9 @@ import FITSet_serialCode from '@/components/FormItemType/SerialCode';
 //库存盘点审核组件
 import CSet_AuditForm from '@/components/Container/ChecksAuditForm/auditForm';
 
+// wms components
+import VTSet_pcdFormat from '@/valueType/pcdFormat';
+
 
 //配置 
 import { Config } from './devConfig'
@@ -174,5 +177,6 @@ AITSet({
 VTSet({
   'path': vPath,
   'input-switch' : VTSet_InputSwitch,
-  'plain-test': VTSet_plain
+  'plain-test': VTSet_plain,
+  'pcd-format': VTSet_pcdFormat
 });

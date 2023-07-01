@@ -42,6 +42,10 @@ module.exports = [
       {
         name: "出库管理",
         path: "/wms/storagesOut"
+      },
+      {
+        name: "供应商管理",
+        path: "/wms/suppliers"
       }
     ]
   },
