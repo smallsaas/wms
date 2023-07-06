@@ -6,7 +6,7 @@ import config from './config/index';
 export default function () {
   useBreadcrumb([
     { title: '主页', path: '/' },
-    { title: '供应商管理' },
+    { title: '调拨管理' },
   ]);
-	return <ZEle namespace="suppliers" config={config} />
+	return <ZEle namespace="transfers" config={config} />
   }

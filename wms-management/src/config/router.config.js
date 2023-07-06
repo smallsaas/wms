@@ -46,6 +46,14 @@ module.exports = [
       {
         name: "供应商管理",
         path: "/wms/suppliers"
+      },
+      {
+        name: "分销商管理",
+        path: "/wms/traders"
+      },
+      {
+        name: "调拨管理",
+        path: "/wms/transfers"
       }
     ]
   },
