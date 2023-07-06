@@ -54,7 +54,11 @@ module.exports = [
       {
         name: "调拨管理",
         path: "/wms/transfers"
-      }
+      },
+      {
+        name: "仓库管理",
+        path: "/wms/warehouses"
+      },
     ]
   },
 
