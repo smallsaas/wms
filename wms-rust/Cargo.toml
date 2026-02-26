@@ -1,0 +1,68 @@
+[package]
+name = "wms-rust"
+version = "0.1.0"
+edition = "2021"
+authors = ["WMS Team"]
+description = "Warehouse Management System - Rust Implementation"
+
+[lib]
+name = "wms_rust"
+path = "src/lib.rs"
+
+[dependencies]
+# Web Framework
+axum = "0.7"
+tower = "0.4"
+tower-http = { version = "0.5", features = ["cors", "trace"] }
+
+# Database
+sea-orm = { version = "0.12", features = ["sqlx-mysql", "runtime-tokio-native-tls", "macros", "with-chrono", "with-bigdecimal", "with-json"] }
+sqlx = { version = "0.7", features = ["mysql", "runtime-tokio-native-tls", "chrono", "bigdecimal"] }
+
+# Async trait
+async-trait = "0.1"
+
+# HTTP client (for Tenant SDK)
+reqwest = { version = "0.11", features = ["json"] }
+
+# Async Runtime
+tokio = { version = "1.35", features = ["full"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Time
+chrono = { version = "0.4", features = ["serde"] }
+
+# Decimal
+rust_decimal = { version = "1.33", features = ["serde"] }
+
+# Validation
+validator = { version = "0.16", features = ["derive"] }
+
+# Error Handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Configuration
+config = "0.14"
+dotenvy = "0.15"
+
+# Utilities
+uuid = { version = "1.6", features = ["v4", "serde"] }
+rand = "0.8"
+lazy_static = "1.4"
+once_cell = "1.19"
+
+# OpenAPI
+utoipa = { version = "4.2", features = ["axum_extras"] }
+utoipa-swagger-ui = { version = "6.0", features = ["axum"] }
+
+[dev-dependencies]
+tokio-test = "0.4"
+mockall = "0.12"
